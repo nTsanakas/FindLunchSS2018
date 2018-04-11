@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "101435960151",
+    "firebase_url": "https://findlunch-183912.firebaseio.com",
+    "project_id": "findlunch-183912",
+    "storage_bucket": "findlunch-183912.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101435960151:android:5e3c00e92b0da4a4",
+        "android_client_info": {
+          "package_name": "com.findlunchV2.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101435960151-c7jij284bivrcaso7djbsmeoomnk42ns.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJmhSKsjg-2VZexgSzVkC-sN56Nl8FisE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

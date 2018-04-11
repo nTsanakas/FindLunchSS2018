@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'HomePage.title'| translate}}</ion-title>
+    <ion-buttons end>
+      <!-- button for putting in a custom location -->
+      <button ion-button icon-only (click)="toggleSearch()">
+        <ion-icon name="ios-search"></ion-icon>
+      </button>
+      <!-- button for opening the filter-dialog for the restaurants -->
+      <button ion-button icon-only [disabled]="!allRestaurants" (click)="openFilterDialog($event)">
+        <ion-icon name="ios-funnel"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="loadMap()">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar #searchbar placeholder="Adresseingabe" [hidden]="!search"></ion-searchbar>
+  <div #map id="map" style="height:100%; width: 100%;"></div>
+</ion-content>

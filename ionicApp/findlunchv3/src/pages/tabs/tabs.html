@@ -1,0 +1,10 @@
+<ion-tabs *ngIf="!this.auth.getLoggedIn()">
+  <ion-tab [root]="tab1Root" tabTitle="Login" tabIcon="log-in"></ion-tab>
+  <ion-tab [root]="tab2Root" tabTitle="findlunch" tabIcon="pin"></ion-tab>
+  <ion-tab [root]="tab3Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
+</ion-tabs>
+<ion-tabs *ngIf="this.auth.getLoggedIn()">
+  <ion-tab [root]="tab4Root" tabTitle="Account" tabIcon="contact"></ion-tab>
+  <ion-tab [root]="tab2Root" tabTitle="findluch" tabIcon="pin"></ion-tab>
+  <ion-tab [root]="tab3Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
+</ion-tabs>

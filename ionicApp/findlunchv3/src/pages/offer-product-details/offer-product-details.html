@@ -1,0 +1,93 @@
+<ion-header>
+    <ion-navbar color="dark">
+        <button ion-button menuToggle>
+            <ion-icon md="md-menu" name="menu"></ion-icon>
+        </button>
+        <ion-title>{{restaurant.name}}</ion-title>
+
+        <!-- Cart-symbol with a count-badge -->
+        <ion-buttons end>
+            <button ion-button icon-only (click)="goToOrderDetailsPage()">
+                <ion-icon name="cart">
+                    <ion-badge class="cartBadge">{{getCartItemCount()}}</ion-badge>
+                </ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <ion-grid style="font-size: 17px;">
+        <ion-row *ngIf="offer.defaultPhoto">
+            <!-- Displays the product-image. It's important, that this is a jpg encoded in base64 -->
+            <img id="product-image" [src]="'data:image/jpg;base64,' + offer.defaultPhoto.thumbnail">
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <h1>{{offer.title}}<sup class="title-exponent-allergenics">{{getALGsAndADDsOfOffer(offer)}}</sup>
+                </h1>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <p>{{offer.description}}</p>
+            </ion-col>
+        </ion-row>
+
+        <ion-row #icons>
+            <ion-col>
+                <ion-icon name="pricetag" ios="ios-pricetag-outline" class="icon"></ion-icon>
+                {{offer.price | currency:'EUR':true}}
+            </ion-col>
+            <ion-col>
+                <ion-icon name="heart-outline" class="icon"></ion-icon>
+                {{offer.neededPoints}}
+            </ion-col>
+
+            <ion-col>
+                <ion-icon name="time" ios="ios-time-outline" class="icon"></ion-icon>
+                {{offer.preparationTime}}
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="icon-subtext">
+                {{ 'price' | translate}}
+            </ion-col>
+            <ion-col class="icon-subtext">
+                <div class="toLeft">
+                    {{ 'OffersProductPage.priceInPoints' | translate }}
+                </div>
+            </ion-col>
+            <ion-col class="icon-subtext">
+                {{ 'OffersProductPage.prepTime' | translate }}
+            </ion-col>
+        </ion-row>
+
+        <!-- Show allergenics and additives -->
+        <ion-row>
+            <ion-col>
+                <h6 class="allergenics-header">{{ 'containsAllergenics' | translate }}</h6>
+                <ion-row *ngFor="let allerg of offer.allergenic" class="allergenics">
+                    {{allerg.shortKey}} {{allerg.name}}
+                </ion-row>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <!-- this uses the same styling-class, for simlicity it's called allergenics... -->
+                <h6 class="allergenics-header">{{ 'containsAdditives' | translate }}</h6>
+                <div *ngFor="let add of offer.additives" class="allergenics">
+                    {{add.shortKey}} {{add.name}}
+                </div>
+            </ion-col>
+        </ion-row>
+
+
+        <ion-row margin-top>
+            <button ion-button block (click)="addToCart(offer)">
+                {{ 'OffersProductPage.addToCart' | translate }}
+            </button>
+        </ion-row>
+    </ion-grid>
+</ion-content>

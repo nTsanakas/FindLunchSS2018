@@ -1,0 +1,50 @@
+page-account-details {
+
+
+  .scroll-content {
+    background: center;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+  }
+  ion-card.card{
+    margin-top: 50px;
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 5px;
+  }
+  a, p, b,
+  ion-card-header.card-header{
+    color: #ffffff!important;
+  }
+  .list > .item-block .item-inner{
+    border: medium none;
+  }
+  .list > .item-block:first-child{
+    border: medium none;
+  }
+  .item{
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border: medium none;
+
+    input::-moz-placeholder{
+      color: #ffffff!important;
+    }
+    input:-moz-placeholder{
+      color: #ffffff!important;
+    }
+
+    *::-webkit-input-placeholder{
+      color: #ffffff!important;
+    }
+
+    *:-ms-input-placeholder{
+      color: #ffffff!important;
+    }
+
+    *:-moz-placeholder{
+      color: #ffffff!important;
+    }
+  }
+}
