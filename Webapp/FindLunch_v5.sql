@@ -15,6 +15,7 @@ DROP SCHEMA IF EXISTS `findlunch` ;
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `findlunch` DEFAULT CHARACTER SET utf8 ;
 USE `findlunch` ;
+
 -- -----------------------------------------------------
 -- Table `findlunch`.`country`
 -- -----------------------------------------------------
@@ -455,7 +456,6 @@ CREATE TABLE IF NOT EXISTS `findlunch`.`restaurant_has_kitchen_type` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-
 -- -----------------------------------------------------
 -- Table `findlunch`.`points`
 -- -----------------------------------------------------
@@ -476,8 +476,6 @@ CREATE TABLE IF NOT EXISTS `findlunch`.`points` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-
 -- -----------------------------------------------------
 -- Table `findlunch`.`euro_per_point`
 -- -----------------------------------------------------
@@ -547,6 +545,8 @@ CREATE TABLE IF NOT EXISTS `findlunch`.`reservation` (
   `total_price` DECIMAL(5,2) NOT NULL,
   `donation` DECIMAL(5,2) NOT NULL,
   `used_points` TINYINT(1) NOT NULL,
+  `points_collected` TINYINT(1) NOT NULL,
+  `points` DECIMAL(5,2) DEFAULT 0.0,
   `user_id` INT(11) NOT NULL,
   `euro_per_point_id` INT NOT NULL,
   `bill_id` INT(11) NULL DEFAULT NULL,
@@ -590,7 +590,7 @@ CREATE TABLE IF NOT EXISTS `findlunch`.`reservation` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `findlunch`.`reservation`
+-- Table `findlunch`.`reservation_offers`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `findlunch`.`reservation_offers` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,

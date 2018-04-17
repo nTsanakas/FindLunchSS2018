@@ -13,6 +13,7 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<docker.image.prefix>findlunch</docker.image.prefix>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<integration-tests.skip>true</integration-tests.skip>
 		<!-- STANDALONE TOMCAT CONFIG: For standalone tomcat deployment set correct version of the tomcat to use -->
@@ -232,6 +233,18 @@
 					</execution>
 				</executions>
 			</plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <configuration>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                        <SCHEMA>FindLunch_v5.sql</SCHEMA>
+                        <DATA>data_v5.sql</DATA>
+                    </buildArgs>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
