@@ -242,6 +242,8 @@
                         <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
                         <SCHEMA>FindLunch_v5.sql</SCHEMA>
                         <DATA>data_v5.sql</DATA>
+						<SUP_CONF>supervisord.conf</SUP_CONF>
+						<STARTUP>findlunch.sh</STARTUP>
                     </buildArgs>
                 </configuration>
             </plugin>

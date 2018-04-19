@@ -1,24 +1,56 @@
+# Use the default MariaDB Container as base. It is based on Debian Jessie
 FROM mariadb:latest
+
+# Set the environment variables for users and passwords according to the pre-existing
+# project configuration.
 ENV MYSQL_ROOT_PASSWORD=root
 ENV MYSQL_USER=db_findlunch_service
 ENV MYSQL_PASSWORD=LT>r71VGWS
+
+# Update and upgrade installed packages
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get dist-upgrade -y
+
+# Install the default JRE (1.7 for Jessie)
 RUN apt-get install -y default-jre
+
+# Install supervisor, which allows us to run two processes from a single container
 RUN apt-get install -y supervisor
+
+# Install JRE 1.8 using the jessie-backports repository and make the container use it.
 RUN echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install -t jessie-backports -y ca-certificates-java
 RUN apt-get install -t jessie-backports -y openjdk-8-jre-headless
 RUN update-java-alternatives --set java-1.8.0-openjdk-amd64
-EXPOSE 8080
+
+# Expose 8080 for Tomcat, 3306 for MariaDB
+EXPOSE 8080, 3306
+
+# Mount the tmp volume, in case the container needs to write to the filesystem.
 VOLUME /tmp
+
+# All ARGs are defined in the pom.xml.
+# Copy the database initialization scripts in the container to be run by the MariaDB
+# container start-up script.
 ARG SCHEMA
 ADD ${SCHEMA} /docker-entrypoint-initdb.d/00-schema.sql
 ARG DATA
 ADD ${DATA} /docker-entrypoint-initdb.d/01-data.sql
+
+# Copy the application JAR in the container
 ARG JAR_FILE
 ADD ${JAR_FILE} app.jar
-ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Copy the supervisor configuration file in the container.
+ARG SUP_CONF
+ADD ${SUP_CONF} /etc/supervisor/conf.d/supervisord.conf
+
+# Copy the application start-up script in the container and make it executable.
+ARG STARTUP
+ADD STARTUP findlunch.sh
+RUN chmod +x findlunch.sh
+
+# Call the supervisor daemon on container start-up.
 ENTRYPOINT ["/usr/bin/supervisord"]
