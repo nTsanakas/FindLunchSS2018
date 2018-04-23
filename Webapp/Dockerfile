@@ -26,7 +26,7 @@ RUN apt-get install -t jessie-backports -y openjdk-8-jre-headless
 RUN update-java-alternatives --set java-1.8.0-openjdk-amd64
 
 # Expose 8080 for Tomcat, 3306 for MariaDB
-EXPOSE 8080, 3306
+EXPOSE 8080 3306
 
 # Mount the tmp volume, in case the container needs to write to the filesystem.
 VOLUME /tmp
@@ -49,7 +49,7 @@ ADD ${SUP_CONF} /etc/supervisor/conf.d/supervisord.conf
 
 # Copy the application start-up script in the container and make it executable.
 ARG STARTUP
-ADD STARTUP findlunch.sh
+ADD ${STARTUP} findlunch.sh
 RUN chmod +x findlunch.sh
 
 # Call the supervisor daemon on container start-up.
