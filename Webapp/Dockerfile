@@ -13,16 +13,16 @@ RUN apt-get -y upgrade
 RUN apt-get dist-upgrade -y
 
 # Install the default JRE (1.7 for Jessie)
-RUN apt-get install -y default-jre
+RUN apt-get install -y default-jre --force-yes
 
 # Install supervisor, which allows us to run two processes from a single container
-RUN apt-get install -y supervisor
+RUN apt-get install -y supervisor --force-yes
 
 # Install JRE 1.8 using the jessie-backports repository and make the container use it.
 RUN echo 'deb http://http.debian.net/debian jessie-backports main' >> /etc/apt/sources.list
 RUN apt-get update
-RUN apt-get install -t jessie-backports -y ca-certificates-java
-RUN apt-get install -t jessie-backports -y openjdk-8-jre-headless
+RUN apt-get install -t jessie-backports -y ca-certificates-java --force-yes
+RUN apt-get install -t jessie-backports -y openjdk-8-jre-headless --force-yes
 RUN update-java-alternatives --set java-1.8.0-openjdk-amd64
 
 # Expose 8080 for Tomcat, 3306 for MariaDB
@@ -49,8 +49,8 @@ ADD ${SUP_CONF} /etc/supervisor/conf.d/supervisord.conf
 
 # Copy the application start-up script in the container and make it executable.
 ARG STARTUP
-ADD ${STARTUP} findlunch.sh
-RUN chmod +x findlunch.sh
+ADD ${STARTUP} /findlunch.sh
+RUN chmod +x /findlunch.sh
 
 # Call the supervisor daemon on container start-up.
 ENTRYPOINT ["/usr/bin/supervisord"]
