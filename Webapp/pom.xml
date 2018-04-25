@@ -16,6 +16,10 @@
 		<docker.image.prefix>findlunch</docker.image.prefix>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<integration-tests.skip>true</integration-tests.skip>
+		<database.url>jdbc:mariadb://localhost:3306</database.url>
+		<database.user>root</database.user>
+		<database.password>root</database.password>
+		<database.schema>findlunch</database.schema>
 		<!-- STANDALONE TOMCAT CONFIG: For standalone tomcat deployment set correct version of the tomcat to use -->
 		<!-- <tomcat.version>8.0.20</tomcat.version> -->
 		<!--<tomcat.version>8.0.36</tomcat.version>-->
@@ -247,6 +251,26 @@
                     </buildArgs>
                 </configuration>
             </plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>5.0.7</version>
+				<configuration>
+					<url>${database.url}</url>
+					<user>${database.user}</user>
+					<password>${database.password}</password>
+					<schemas>
+						<schema>${database.schema}</schema>
+					</schemas>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.mariadb.jdbc</groupId>
+						<artifactId>mariadb-java-client</artifactId>
+						<version>2.2.0  </version>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
 	</build>
 
