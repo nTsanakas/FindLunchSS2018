@@ -17,6 +17,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import springfox.documentation.builders.PathSelectors;
@@ -130,6 +131,15 @@ public class Beans extends WebMvcConfigurerAdapter{
 	       new Contact("Adrian Hufnagl", "www.example.com", "myeaddress@company.com"), 
 	       "License of API", "API license URL", Collections.emptyList());
 	}
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
 	
 	/**
 	 * Returns the local validator
