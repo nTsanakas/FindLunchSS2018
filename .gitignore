@@ -6,3 +6,4 @@ org.eclipse.*
 .settings
 .editorconfig
 target
+findlunch.sh
