@@ -20,6 +20,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -114,32 +115,33 @@ public class Beans extends WebMvcConfigurerAdapter{
 	
 	@Bean
 	public Docket api() {                
-	    return new Docket(DocumentationType.SWAGGER_2)          
-	      .select()
-	      .apis(RequestHandlerSelectors.basePackage("edu.hm.cs.projektstudium.findlunch.webapp.controller.rest"))
-	      .paths(PathSelectors.any())
-	      .build()
-	      .apiInfo(apiInfo());
+	    return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("edu.hm.cs.projektstudium.findlunch.webapp.controller.rest"))
+                .paths(PathSelectors.any())
+                .build()
+	            .apiInfo(apiInfo());
 	}
 	 
 	private ApiInfo apiInfo() {
-	     return new ApiInfo(
-	       "FINDLUNCH REST API", 
-	       "The findluch-Webapp Documentation of the Rest API.", 
-	       "API TOS", 
-	       "Terms of service", 
-	       new Contact("Adrian Hufnagl", "www.example.com", "myeaddress@company.com"), 
-	       "License of API", "API license URL", Collections.emptyList());
+        return new ApiInfoBuilder()
+                .title("FindLunch REST-Schnittstelle")
+                .description("Dokumentation der REST-Schnittstelle von FindLunch")
+                .version("1.0.0")
+                .license("Apache License Version 2.0")
+                .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
+                .contact(new Contact("Prof. Dr. Peter Mandl", "www.wirtschaftsinformatik-muenchen.de", "mandl@cs.hm.edu"))
+                .build();
 	}
 
-    @Override
+    /*@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
 
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
+    }*/
 	
 	/**
 	 * Returns the local validator

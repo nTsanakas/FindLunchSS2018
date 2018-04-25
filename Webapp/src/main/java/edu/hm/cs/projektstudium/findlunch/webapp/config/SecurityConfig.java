@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * This class is responsible for configuring the Spring Security context.
@@ -45,6 +46,16 @@ public class SecurityConfig {
 		/** The password encoder. */
 		@Autowired
 		private BCryptPasswordEncoder passwordEncoder;
+
+		//TODO: GGF. löschen
+		private static final String[] AUTH_WHITELIST = {
+
+				// -- swagger ui
+				"/swagger-resources/**",
+				"/swagger-ui.html",
+				"/v2/api-docs",
+				"/webjars/**"
+		};
 
 		/*
 		 * (non-Javadoc)
@@ -82,6 +93,7 @@ public class SecurityConfig {
 		protected void configure(HttpSecurity http) throws Exception {
 			
 			http
+
 					// Change the sent server name.
 					.headers().addHeaderWriter(new StaticHeadersWriter("Server", "Unbekannter Webserver")).and()
 					// Add an elementary Content-Security-Policy-Report-Only-header with a reporting URL.
@@ -89,7 +101,8 @@ public class SecurityConfig {
 					"default-src 'self' script-src 'self' 'unsafe-inline' " +
 							"https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ ;" +
 							"; report-uri /api/csp-report-uri"+ "; /js/**"))
-					.and()
+			/*TODO: Lösung finden, mit der /swagger-ui.html mit der auskommentierten Authentifizierung funktioniert.*/
+			/*.and()
 					.csrf().disable().requestMatchers()
 					// Add a Content-Security-Policy-violation-report-endpoint
 					// The CSRF-protection should be disabled as it is a POST-request.
@@ -112,7 +125,9 @@ public class SecurityConfig {
 					.antMatchers(HttpMethod.PUT, "/api/reset_password/**")
 					.antMatchers(HttpMethod.GET, "/api/getCustomerReservations")
 				.and().httpBasic().and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
+			//TODO: GGF. löschen:
+			//http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll();
 		}
 		
 	}
