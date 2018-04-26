@@ -1,24 +1,18 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
+import io.swagger.annotations.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 /**
  * This class could be used for a generic Captcha handling process.
  * For example Captchas or responses for Captchas from different providers could be obtained through the methods of
@@ -48,15 +42,21 @@ public class GenericCaptchaRestController {
     @RequestMapping(
             path = "/api/captcha",
             method = RequestMethod.GET,
-            params = {"provider"},
             produces = "text/html")
-    public final ResponseEntity<String> getRemoteContent(final HttpServletRequest request) throws IOException {
+    public final ResponseEntity<String> getRemoteContent(
+            @RequestParam(name = "provider")
+            @ApiParam(
+                    name = "Provider",
+                    value = "URL des Captcha-Anbieters",
+                    required = true)
+            String provider,
+            final HttpServletRequest request) throws IOException {
         LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
         Response response = null;
         try {
             response = new OkHttpClient().newCall(new Request.Builder()
-                    .url(request.getParameterValues("provider")[0])
+                    .url(provider)
                     .get()
                     .build()).execute();
         } catch (IOException e) {

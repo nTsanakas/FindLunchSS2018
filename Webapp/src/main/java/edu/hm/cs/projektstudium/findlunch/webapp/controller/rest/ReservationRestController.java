@@ -6,9 +6,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.annotation.JsonView;
-
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.mail.MailService;
@@ -45,48 +42,43 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationReposit
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationStatusRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
+
 /**
  * The Class ReservationRestController. The class is responsible for handling
  * rest calls related to registering users
  *
  */
 @RestController
+@Api(
+		value="Reservierungen",
+		description="Verwaltung von Reservierungen.")
 public class ReservationRestController {
 
 	/** The restaurant repository. */
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 	
 	/** The offer repository. */
-	@Autowired
-	private OfferRepository offerRepository;
+	private final OfferRepository offerRepository;
 	
 	/** The reservation repository. */
-	@Autowired
-	private ReservationRepository reservationRepository;
+	private final ReservationRepository reservationRepository;
 	
 	/** The reservationStatus repository. */
-	@Autowired
-	private ReservationStatusRepository reservationStatusRepository;
+	private final ReservationStatusRepository reservationStatusRepository;
 	
 	/** The euroPerPoint repository. */
-	@Autowired
-	private EuroPerPointRepository euroPerPointRepository;
+	private final EuroPerPointRepository euroPerPointRepository;
 	
 	/** The points repository. */
-	@Autowired
-	private PointsRepository pointsRepository;
+	private final PointsRepository pointsRepository;
 	
 	/** The restaurant repository. */
-	@Autowired 
-	private RestaurantRepository restaurantRepository;
-	
+	private final RestaurantRepository restaurantRepository;
+
 	/** The token repository. */
-	@Autowired
-	private PushTokenRepository tokenRepository;
-	
-	@Autowired
-	private MailService mailService;
+	private final PushTokenRepository tokenRepository;
+
+	private final MailService mailService;
 	
 	private static final String HTTP = "http://";
 	
@@ -94,7 +86,20 @@ public class ReservationRestController {
 	
 	/** The Logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(ReservationRestController.class);
-	
+
+	@Autowired
+	public ReservationRestController(UserRepository userRepository, OfferRepository offerRepository, ReservationRepository reservationRepository, ReservationStatusRepository reservationStatusRepository, EuroPerPointRepository euroPerPointRepository, PointsRepository pointsRepository, RestaurantRepository restaurantRepository, PushTokenRepository tokenRepository, MailService mailService) {
+		this.userRepository = userRepository;
+		this.offerRepository = offerRepository;
+		this.reservationRepository = reservationRepository;
+		this.reservationStatusRepository = reservationStatusRepository;
+		this.euroPerPointRepository = euroPerPointRepository;
+		this.pointsRepository = pointsRepository;
+		this.restaurantRepository = restaurantRepository;
+		this.tokenRepository = tokenRepository;
+		this.mailService = mailService;
+	}
+
 	/**
 	 * Register a reservation.
 	 * @param reservation Reservation to register
@@ -104,14 +109,31 @@ public class ReservationRestController {
 	 */
 	@CrossOrigin
 	@PreAuthorize("isAuthenticated()")
-	@RequestMapping(path= "/api/register_reservation", method = RequestMethod.POST)
-	public ResponseEntity<Integer> registerReservation(@RequestBody Reservation reservation, Principal principal, HttpServletRequest request){
+	@ApiOperation(
+			value = "Reservierung registrieren.",
+	        response = Integer.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Reservierung erfolgreich."),
+			@ApiResponse(code = 401, message = "Nicht autorisiert."),
+			@ApiResponse(code = 409, message = "Reservierung nicht erfolgreich.")
+	})
+	@RequestMapping(
+			path= "api/register_reservation",
+			method = RequestMethod.POST,
+			produces="text/html")
+	public ResponseEntity<Integer> registerReservation(
+			@RequestBody
+			@ApiParam(
+					name = "reservation",
+					value = "Reservierung",
+					required = true)
+			Reservation reservation, Principal principal, HttpServletRequest request){
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		float calculatedPrice = 0;
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
-		authenticatedUser = userRepository.findOne(authenticatedUser.getId());	
+		authenticatedUser = userRepository.findOne(authenticatedUser.getId());
 		
 		List<ReservationOffers> reservation_Offers = reservation.getReservation_offers();
 		
@@ -120,31 +142,31 @@ public class ReservationRestController {
 		// Bestellung entält keine Angebote
 		if(reservation_Offers.isEmpty()){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Reservation does not contain any offer"));
-			return new ResponseEntity<Integer>(1, HttpStatus.CONFLICT);
+			return new ResponseEntity<>(1, HttpStatus.CONFLICT);
 		}
 		
 		// Kein Abholzeitpunkt angegeben
 		if(null == reservation.getCollectTime()){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The Reservation has no CollectTime set"));
-			return new ResponseEntity<Integer>(9, HttpStatus.CONFLICT);
+			return new ResponseEntity<>(9, HttpStatus.CONFLICT);
 		}
 		
 		// Abholzeitpunkt liegt in der Vergangenheit
 		if(reservation.getCollectTime().before(new Date())){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The Reservation CollectTime is set in past"));
-			return new ResponseEntity<Integer>(10, HttpStatus.CONFLICT);
+			return new ResponseEntity<>(10, HttpStatus.CONFLICT);
 		}
 		
 		// Kein Abholzeitpunkt angegeben
 		if(null == reservation.getCollectTime()){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The Reservation has no CollectTime set"));
-			return new ResponseEntity<Integer>(9, HttpStatus.CONFLICT);
+			return new ResponseEntity<>(9, HttpStatus.CONFLICT);
 		}
 		
 		// Abholzeitpunkt liegt in der Vergangenheit
 		if(reservation.getCollectTime().before(new Date())){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The Reservation CollectTime is set in past"));
-			return new ResponseEntity<Integer>(10, HttpStatus.CONFLICT);
+			return new ResponseEntity<>(10, HttpStatus.CONFLICT);
 		}
 		
 		for(ReservationOffers reservation_offer : reservation_Offers) {
@@ -152,27 +174,27 @@ public class ReservationRestController {
 			// Bestellte Menge des Angebots ist 0 oder kleiner
 			if(reservation_offer.getAmount() <= 0){
 				LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Reservation has no amount for offer "+reservation_offer.getOffer().getId()));
-				return new ResponseEntity<Integer>(2, HttpStatus.CONFLICT);
+				return new ResponseEntity<>(2, HttpStatus.CONFLICT);
 			}
 
-			Offer offer = offerRepository.getOne(reservation_offer.getOffer().getId());
+			Offer offer = offerRepository.findOne(reservation_offer.getOffer().getId());
 			
 			// Angebots ID ist nicht in der DB
 			if(offer==null){
 				LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "No Offer for ID "+reservation_offer.toString()));
-				return new ResponseEntity<Integer>(4, HttpStatus.CONFLICT);
+				return new ResponseEntity<>(4, HttpStatus.CONFLICT);
 			}
 			
 			// Angebot ist ausverkauft
 			if(offer.getSold_out()){
 				LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Das Offer "+reservation_offer.getOffer().getId()+" is sold out"));
-				return new ResponseEntity<Integer>(5, HttpStatus.CONFLICT);
+				return new ResponseEntity<>(5, HttpStatus.CONFLICT);
 			}
 			
 			if(restaurant!=null){
 				if(restaurant.getId() != offer.getRestaurant().getId()){
 					LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "An offer of the reservation is from another restaurant"));
-					return new ResponseEntity<Integer>(7, HttpStatus.CONFLICT);
+					return new ResponseEntity<>(7, HttpStatus.CONFLICT);
 				}
 			}
 			restaurant = offer.getRestaurant();
@@ -187,7 +209,7 @@ public class ReservationRestController {
 		// Der Gesamtpreis, welcher in der Customer App berechnet wurde stimmt nicht
 		if(calculatedPrice+reservation.getDonation()!=reservation.getTotalPrice()){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Reservation price is incorrect"));
-			return new ResponseEntity<Integer>(6, HttpStatus.CONFLICT);
+			return new ResponseEntity<>(6, HttpStatus.CONFLICT);
 		}
 
 		EuroPerPoint euroPerPoint = euroPerPointRepository.findOne(1); //holt den euro pro punkt mit der id
@@ -227,16 +249,16 @@ public class ReservationRestController {
 			if(usablePoints >= neededPoints){
 				points.setPoints(usablePoints - neededPoints);
 				pointsRepository.save(points);
-				return new ResponseEntity<Integer>(0, HttpStatus.OK);
+				return new ResponseEntity<>(0, HttpStatus.OK);
 			}
 			else {
 				//punkte reichen nicht
 				LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Points not enough"));
-				return new ResponseEntity<Integer>(8, HttpStatus.CONFLICT); 
+				return new ResponseEntity<>(8, HttpStatus.CONFLICT);
 			}
 			
 		}else{
-			return new ResponseEntity<Integer>(0, HttpStatus.OK);
+			return new ResponseEntity<>(0, HttpStatus.OK);
 		}
 	}
 	
@@ -250,8 +272,25 @@ public class ReservationRestController {
 	 */
 	@CrossOrigin
 	@PreAuthorize("isAuthenticated()")
-	@RequestMapping(path = "/api/confirm_reservation/{restaurantUuid}", method = RequestMethod.PUT)
-	public ResponseEntity<Integer> confirmReservation(@PathVariable("restaurantUuid") String restaurantUuid, Principal principal, HttpServletRequest request){
+	@ApiOperation(
+			value = "Reservierung bestätigen.",
+	        response = Integer.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Reservierung erfolgreich bestätigt."),
+			@ApiResponse(code = 401, message = "Nicht autorisiert."),
+			@ApiResponse(code = 409, message = "Reservierung konnte nicht bestätigt werden.")
+	})
+	@RequestMapping(
+			path = "api/confirm_reservation/{restaurantUuid}",
+			method = RequestMethod.PUT,
+			produces = "text/html")
+	public ResponseEntity<Integer> confirmReservation(
+			@PathVariable("restaurantUuid")
+            @ApiParam(
+					name = "Restaurant-ID",
+					value = "ID des Restaurants, welches die Reservierung bestätigen soll.",
+					required = true)
+            String restaurantUuid, Principal principal, HttpServletRequest request){
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
@@ -260,7 +299,7 @@ public class ReservationRestController {
 		Restaurant r = restaurantRepository.findByRestaurantUuid(restaurantUuid);
 		if(r==null){
 			//restaurant nicht gefunden
-			return new ResponseEntity<Integer>(3, HttpStatus.CONFLICT);
+			return new ResponseEntity<>(3, HttpStatus.CONFLICT);
 		}
 		
 		LocalDateTime midnight = LocalDate.now().atStartOfDay();
@@ -272,7 +311,7 @@ public class ReservationRestController {
 				
 				
 					EuroPerPoint euroPerPoint = euroPerPointRepository.findOne(1);
-					Float amountOfPoints= new Float(reservation.getTotalPrice()*euroPerPoint.getEuro());
+					Float amountOfPoints= reservation.getTotalPrice() * euroPerPoint.getEuro();
 					PointId pointId = new PointId();
 					pointId.setUser(authenticatedUser);
 					pointId.setRestaurant(reservation.getRestaurant());
@@ -291,11 +330,11 @@ public class ReservationRestController {
 					reservationRepository.save(reservation);
 					pointsRepository.save(points);
 			}	
-			return new ResponseEntity<Integer>(0, HttpStatus.OK);
+			return new ResponseEntity<>(0, HttpStatus.OK);
 		}
 		else{
 			//keine Reservierung
-			return new ResponseEntity<Integer>(4, HttpStatus.CONFLICT);
+			return new ResponseEntity<>(4, HttpStatus.CONFLICT);
 		}
 	}
 	
@@ -308,7 +347,17 @@ public class ReservationRestController {
 	@CrossOrigin
 	@PreAuthorize("isAuthenticated()")
 	@JsonView(ReservationView.ReservationRest.class)
-	@RequestMapping(path = "/api/getCustomerReservations", method = RequestMethod.GET)
+	@ApiOperation(
+			value = "Reservierungen zum angemeldeten Benutzer abrufen.",
+			response = List.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Reservierungen zum Benutzer erfolgreich zurückgegeben."),
+			@ApiResponse(code = 401, message = "Nicht autorisiert.")
+	})
+	@RequestMapping(
+			path = "api/getCustomerReservations",
+			method = RequestMethod.GET,
+			produces = "application/json")
 	public ResponseEntity<List<Reservation>> getUserCustomerReservations(Principal principal, HttpServletRequest request){
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
@@ -317,7 +366,7 @@ public class ReservationRestController {
 	
 		List<Reservation> reservations = reservationRepository.findByUserIdOrderByRestaurantIdAscTimestampReceivedAsc(authenticatedUser.getId());
 		
-		return new ResponseEntity<List<Reservation>>(reservations, HttpStatus.OK);
+		return new ResponseEntity<>(reservations, HttpStatus.OK);
 	}
 	
     /**

@@ -87,7 +87,7 @@ public class FavoritesRestController {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
-		authenticatedUser = userRepository.getOne(authenticatedUser.getId());
+		authenticatedUser = userRepository.findOne(authenticatedUser.getId());
 
 		Restaurant r = restaurantRepository.findById(restaurantId);
 		if (r == null) {
@@ -143,7 +143,7 @@ public class FavoritesRestController {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
-		authenticatedUser = userRepository.getOne(authenticatedUser.getId());
+		authenticatedUser = userRepository.findOne(authenticatedUser.getId());
 
 		Restaurant r = restaurantRepository.findById(restaurantId);
 		if (r == null) {
