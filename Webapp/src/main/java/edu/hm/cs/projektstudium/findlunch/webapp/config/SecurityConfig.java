@@ -47,16 +47,6 @@ public class SecurityConfig {
 		@Autowired
 		private BCryptPasswordEncoder passwordEncoder;
 
-		//TODO: GGF. löschen
-		private static final String[] AUTH_WHITELIST = {
-
-				// -- swagger ui
-				"/swagger-resources/**",
-				"/swagger-ui.html",
-				"/v2/api-docs",
-				"/webjars/**"
-		};
-
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -126,8 +116,6 @@ public class SecurityConfig {
 					.antMatchers(HttpMethod.GET, "/api/getCustomerReservations")
 				.and().httpBasic().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
-			//TODO: GGF. löschen:
-			//http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll();
 		}
 		
 	}
