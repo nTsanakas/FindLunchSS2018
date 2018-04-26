@@ -54,7 +54,7 @@ public class TokenRestContoller {
      */
     @CrossOrigin
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(path="api/submitToken/{pushToken}", method = RequestMethod.PUT)
+    @RequestMapping(path="/api/submitToken/{pushToken}", method = RequestMethod.PUT)
     ResponseEntity<Integer> submitToken(@PathVariable("pushToken") String pushToken, Principal principal, HttpServletRequest request){
     	LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
     	

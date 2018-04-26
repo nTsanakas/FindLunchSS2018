@@ -1,25 +1,17 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.config;
 
 
-import java.util.Collections;
-import java.util.Properties;
-
-import org.apache.catalina.connector.Connector;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -93,34 +85,31 @@ public class Beans extends WebMvcConfigurerAdapter{
 	        ) throws Exception {
 	 
 	      
-	      return new EmbeddedServletContainerCustomizer() {
-			@Override
-			public void customize(ConfigurableEmbeddedServletContainer container) {
- 
-			      if (container instanceof TomcatEmbeddedServletContainerFactory) {
- 
-			          TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
-			          tomcat.addConnectorCustomizers(
-			                  new TomcatConnectorCustomizer() {
-								@Override
-								public void customize(Connector connector) {
-									  connector.setMaxPostSize(20000000);//20MB
-								  }
-							}
-			          );
-			      }
-			  }
-		};
+	      return container -> {
+
+                if (container instanceof TomcatEmbeddedServletContainerFactory) {
+
+                    TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
+                    tomcat.addConnectorCustomizers((TomcatConnectorCustomizer) connector -> {
+                          connector.setMaxPostSize(20000000);//20MB
+                      });
+                }
+            };
 	  }
 	
 	@Bean
 	public Docket api() {                
 	    return new Docket(DocumentationType.SWAGGER_2)
+                //Nur die in @ApiResponses angegebenen Codes anzeigen.
+                .useDefaultResponseMessages(false)
                 .select()
+                //Pfad festlegen, in dem nach REST-Controllern gesucht wird.
                 .apis(RequestHandlerSelectors.basePackage("edu.hm.cs.projektstudium.findlunch.webapp.controller.rest"))
+                //Keine Pfade (z.B. /api/) ausschließen.
                 .paths(PathSelectors.any())
                 .build()
-	            .apiInfo(apiInfo());
+	            //Metadaten (Überschrift, etc.) hinzufügen.
+                .apiInfo(apiInfo());
 	}
 	 
 	private ApiInfo apiInfo() {
@@ -134,14 +123,14 @@ public class Beans extends WebMvcConfigurerAdapter{
                 .build();
 	}
 
-    /*@Override
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
 
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }*/
+    }
 	
 	/**
 	 * Returns the local validator

@@ -1,7 +1,6 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -16,12 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 /**
  * This class could be used for a generic Captcha handling process.
  * For example Captchas or responses for Captchas from different providers could be obtained through the methods of
  * this class.
  */
 @RestController
+@Api(
+        value="Captcha-Behalung",
+        description="Kann für Captcha-Handling-Prozess verwendet werden.")
 public class GenericCaptchaRestController {
     private final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(GenericCaptchaRestController.class);
 
@@ -32,7 +38,18 @@ public class GenericCaptchaRestController {
      * @return the log file.
      */
     @CrossOrigin
-    @RequestMapping(path = "/api/captcha", method = RequestMethod.GET, params = {"provider"})
+    @ApiOperation(
+            value = "Abruf eines Captcha vom gewünschten Provider.",
+            response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Captcha erfolgreich abgerufen."),
+            @ApiResponse(code = 400, message = "Fehler beim Abruf.")
+    })
+    @RequestMapping(
+            path = "/api/captcha",
+            method = RequestMethod.GET,
+            params = {"provider"},
+            produces = "text/html")
     public final ResponseEntity<String> getRemoteContent(final HttpServletRequest request) throws IOException {
         LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
@@ -48,5 +65,4 @@ public class GenericCaptchaRestController {
 
         return new ResponseEntity<>(response != null ? response.body().string() : "No body", HttpStatus.OK);
     }
-
 }

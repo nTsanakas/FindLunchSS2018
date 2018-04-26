@@ -56,7 +56,7 @@ public class ResetPasswordRestController {
 	private final Logger LOGGER = LoggerFactory.getLogger(ResetPasswordRestController.class);
 	
 	@CrossOrigin
-	@RequestMapping(path ="api/get_reset_token", method = RequestMethod.POST)
+	@RequestMapping(path ="/api/get_reset_token", method = RequestMethod.POST)
 	public ResponseEntity<Integer> getResetPassword(HttpServletRequest request, @RequestBody User user){
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
@@ -139,7 +139,7 @@ public class ResetPasswordRestController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(path ="api/reset_password/{token}", method = RequestMethod.PUT)
+	@RequestMapping(path ="/api/reset_password/{token}", method = RequestMethod.PUT)
 	public ResponseEntity<Integer> resetPassword(@PathVariable("token") String token,/*@Valid*/ @RequestBody User u, HttpServletRequest request){
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		

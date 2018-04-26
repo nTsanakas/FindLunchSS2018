@@ -3,8 +3,9 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import edu.hm.cs.projektstudium.findlunch.webapp.controller.NotificationController;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,6 +23,9 @@ import java.io.InputStreamReader;
  * policy. This class is used as the csp-report-uri.
  */
 @RestController
+@Api(
+        value="Policy-Verletzung",
+        description="Einblick in Policy-Verletzungen.")
 class CpiRestController {
 
     /**
@@ -36,7 +40,10 @@ class CpiRestController {
      * @param request the HttpServletRequest
      */
     @CrossOrigin
-    @RequestMapping(path = "/api/csp-report-uri", method = RequestMethod.POST)
+    @ApiOperation(value = "Behandeln von Verstößen gegen die Content-Policy auf dem Server.")
+    @RequestMapping(
+            path = "/api/csp-report-uri",
+            method = RequestMethod.POST)
     public void getCspViolations(final HttpServletRequest request) throws IOException {
     	
         LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));

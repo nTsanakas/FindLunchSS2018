@@ -104,7 +104,7 @@ public class ReservationRestController {
 	 */
 	@CrossOrigin
 	@PreAuthorize("isAuthenticated()")
-	@RequestMapping(path= "api/register_reservation", method = RequestMethod.POST)
+	@RequestMapping(path= "/api/register_reservation", method = RequestMethod.POST)
 	public ResponseEntity<Integer> registerReservation(@RequestBody Reservation reservation, Principal principal, HttpServletRequest request){
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
@@ -250,7 +250,7 @@ public class ReservationRestController {
 	 */
 	@CrossOrigin
 	@PreAuthorize("isAuthenticated()")
-	@RequestMapping(path = "api/confirm_reservation/{restaurantUuid}", method = RequestMethod.PUT)
+	@RequestMapping(path = "/api/confirm_reservation/{restaurantUuid}", method = RequestMethod.PUT)
 	public ResponseEntity<Integer> confirmReservation(@PathVariable("restaurantUuid") String restaurantUuid, Principal principal, HttpServletRequest request){
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
@@ -308,7 +308,7 @@ public class ReservationRestController {
 	@CrossOrigin
 	@PreAuthorize("isAuthenticated()")
 	@JsonView(ReservationView.ReservationRest.class)
-	@RequestMapping(path = "api/getCustomerReservations", method = RequestMethod.GET)
+	@RequestMapping(path = "/api/getCustomerReservations", method = RequestMethod.GET)
 	public ResponseEntity<List<Reservation>> getUserCustomerReservations(Principal principal, HttpServletRequest request){
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		

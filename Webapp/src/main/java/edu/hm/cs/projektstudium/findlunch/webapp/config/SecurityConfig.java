@@ -100,7 +100,7 @@ public class SecurityConfig {
 					.headers().addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy-Report-Only",
 					"default-src 'self' script-src 'self' 'unsafe-inline' " +
 							"https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ ;" +
-							"; report-uri /api/csp-report-uri"+ "; /js/**"))
+							"; report-uri /api/csp-report-uri"+ "; /js/**"));
 			/*TODO: Lösung finden, mit der /swagger-ui.html mit der auskommentierten Authentifizierung funktioniert.*/
 			/*.and()
 					.csrf().disable().requestMatchers()
