@@ -14,6 +14,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificationView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 
 /**
@@ -21,24 +23,31 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
  */
 @Entity
 @Table(name="kitchen_type")
+@ApiModel(
+		description = "Definiert verschiedene Küchentypen."
+)
 public class KitchenType {
 
 	/** The id. */
+	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@JsonView({RestaurantView.RestaurantRest.class, PushNotificationView.PushNotificationRest.class})
 	private int id;
 
 	/** The name. */
+	@ApiModelProperty(notes = "Name")
 	@JsonView({RestaurantView.RestaurantRest.class, PushNotificationView.PushNotificationRest.class})
 	private String name;
 	
 	/** The push notifications. */
 	//bi-directional many-to-many association to PushNotification
+	@ApiModelProperty(notes = "Push-Benachrichtigungen")
 	@ManyToMany(mappedBy="kitchenTypes")
 	private List<DailyPushNotificationData> pushNotifications;
 
 	/** The restaurants. */
+	@ApiModelProperty(notes = "Restaurants")
 	//bi-directional many-to-many association to Restaurant
 	@ManyToMany(mappedBy="kitchenTypes")
 	@JsonIgnore

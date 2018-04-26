@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
@@ -17,18 +19,24 @@ import org.springframework.format.annotation.NumberFormat.Style;
  */
 @Entity
 @Table(name="euro_per_point")
+@ApiModel(
+		description = "Definiert, wie viel ein Punkt wert ist."
+)
 public class EuroPerPoint {
 
 	/** The id. */
+	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
 	/** The euro per point.*/
+	@ApiModelProperty(notes = "Euro pro Punkt")
 	@NumberFormat(style=Style.DEFAULT)
 	private float euro;
 	
 	/** The reservations*/
+	@ApiModelProperty(notes = "Reservierungen")
 	@OneToMany(mappedBy="euroPerPoint")
 	private List<Reservation> reservations;
 

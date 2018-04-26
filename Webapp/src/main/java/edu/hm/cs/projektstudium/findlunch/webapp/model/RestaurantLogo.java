@@ -15,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * The Class RestaurantLogo
@@ -23,35 +25,44 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
  */
 @Entity
 @Table(name="restaurant_logo")
+@ApiModel(
+		description = "Logo zu einem Restaurant."
+)
 public class RestaurantLogo {
 
 	/** The id. */
+	@ApiModelProperty(notes = "ID")
 	@Id
 	@JsonView(RestaurantView.RestaurantRest.class)
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
 	/** The logo. */
+	@ApiModelProperty(notes = "Logo")
 	@Lob
 	@JsonView(RestaurantView.RestaurantRest.class)
 	private byte[] logo;
 	
 	/** The offer. */
+	@ApiModelProperty(notes = "Angebot")
 	//bi-directional many-to-one association to Offer
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Restaurant restaurant;
 	
 	/** The thumbnail. */
+	@ApiModelProperty(notes = "Thumbnail")
 	@Lob
 	@JsonView(RestaurantView.RestaurantRest.class)
 	private byte[] thumbnail;
 	
 	/** The base 64 encoded. */
+	@ApiModelProperty(notes = "Logo base64-kodiert")
 	@Transient
 	@JsonIgnore
 	private String base64Encoded;
 	
 	/** The image format. */
+	@ApiModelProperty(notes = "Bildformat")
 	@Transient
 	@JsonIgnore
 	private String imageFormat;

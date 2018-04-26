@@ -1,5 +1,8 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +19,9 @@ import javax.persistence.OneToMany;
  *
  */
 @Entity
+@ApiModel(
+		description = "Ein Account."
+)
 public class Account {
 
 	/** The id */
@@ -24,17 +30,21 @@ public class Account {
 	private int id;
 	
 	/** The account number.*/
+	@ApiModelProperty(notes = "Die Accountnummer")
 	private int accountNumber;
 	
 	/** The account type.*/
+	@ApiModelProperty(notes = "Der Accounttyp")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private AccountType accountType;
 	
 	/** The bookings from this account.*/
+	@ApiModelProperty(notes = "Die Buchungen von diesem Account")
 	@OneToMany(mappedBy="account")
 	private List<Booking> bookings;
 	
 	/** The admins of this account.*/
+	@ApiModelProperty(notes = "Die Administratoren des Accounts")
 	@OneToMany(mappedBy = "account")
 	private List<User> users;
 	
