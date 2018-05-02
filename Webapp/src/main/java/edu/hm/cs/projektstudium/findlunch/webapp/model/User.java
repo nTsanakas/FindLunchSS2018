@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,25 +34,32 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 // Inherited property needs to be ignored or else the RegisterUserRestController integration test is not working when passing a user object to the request.
 @JsonIgnoreProperties({"authorities"})
+@ApiModel(
+		description = "Ein Benutzer des FindLunch-Systems."
+)
 public class User implements UserDetails {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/** The id. */
+	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
 	/** The password. */
+	@ApiModelProperty(notes = "Passwort")
 	@NotBlank(message="{user.passwordEmpty}")
 	private String password;
 	
 	/** The passwordconfirm. */
+	@ApiModelProperty(notes = "Passwort-Bestätigung")
 	@Transient
 	private String passwordconfirm;
 	
 	/** The username. */
+	@ApiModelProperty(notes = "Benutzername")
 	@NotBlank(message="{user.usernameEmpty}")
 	private String username;
 	
@@ -59,11 +68,13 @@ public class User implements UserDetails {
 	/**
 	 * A user object has a Captcha object.
 	 */
+	@ApiModelProperty(notes = "Captcha-Objekt des Benutzers")
 	@Transient
 	private Captcha captcha;
 
 	/** The favorites. */
 	//bi-directional many-to-many association to Restaurant
+	@ApiModelProperty(notes = "Favoriten")
 	@ManyToMany
 	@JoinTable(
 		name="favorites"
@@ -78,36 +89,43 @@ public class User implements UserDetails {
 	
 	/** The push notifications. */
 	//bi-directional many-to-one association to PushNotification
+	@ApiModelProperty(notes = "Push-Notifikationen")
 	@OneToMany(mappedBy="user")
 	private List<DailyPushNotificationData> pushNotifications;
 
 	/** The restaurant. */
+	@ApiModelProperty(notes = "Restaurants")
 	//bi-directional many-to-one association to Restaurant
 	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Restaurant restaurant;
 
 	/** The user type. */
+	@ApiModelProperty(notes = "Benutzergruppe")
 	//bi-directional many-to-one association to UserType
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="user_type_id")
 	private UserType userType;
 	
 	/** The reservations.*/
+	@ApiModelProperty(notes = "Reservierungen")
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
 	private List<Reservation> reservation; 
 	
 	/** The points of the user.*/
+	@ApiModelProperty(notes = "Punkte")
 	@OneToMany(mappedBy="compositeKey.user", cascade=CascadeType.ALL)
 	private List<Points> userPoints;
 	
 	/** The account.*/
+	@ApiModelProperty(notes = "Account")
 	@ManyToOne
 	private Account account;
-	
-	
+
+	@ApiModelProperty(notes = "Passwortzurücksetzung")
 	@OneToOne(mappedBy="user")
 	private ResetPassword resetPassword;
-	
+
+	@ApiModelProperty(notes = "Absender")
 	@Transient
 	private SseEmitter emitter;
 	

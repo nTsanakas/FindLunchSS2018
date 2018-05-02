@@ -2,9 +2,9 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 
 import java.security.Principal;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.annotation.JsonView;
-
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PointsView;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Points;
@@ -28,15 +26,22 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PointsRepository;
  * The Class PointsRestController.
  */
 @RestController
+@Api(
+		value="Punkte",
+		description="Verwaltung der Punkte je Nutzer.")
 public class PointsRestController {
 
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(PointsRestController.class);
 	
 	/** The Points repository. */
+	private final PointsRepository pointsRepository;
+
 	@Autowired
-	private PointsRepository pointsRepository;
-	
+	public PointsRestController(PointsRepository pointsRepository) {
+		this.pointsRepository = pointsRepository;
+	}
+
 	/**
 	 * Gets the points of an User.
 	 * @param principal the principal to get the authenticated user
@@ -46,7 +51,18 @@ public class PointsRestController {
 	@CrossOrigin
     @JsonView(PointsView.PointsRest.class)
 	@PreAuthorize("isAuthenticated()")
-	@RequestMapping(path = "/api/get_points", method = RequestMethod.GET, headers = {"Authorization"})
+	@ApiOperation(
+			value = "Punktestand des Benutzers abfragen.",
+			response = List.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Punktestand zurückgegeben."),
+			@ApiResponse(code = 401, message = "Nicht autorisiert.")
+	})
+	@RequestMapping(
+			path = "/api/get_points",
+			method = RequestMethod.GET,
+			headers = {"Authorization"},
+			produces = "application/json")
 	public List<Points> getPointsOfAUser(/*@RequestParam(name ="user_id", required=true) int userId ,*/ Principal principal, HttpServletRequest request) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		/*
@@ -57,8 +73,7 @@ public class PointsRestController {
 		}
 		return null;//kein zugriffsrecht, da anderer Benutzer*/
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
-		List<Points> pointsOfUser = pointsRepository.findByCompositeKey_User_Id(authenticatedUser.getId());
-		return pointsOfUser;
+		return pointsRepository.findByCompositeKey_User_Id(authenticatedUser.getId());
 	}
 	
 	/**
@@ -70,12 +85,28 @@ public class PointsRestController {
 	@CrossOrigin
 	@JsonView(PointsView.PointsRest.class)
 	@PreAuthorize("isAuthenticated()")
-	@RequestMapping(path = "/api/get_points_restaurant/{restaurantId}", method = RequestMethod.GET, headers = {"Authorization"})
-	public List<Points> getPointsOfAUserForRestaurant(@PathVariable("restaurantId") int restaurantId, Principal principal, HttpServletRequest request) {
+	@ApiOperation(
+			value = "Abrufen des Punktestands eines Benutzers zu einem bestimmten Restaurant.",
+			response = List.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Punktestand erfolgreich zurückgegeben."),
+			@ApiResponse(code = 401, message = "Nicht autorisiert.")
+	})
+	@RequestMapping(
+			path = "/api/get_points_restaurant/{restaurantId}",
+			method = RequestMethod.GET,
+			headers = {"Authorization"},
+			produces = "application/json")
+	public List<Points> getPointsOfAUserForRestaurant(
+			@PathVariable("restaurantId")
+            @ApiParam(
+            		name = "Restaurant-ID",
+            		value = "ID des Restaurants, für das die Punkte eines Benutzers ausgegeben werden sollen.",
+					required = true)
+            int restaurantId, Principal principal, HttpServletRequest request) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
-		List<Points> pointsOfUser = pointsRepository.findByCompositeKey_User_IdAndCompositeKey_Restaurant_Id(authenticatedUser.getId(), restaurantId);
-		return pointsOfUser;
+		return pointsRepository.findByCompositeKey_User_IdAndCompositeKey_Restaurant_Id(authenticatedUser.getId(), restaurantId);
 	}
 }

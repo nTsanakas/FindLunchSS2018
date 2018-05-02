@@ -16,26 +16,35 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * The Class Country.
  */
 @Entity
 @JsonIgnoreProperties(ignoreUnknown=true)
+@ApiModel(
+		value = "Land",
+		description = "Land, in dem Geschäft ist."
+)
 public class Country {
 	
 	/** The country code. */
+	@ApiModelProperty(notes = "Ländercode")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="country_code")
 	private String countryCode;
 
 	/** The name. */
+	@ApiModelProperty(notes = "Name des Landes")
 	@JsonView(RestaurantView.RestaurantRest.class)
 	private String name;
 
 	/** The restaurants. */
 	//bi-directional many-to-one association to Restaurant
+	@ApiModelProperty(notes = "Restaurants im Land")
 	@JsonIgnore
 	@OneToMany(mappedBy="country", fetch=FetchType.LAZY)
 	private List<Restaurant> restaurants;

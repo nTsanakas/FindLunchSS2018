@@ -39,15 +39,17 @@
    				     <scope>provided</scope>
    			 </dependency>
    		-->
-   	<dependency>
-    <groupId>io.springfox</groupId>
-    <artifactId>springfox-swagger-ui</artifactId>
-    <version>2.7.0</version>
-	</dependency>
-	<dependency>
-    <groupId>io.springfox</groupId>
-    <artifactId>springfox-swagger2</artifactId>
-    <version>2.7.0</version>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.8.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.8.0</version>
+            <scope>compile</scope>
 	</dependency>
 		<!-- TEST FOR EMAIl -->
 		<dependency>
@@ -237,6 +239,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
@@ -246,8 +249,8 @@
                         <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
                         <SCHEMA>FindLunch_v5.sql</SCHEMA>
                         <DATA>data_v5.sql</DATA>
-						<SUP_CONF>supervisord.conf</SUP_CONF>
-						<STARTUP>findlunch.sh</STARTUP>
+                        <SUP_CONF>supervisord.conf</SUP_CONF>
+                        <STARTUP>findlunch.sh</STARTUP>
                     </buildArgs>
                 </configuration>
             </plugin>
@@ -273,6 +276,7 @@
 			</plugin>
 		</plugins>
 	</build>
+
 
 
 </project>

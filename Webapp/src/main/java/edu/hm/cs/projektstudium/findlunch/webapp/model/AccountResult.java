@@ -1,17 +1,26 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * The class AccountResult.
  */
+@ApiModel(
+		description = "Beschreibt das Ergebnis zum Account."
+)
 public class AccountResult {
 	
 	/** The account Number.*/
+	@ApiModelProperty(notes = "Die Accountnummer")
 	private int accountNumber;
 	
 	/** The sum of Amount.*/
+	@ApiModelProperty(notes = "Betragssumme")
 	private float sumOfAmount;
 	
 	/** The customer id .*/
+	@ApiModelProperty(notes = "Kundennummer")
 	private int customerId;
 
 	/**

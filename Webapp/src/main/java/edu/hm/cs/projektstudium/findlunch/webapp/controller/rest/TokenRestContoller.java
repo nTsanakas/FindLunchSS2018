@@ -1,9 +1,8 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 
 import java.security.Principal;
-
 import javax.servlet.http.HttpServletRequest;
-
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.PushToken;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
@@ -25,26 +23,31 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 
 /**
  * The Class TokenRestController.
- * The class is respinsible for handling API calls to store the customers Firebase Token into the database.
+ * The class is responsible for handling API calls to store the customers Firebase Token into the database.
  * 
  * @author Niklas Klotz
  *
  */
 @RestController
+@Api(value="Firebase-Token", description="Verwaltung des Firebase-Tokens.")
 public class TokenRestContoller {
 
-	@Autowired
-	UserRepository userRepository;
+	final UserRepository userRepository;
 	
-	@Autowired
-	PushTokenRepository pushTokenRepository;
+	final PushTokenRepository pushTokenRepository;
 	
     /**
      * The logger.
      */
     private final Logger LOGGER = LoggerFactory.getLogger(LogRestController.class);
-    
-    /**
+
+	@Autowired
+	public TokenRestContoller(UserRepository userRepository, PushTokenRepository pushTokenRepository) {
+		this.userRepository = userRepository;
+		this.pushTokenRepository = pushTokenRepository;
+	}
+
+	/**
      * Puts the token into the database
      * 
      * @param pushToken the customers token
@@ -54,8 +57,26 @@ public class TokenRestContoller {
      */
     @CrossOrigin
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(path="api/submitToken/{pushToken}", method = RequestMethod.PUT)
-    ResponseEntity<Integer> submitToken(@PathVariable("pushToken") String pushToken, Principal principal, HttpServletRequest request){
+	@ApiOperation(
+			value = "Firebase-Token in Datenbank schreiben.",
+			response = Integer.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Token erfolgreich aktualisiert."),
+			@ApiResponse(code = 202, message = "Neuer Token erfolgreich gesendet."),
+			@ApiResponse(code = 208, message = "Token ist bereits vorhanden."),
+			@ApiResponse(code = 401, message = "Nicht autorisiert.")
+	})
+	@RequestMapping(
+			path="api/submitToken/{pushToken}",
+			method = RequestMethod.PUT,
+			produces = "text/html")
+    ResponseEntity<Integer> submitToken(
+    		@PathVariable("pushToken")
+            @ApiParam(
+            		name = "Push-Token",
+					value = "Firebase-Token, der für den Push genutzt werden soll.",
+					required = true)
+        String pushToken, Principal principal, HttpServletRequest request){
     	LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
     	
     	User authenticatedUser = (User) ((Authentication) principal).getPrincipal();

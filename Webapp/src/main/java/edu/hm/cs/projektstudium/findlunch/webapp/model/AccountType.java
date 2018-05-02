@@ -1,5 +1,8 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -12,17 +15,23 @@ import javax.persistence.OneToMany;
  * The Class AccountType.
  */
 @Entity
+@ApiModel(
+		description = "Definiert unterschiedliche Accounttypen."
+)
 public class AccountType {
 
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@ApiModelProperty(notes = "ID")
 	private int id;
 	
 	/** The name. */
+	@ApiModelProperty(notes = "Name")
 	private String name;
 	
 	/** The accounts. */
+	@ApiModelProperty(notes = "Accounts")
 	@OneToMany(mappedBy="accountType")
 	private List<Account> accounts;
 
