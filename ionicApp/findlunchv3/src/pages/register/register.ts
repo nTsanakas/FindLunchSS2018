@@ -203,7 +203,7 @@ export class RegisterPage {
               loader.dismiss();
               let alert: Alert;
               const body: string = err.toString();
-              console.log(err);
+              console.log(err.toString());
               switch (body) {
                 case "1" :
                   alert = this.alertCtrl.create({
