@@ -68,7 +68,7 @@ public class RegisterUserRestController {
 	@RequestMapping(
 	        path = "/api/register_user",
             method = RequestMethod.POST,
-            produces = "text/html")
+            produces = "application/json")
 	public ResponseEntity<Integer> registerUser(@RequestBody
         @ApiParam (
                 name = "user",
