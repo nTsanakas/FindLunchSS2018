@@ -136,7 +136,10 @@ export class AuthService {
                 'Content-Type': 'application/json',
                 Authorization: `Basic ${token}`
             });
+            console.log("User: " + user.toString());
+            console.log("Token: " + token.toString());
         }
+
         return headers;
     }
 }
