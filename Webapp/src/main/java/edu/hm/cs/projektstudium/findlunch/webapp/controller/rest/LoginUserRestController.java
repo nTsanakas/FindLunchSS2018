@@ -69,7 +69,7 @@ public class LoginUserRestController {
     @RequestMapping(
             path = "/api/login_user",
             method = RequestMethod.GET,
-            produces = "text/html")
+            produces = "application/json")
     public ResponseEntity<Integer> loginUser(HttpServletRequest request) {
         final String ipAddress = getClientIP();
 

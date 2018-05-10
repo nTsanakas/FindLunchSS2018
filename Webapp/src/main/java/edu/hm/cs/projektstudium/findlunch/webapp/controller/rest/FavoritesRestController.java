@@ -74,7 +74,7 @@ public class FavoritesRestController {
 	@RequestMapping(
 			path = "/api/register_favorite/{restaurantId}",
 			method = RequestMethod.PUT,
-			produces = "text/html")
+			produces = "application/json")
 	public ResponseEntity<Integer> registerFavorite(
 			@PathVariable("restaurantId")
 			@ApiParam(
@@ -131,7 +131,7 @@ public class FavoritesRestController {
 	@RequestMapping(
 	        path = "/api/unregister_favorite/{restaurantId}",
             method = RequestMethod.DELETE,
-            produces = "text/html")
+            produces = "application/json")
 	public ResponseEntity<Integer> unregisterFavorite(
 	        @PathVariable("restaurantId")
             @ApiParam(

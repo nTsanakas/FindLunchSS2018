@@ -69,7 +69,7 @@ public class TokenRestContoller {
 	@RequestMapping(
 			path="api/submitToken/{pushToken}",
 			method = RequestMethod.PUT,
-			produces = "text/html")
+			produces = "application/json")
     ResponseEntity<Integer> submitToken(
     		@PathVariable("pushToken")
             @ApiParam(

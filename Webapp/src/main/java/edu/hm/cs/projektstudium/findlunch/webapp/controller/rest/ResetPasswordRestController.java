@@ -70,7 +70,7 @@ public class ResetPasswordRestController {
 	@RequestMapping(
 			path ="api/get_reset_token",
 			method = RequestMethod.POST,
-			produces = "text/html")
+			produces = "application/json")
 	public ResponseEntity<Integer> getResetPassword(HttpServletRequest request,
 			@RequestBody
 			@ApiParam(

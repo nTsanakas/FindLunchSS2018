@@ -120,7 +120,7 @@ public class ReservationRestController {
 	@RequestMapping(
 			path= "api/register_reservation",
 			method = RequestMethod.POST,
-			produces="text/html")
+			produces="application/json")
 	public ResponseEntity<Integer> registerReservation(
 			@RequestBody
 			@ApiParam(
@@ -283,7 +283,7 @@ public class ReservationRestController {
 	@RequestMapping(
 			path = "api/confirm_reservation/{restaurantUuid}",
 			method = RequestMethod.PUT,
-			produces = "text/html")
+			produces = "application/json")
 	public ResponseEntity<Integer> confirmReservation(
 			@PathVariable("restaurantUuid")
             @ApiParam(
