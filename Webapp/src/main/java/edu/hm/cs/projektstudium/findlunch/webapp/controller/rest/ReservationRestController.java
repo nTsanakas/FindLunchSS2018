@@ -1,5 +1,7 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -7,6 +9,11 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
+import com.braintreegateway.Result;
+import com.braintreegateway.Transaction;
+import com.braintreegateway.TransactionRequest;
+import edu.hm.cs.projektstudium.findlunch.webapp.controller.BraintreeController;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,8 +126,7 @@ public class ReservationRestController {
 	})
 	@RequestMapping(
 			path= "api/register_reservation",
-			method = RequestMethod.POST,
-			produces="text/html")
+			method = RequestMethod.POST)
 	public ResponseEntity<Integer> registerReservation(
 			@RequestBody
 			@ApiParam(
@@ -212,6 +218,36 @@ public class ReservationRestController {
 			return new ResponseEntity<>(6, HttpStatus.CONFLICT);
 		}
 
+		// Authorization process for PayPal Transaction
+		if(reservation.getUsedPaypal()){
+			// Braintree Gateway (used for PayPal Transaction) only accepts BigDecimal data type
+			BigDecimal price = new BigDecimal(calculatedPrice);
+			BigDecimal percentageFee = price.multiply(BraintreeController.getPercentageFee());
+			price = price.add(percentageFee);
+			price = price.add(new BigDecimal(reservation.getDonation()));
+			price = price.add(BraintreeController.getFixedFee());
+			price = price.setScale(2, RoundingMode.HALF_DOWN);
+			// Create and send Transaction Request
+			TransactionRequest payPalRequest = new TransactionRequest()
+					.amount(price)
+					.paymentMethodNonce(reservation.getNonce())
+					.options()
+					.paypal()
+					.done()
+					.done();
+			Result<Transaction> saleResult = BraintreeController.gateway.transaction().sale(payPalRequest);
+			if (saleResult.isSuccess()) {
+				Transaction payPalTransaction = saleResult.getTarget();
+
+				// Set Transaction ID in reservation. Needed to void or settle reservation later.
+				reservation.setPpTransactionId(payPalTransaction.getId());
+				LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()), "Success: " + payPalTransaction.getId());
+			} else {
+				LOGGER.error(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()), "Failure: " + saleResult.getMessage());
+				return new ResponseEntity<Integer>(11, HttpStatus.CONFLICT);
+			}
+
+		}
 		EuroPerPoint euroPerPoint = euroPerPointRepository.findOne(1); //holt den euro pro punkt mit der id
 		
 		reservation.setReservationNumber(generateReservationNumber());

@@ -1,0 +1,95 @@
+package edu.hm.cs.projektstudium.findlunch.webapp.controller;
+
+import com.braintreegateway.*;
+import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.Reservation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+
+public final class BraintreeController {
+
+    /** Gateway used to send payment nonces to Braintree. IDs and keys are currently for
+     * the sandbox environment:
+     * https://articles.braintreepayments.com/control-panel/important-gateway-credentials#api-credentials
+     */
+    public static BraintreeGateway gateway = new BraintreeGateway(
+            Environment.SANDBOX,
+            // Merchant ID
+            "fnn2qdgmnwx7kswk",
+            // Public key
+            "f8xmjpyd6wh7swyh",
+            // Private key. Secret!
+            "c2738e3d8cb6829ae5ba3ee1bf21b42f"
+
+    );
+
+    private static BigDecimal fixedFee = new BigDecimal(0.35);
+
+    private static BigDecimal percentageFee = new BigDecimal(0.019);
+
+    public static BigDecimal getFixedFee() { return fixedFee; }
+
+    public static BigDecimal getPercentageFee() { return percentageFee; }
+
+    /** The logger. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReservationController.class);
+
+
+    private BraintreeController() {}
+
+    public static boolean voidTransaction(Reservation reservation){
+        if(reservation.getPpTransactionId() != null){
+            // Void transaction using its transaction ID
+            Result<Transaction> voidResult = BraintreeController.gateway.transaction().voidTransaction(reservation.getPpTransactionId());
+            if(voidResult.isSuccess()){
+                LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1]
+                        .getMethodName(),"Successfully voided transaction for" + reservation.getId()));
+                reservation.setPpTransactionFinished(true);
+                return true;
+            }
+            else{
+                LOGGER.error(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1]
+                        .getMethodName(),"Failed to void transaction" + reservation.getId()));
+                reservation.setPpTransactionFinished(false);
+                for (ValidationError error : voidResult.getErrors().getAllDeepValidationErrors()) {
+                    LOGGER.error(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1]
+                            .getMethodName(),error.getMessage()));
+                }
+                return false;
+
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
+    public static boolean confirmTransaction(Reservation reservation){
+        if (reservation.getPpTransactionId() != null){
+            Result<Transaction> settlementResult = BraintreeController.gateway.transaction()
+                    .submitForSettlement(reservation.getPpTransactionId());
+            if (settlementResult.isSuccess()){
+                reservation.setPpTransactionFinished(true);
+                LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
+                        "Successfully settled payment for transaction "+ reservation.getId()));
+                return true;
+            }
+            else {
+                reservation.setPpTransactionFinished(false);
+                LOGGER.error(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1]
+                        .getMethodName(), "Failed settling payment for transaction "+ reservation.getId()));
+                for (ValidationError error : settlementResult.getErrors().getAllDeepValidationErrors()) {
+                    LOGGER.error(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1]
+                            .getMethodName(),error.getMessage()));
+                }
+                return false;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
+}

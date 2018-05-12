@@ -3,6 +3,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.scheduling;
 import java.util.Date;
 import java.util.List;
 
+import edu.hm.cs.projektstudium.findlunch.webapp.controller.BraintreeController;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +55,13 @@ public class ReservationScheduledTask {
 			reservation.getReservationStatus();
 			if(now.after(reservation.getCollectTime())&&reservation.getReservationStatus().getKey()==ReservationStatus.RESERVATION_KEY_NEW){
 				reservation.setReservationStatus(reservationStatusRepository.findById(9));
+
+				//Voids payment authorization if reservation was paid via PayPal. Tries 4 times if it fails.
+				int i = 0;
+				while (!BraintreeController.voidTransaction(reservation) && i < 4){
+					i++;
+				}
+
 				reservationRepository.save(reservation);
 				sendPush(reservation);
 			}
@@ -70,8 +78,8 @@ public class ReservationScheduledTask {
 		User user = reservation.getUser();
 		PushToken userToken = tokenRepository.findByUserId(user.getId());
 		if(userToken!=null) {
-		JSONObject notification = pushManager.generateReservationNotProcessed(reservation, userToken.getFcm_token());
-		pushManager.sendFcmNotification(notification);
+            JSONObject notification = pushManager.generateReservationNotProcessed(reservation, userToken.getFcm_token());
+            pushManager.sendFcmNotification(notification);
 		}
 		else
 			LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(), "No FMC Token for user "+user.getUsername()+" found. Could not send a Notification."));

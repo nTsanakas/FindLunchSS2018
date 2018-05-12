@@ -83,5 +83,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 	 * @return
 	 */
 	public List<Reservation> findByUserIdOrderByRestaurantIdAscTimestampReceivedAsc(int userId);
-	
+
+	/**
+	 * Find all reservations paid using PayPal that have not yet been settled or voided.
+	 * @return List of transactions not yet settled/voided
+	 */
+	public List<Reservation> findByUsedPaypalTrueAndPpTransactionIdNotNullAndPpTransactionFinishedFalse();
+
 }

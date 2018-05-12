@@ -33,6 +33,7 @@
 						<th th:text="#{reservations.label.donation}">customer donation</th>
 						<th th:text="#{reservations.label.priceWithDonation}">price included with Donation</th>
 						<th th:text="#{reservations.label.collectTime}">Customer Collect Time</th>
+						<th th:text="#{reservations.label.paypal}">Paid using PayPal</th>
 						<!-- <th th:text="#{reservations.label.confirmed}">finished reservation</th> -->
 						<!-- <th th:text="#{reservations.label.isfree}">free reservation</th> -->
 						<!-- <th th:text="#{reservations.label.choice}">reservation selection</th> -->
@@ -50,7 +51,9 @@
 								<td><span th:text="${#numbers.formatDecimal(reservation.getTotalPrice(), 1, 'POINT', 2, 'COMMA')}"> </span> &euro;</td>
 								<td><span th:text="${#numbers.formatDecimal(reservation.getDonation(), 1, 'POINT', 2, 'COMMA')}"> </span> &euro;</td>
 								<td><span th:text="${#numbers.formatDecimal(reservation.getDonation() + reservation.getTotalPrice(), 1, 'POINT', 2, 'COMMA')}"> </span> &euro;</td>
-								<td th:text="${#dates.format(reservation.collectTime, 'HH:mm')}"></td> 
+								<td th:text="${#dates.format(reservation.collectTime, 'HH:mm')}"></td>
+								<td th:if="${reservation.getUsedPaypal()}">Ja</td>
+								<td th:unless="${reservation.getUsedPaypal()}">Nein</td>
 								<!-- <td th:text="${reservation.isConfirmed()}"></td> -->
 								<!-- <td th:text="${reservation.isUsedPoints()}" ></td> -->
 								<td>
@@ -111,6 +114,7 @@
 						<th th:text="#{reservations.label.donation}">customer donation</th>
 						<th th:text="#{reservations.label.priceWithDonation}">price included with Donation</th>
 						<th th:text="#{reservations.label.collectTime}">Customer Collect Time</th>
+						<th th:text="#{reservations.label.paypal}">Paid using PayPal</th>
 						<th th:text="#{reservations.label.details}">reservation details</th>
 					</tr>
 				</thead>
@@ -125,7 +129,9 @@
 								<!-- <td><span th:text="${#numbers.formatDecimal(reservation.getTotalPrice(), 1, 'POINT', 2, 'COMMA')}"> </span> &euro;</td> -->
 								<td><span th:text="${#numbers.formatDecimal(reservation.getDonation(), 1, 'POINT', 2, 'COMMA')}"> </span> &euro;</td>
 								<td><span th:text="${#numbers.formatDecimal(reservation.getDonation(), 1, 'POINT', 2, 'COMMA')}"> </span> &euro;</td> <!-- reservation.getDonation() + reservation.getTotalPrice() -->
-								<td th:text="${#dates.format(reservation.collectTime, 'HH:mm')}"></td> 
+								<td th:text="${#dates.format(reservation.collectTime, 'HH:mm')}"></td>
+								<td th:if="${reservation.getUsedPaypal()}">Ja</td>
+								<td th:unless="${reservation.getUsedPaypal()}">Nein</td>
 								<!-- <td th:text="${reservation.isConfirmed()}"></td> -->
 								<!-- <td th:text="${reservation.isUsedPoints()}" ></td> -->
 								<td>

@@ -145,6 +145,13 @@ class ReservationController {
 		for(Reservation r: confirmedReservations){
 			Reservation reservation = reservationRepository.findOne(r.getId());
 			reservation.setReservationStatus(reservationStatusRepository.findById(1));
+
+			// Confirms the payment on the selected reservation, if it was paid via PayPal.
+			int i = 0;
+			while (!BraintreeController.confirmTransaction(reservation) && i < 4){
+				i++;
+			}
+
 			reservationRepository.save(reservation);
 			increaseConsumerPoints(reservation);
 			sendPush(reservation);
@@ -187,6 +194,13 @@ class ReservationController {
 			for(Reservation r: rejectedReservations){
 				Reservation reservation = reservationRepository.findOne(r.getId());
 				reservation.setReservationStatus(reservationStatusRepository.findById(2));
+
+				//Voids payment authorization if reservation was paid via PayPal. Tries 4 times if it fails.
+				int i = 0;
+				while (!BraintreeController.voidTransaction(reservation) && i < 4){
+					i++;
+				}
+
 				reservationRepository.save(reservation);
 				sendPush(reservation);
 			}
@@ -212,6 +226,13 @@ class ReservationController {
 		Reservation reservation = reservationRepository.findOne(res_id);
 		reservation.setReservationStatus(reservationStatusRepository.findOne(reason_id));
 		reservation.setTimestampResponded(new Date());
+
+		//Voids payment authorization if reservation was paid via PayPal. Tries 4 times if it fails.
+		int i = 0;
+		while (!BraintreeController.voidTransaction(reservation) && i < 4){
+			i++;
+		}
+
 		reservationRepository.save(reservation);
 		sendPush(reservation);
 		
@@ -223,7 +244,7 @@ class ReservationController {
 	/**
 	 * Confirm the submitted reservation
 	 * @param reservationId
-	 * @param waittimeRestaurant
+	 * @param model Restaurant
 	 * @param principal the currently logged in user
 	 * @param request http request
 	 * @return redirect to the webpage
@@ -236,7 +257,13 @@ class ReservationController {
 		
 		Reservation reservation = reservationRepository.findOne(res_id);
 		reservation.setReservationStatus(reservationStatusRepository.findById(1));
-		
+
+		// Confirms the payment on the selected reservation, if it was paid via PayPal.
+		int i = 0;
+		while (!BraintreeController.confirmTransaction(reservation) && i < 4){
+			i++;
+		}
+
 		reservationRepository.save(reservation);
 		sendPush(reservation);
 		
@@ -247,7 +274,7 @@ class ReservationController {
 	 * Confirm selected reservations that are costless.
 	 * @param reservationList List of reservation
 	 * @param principal principal Currently logged in user
-	 * @param requestrequest the HttpServletRequest
+	 * @param request the HttpServletRequest
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path = "/reservations", method = RequestMethod.POST, params={"confirmFreeReservation"})
