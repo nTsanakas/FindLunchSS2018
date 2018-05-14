@@ -8,12 +8,12 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema findlunch
 -- -----------------------------------------------------
---DROP SCHEMA IF EXISTS `findlunch` ;
+-- DROP SCHEMA IF EXISTS `findlunch` ;
 
 -- -----------------------------------------------------
 -- Schema findlunch
 -- -----------------------------------------------------
--- CREATE SCHEMA IF NOT EXISTS `findlunch` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `findlunch` DEFAULT CHARACTER SET utf8 ;
 -- USE `findlunch` ;
 
 -- -----------------------------------------------------
@@ -27,7 +27,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
--- ——————————————————————————
+-- ——————————————————————————---------------------------
 -- Table `findlunch`.`day_of_week`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `findlunch`.`day_of_week` (
