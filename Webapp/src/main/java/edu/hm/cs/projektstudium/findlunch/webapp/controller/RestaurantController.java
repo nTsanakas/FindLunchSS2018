@@ -2,12 +2,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller;
 
 import java.applet.AppletContext;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -331,7 +326,7 @@ public class RestaurantController {
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
-	 * @param req
+	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
 	 */
@@ -379,7 +374,7 @@ public class RestaurantController {
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
-	 * @param req
+	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
 	 */
@@ -423,7 +418,7 @@ public class RestaurantController {
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
-	 * @param req
+	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
 	 */
@@ -462,7 +457,7 @@ public class RestaurantController {
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
-	 * @param req
+	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
 	 */
@@ -602,8 +597,6 @@ public class RestaurantController {
 	 * 			Model in which necessary object are placed to be displayed on the website.
 	 * @param file
 	 * 			Uploaded file.
-	 * @param session
-	 * 			Session of the current user. Used to store restaurant logos.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page
@@ -911,14 +904,12 @@ public class RestaurantController {
 	 * Deletes an restaurant logo from the session. It is deleted from the database after the offer is saved.
 	 *
 	 * @param request the HttpServletRequest
-	 * @param restuarant
+	 * @param restaurant
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
 	 * @param imageId
 	 * 			Id of the images to be deleted.
-	 * @param session
-	 * 			Session of the current user. Used to store restaurant logo.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page
@@ -1015,7 +1006,20 @@ public class RestaurantController {
 	 */
 	private void addDefaultLogo(Restaurant restaurant) {
 		try{	
-			File file = ResourceUtils.getFile("classpath:static/images/restaurantDefault.png");
+            InputStream in = getClass().getClassLoader()
+                    .getResourceAsStream("static/images/restaurantDefault.png");
+
+            File file = File.createTempFile(String.valueOf(in.hashCode()), ".tmp");
+            file.deleteOnExit();
+
+            try (FileOutputStream out = new FileOutputStream(file)) {
+                //copy stream
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+            }
 			String imageFormat = "png";
 			RestaurantLogo defaultLogo = new RestaurantLogo();
 			byte[] bytes = new byte[(int) file.length()];
