@@ -7,8 +7,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
 /**
- * This class handles failed login attempts.
- * This class is based on the idea of: http://www.baeldung.com/spring-security-block-brute-force-authentication-attempts
+ * This class handles failed login attempts. <p>
+ * This class is based on the idea of: http://www.baeldung.com/spring-security-block-brute-force-authentication-attempts.
+ * 
  */
 @Component
 public class AuthenticationFailureBadCredentialsEventListener
@@ -23,14 +24,16 @@ public class AuthenticationFailureBadCredentialsEventListener
     /**
      * This method is called upon a failed authentication.
      *
+     * Also checks if there is a session ID.
+     * The handling gets delegated to the helper class and either uses 
+     * the session and IP-address of an user or just the IP-address if the session is not existent.
+     * 
      * @param e an AuthenticationFailureBadCredentialsEvent
      */
     public final void onApplicationEvent(final AuthenticationFailureBadCredentialsEvent e) {
         final WebAuthenticationDetails authenticationDetails = (WebAuthenticationDetails)
                 e.getAuthentication().getDetails();
 
-        // When this event gets fired we delegate the handling to the helper class.
-        // Either use the session and IP-address of an user or just the IP-address if the session is not existent.
         if (authenticationDetails.getSessionId() != null) {
             authenticationHelper.loginFailedIpAddressAndSessionId(authenticationDetails.getRemoteAddress(),
                     authenticationDetails.getSessionId());

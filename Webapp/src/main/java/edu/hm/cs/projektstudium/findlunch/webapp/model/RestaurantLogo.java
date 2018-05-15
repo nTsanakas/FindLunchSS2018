@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * The Class RestaurantLogo
+ * The Class RestaurantLogo.
  * @author Niklas Klotz
  *
  */

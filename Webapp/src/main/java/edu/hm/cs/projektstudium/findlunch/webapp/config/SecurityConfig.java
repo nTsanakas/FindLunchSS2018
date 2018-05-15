@@ -182,7 +182,7 @@ public class SecurityConfig {
 		/**
 		 * Configures which urls are protected by this configuration. A login
 		 * page should be used, using a formlogin with the default Spring
-		 * Security login entrypoints
+		 * Security login entrypoints.
 		 **/
 		
 		@Override

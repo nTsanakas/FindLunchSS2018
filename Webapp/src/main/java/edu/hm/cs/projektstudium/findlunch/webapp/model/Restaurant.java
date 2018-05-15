@@ -40,6 +40,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 
 /**
  * The Class Restaurant.
+ * Sets important information about a restaurant.
  */
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -269,6 +270,10 @@ public class Restaurant implements Serializable {
 
 	}
 	
+	/**
+	 * Gets the default logo.
+	 * @return the default logo
+	 */
 	public RestaurantLogo getDefaultLogo() {
 		if(this.restaurantLogos != null && this.restaurantLogos.size() > 0)
 			defaultLogo = this.restaurantLogos.get(0);
@@ -276,14 +281,26 @@ public class Restaurant implements Serializable {
 		return defaultLogo;
 	}
 
+	/**
+	 * Sets the default logo.
+	 * @param defaultLogo the default logo
+	 */
 	public void setDefaultLogo(RestaurantLogo defaultLogo) {
 		this.defaultLogo = defaultLogo;
 	}
 
+	/**
+	 * Gets a list of the restaurant logos.
+	 * @return the restaurant logo
+	 */
 	public List<RestaurantLogo> getRestaurantLogos() {
 		return restaurantLogos;
 	}
 
+	/**
+	 * Sets the restaurant logos.
+	 * @param restaurantLogos the restaurant logos
+	 */
 	public void setRestaurantLogos(List<RestaurantLogo> restaurantLogos) {
 		this.restaurantLogos = restaurantLogos;
 	}
@@ -921,6 +938,7 @@ public class Restaurant implements Serializable {
 	}
 
 	/**
+	 * Checks if the restaurant is currently open.
 	 * @return the isOpen
 	 */
 	public boolean getCurrentlyOpen() {
@@ -976,6 +994,7 @@ public class Restaurant implements Serializable {
 	}
 
 	/**
+	 * 
 	 * @param isOpen the isOpen to set
 	 */
 	public void setcurrentlyOpen(boolean currentlyOpen) {

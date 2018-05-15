@@ -54,6 +54,9 @@ public class SendFcmNotification extends PushNotificationManager implements Runn
 		this.push = push;
 	}
 	
+	/**
+	 * Sends the fcm notification.
+	 */
 	public void run() {
 
 		//Direct HTTP-client usable for sending push json-based.

@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 
 /**
- * The Class RestaurantType.
+ * The Class RestaurantType. Defines the type of restaurant.
  */
 @Entity
 @Table(name="restaurant_type")

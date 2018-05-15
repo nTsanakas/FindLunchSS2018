@@ -20,6 +20,11 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * Class to define the reservation of a product.
+ * @author oberm
+ *
+ */
 @Entity
 @ApiModel(
 		description = "Definiert Reservierung eines Produkts."
@@ -267,10 +272,18 @@ public class Reservation {
 		this.reservationNumber = reservationNumber;
 	}
 
+	/**
+	 * Gets the reservation offers.
+	 * @return the reservation offers
+	 */
 	public List<ReservationOffers> getReservation_offers() {
 		return reservation_offers;
 	}
 
+	/**
+	 * Sets the reservation offers.
+	 * @param reservation_offers the reservation offers
+	 */
 	public void setReservation_offers(List<ReservationOffers> reservation_offers) {
 		this.reservation_offers = reservation_offers;
 	}
@@ -283,6 +296,7 @@ public class Reservation {
 	}
 
 	/**
+	 * Sets the reservation status
 	 * @param reservationStatus the reservationStatus to set
 	 */
 	public void setReservationStatus(ReservationStatus reservationStatus) {

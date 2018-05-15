@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 
 import java.util.ArrayList;
 /**
- * The Class ReservationStatistik.
+ * The Class ReservationStatistik. Wrapper class to have access to the reservation object.
  */
 /*
  * Wrapper Klasse, da man sonst keinen zugriff auf die reservation Objekt hat
@@ -14,7 +14,12 @@ import java.util.ArrayList;
 )
 public class ReservationStatistik {
 
-	
+	/**
+	 * Stats about reservations.
+	 * @param reservations the reservations
+	 * @param label the label
+	 * @param countAll counts the reservations
+	 */
 	public ReservationStatistik(ArrayList<Reservation> reservations, String label, int countAll) {
 		this.setLabel(label);
 		this.setAverageRespondeTime(calculateAverageRespondeTime(reservations));
@@ -104,6 +109,11 @@ public class ReservationStatistik {
 		this.reservations = reservations;
 	}
 	
+	/**
+	 * Calculates the total value of all prices.
+	 * @param reservations the reservations
+	 * @return the sum of all prices
+	 */
 	private float calculateTotalValue(ArrayList<Reservation> reservations){
 		float sumPrice = 0;
 		for (Reservation reservation : reservations) {
@@ -112,6 +122,11 @@ public class ReservationStatistik {
 		return sumPrice;
 	}
 	
+	/**
+	 * Calculates the average response time
+	 * @param reservations the reservations
+	 * @returns the average response time
+	 */
 	private float calculateAverageRespondeTime(ArrayList<Reservation> reservations){
 		float avrgTime = 0;
 		float totalTime = 0;
@@ -130,6 +145,9 @@ public class ReservationStatistik {
 		return avrgTime;
 	}
 	
+	/**
+	 * Calculates the % share of all reservations.
+	 */
 	private float calculatePercent(int countBase, int countAll){
 		if(countAll > 0 && countBase >0){
 			float percent = 0;

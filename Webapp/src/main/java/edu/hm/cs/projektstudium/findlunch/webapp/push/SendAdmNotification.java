@@ -32,7 +32,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.DailyPushNotificationData
  * Reading additionally Amazon properties credentials from file (requires setup):
  * "/src/main/resources/AwsCredentials.properties"
  * 
- * Contains also methods for further extension of services.
+ * Also contains methods for further extension of services.
  * 
  * Created by Maxmilian Haag on 15.01.2017.
  * @author Maximilian Haag
@@ -70,6 +70,7 @@ public class SendAdmNotification extends PushNotificationManager implements Runn
 
 
 	/**
+	 * Sends the adm notification.
 	 * @param p Push-notification to be sent.
 	 * @param restaurantsForPushCount Restaurant for push.
 	 * @param pushKitchenTypeIds List of kichen types for push.
@@ -115,6 +116,9 @@ public class SendAdmNotification extends PushNotificationManager implements Runn
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
+	 */
+	/**
+	 * Sends the adm push notification.
 	 */
 	@Override
 	public void run() {
@@ -284,7 +288,7 @@ public class SendAdmNotification extends PushNotificationManager implements Runn
 
 
 	/**
-	 * Convertoing message object into json string.
+	 * Converting message object into json string.
 	 * @param message Object message data.
 	 * @return Json string of message data.
 	 */

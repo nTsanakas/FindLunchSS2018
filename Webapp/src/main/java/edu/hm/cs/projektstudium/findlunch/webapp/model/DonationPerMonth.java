@@ -20,7 +20,7 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 /**
- * The Class DonationPerMonth.
+ * The Class DonationPerMonth. Includes the monthly amount, a user wants to donate.
  */
 @Entity
 @ApiModel(

@@ -16,6 +16,11 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * The class ReservationStatus. Information about the state of a reservation.
+ * @author oberm
+ *
+ */
 @Entity
 @Table(name="reservation_status")
 @ApiModel(

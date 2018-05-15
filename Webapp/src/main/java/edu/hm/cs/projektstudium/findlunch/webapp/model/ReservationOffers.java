@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * The class ReservationOffers
- * The class represnets a list of offers within a reservation
+ * The class represnets a list of offers within a reservation.
  * 
  * @author Niklas Klotz
  *

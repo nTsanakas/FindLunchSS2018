@@ -29,7 +29,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * The Class User.
+ * The Class User. A user of the FindLunch system. Sets information about a user.
  */
 @Entity
 // Inherited property needs to be ignored or else the RegisterUserRestController integration test is not working when passing a user object to the request.
@@ -322,6 +322,10 @@ public class User implements UserDetails {
 	/* (non-Javadoc)
 	 * @see org.springframework.security.core.userdetails.UserDetails#isAccountNonExpired()
 	 */
+	/**
+	 * Makes sure the account is not expired.
+	 * @return true
+	 */
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
@@ -329,6 +333,10 @@ public class User implements UserDetails {
 
 	/* (non-Javadoc)
 	 * @see org.springframework.security.core.userdetails.UserDetails#isAccountNonLocked()
+	 */
+	/**
+	 * Makes sure the account is not locked.
+	 * @return true
 	 */
 	@Override
 	public boolean isAccountNonLocked() {
@@ -338,6 +346,10 @@ public class User implements UserDetails {
 	/* (non-Javadoc)
 	 * @see org.springframework.security.core.userdetails.UserDetails#isCredentialsNonExpired()
 	 */
+	/**
+	 * Makes sure the credentials are not expired.
+	 * @return true
+	 */
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
@@ -345,6 +357,10 @@ public class User implements UserDetails {
 
 	/* (non-Javadoc)
 	 * @see org.springframework.security.core.userdetails.UserDetails#isEnabled()
+	 */
+	/**
+	 * Makes sure the account is enabled.
+	 * @return true
 	 */
 	@Override
 	public boolean isEnabled() {
@@ -407,6 +423,9 @@ public class User implements UserDetails {
 	//	return fcmId;
 	//}
 
+	/**
+	 * Initiates the password reset.
+	 */
 	public ResetPassword getResetPassword() {
 		return resetPassword;
 	}

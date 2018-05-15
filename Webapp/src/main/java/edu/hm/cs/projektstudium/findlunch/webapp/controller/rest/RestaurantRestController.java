@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * The Class RestaurantRestController. The class is responsible for handling
- * rest calls related to registering users
+ * rest calls related to registering users.
  */
 @RestController
 @Api(

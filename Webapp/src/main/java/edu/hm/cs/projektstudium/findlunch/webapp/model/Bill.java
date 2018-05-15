@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
- * The Class Bill.
+ * The Class Bill. Describes the bill of a purchase.
  */
 @Entity
 @ApiModel(

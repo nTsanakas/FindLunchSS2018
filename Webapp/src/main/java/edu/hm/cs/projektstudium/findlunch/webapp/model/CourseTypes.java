@@ -28,7 +28,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 
 /**
- * The Class CourseType.
+ * The Class CourseType. Describes different types of courses.
  * @author Niklas Klotz
  *
  */
