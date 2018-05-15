@@ -17,5 +17,11 @@ public interface RestaurantTypeRepository extends JpaRepository<RestaurantType, 
 	 * @return the list of RestaurantTypes (ordered by name ascending)
 	 */
 	List<RestaurantType> findAllByOrderByNameAsc();
-	
+
+	/**
+	 * Find restaurant types with a specific name.
+	 * @param name the restaurant type's name
+	 * @return the restaurant type
+	 */
+	RestaurantType findByName(String name);
 }

@@ -2,19 +2,14 @@ package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
@@ -26,6 +21,8 @@ import org.springframework.format.annotation.NumberFormat.Style;
 @ApiModel(
 		description = "Beinhaltet den monatlichen Spendenbetrag, den ein Benutzer spenden möchte."
 )
+@Getter
+@Setter
 public class DonationPerMonth {
 
 	/** The id. */
@@ -56,6 +53,7 @@ public class DonationPerMonth {
 	/** The restaurant. */
 	@ApiModelProperty(notes = "Restaurant")
 	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name = "restaurant_id")
 	private Restaurant restaurant;
 	
 	/** The bill. */
@@ -63,101 +61,5 @@ public class DonationPerMonth {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Bill bill;
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return Id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		Id = id;
-	}
-
-	/**
-	 * Gets the date.
-	 * @return the date
-	 */
-	public Date getDate() {
-		return date;
-	}
-
-	/**
-	 * Sets the date.
-	 * @param date Date to set
-	 */
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	/**
-	 * Gets the amount.
-	 * @return The amount
-	 */
-	public float getAmount() {
-		return amount;
-	}
-
-	/**
-	 * Sets the amount.
-	 * @param amount Amount to set
-	 */
-	public void setAmount(float amount) {
-		this.amount = amount;
-	}
-
-	/**
-	 * Gets the restaurant.
-	 * @return The restaurant
-	 */
-	public Restaurant getRestaurant() {
-		return restaurant;
-	}
-
-	/**
-	 * Sets the restaurant.
-	 * @param restaurant The new Restaurant to set
-	 */
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
-	}
-
-	/**
-	 * Gets the update time.
-	 * @return the update time
-	 */
-	public Date getDatetimeOfUpdate() {
-		return datetimeOfUpdate;
-	}
-
-	/**
-	 * Sets the update Time.
-	 * @param datetimeOfUpdate The date time of Update to set
-	 */
-	public void setDatetimeOfUpdate(Date datetimeOfUpdate) {
-		this.datetimeOfUpdate = datetimeOfUpdate;
-	}
-	
-	/**
-	 * Gets the bill.
-	 * @return The bill
-	 */
-	public Bill getBill() {
-		return bill;
-	}
-
-	/**
-	 * Sets the bill.
-	 * @param bill Bill to set
-	 */
-	public void setBill(Bill bill) {
-		this.bill = bill;
-	}
+	public DonationPerMonth() { super(); }
 }

@@ -18,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The Class Country.
@@ -28,6 +30,8 @@ import io.swagger.annotations.ApiModelProperty;
 		value = "Land",
 		description = "Land, in dem Geschäft ist."
 )
+@Getter
+@Setter
 public class Country {
 	
 	/** The country code. */
@@ -41,6 +45,10 @@ public class Country {
 	@ApiModelProperty(notes = "Name des Landes")
 	@JsonView(RestaurantView.RestaurantRest.class)
 	private String name;
+
+	@ApiModelProperty(notes = "Liste der zuständigen Vertriebsmitarbeiter")
+	@OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
+	private List<SalesPerson> salesPersons;
 
 	/** The restaurants. */
 	//bi-directional many-to-one association to Restaurant
@@ -56,60 +64,6 @@ public class Country {
 		
 		this.restaurants = new ArrayList<Restaurant>();
 		
-	}
-
-	/**
-	 * Gets the country code.
-	 *
-	 * @return the country code
-	 */
-	public String getCountryCode() {
-		return this.countryCode;
-	}
-
-	/**
-	 * Sets the country code.
-	 *
-	 * @param countryCode the new country code
-	 */
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
-	}
-
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
-	 * Sets the name.
-	 *
-	 * @param name the new name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Gets the restaurants.
-	 *
-	 * @return the restaurants
-	 */
-	public List<Restaurant> getRestaurants() {
-		return this.restaurants;
-	}
-
-	/**
-	 * Sets the restaurants.
-	 *
-	 * @param restaurants the new restaurants
-	 */
-	public void setRestaurants(List<Restaurant> restaurants) {
-		this.restaurants = restaurants;
 	}
 
 	/**

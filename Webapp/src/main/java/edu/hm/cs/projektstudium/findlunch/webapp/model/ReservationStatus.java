@@ -15,12 +15,16 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name="reservation_status")
 @ApiModel(
 		description = "Status der Reservierung."
 )
+@Getter
+@Setter
 public class ReservationStatus {
 	
 	public static final int RESERVATION_KEY_NEW = 0;
@@ -51,61 +55,7 @@ public class ReservationStatus {
 	@ApiModelProperty(notes = "Bestellungen")
 	@OneToMany(mappedBy="reservationStatus")
 	private List<Reservation> reservation;
-	
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+	public ReservationStatus() { super(); }
 
-	/**
-	 * @return the status
-	 */
-	public String getStatus() {
-		return status;
-	}
-
-	/**
-	 * @param status the status to set
-	 */
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	/**
-	 * @return the statuskey
-	 */
-	public int getKey() {
-		return key;
-	}
-
-	/**
-	 * @param statuskey the statuskey to set
-	 */
-	public void setKey(int key) {
-		this.key = key;
-	}
-
-	/**
-	 * @return the reservation
-	 */
-	public List<Reservation> getReservation() {
-		return reservation;
-	}
-
-	/**
-	 * @param reservation the reservation to set
-	 */
-	public void setReservation(List<Reservation> reservation) {
-		this.reservation = reservation;
-	}
-	
 }

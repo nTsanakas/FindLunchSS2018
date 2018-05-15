@@ -15,7 +15,7 @@ public interface ReservationStatusRepository extends JpaRepository<ReservationSt
 
 	/**
 	 * 
-	 * @param key
+	 * @param statusKey
 	 * @return List ReservationStatus
 	 */
 	List<ReservationStatus> findByKey(int statusKey);

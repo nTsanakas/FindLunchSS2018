@@ -1,43 +1,37 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.CourseTypeView;
-import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
-import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
-
 /**
  * The Class CourseType.
- * @author Niklas Klotz
- *
  */
 @Entity
 @Table(name="course_types")
 @ApiModel(
 		description = "Beschreibt Kurstypen."
 )
-public class CourseTypes {
+@Getter
+@Setter
+public class CourseType {
 
 	/** The id. */
 	@ApiModelProperty(notes = "ID")
@@ -67,40 +61,44 @@ public class CourseTypes {
 	@Range(min=0, max=100, message= "{coursetype.sortby.Range}")
 	private int sortBy;
 	
-	public CourseTypes(){
-		
-	}
-	
-	public int getId() {
-		return id;
-	}
+	public CourseType(){ super(); }
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
+	public CourseType(String name) {
 		this.name = name;
 	}
 
-	public int getRestaurantId() {
-		return restaurantId;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		CourseType other = (CourseType) obj;
+		if (Integer.valueOf(id) == null) {
+			if (Integer.valueOf(other.id) != null)
+				return false;
+		}
+
+		if (id != other.getId()) {
+			return false;
+		}
+
+		if (!name.equals(other.getName())) {
+			return false;
+		}
+
+		return true;
 	}
 
-	public void setRestaurantId(int restaurantId) {
-		this.restaurantId = restaurantId;
-	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((Integer.valueOf(id) == null) ? 0 : (Integer.valueOf(id).hashCode()));
 
-	public int getSortBy() {
-		return sortBy;
+		return result;
 	}
-
-	public void setSortBy(int sortBy) {
-		this.sortBy = sortBy;
-	}
-	
 }

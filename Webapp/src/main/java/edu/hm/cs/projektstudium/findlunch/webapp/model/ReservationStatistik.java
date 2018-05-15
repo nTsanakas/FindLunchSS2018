@@ -1,6 +1,8 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
 import io.swagger.annotations.ApiModel;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 /**
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 @ApiModel(
 		description = "Wrapper-Klasse, da man sonst keinen Zugriff auf das Reservation-Objekt hat."
 )
+@Getter
+@Setter
 public class ReservationStatistik {
 
 	
@@ -26,95 +30,22 @@ public class ReservationStatistik {
 
 	private String label = "";
 	private int reservationCount = 0;
-	private float totalValue = 0;
-	private float averageRespondeTime = 0;
-	private float percent = 0;
+	private double totalValue = 0;
+	private double averageRespondeTime = 0;
+	private double percent = 0;
 	private ArrayList<Reservation> reservations = new ArrayList<Reservation>();
 	
-	/**
-	 * @return the label
-	 */
-	public String getLabel() {
-		return label;
-	}
-	/**
-	 * @param label the label to set
-	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
-	/**
-	 * @return the reservationCount
-	 */
-	public int getReservationCount() {
-		return reservationCount;
-	}
-	/**
-	 * @param reservationCount the reservationCount to set
-	 */
-	public void setReservationCount(int reservationCount) {
-		this.reservationCount = reservationCount;
-	}
-	/**
-	 * @return the totalValue
-	 */
-	public float getTotalValue() {
-		return totalValue;
-	}
-	/**
-	 * @param totalValue the totalValue to set
-	 */
-	public void setTotalValue(float totalValue) {
-		this.totalValue = totalValue;
-	}
-	/**
-	 * @return the averageRespondeTime
-	 */
-	public float getAverageRespondeTime() {
-		return averageRespondeTime;
-	}
-	/**
-	 * @param averageRespondeTime the averageRespondeTime to set
-	 */
-	public void setAverageRespondeTime(float averageRespondeTime) {
-		this.averageRespondeTime = averageRespondeTime;
-	}
-	/**
-	 * @return the percentPoints
-	 */
-	public float getPercent() {
-		return percent;
-	}
-	/**
-	 * @param percent the percentPoints to set
-	 */
-	public void setPercent(float percent) {
-		this.percent = percent;
-	}
-	/**
-	 * @return the reservations
-	 */
-	public ArrayList<Reservation> getReservations() {
-		return reservations;
-	}
-	/**
-	 * @param reservations the reservations to set
-	 */
-	public void setReservations(ArrayList<Reservation> reservations) {
-		this.reservations = reservations;
-	}
-	
-	private float calculateTotalValue(ArrayList<Reservation> reservations){
-		float sumPrice = 0;
+	private double calculateTotalValue(ArrayList<Reservation> reservations){
+		double sumPrice = 0;
 		for (Reservation reservation : reservations) {
 			sumPrice += reservation.getTotalPrice();
 		}
 		return sumPrice;
 	}
 	
-	private float calculateAverageRespondeTime(ArrayList<Reservation> reservations){
-		float avrgTime = 0;
-		float totalTime = 0;
+	private double calculateAverageRespondeTime(ArrayList<Reservation> reservations){
+		double avrgTime = 0;
+		double totalTime = 0;
 		int counter = 1;
 
 		for (Reservation reservation : reservations) {
@@ -124,16 +55,15 @@ public class ReservationStatistik {
 				totalTime += minutes;
 				counter++;
 			}
-			avrgTime = (float)totalTime/counter;
+			avrgTime = totalTime/counter;
 		}
 		
 		return avrgTime;
 	}
 	
-	private float calculatePercent(int countBase, int countAll){
+	private double calculatePercent(int countBase, int countAll){
 		if(countAll > 0 && countBase >0){
-			float percent = 0;
-			percent = (float)countBase/countAll;
+			double percent = (double)countBase/countAll;
 			percent = percent*100;
 			return percent;
 		}

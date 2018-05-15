@@ -2,12 +2,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -16,6 +11,8 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificatio
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
@@ -26,6 +23,8 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(
 		description = "Definiert verschiedene Küchentypen."
 )
+@Getter
+@Setter
 public class KitchenType {
 
 	/** The id. */
@@ -49,86 +48,47 @@ public class KitchenType {
 	/** The restaurants. */
 	@ApiModelProperty(notes = "Restaurants")
 	//bi-directional many-to-many association to Restaurant
-	@ManyToMany(mappedBy="kitchenTypes")
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy="kitchenTypes")
 	@JsonIgnore
 	private List<Restaurant> restaurants;
 
 	/**
 	 * Instantiates a new kitchen type.
 	 */
-	public KitchenType() {
+	public KitchenType() { super(); }
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		KitchenType other = (KitchenType) obj;
+		if (Integer.valueOf(id) == null) {
+			if (Integer.valueOf(other.id) != null)
+				return false;
+		}
+
+		if (id != other.getId()) {
+			return false;
+		}
+
+		if (!name.equals(other.getName())) {
+			return false;
+		}
+
+		return true;
 	}
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return this.id;
-	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((Integer.valueOf(id) == null) ? 0 : (Integer.valueOf(id).hashCode()));
 
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
+		return result;
 	}
-
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
-	 * Sets the name.
-	 *
-	 * @param name the new name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	/**
-	 * Gets the push notifications.
-	 *
-	 * @return the push notifications
-	 */
-	public List<DailyPushNotificationData> getPushNotifications() {
-		return this.pushNotifications;
-	}
-
-	/**
-	 * Sets the push notifications.
-	 *
-	 * @param pushNotifications the new push notifications
-	 */
-	public void setPushNotifications(List<DailyPushNotificationData> pushNotifications) {
-		this.pushNotifications = pushNotifications;
-	}
-
-	/**
-	 * Gets the restaurants.
-	 *
-	 * @return the restaurants
-	 */
-	public List<Restaurant> getRestaurants() {
-		return this.restaurants;
-	}
-
-	/**
-	 * Sets the restaurants.
-	 *
-	 * @param restaurants the new restaurants
-	 */
-	public void setRestaurants(List<Restaurant> restaurants) {
-		this.restaurants = restaurants;
-	}
-
 }

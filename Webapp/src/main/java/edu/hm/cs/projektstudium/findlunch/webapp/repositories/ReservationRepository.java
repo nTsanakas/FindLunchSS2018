@@ -20,7 +20,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 	 * @param midnight date
 	 * @return List of reservation
 	 */
-	public List<Reservation> findByUserIdAndTimestampReceivedAfterAndReservationStatusKeyAndPointsCollectedFalse(int userId, Date midnight, int statuskey);
+	List<Reservation> findByUserIdAndTimestampReceivedAfterAndReservationStatusKeyAndPointsCollectedFalse(int userId, Date midnight, int statuskey);
 	
 	/**
 	 * Find all reservations that are not confirmed and after the given date.
@@ -28,17 +28,16 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 	 * @param reservationTime date
 	 * @return List of reservation
 	 */
-	public List<Reservation> findByRestaurantIdAndReservationStatusKeyAndTimestampReceivedAfter(int restaurantId, int statuskey, Date reservationTime);
+	List<Reservation> findByRestaurantIdAndReservationStatusKeyAndTimestampReceivedAfter(int restaurantId, int statuskey, Date reservationTime);
 	
 	/**
 	 * Find all reservations between the given dates.
 	 * @param restaurantId
-	 * @param statuskey
 	 * @param reservationTimeStart
 	 * @param reservationTimeEnd
 	 * @return
 	 */
-	public List<Reservation> findByRestaurantIdAndTimestampReceivedBetweenOrderByTimestampReceivedAsc(int restaurantId, Date reservationTimeStart, Date reservationTimeEnd);
+	List<Reservation> findByRestaurantIdAndTimestampReceivedBetweenOrderByTimestampReceivedAsc(int restaurantId, Date reservationTimeStart, Date reservationTimeEnd);
 	
 	
 	/**
@@ -49,7 +48,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 	 * @param reservationTimeEnd
 	 * @return
 	 */
-	public List<Reservation> findByRestaurantIdAndReservationStatusKeyNotAndTimestampReceivedBetweenOrderByTimestampReceivedAsc(int restaurantId, int statuskey, Date reservationTimeStart, Date reservationTimeEnd);
+	List<Reservation> findByRestaurantIdAndReservationStatusKeyNotAndTimestampReceivedBetweenOrderByTimestampReceivedAsc(int restaurantId, int statuskey, Date reservationTimeStart, Date reservationTimeEnd);
 	
 	/**
 	 * Find all confirmed reservations from a restaurant.
@@ -57,7 +56,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 	 * @param billId Id of bill
 	 * @return List of reservation (order by reservationTime ascending)
 	 */
-	public List<Reservation> findByRestaurantIdAndReservationStatusKeyAndBillIdOrderByTimestampReceivedAsc(int restaurantId, int statuskey, Integer billId);
+	List<Reservation> findByRestaurantIdAndReservationStatusKeyAndBillIdOrderByTimestampReceivedAsc(int restaurantId, int statuskey, Integer billId);
 	
 	/**
 	 * Find all reservations which are new, nor rejected neighter confirmed and not paied by points
@@ -65,23 +64,23 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 	 * @param midnight date
 	 * @return List of corresponding reservations
 	 */
-	public List<Reservation> findByUserIdAndTimestampReceivedAfterAndUsedPointsFalseAndReservationStatusKey(int userId, Date midnight, int statuskey);
+	List<Reservation> findByUserIdAndTimestampReceivedAfterAndUsedPointsFalseAndReservationStatusKey(int userId, Date midnight, int statuskey);
 
 	/**
 	 * Find all reservations that are between the given dates.
-	 * @param reservationTime date
-	 * @param reservationTime date
+	 * @param reservationTimeAfter date
+	 * @param reservationTimeBefore date
 	 * @return List of reservation
 	 */
-	public List<Reservation> findByRestaurantIdAndTimestampReceivedBetween(int restaurantId, Date reservationTimeAfter, Date reservationTimeBefore);
+	List<Reservation> findByRestaurantIdAndTimestampReceivedBetween(int restaurantId, Date reservationTimeAfter, Date reservationTimeBefore);
 	
 	/**
-	 * Find all reservations from a restaurant for the guven user.
-	 * @param restaurantId
+	 * Find all reservations from a restaurant for the given user.
 	 * @param userId
-	 * @param statuskey
 	 * @return
 	 */
-	public List<Reservation> findByUserIdOrderByRestaurantIdAscTimestampReceivedAsc(int userId);
+	List<Reservation> findByUserIdOrderByRestaurantIdAscTimestampReceivedAsc(int userId);
+
+	List<Reservation> findByRestaurantId(int restaurantId);
 	
 }

@@ -68,12 +68,12 @@ public class BillController {
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
-		if(authenticatedUser.getAdministratedRestaurant() == null){
+		if(authenticatedUser.getRestaurant() == null){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " dont have a restaurant. Redirect to /restaurant/add"));
 			return "redirect:/restaurant/add";
 		}
 	
-		Restaurant restaurant = restaurantRepository.findById(authenticatedUser.getAdministratedRestaurant().getId());
+		Restaurant restaurant = restaurantRepository.findById(authenticatedUser.getRestaurant().getId());
 		ArrayList<Bill> bills = (ArrayList<Bill>) billRepository.findByRestaurantId(restaurant.getId());
 		BillList billList = new BillList();
 		billList.setBills(bills);
@@ -98,7 +98,7 @@ public class BillController {
 
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
-		if(authenticatedUser.getAdministratedRestaurant() == null){
+		if(authenticatedUser.getRestaurant() == null){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " dont have a restaurant. Redirect to /restaurant/add"));
 			return "redirect:/restaurant/add";
 		}
@@ -106,7 +106,7 @@ public class BillController {
 		if(neededBill == null){
 			return "redirect:/bill?notExistingBill";
 		}
-		if(authenticatedUser.getAdministratedRestaurant().getId() == neededBill.getRestaurant().getId()){
+		if(authenticatedUser.getRestaurant().getId() == neededBill.getRestaurant().getId()){
 			response.setContentType("application/pdf");
 		    response.setHeader("Content-Disposition", "inline; filename=\""+neededBill.getBillNumber()+".pdf\""); //attachment
 			response.setContentLength(neededBill.getBillPdf().length);
@@ -137,7 +137,7 @@ public class BillController {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
-		Restaurant restaurant = restaurantRepository.findById(authenticatedUser.getAdministratedRestaurant().getId());
+		Restaurant restaurant = restaurantRepository.findById(authenticatedUser.getRestaurant().getId());
 		
 		ArrayList<Bill> bills = (ArrayList<Bill>) billRepository.findByRestaurantId(restaurant.getId());
 		BillList billList = new BillList();

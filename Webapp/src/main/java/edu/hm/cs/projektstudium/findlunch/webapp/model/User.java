@@ -20,6 +20,8 @@ import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -37,6 +39,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @ApiModel(
 		description = "Ein Benutzer des FindLunch-Systems."
 )
+@Getter
+@Setter
 public class User implements UserDetails {
 
 	/** The Constant serialVersionUID. */
@@ -128,124 +132,11 @@ public class User implements UserDetails {
 	@ApiModelProperty(notes = "Absender")
 	@Transient
 	private SseEmitter emitter;
-	
-	public SseEmitter getEmitter() {
-		return emitter;
-	}
-
-	public void setEmitter(SseEmitter emitter) {
-		this.emitter = emitter;
-	}
 
 	/**
 	 * Instantiates a new user.
 	 */
-	public User() {
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return this.id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.security.core.userdetails.UserDetails#getPassword()
-	 */
-	public String getPassword() {
-		return this.password;
-	}
-
-	/**
-	 * Sets the password.
-	 *
-	 * @param password the new password
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	/**
-	 * Gets the passwordconfirm.
-	 *
-	 * @return the passwordconfirm
-	 */
-	public String getPasswordconfirm() {
-		return this.passwordconfirm;
-	}
-
-	/**
-	 * Sets the passwordconfirm.
-	 *
-	 * @param passwordconfirm the new passwordconfirm
-	 */
-	public void setPasswordconfirm(String passwordconfirm) {
-		this.passwordconfirm = passwordconfirm;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.springframework.security.core.userdetails.UserDetails#getUsername()
-	 */
-	public String getUsername() {
-		return this.username;
-	}
-
-	/**
-	 * Sets the username.
-	 *
-	 * @param username the new username
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	/**
-	 * Gets the favorites.
-	 *
-	 * @return the favorites
-	 */
-	public List<Restaurant> getFavorites() {
-		return this.favorites;
-	}
-
-	/**
-	 * Sets the favorites.
-	 *
-	 * @param restaurants the new favorites
-	 */
-	public void setFavorites(List<Restaurant> restaurants) {
-		this.favorites = restaurants;
-	}
-	
-	/**
-	 * Gets the push notifications.
-	 *
-	 * @return the push notifications
-	 */
-	public List<DailyPushNotificationData> getPushNotifications() {
-		return this.pushNotifications;
-	}
-
-	/**
-	 * Sets the push notifications.
-	 *
-	 * @param pushNotifications the new push notifications
-	 */
-	public void setPushNotifications(List<DailyPushNotificationData> pushNotifications) {
-		this.pushNotifications = pushNotifications;
-	}
+	public User() { super(); }
 	
 	/**
 	 * Adds the push notification.
@@ -271,42 +162,6 @@ public class User implements UserDetails {
 		pushNotification.setUser(null);
 
 		return pushNotification;
-	}
-
-	/**
-	 * Gets the administrated restaurant.
-	 *
-	 * @return the restaurant
-	 */
-	public Restaurant getAdministratedRestaurant() {
-		return this.restaurant;
-	}
-
-	/**
-	 * Sets the administrated restaurant.
-	 *
-	 * @param restaurant the new restaurant
-	 */
-	public void setAdministratedRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
-	}
-	
-	/**
-	 * Gets the user type.
-	 *
-	 * @return the user type
-	 */
-	public UserType getUserType() {
-		return this.userType;
-	}
-
-	/**
-	 * Sets the user type.
-	 *
-	 * @param userType the new user type
-	 */
-	public void setUserType(UserType userType) {
-		this.userType = userType;
 	}
 
 	/* (non-Javadoc)
@@ -350,69 +205,4 @@ public class User implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-	
-	/**
-	 * Gets the points of the user.
-	 * @return The points of the user
-	 */
-	public List<Points> getAllPoints(){
-		return userPoints;
-	}
-	
-	/**
-	 * Sets the points of the user.
-	 * @param userPoints List of Points to set
-	 */
-	public void setAllPoints(List<Points> userPoints){
-		this.userPoints = userPoints;
-	}
-	
-	/**
-	 * Add Points to an User.
-	 * @param points Points to add
-	 */
-	public void addPoints(Points points){
-		this.userPoints.add(points);
-	}
-
-	/**
-	 * Gets the account of the user.
-	 * @return The account
-	 */
-	public Account getAccount() {
-		return account;
-	}
-
-	/**
-	 * Sets the account of the user.
-	 * @param account The new account to set
-	 */
-	public void setAccount(Account account) {
-		this.account = account;
-	}
-	/**
-	 * Gets the Captcha object.
-	 *
-	 * @return the Captcha object
-	 */
-	public Captcha getCaptcha() {
-		return captcha;
-	}
-	
-	//public void setFcmId(String fcmId){
-	//	this.fcmId = fcmId;
-	//}
-	
-	//public String getFcmId(){
-	//	return fcmId;
-	//}
-
-	public ResetPassword getResetPassword() {
-		return resetPassword;
-	}
-
-	public void setResetPassword(ResetPassword resetPassword) {
-		this.resetPassword = resetPassword;
-	}
-
 }

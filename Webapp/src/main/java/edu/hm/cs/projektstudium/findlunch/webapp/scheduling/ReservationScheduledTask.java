@@ -70,7 +70,7 @@ public class ReservationScheduledTask {
 		User user = reservation.getUser();
 		PushToken userToken = tokenRepository.findByUserId(user.getId());
 		if(userToken!=null) {
-		JSONObject notification = pushManager.generateReservationNotProcessed(reservation, userToken.getFcm_token());
+		JSONObject notification = pushManager.generateReservationNotProcessed(reservation, userToken.getFcmToken());
 		pushManager.sendFcmNotification(notification);
 		}
 		else

@@ -19,11 +19,15 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @ApiModel(
 		description = "Definiert Reservierung eines Produkts."
 )
+@Getter
+@Setter
 public class Reservation {
 	
 	/** The id. */
@@ -120,219 +124,11 @@ public class Reservation {
 	//@JsonView({ReservationView.ReservationRest.class})
 	@Column(name="timestamp_responded")
 	private Date timestampResponded;
-	
-	/**
-	 * Gets the euroPerPoint.
-	 * @return The euroPerPoint
-	 */
-	public EuroPerPoint getEuroPerPoint() {
-		return euroPerPoint;
-	}
-	
-	/**
-	 * Sets the euroPerPoint
-	 * @param euroPerPoint The new euroPerPoint
-	 */
-	public void setEuroPerPoint(EuroPerPoint euroPerPoint) {
-		this.euroPerPoint = euroPerPoint;
-	}
-	
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+
+	public Reservation() { super(); }
 
 	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
-	 * Gets the user.
-	 * @return The user
-	 */
-	public User getUser() {
-		return user;
-	}
-
-	/**
-	 * Sets the new user.
-	 * @param user The user to set
-	 */
-	public void setUser(User user) {
-		this.user = user;
-	}
-	
-	/**
-	 * Gets the donation.
-	 * @return The donation
-	 */
-	public float getDonation() {
-		return donation;
-	}
-
-	/**
-	 * Sets the donation.
-	 * @param donation The new donation to set
-	 */
-	public void setDonation(float donation) {
-		this.donation = donation;
-	}
-
-	/**
-	 * Gets the total price.
-	 * @return The total price
-	 */
-	public float getTotalPrice() {
-		return totalPrice;
-	}
-
-	/**
-	 * Sets the total price.
-	 * @param totalPrice The new total price
-	 */
-	public void setTotalPrice(float totalPrice) {
-		this.totalPrice = totalPrice;
-	}
-	
-	/**
-	 * Checks if points are used.
-	 * @return true, if points are used
-	 */
-	public boolean isUsedPoints() {
-		return usedPoints;
-	}
-
-	/**
-	 * Set the flag of used points.
-	 * @param usedPoints true, if points are used
-	 */
-	public void setUsedPoints(boolean usedPoints) {
-		this.usedPoints = usedPoints;
-	}
-	
-	/**
-	 * Gets the restaurant.
-	 * @return The restaurant
-	 */
-	public Restaurant getRestaurant() {
-		return restaurant;
-	}
-
-	/**
-	 * Sets the restaurant.
-	 * @param restaurant The restaurant to set
-	 */
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
-	}
-
-	/**
-	 * Gets the bill.
-	 * @return The bill
-	 */
-	public Bill getBill() {
-		return bill;
-	}
-
-	/**
-	 * Sets the new bill to reservation.
-	 * @param bill The bill to set
-	 */
-	public void setBill(Bill bill) {
-		this.bill = bill;
-	}
-	
-	/**
-	 * Gets the reservation number.
-	 * @return The reservation number
-	 */
-	public int getReservationNumber() {
-		return reservationNumber;
-	}
-
-	/**
-	 * Sets the new reservation number.
-	 * @param reservationNumber The new reservation number to set
-	 */
-	public void setReservationNumber(int reservationNumber) {
-		this.reservationNumber = reservationNumber;
-	}
-
-	public List<ReservationOffers> getReservation_offers() {
-		return reservation_offers;
-	}
-
-	public void setReservation_offers(List<ReservationOffers> reservation_offers) {
-		this.reservation_offers = reservation_offers;
-	}
-
-	/**
-	 * @return the reservationStatus
-	 */
-	public ReservationStatus getReservationStatus() {
-		return reservationStatus;
-	}
-
-	/**
-	 * @param reservationStatus the reservationStatus to set
-	 */
-	public void setReservationStatus(ReservationStatus reservationStatus) {
-		this.reservationStatus = reservationStatus;
-	}
-	
-	/**
-	 * @return the collectTime
-	 */
-	public Date getCollectTime() {
-		return collectTime;
-	}
-
-	/**
-	 * @param collectTime the collectTime to set
-	 */
-	public void setCollectTime(Date collectTime) {
-		this.collectTime = collectTime;
-	}
-
-	/**
-	 * @return the timestampReceived
-	 */
-	public Date getTimestampReceived() {
-		return timestampReceived;
-	}
-
-	/**
-	 * @param timestampReceived the timestampReceived to set
-	 */
-	public void setTimestampReceived(Date timestampReceived) {
-		this.timestampReceived = timestampReceived;
-	}
-
-	/**
-	 * @return the timestampResponded
-	 */
-	public Date getTimestampResponded() {
-		return timestampResponded;
-	}
-
-	/**
-	 * @param timestampResponded the timestampResponded to set
-	 */
-	public void setTimestampResponded(Date timestampResponded) {
-		this.timestampResponded = timestampResponded;
-	}
-
-	/**
-	 * @return boolean true when Reservation is Confirmed
+	 * @return boolean true when Reservation is confirmed
 	 */
 	public boolean isConfirmed(){
 		return reservationStatus.getKey() == ReservationStatus.RESERVATION_KEY_CONFIRMED;
@@ -352,20 +148,4 @@ public class Reservation {
 		return reservationStatus.getKey() == ReservationStatus.RESERVATION_KEY_UNPROCESSED;
 	}
 
-	public boolean isPointsCollected() {
-		return pointsCollected;
-	}
-
-	public void setPointsCollected(boolean pointsCollected) {
-		this.pointsCollected = pointsCollected;
-	}
-
-	public float getPoints() {
-		return points;
-	}
-
-	public void setPoints(float points) {
-		this.points = points;
-	}
-	
 }

@@ -1,6 +1,5 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +19,8 @@ import javax.persistence.TemporalType;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -35,6 +36,8 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 @ApiModel(
 		description = "Definiert einen Zeitraum, innerhalb dessen ein Angebot gültig ist."
 		)
+@Getter
+@Setter
 public class TimeSchedule {
 
 	/** The id. */
@@ -85,77 +88,8 @@ public class TimeSchedule {
 	/**
 	 * Instantiates a new time schedule.
 	 */
-	public TimeSchedule() {
-	}
+	public TimeSchedule() { super(); }
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return this.id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
-	 * Gets the offer end time.
-	 *
-	 * @return the offer end time
-	 */
-	public Date getOfferEndTime() {
-		return this.offerEndTime;
-	}
-
-	/**
-	 * Sets the offer end time.
-	 *
-	 * @param offerEndTime the new offer end time
-	 */
-	public void setOfferEndTime(Date offerEndTime) {
-		this.offerEndTime = offerEndTime;
-	}
-
-	/**
-	 * Gets the offer start time.
-	 *
-	 * @return the offer start time
-	 */
-	public Date getOfferStartTime() {
-		return this.offerStartTime;
-	}
-
-	/**
-	 * Sets the offer start time.
-	 *
-	 * @param offerStartTime the new offer start time
-	 */
-	public void setOfferStartTime(Date offerStartTime) {
-		this.offerStartTime = offerStartTime;
-	}
-
-	/**
-	 * Gets the opening times.
-	 *
-	 * @return the opening times
-	 */
-	public List<OpeningTime> getOpeningTimes() {
-		return this.openingTimes;
-	}
-
-	/**
-	 * Sets the opening times.
-	 *
-	 * @param openingTimes the new opening times
-	 */
 	public void setOpeningTimes(List<OpeningTime> openingTimes) {
 		if(this.openingTimes == null)
 			this.openingTimes = openingTimes;
@@ -191,42 +125,6 @@ public class TimeSchedule {
 		openingTime.setTimeSchedule(null);
 
 		return openingTime;
-	}
-
-	/**
-	 * Gets the day of week.
-	 *
-	 * @return the day of week
-	 */
-	public DayOfWeek getDayOfWeek() {
-		return this.dayOfWeek;
-	}
-
-	/**
-	 * Sets the day of week.
-	 *
-	 * @param dayOfWeek the new day of week
-	 */
-	public void setDayOfWeek(DayOfWeek dayOfWeek) {
-		this.dayOfWeek = dayOfWeek;
-	}
-
-	/**
-	 * Gets the restaurant.
-	 *
-	 * @return the restaurant
-	 */
-	public Restaurant getRestaurant() {
-		return this.restaurant;
-	}
-
-	/**
-	 * Sets the restaurant.
-	 *
-	 * @param restaurant the new restaurant
-	 */
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
 	}
 
 }

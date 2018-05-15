@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,18 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.CustomCourseTypeValidator;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.CourseTypeRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.OfferRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseTypes;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseType;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
 
 /**
@@ -61,12 +57,12 @@ public class CourseTypesController {
 		
 
 		User authenticatedUser = (User)((Authentication)principal).getPrincipal();
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
 			return "redirect:/restaurant/add?required";
 		}
 		
-			ArrayList<CourseTypes> courseTypes = (ArrayList<CourseTypes>) courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getAdministratedRestaurant().getId());
+			ArrayList<CourseType> courseTypes = (ArrayList<CourseType>) courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
 			model.addAttribute("courseTypes", courseTypes);
 			return "coursetype";	
 	}
@@ -84,15 +80,15 @@ public class CourseTypesController {
 		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "courseId", courseId.toString()));
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
 			return "redirect:/restaurant/add?required";
 		}
 		
 		// if the given id of coursetyope is not in the database
-		CourseTypes coursetype = courseTypeRepository.findByIdAndRestaurantId(courseId, authenticatedUser.getAdministratedRestaurant().getId());
+		CourseType coursetype = courseTypeRepository.findByIdAndRestaurantId(courseId, authenticatedUser.getRestaurant().getId());
 		if(coursetype == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The coursetype with id " + courseId + " could not be found for the given restaurant with id " + authenticatedUser.getAdministratedRestaurant().getId() + "."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The coursetype with id " + courseId + " could not be found for the given restaurant with id " + authenticatedUser.getRestaurant().getId() + "."));
 			return "redirect:/coursetype?invalid_id";
 		}
 		
@@ -104,7 +100,7 @@ public class CourseTypesController {
 		}
 		// if the restaurant deleted its last coursetype
 		if(offerRepository.findByCourseTypeOrderByOrderAsc(coursetype.getId()).size()==1){
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The restaurant with the Id " + authenticatedUser.getAdministratedRestaurant().getId() + " deleted his last coursetype."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The restaurant with the Id " + authenticatedUser.getRestaurant().getId() + " deleted his last coursetype."));
 			courseTypeRepository.delete(coursetype);
 			return "/coursetype/add";
 		}
@@ -128,14 +124,14 @@ public class CourseTypesController {
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
-		CourseTypes course = courseTypeRepository.findById(courseId);
-		List<CourseTypes> restaurantCourses = courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getAdministratedRestaurant().getId());
+		CourseType course = courseTypeRepository.findById(courseId);
+		List<CourseType> restaurantCourses = courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
 		
 		int position = course.getSortBy();
 		
 		// it the current possition of the coursetype is not 0, which is the lowest availabile, its order will be changed
 		if(position!=0){
-			for(CourseTypes type : restaurantCourses){
+			for(CourseType type : restaurantCourses){
 				if(type.getSortBy()==position-1){
 					type.setSortBy(position);
 					courseTypeRepository.save(type);
@@ -163,14 +159,14 @@ public class CourseTypesController {
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
-		CourseTypes course = courseTypeRepository.findById(courseId);
-		List<CourseTypes> restaurantCourses = courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getAdministratedRestaurant().getId());
+		CourseType course = courseTypeRepository.findById(courseId);
+		List<CourseType> restaurantCourses = courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
 		
 		int position = course.getSortBy();
 		
 		// if the current possition of the coursetype is not the highest avaliabile
 		if(position!=restaurantCourses.size()){
-			for(CourseTypes type : restaurantCourses){
+			for(CourseType type : restaurantCourses){
 				if(type.getSortBy()==position+1){
 					type.setSortBy(position);
 					courseTypeRepository.save(type);

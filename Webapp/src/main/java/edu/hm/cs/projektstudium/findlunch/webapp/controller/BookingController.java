@@ -236,7 +236,7 @@ public class BookingController {
 				ar.setSumOfAmount(sum);
 			else
 				ar.setSumOfAmount(0f);
-			Restaurant restaurant = account.getUsers().get(0).getAdministratedRestaurant();
+			Restaurant restaurant = account.getUsers().get(0).getRestaurant();
 			
 			if(restaurant != null)
 				ar.setCustomerId(restaurant.getCustomerId()); 

@@ -58,7 +58,7 @@ class ReservationOverviewController {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
-		if(authenticatedUser.getAdministratedRestaurant() == null){
+		if(authenticatedUser.getRestaurant() == null){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " dont have a restaurant. Redirect to /restaurant/add"));
 			return "redirect:/restaurant/add";
 		}else{
@@ -77,7 +77,7 @@ class ReservationOverviewController {
 			}
 			
 			ArrayList<Reservation> reservations = (ArrayList<Reservation>) reservationRepository
-				.findByRestaurantIdAndReservationStatusKeyNotAndTimestampReceivedBetweenOrderByTimestampReceivedAsc(authenticatedUser.getAdministratedRestaurant().getId(), ReservationStatus.RESERVATION_KEY_NEW, startDate, endDate);
+				.findByRestaurantIdAndReservationStatusKeyNotAndTimestampReceivedBetweenOrderByTimestampReceivedAsc(authenticatedUser.getRestaurant().getId(), ReservationStatus.RESERVATION_KEY_NEW, startDate, endDate);
 			
 			ReservationList r = new ReservationList();
 			r.setReservations(reservations);
@@ -104,7 +104,7 @@ class ReservationOverviewController {
 		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request, Thread.currentThread().getStackTrace()[1].getMethodName(), " reservationId ", reservationId.toString()));
 
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
 			return null;
 		}

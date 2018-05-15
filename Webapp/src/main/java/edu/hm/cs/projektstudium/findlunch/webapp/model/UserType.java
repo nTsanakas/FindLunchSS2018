@@ -2,6 +2,8 @@ package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -19,6 +21,8 @@ import javax.persistence.Table;
 @ApiModel(
 		description = "Definiert verschiedene Benutzertypen."
 )
+@Getter
+@Setter
 public class UserType {
 
 	/** The id. */
@@ -39,62 +43,7 @@ public class UserType {
 	/**
 	 * Instantiates a new user type.
 	 */
-	public UserType() {
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return this.id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
-	 * Sets the name.
-	 *
-	 * @param name the new name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Gets the users.
-	 *
-	 * @return the users
-	 */
-	public List<User> getUsers() {
-		return this.users;
-	}
-
-	/**
-	 * Sets the users.
-	 *
-	 * @param users the new users
-	 */
-	public void setUsers(List<User> users) {
-		this.users = users;
-	}
+	public UserType() { super(); }
 
 	/**
 	 * Adds the user.

@@ -3,10 +3,10 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Additives;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.Additive;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Allergenic;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.AdditivesRepository;
+import edu.hm.cs.projektstudium.findlunch.webapp.repositories.AdditiveRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.AllergenicRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.OfferRepository;
 import io.swagger.annotations.*;
@@ -29,19 +29,19 @@ public class IngredientRestController {
 	/** The Allergenic repository. */
 	private final AllergenicRepository allergenicRepository;
 
-	/** The Additives repository. */
-	private final AdditivesRepository additivesRepository;
+	/** The Additive repository. */
+	private final AdditiveRepository additiveRepository;
 
-	/** The Additives repository. */
+	/** The Additive repository. */
 	private final OfferRepository offerRepository;
 
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(IngredientRestController.class);
 
 	@Autowired
-	public IngredientRestController(AllergenicRepository allergenicRepository, AdditivesRepository additivesRepository, OfferRepository offerRepository) {
+	public IngredientRestController(AllergenicRepository allergenicRepository, AdditiveRepository additiveRepository, OfferRepository offerRepository) {
 		this.allergenicRepository = allergenicRepository;
-		this.additivesRepository = additivesRepository;
+		this.additiveRepository = additiveRepository;
 		this.offerRepository = offerRepository;
 	}
 
@@ -119,9 +119,9 @@ public class IngredientRestController {
 	        path = "/api/all_additives",
             method = RequestMethod.GET,
             produces = "application/json")
-	public List<Additives> getAllAdditives(HttpServletRequest request) {
+	public List<Additive> getAllAdditives(HttpServletRequest request) {
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
-		return additivesRepository.findAll();
+		return additiveRepository.findAll();
 	}
 	
 	/**
@@ -142,7 +142,7 @@ public class IngredientRestController {
 	        path = "/api/additivesForOfferId/{offerId}",
             method = RequestMethod.GET,
             produces = "application/json")
-	public List<Additives> getAdditivesForOffer(
+	public List<Additive> getAdditivesForOffer(
 	        @PathVariable("offerId")
             @ApiParam(
                     name = "Angebot-ID",

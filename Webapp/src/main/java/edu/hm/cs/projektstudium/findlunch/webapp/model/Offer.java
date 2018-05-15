@@ -27,6 +27,8 @@ import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
@@ -45,6 +47,8 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView
 @ApiModel(
 		description = "Beschreibt ein Essensangebot."
 )
+@Getter
+@Setter
 public class Offer {
 
 	/** The id. */
@@ -62,14 +66,6 @@ public class Offer {
 	@Size(min=2, max=500, message= "{offer.description.lengthInvalid}")
 	private String description;
 
-	/** The end date. */
-	@ApiModelProperty(notes = "Angebotsende")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern="dd.MM.yyy")
-	@Column(name="end_date")
-	@NotNull(message="{offer.endDate.notNull}")
-	private Date endDate;
-
 	/** The preparation time. */
 	@ApiModelProperty(notes = "Zubereitungszeit")
 	@Column(name="preparation_time")
@@ -82,7 +78,7 @@ public class Offer {
 	@JsonView({OfferView.OfferRest.class, ReservationView.ReservationRest.class})
 	@NumberFormat(style=Style.DEFAULT)
 	@DecimalMin(value="0.5", message="{offer.price.invalidMinValue}")
-	private float price;
+	private double price;
 
 	/** The start date. */
 	@ApiModelProperty(notes = "Beginn")
@@ -91,6 +87,14 @@ public class Offer {
 	@Column(name="start_date")
 	@NotNull(message="{offer.startDate.notNull}")
 	private Date startDate;
+
+	/** The end date. */
+	@ApiModelProperty(notes = "Angebotsende")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="dd.MM.yyy")
+	@Column(name="end_date")
+	@NotNull(message="{offer.endDate.notNull}")
+	private Date endDate;
 
 	/** The title. */
 	@ApiModelProperty(notes = "Bezeichnung")
@@ -115,31 +119,10 @@ public class Offer {
 	@ApiModelProperty(notes = "Angebote innerhalb der Bestellung")
 	@OneToMany(mappedBy="offer", cascade=CascadeType.ALL)
 	private List<ReservationOffers> reservation_offers;
-	
-	/**
-	 * Gets the default photo.
-	 *
-	 * @return the default photo
-	 */
-	public OfferPhoto getDefaultPhoto() {
-		
-		if(this.offerPhotos != null && this.offerPhotos.size() > 0)
-			defaultPhoto = this.offerPhotos.get(0);
-		
-		return defaultPhoto;
-	}
-
-	/**
-	 * Sets the default photo.
-	 *
-	 * @param defaultPhoto the new default photo
-	 */
-	public void setDefaultPhoto(OfferPhoto defaultPhoto) {
-		this.defaultPhoto = defaultPhoto;
-	}
 
 	/** The day of weeks. */
 	//bi-directional many-to-many association to DayOfWeek
+	@ApiModelProperty(notes = "Die Tage, für die das Angebot gilt.")
 	@ManyToMany
 	@JoinTable(
 		name="offer_has_day_of_week"
@@ -152,8 +135,10 @@ public class Offer {
 		)
 	private List<DayOfWeek> dayOfWeeks;
 
-	/** Additives. */
+	/** Additive. */
 	//bi-directional many-to-many association to additives
+	@ApiModelProperty(notes = "Eine Liste aus natürlichen oder künstlichen Additiven," +
+			" die im Gericht enthalten sein könnten.")
 	@JsonView(OfferView.OfferRest.class)
 	@ManyToMany
 	@JoinTable(
@@ -165,10 +150,11 @@ public class Offer {
 			@JoinColumn(name="additives_id")
 			}
 		)
-	private List<Additives> additives;
+	private List<Additive> additives;
 
 	/** Allergenic. */
 	//bi-directional many-to-many association to additives
+	@ApiModelProperty(notes = "Eine Liste aus möglichen Allergenen, die im Gericht enthalten sein könnten.")
 	@JsonView(OfferView.OfferRest.class)
 	@ManyToMany
 	@JoinTable(
@@ -184,34 +170,45 @@ public class Offer {
 
 	/** The restaurant. */
 	//bi-directional many-to-one association to Restaurant
+	@ApiModelProperty(notes = "Das Restaurant, das das Angebot bereitstellt.")
+    @JoinColumn(name="restaurant_id")
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Restaurant restaurant;
 	
-	/**
-	@ManyToOne
-	@JoinTable(name = "offer_course", joinColumns = {
-	@JoinColumn(name = "offer_id") }, inverseJoinColumns = { @JoinColumn(name = "coursetype_id") })
-	@JsonView(OfferView.OfferRest.class)
-	private OfferCourse offerCourse;
-	*/
-	
 	/** The coursetype */
+	@ApiModelProperty(notes = "Typ des Essenangebots.")
 	@Column(name="course_type")
 	private int courseType;
 	
 	/** The order of the offer within the coursetype */
+	@ApiModelProperty(notes = "Hilfsattribut zur Sortierung.")
 	@Column(name="sort")
 	private int order;
 	
 	/** The offer photos. */
 	//bi-directional many-to-one association to OfferPhoto
+	@ApiModelProperty(notes = "Assoziation zu einem Foto für das Angebot.")
 	@OneToMany(mappedBy="offer", cascade=CascadeType.ALL, orphanRemoval=true )
 	private List<OfferPhoto> offerPhotos;
 
 	/** Is sold out */
+	@ApiModelProperty(notes = "Gibt an, ob der Angebotsvorrat ausverkauft ist.")
 	@Column(name="sold_out")
 	@JsonView(OfferView.OfferRest.class)
 	private boolean sold_out;
+
+	@ApiModelProperty(notes = "Die Id vom Änderungsantrag des Anbieters.")
+	@Column(name = "swa_change_request_id")
+	private int changeRequestId;
+
+	@ApiModelProperty(notes = "Kommentar des Verrtriebsmitarbeiters bezüglich der letzten Änderung.")
+	@Column(name = "swa_comment_of_last_change")
+	private String commentOfLastChange;
+
+	@ApiModelProperty(notes = "Der letzte Vertriebsmitarbeiter, der eine Änderung durchgeführt hat.")
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "swa_last_changed_by_sales_person_id")
+	private SalesPerson salesPerson;
 
 	/**
 	 * Instantiates a new offer.
@@ -219,222 +216,6 @@ public class Offer {
 	public Offer() {
 		
 		this.offerPhotos = new ArrayList<OfferPhoto>();
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return this.id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
-	 * Gets the description.
-	 *
-	 * @return the description
-	 */
-	public String getDescription() {
-		return this.description;
-	}
-
-	/**
-	 * Sets the description.
-	 *
-	 * @param description the new description
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
-	 * Gets the end date.
-	 *
-	 * @return the end date
-	 */
-	public Date getEndDate() {
-		return this.endDate;
-	}
-
-	/**
-	 * Sets the end date.
-	 *
-	 * @param endDate the new end date
-	 */
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	/**
-	 * Gets the preparation time.
-	 *
-	 * @return the preparation time
-	 */
-	public int getPreparationTime() {
-		return this.preparationTime;
-	}
-
-	/**
-	 * Sets the preparation time.
-	 *
-	 * @param preparationTime the new preparation time
-	 */
-	public void setPreparationTime(int preparationTime) {
-		this.preparationTime = preparationTime;
-	}
-
-	/**
-	 * Gets the price.
-	 *
-	 * @return the price
-	 */
-	public float getPrice() {
-		return this.price;
-	}
-
-	/**
-	 * Sets the price.
-	 *
-	 * @param price the new price
-	 */
-	public void setPrice(float price) {
-		this.price = price;
-	}
-
-	/**
-	 * Gets the start date.
-	 *
-	 * @return the start date
-	 */
-	public Date getStartDate() {
-		return this.startDate;
-	}
-
-	/**
-	 * Sets the start date.
-	 *
-	 * @param startDate the new start date
-	 */
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	/**
-	 * Gets the title.
-	 *
-	 * @return the title
-	 */
-	public String getTitle() {
-		return this.title;
-	}
-
-	/**
-	 * Sets the title.
-	 *
-	 * @param title the new title
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	/**
-	 * Gets the day of weeks.
-	 *
-	 * @return the day of weeks
-	 */
-	public List<DayOfWeek> getDayOfWeeks() {
-		return this.dayOfWeeks;
-	}
-
-	/**
-	 * Sets the day of weeks.
-	 *
-	 * @param dayOfWeeks the new day of weeks
-	 */
-	public void setDayOfWeeks(List<DayOfWeek> dayOfWeeks) {
-		this.dayOfWeeks = dayOfWeeks;
-	}
-
-	/**
-	 * Gets the additives.
-	 *
-	 * @return additives
-	 */
-	public List<Additives> getAdditives() {
-		return this.additives;
-	}
-
-	/**
-	 * Sets the additives.
-	 *
-	 * @param additives the new additives
-	 */
-	public void setAdditives(List<Additives> additives) {
-		this.additives = additives;
-	}
-
-	/**
-	 * Gets the allergenic.
-	 *
-	 * @return allergenic
-	 */
-	public List<Allergenic> getAllergenic() {
-		return this.allergenic;
-	}
-
-	/**
-	 * Sets the allergenic.
-	 *
-	 * @param additives the new allergenic
-	 */
-	public void setAllergenic(List<Allergenic> allergenic) {
-		this.allergenic = allergenic;
-	}
-
-	/**
-	 * Gets the restaurant.
-	 *
-	 * @return the restaurant
-	 */
-	public Restaurant getRestaurant() {
-		return this.restaurant;
-	}
-
-	/**
-	 * Sets the restaurant.
-	 *
-	 * @param restaurant the new restaurant
-	 */
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
-	}
-
-	/**
-	 * Gets the offer photos.
-	 *
-	 * @return the offer photos
-	 */
-	public List<OfferPhoto> getOfferPhotos() {
-		return this.offerPhotos;
-	}
-
-	/**
-	 * Sets the offer photos.
-	 *
-	 * @param offerPhotos the new offer photos
-	 */
-	public void setOfferPhotos(List<OfferPhoto> offerPhotos) {
-		this.offerPhotos = offerPhotos;
 	}
 
 	/**
@@ -447,7 +228,7 @@ public class Offer {
 		getOfferPhotos().add(offerPhoto);
 		offerPhoto.setOffer(this);
 
-		return offerPhoto;
+		return offerPhotos.get(offerPhotos.size() - 1);
 	}
 
 	/**
@@ -456,50 +237,11 @@ public class Offer {
 	 * @param offerPhoto the offer photo
 	 * @return the offer photo
 	 */
+	// TODO: Es hat keinen Sinn, das Argument zurückzugeben. Vorerst behalten, muss aber geändert werden.
 	public OfferPhoto removeOfferPhoto(OfferPhoto offerPhoto) {
 		getOfferPhotos().remove(offerPhoto);
 		offerPhoto.setOffer(null);
 
 		return offerPhoto;
-	}
-	
-	/**
-	 * Gets the neededPoints for an offer.
-	 * @return The needed points
-	 */
-	public int getNeededPoints() {
-		return neededPoints;
-	}
-	
-	/**
-	 * Sets the new needed points for an offer.
-	 * @param neededPoints The needed points to set
-	 */
-	public void setNeededPoints(int neededPoints) {
-		this.neededPoints = neededPoints;
-	}
-
-	public boolean getSold_out() {
-		return sold_out;
-	}
-
-	public void setSold_out(boolean sold_out) {
-		this.sold_out = sold_out;
-	}
-
-	public int getCourseType() {
-		return courseType;
-	}
-
-	public void setCourseType(int courseType) {
-		this.courseType = courseType;
-	}
-
-	public int getOrder() {
-		return order;
-	}
-
-	public void setOrder(int orderby) {
-		this.order = orderby;
 	}
 }

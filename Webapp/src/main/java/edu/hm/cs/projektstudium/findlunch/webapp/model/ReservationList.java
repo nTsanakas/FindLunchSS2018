@@ -1,6 +1,8 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
 import io.swagger.annotations.ApiModel;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 /**
@@ -14,29 +16,14 @@ import java.util.ArrayList;
 )
 public class ReservationList {
 
-	public ReservationList() {
-	}
+	public ReservationList() { super(); }
 	
 	public ReservationList(ArrayList<Reservation> reservations) {
 		this.reservations = reservations;
 	}
 
 	/** The list of reservations.*/
+	@Getter
+	@Setter
 	private ArrayList<Reservation> reservations = new ArrayList<Reservation>();
-	
-	/**
-	 * Gets the list of reservations.
-	 * @return List of reservation
-	 */
-	public ArrayList<Reservation> getReservations() {
-		return reservations;
-	}
-
-	/**
-	 * Sets the list of reservations.
-	 * @param reservations The list of reservations to set
-	 */
-	public void setReservations(ArrayList<Reservation> reservations) {
-		this.reservations = reservations;
-	}
 }

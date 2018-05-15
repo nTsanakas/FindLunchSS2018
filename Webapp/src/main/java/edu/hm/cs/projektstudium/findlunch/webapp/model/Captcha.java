@@ -2,6 +2,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
 
 /**
  * The class Captcha.
@@ -9,6 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(
         description = "Zur Verwendung des Captchas."
 )
+@Getter
 public class Captcha {
 
     /**
@@ -39,23 +41,4 @@ public class Captcha {
      */
     public Captcha() {
     }
-
-    /**
-     * Gets answer.
-     *
-     * @return the anser
-     */
-    public String getAnswer() {
-        return answer;
-    }
-
-    /**
-     * Gets the image token.
-     *
-     * @return the imageToken
-     */
-    public String getImageToken() {
-        return imageToken;
-    }
-
 }

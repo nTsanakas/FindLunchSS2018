@@ -17,6 +17,8 @@ import javax.persistence.TemporalType;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -33,6 +35,8 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 @ApiModel(
 		description = "Beschreibt die Öffnungszeiten eines Restaurants."
 )
+@Getter
+@Setter
 public class OpeningTime {
 
 	/** The id. */
@@ -69,79 +73,48 @@ public class OpeningTime {
 	/**
 	 * Instantiates a new opening time.
 	 */
-	public OpeningTime() {
+	public OpeningTime() { super(); }
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		OpeningTime other = (OpeningTime) obj;
+		if (Integer.valueOf(id) == null) {
+			if (Integer.valueOf(other.id) != null)
+				return false;
+		}
+
+		if (id != other.getId()) {
+			return false;
+		}
+
+		if(openingTime != null && other.getOpeningTime() != null) {
+			if(!openingTime.equals(other.getOpeningTime())) {
+				return false;
+			}
+		}
+
+		if (closingTime != null && other.getClosingTime() != null) {
+			if (!closingTime.equals(other.getClosingTime())) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return this.id;
-	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((Integer.valueOf(id) == null) ? 0 : (Integer.valueOf(id).hashCode()));
 
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
+		return result;
 	}
-
-	/**
-	 * Gets the closing time.
-	 *
-	 * @return the closing time
-	 */
-	public Date getClosingTime() {
-		return this.closingTime;
-	}
-
-	/**
-	 * Sets the closing time.
-	 *
-	 * @param closingTime the new closing time
-	 */
-	public void setClosingTime(Date closingTime) {
-		this.closingTime = closingTime;
-	}
-
-	/**
-	 * Gets the opening time.
-	 *
-	 * @return the opening time
-	 */
-	public Date getOpeningTime() {
-		return this.openingTime;
-	}
-
-	/**
-	 * Sets the opening time.
-	 *
-	 * @param openingTime the new opening time
-	 */
-	public void setOpeningTime(Date openingTime) {
-		this.openingTime = openingTime;
-	}
-
-	/**
-	 * Gets the time schedule.
-	 *
-	 * @return the time schedule
-	 */
-	public TimeSchedule getTimeSchedule() {
-		return this.timeSchedule;
-	}
-
-	/**
-	 * Sets the time schedule.
-	 *
-	 * @param timeSchedule the new time schedule
-	 */
-	public void setTimeSchedule(TimeSchedule timeSchedule) {
-		this.timeSchedule = timeSchedule;
-	}
-
 }

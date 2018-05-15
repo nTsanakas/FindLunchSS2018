@@ -3,10 +3,12 @@ package edu.hm.cs.projektstudium.findlunch.webapp.repositories;
 import java.io.Serializable;
 import java.util.List;
 
+import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseTypes;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
 
 /**
@@ -33,6 +35,10 @@ public interface OfferRepository extends JpaRepository<Offer, Serializable>{
 	Offer findByIdAndRestaurant_idOrderByOrderAsc(int id, int restaurantId);
 	
 	List<Offer> findByCourseTypeOrderByOrderAsc(int courseType_id);
+
+	List<Offer> findByRestaurantIdAndCourseType(int restaurantId, CourseType courseType);
+
+	List<Offer> findByCourseTypeIsNullAndRestaurantId(int restaurantId);
 	
 	/**
 	 * Find a Offer by its id
@@ -41,5 +47,9 @@ public interface OfferRepository extends JpaRepository<Offer, Serializable>{
 	 * @return the offer
 	 */
 	Offer findById(int id);
+
+	@Modifying
+	@Query("delete from Offer where id = ?1")
+	void deleteById(int offerId);
 	
 }

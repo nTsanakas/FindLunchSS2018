@@ -17,17 +17,19 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The Class RestaurantLogo
- * @author Niklas Klotz
- *
  */
 @Entity
 @Table(name="restaurant_logo")
 @ApiModel(
 		description = "Logo zu einem Restaurant."
 )
+@Getter
+@Setter
 public class RestaurantLogo {
 
 	/** The id. */
@@ -70,54 +72,6 @@ public class RestaurantLogo {
 	/**
 	 * Instantiates a new Restaurant Logo.
 	 */
-	public RestaurantLogo() {
-	}
-	
-	public int getId() {
-		return id;
-	}
+	public RestaurantLogo() { super(); }
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public byte[] getLogo() {
-		return logo;
-	}
-
-	public void setLogo(byte[] logo) {
-		this.logo = logo;
-	}
-
-	public byte[] getThumbnail() {
-		return thumbnail;
-	}
-
-	public void setThumbnail(byte[] thumbnail) {
-		this.thumbnail = thumbnail;
-	}
-
-	public String getBase64Encoded() {
-		return base64Encoded;
-	}
-
-	public void setBase64Encoded(String base64Encoded) {
-		this.base64Encoded = base64Encoded;
-	}
-
-	public String getImageFormat() {
-		return imageFormat;
-	}
-
-	public void setImageFormat(String imageFormat) {
-		this.imageFormat = imageFormat;
-	}
-
-	public Restaurant getRestaurant() {
-		return restaurant;
-	}
-
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
-	}
 }

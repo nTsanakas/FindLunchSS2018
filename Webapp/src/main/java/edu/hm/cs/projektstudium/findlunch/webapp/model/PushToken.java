@@ -2,6 +2,8 @@ package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +16,6 @@ import javax.validation.constraints.NotNull;
 /**
  * The class PushToken
  * The class represents a firebase push token
- * @author Niklas Klotz
  *
  */
 @Entity
@@ -22,6 +23,8 @@ import javax.validation.constraints.NotNull;
 @ApiModel(
 		description = "Beschreibt einen Token für die Push-Mitteilungen."
 )
+@Getter
+@Setter
 public class PushToken {
 
 	/** The id. */
@@ -42,28 +45,6 @@ public class PushToken {
 	@NotNull
 	private String fcmToken;
 	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getUser_id() {
-		return userId;
-	}
-
-	public void setUser_id(int user_id) {
-		this.userId = user_id;
-	}
-
-	public String getFcm_token() {
-		return fcmToken;
-	}
-
-	public void setFcm_token(String fcm_token) {
-		this.fcmToken = fcm_token;
-	}
+	public PushToken() { super(); }
 	
 }

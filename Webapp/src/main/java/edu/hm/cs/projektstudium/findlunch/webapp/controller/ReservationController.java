@@ -93,13 +93,13 @@ class ReservationController {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
-		if(authenticatedUser.getAdministratedRestaurant() == null){
+		if(authenticatedUser.getRestaurant() == null){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " dont have a restaurant. Redirect to /restaurant/add"));
 			return "redirect:/restaurant/add";
 		}
 		else{
 			ArrayList<Reservation> reservations = (ArrayList<Reservation>) reservationRepository
-					.findByRestaurantIdAndReservationStatusKeyAndTimestampReceivedAfter(authenticatedUser.getAdministratedRestaurant().getId(), ReservationStatus.RESERVATION_KEY_NEW, getMidnightDateOfToday()); //reservationRepository.findAll(); //reservation form restaurant
+					.findByRestaurantIdAndReservationStatusKeyAndTimestampReceivedAfter(authenticatedUser.getRestaurant().getId(), ReservationStatus.RESERVATION_KEY_NEW, getMidnightDateOfToday()); //reservationRepository.findAll(); //reservation form restaurant
 				
 				ReservationList r = new ReservationList();
 				r.setReservations(reservations);
@@ -330,13 +330,13 @@ class ReservationController {
 		PushToken userToken = tokenRepository.findByUserId(user.getId());
 		
 		if(reservation.isConfirmed() && userToken != null){
-			JSONObject notification = pushManager.generateReservationConfirm(reservation, userToken.getFcm_token());
+			JSONObject notification = pushManager.generateReservationConfirm(reservation, userToken.getFcmToken());
 			pushManager.sendFcmNotification(notification);
 			return true;
 		}
 
 		if(reservation.isRejected() && userToken != null){
-			JSONObject notification = pushManager.generateReservationReject(reservation, userToken.getFcm_token());
+			JSONObject notification = pushManager.generateReservationReject(reservation, userToken.getFcmToken());
 			pushManager.sendFcmNotification(notification);
 			return true;
 		} 
@@ -374,7 +374,7 @@ class ReservationController {
 		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request, Thread.currentThread().getStackTrace()[1].getMethodName(), " reservationId ", reservationId.toString()));
 
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
 			return null;
 		}
@@ -426,7 +426,7 @@ class ReservationController {
 	private String setStatusModalData(String reservationId, ModelMap model, Principal principal,
 			HttpServletRequest request, int reservationStatusKey) {
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
 			return null;
 		}

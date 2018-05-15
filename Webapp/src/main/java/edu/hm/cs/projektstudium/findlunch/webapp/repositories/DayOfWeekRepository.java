@@ -26,5 +26,6 @@ public interface DayOfWeekRepository extends JpaRepository<DayOfWeek, Integer>{
 	 * @return DayOfWeek DayOfWeek
 	 */
 	DayOfWeek findByDayNumber(int dayNumber);
-
+	
+	DayOfWeek findById(int id);
 }

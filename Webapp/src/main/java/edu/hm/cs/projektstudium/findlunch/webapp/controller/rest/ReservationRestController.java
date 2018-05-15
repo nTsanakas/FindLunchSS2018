@@ -186,7 +186,7 @@ public class ReservationRestController {
 			}
 			
 			// Angebot ist ausverkauft
-			if(offer.getSold_out()){
+			if(offer.isSold_out()){
 				LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Das Offer "+reservation_offer.getOffer().getId()+" is sold out"));
 				return new ResponseEntity<>(5, HttpStatus.CONFLICT);
 			}
@@ -311,7 +311,7 @@ public class ReservationRestController {
 				
 				
 					EuroPerPoint euroPerPoint = euroPerPointRepository.findOne(1);
-					Float amountOfPoints= reservation.getTotalPrice() * euroPerPoint.getEuro();
+					Double amountOfPoints = reservation.getTotalPrice() * euroPerPoint.getEuro();
 					PointId pointId = new PointId();
 					pointId.setUser(authenticatedUser);
 					pointId.setRestaurant(reservation.getRestaurant());

@@ -86,8 +86,8 @@ public class TokenRestContoller {
     	// if there is no token stored for the customer yet
     	if(oldToken==null){
     		PushToken newToken = new PushToken();
-        	newToken.setUser_id(authenticatedUser.getId());
-        	newToken.setFcm_token(pushToken);
+        	newToken.setUserId(authenticatedUser.getId());
+        	newToken.setFcmToken(pushToken);
         	pushTokenRepository.save(newToken);
         	return new ResponseEntity<>(0, HttpStatus.ACCEPTED);
     	}
@@ -95,8 +95,8 @@ public class TokenRestContoller {
     	else if(!oldToken.equals(pushToken)){
     		pushTokenRepository.delete(oldToken.getId());
     		PushToken newToken = new PushToken();
-    		newToken.setUser_id(authenticatedUser.getId());
-        	newToken.setFcm_token(pushToken);
+    		newToken.setUserId(authenticatedUser.getId());
+        	newToken.setFcmToken(pushToken);
         	pushTokenRepository.save(newToken);
         	return new ResponseEntity<>(1, HttpStatus.OK);
     	}

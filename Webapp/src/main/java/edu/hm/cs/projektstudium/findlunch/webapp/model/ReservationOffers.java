@@ -13,18 +13,19 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The class ReservationOffers
  * The class represnets a list of offers within a reservation
- * 
- * @author Niklas Klotz
- *
  */
 @Entity
 @ApiModel(
 		description = "Anfragen zur Bestellung."
 )
+@Getter
+@Setter
 public class ReservationOffers {
 	
 	/** The id. */
@@ -51,29 +52,6 @@ public class ReservationOffers {
 	@JsonView({ReservationView.ReservationRest.class})
 	private int amount;
 
-
-	public int getAmount() {
-		return amount;
-	}
-
-	public Offer getOffer() {
-		return offer;
-	}
-
-	public void setOffer(Offer offer) {
-		this.offer = offer;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
-
-	public Reservation getReservation() {
-		return reservation;
-	}
-
-	public void setReservation(Reservation reservation) {
-		this.reservation = reservation;
-	}
+	public ReservationOffers() { super(); }
 	
 }

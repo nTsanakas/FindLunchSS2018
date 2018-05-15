@@ -2,6 +2,8 @@ package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
@@ -17,6 +19,8 @@ import javax.persistence.OneToOne;
 @ApiModel(
 		description = "Beinhaltet Daten zum Zurücksetzen des Passwortes."
 )
+@Getter
+@Setter
 public class ResetPassword {
 	@ApiModelProperty(notes = "ID")
 	@Id
@@ -34,35 +38,5 @@ public class ResetPassword {
 	@JoinColumn(name="user_id")
 	private User user;
 
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+    public ResetPassword() { super(); }
 }

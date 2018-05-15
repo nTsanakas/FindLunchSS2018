@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PointsView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The Class PointId.
@@ -19,6 +21,8 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(
 		description = "Definiert zu einem Restaurant und Kunden Punkte."
 )
+@Getter
+@Setter
 public class PointId implements Serializable{
 
 	/** The Constant serialVersionUID. */
@@ -35,35 +39,5 @@ public class PointId implements Serializable{
 	@JsonView(PointsView.PointsRest.class)
 	private Restaurant restaurant;
 	
-	/**
-	 * Gets the user.
-	 * @return The user
-	 */
-	public User getUser(){
-		return user;
-	}
-	
-	/**
-	 * Sets the new user.
-	 * @param user The user to set
-	 */
-	public void setUser(User user){
-		this.user = user;
-	}
-	
-	/**
-	 * Gets the restaurant.
-	 * @return The restaurant
-	 */
-	public Restaurant getRestaurant(){
-		return restaurant;
-	}
-	
-	/**
-	 * Sets the new restaurant.
-	 * @param restaurant The restaurant to set
-	 */
-	public void setRestaurant(Restaurant restaurant){
-		this.restaurant = restaurant;
-	}
+	public PointId() { super(); }
 }

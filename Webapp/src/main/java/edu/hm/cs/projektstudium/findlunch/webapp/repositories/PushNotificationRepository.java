@@ -27,5 +27,5 @@ public interface PushNotificationRepository extends JpaRepository<DailyPushNotif
 	 * @param userId the user id
 	 * @return the list of PushNotification for the user
 	 */
-	public List<DailyPushNotificationData> findByUser_id(int userId);
+	List<DailyPushNotificationData> findByUser_id(int userId);
 }

@@ -44,4 +44,18 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Serializ
 	 * @return The restaurant
 	 */
 	Restaurant findByRestaurantUuid(String restaurantUuid);
+
+    /**
+     * Find the restaurants associated with the given sales person.
+     * @param id the sales person's id
+     * @return A list containing said restaurants
+     */
+	List<Restaurant> findBySalesPersonId(int id);
+
+    /**
+     * Find the restaurants with the given customer ID.
+     * @param id the customer ID
+     * @return A list containing said restaurants
+     */
+    Restaurant findByCustomerId(int id);
 }

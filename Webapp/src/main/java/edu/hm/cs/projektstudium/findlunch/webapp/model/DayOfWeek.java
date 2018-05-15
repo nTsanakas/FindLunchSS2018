@@ -2,14 +2,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -17,6 +10,8 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificatio
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
@@ -27,6 +22,8 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(
 		description = "Klasse für Wochentag."
 )
+@Getter
+@Setter
 public class DayOfWeek {
 
 	/** The id. */
@@ -71,94 +68,12 @@ public class DayOfWeek {
 	public DayOfWeek() {
 	}
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return this.id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
-	 * Gets the day number.
-	 *
-	 * @return the day number
-	 */
-	public int getDayNumber() {
-		return this.dayNumber;
-	}
-
-	/**
-	 * Sets the day number.
-	 *
-	 * @param dayNumber the new day number
-	 */
-	public void setDayNumber(int dayNumber) {
-		this.dayNumber = dayNumber;
-	}
-
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
-	 * Sets the name.
-	 *
-	 * @param name the new name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Gets the offers.
-	 *
-	 * @return the offers
-	 */
-	public List<Offer> getOffers() {
-		return this.offers;
-	}
-
-	/**
-	 * Sets the offers.
-	 *
-	 * @param offers the new offers
-	 */
-	public void setOffers(List<Offer> offers) {
-		this.offers = offers;
-	}
-
-	/**
-	 * Gets the time schedules.
-	 *
-	 * @return the time schedules
-	 */
-	public List<TimeSchedule> getTimeSchedules() {
-		return this.timeSchedules;
-	}
-
-	/**
-	 * Sets the time schedules.
-	 *
-	 * @param timeSchedules the new time schedules
-	 */
-	public void setTimeSchedules(List<TimeSchedule> timeSchedules) {
-		this.timeSchedules = timeSchedules;
+	// TODO: Schauen, was das genau tut und ob es noch nützlich ist.
+	@PreRemove
+	private void removeDayOfWeeksFromOffer() {
+		for (Offer offer : offers) {
+			offer.getDayOfWeeks().remove(offer);
+		}
 	}
 
 	/**
@@ -185,24 +100,6 @@ public class DayOfWeek {
 		timeSchedule.setDayOfWeek(null);
 
 		return timeSchedule;
-	}
-	
-	/**
-	 * Gets the push notifications.
-	 *
-	 * @return the push notifications
-	 */
-	public List<DailyPushNotificationData> getPushNotifications() {
-		return this.pushNotifications;
-	}
-
-	/**
-	 * Sets the push notifications.
-	 *
-	 * @param pushNotifications the new push notifications
-	 */
-	public void setPushNotifications(List<DailyPushNotificationData> pushNotifications) {
-		this.pushNotifications = pushNotifications;
 	}
 
 }

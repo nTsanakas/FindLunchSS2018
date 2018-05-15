@@ -43,7 +43,7 @@
 									class="alert alert-danger" role="alert" th:errors="*{title}"></div>
 							</div>
 						</td>
-					</tr>					
+					</tr>
 					<tr>
 						<td><label class="control-label" for="description"
 							th:text="#{offer.label.description}">desc</label></td>
@@ -62,18 +62,18 @@
 									th:errors="*{description}"></div>
 							</div>
 						</td>
-					</tr>	
+					</tr>
 					<tr>
-						<td><label class="control-label" for="courseType" 
+						<td><label class="control-label" for="courseType"
 							th:text="#{offer.label.course}">course</label>
 						</td>
-						<td style="width: 15px"><span 
+						<td style="width: 15px"><span
 							style="padding-top: 7px"
 							class="glyphicon glyphicon-question-sign" data-placement="left"
 							data-toggle="tooltip"
 							th:title="#{offerDetail.tooltip.course}"></span></td>
 						<td>
-							<div class="form-group col-md-12" th:each="course : ${courseTypes}" 
+							<div class="form-group col-md-12" th:each="course : ${courseType}"
 								th:classappend="${#fields.hasErrors('courseType')}? has-error">
 								<input type="radio" th:field="${offer.courseType}" th:value="${course.getId()}"
 									id="courseType"/>
@@ -96,7 +96,7 @@
 								<input type="text"
 									th:field="*{price}" class="form-control" id="price" />
 								<div th:if="${#fields.hasErrors('price')}? has-error"
-									class="alert alert-danger" role="alert" th:errors="*{price}">Muss größer 0,00
+									class="alert alert-danger" role="alert" th:errors="*{price}">Muss grï¿½ï¿½er 0,00
 									sein</div>
 							</div>
 						</td>
@@ -111,7 +111,7 @@
 						<td>
 						<div class="form-group col-md-12"
 								th:classappend="${#fields.hasErrors('neededPoints')}? has-error">
-								<input type="text" 
+								<input type="text"
 									th:field="*{neededPoints}" class="form-control"
 									id="neededPoints" />
 								<div th:if="${#fields.hasErrors('neededPoints')}? has-error"
@@ -130,7 +130,7 @@
 						<td>
 							<div class="form-group col-md-12"
 								th:classappend="${#fields.hasErrors('preparationTime')}? has-error">
-								<input type="text" 
+								<input type="text"
 									th:field="*{preparationTime}" class="form-control"
 									id="preparationTime" />
 								<div th:if="${#fields.hasErrors('preparationTime')}? has-error"
@@ -227,7 +227,7 @@
 							<div class="col-md-8">
 								<table class="table table-hover">
 									<thead>
-										<tr>										
+										<tr>
 											<th th:text="#{restaurant.label.additives.inside}"></th>
 											<th th:text="#{restaurant.label.additives.desc}"></th>
 										</tr>
@@ -241,7 +241,7 @@
 											</td>
 											<td th:text="${additive.description}"></td>
 										</tr>
-									
+
 									</tbody>
 								</table>
 							</div>
@@ -258,7 +258,7 @@
 							<div class="col-md-8">
 								<table class="table table-hover">
 									<thead>
-										<tr>										
+										<tr>
 											<th th:text="#{restaurant.label.allergenic.inside}"></th>
 											<th th:text="#{restaurant.label.allergenic.desc}"></th>
 										</tr>
@@ -272,7 +272,7 @@
 											</td>
 											<td th:text="${allergenic.description}"></td>
 										</tr>
-									
+
 									</tbody>
 								</table>
 							</div>
@@ -360,7 +360,7 @@
 	<br />
 
 	<div th:replace="fragments/footer :: footer"></div>
-	
+
 		<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PointsView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The Class Points.
@@ -23,6 +25,8 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(
 		description = "Bonuspunkte"
 )
+@Getter
+@Setter
 public class Points {
 
 	/**
@@ -32,7 +36,7 @@ public class Points {
 	//composite-id key
 	@EmbeddedId
 	@JsonView(PointsView.PointsRest.class)
-	private PointId compositeKey;//= new PointId()
+	private PointId compositeKey;
 	
 	/** The points.*/
 	@ApiModelProperty(notes = "Punkte")
@@ -42,23 +46,7 @@ public class Points {
 	/**
 	 * Default Constructor.
 	 */
-	public Points(){}
-	
-	/** 
-	 * Gets the composite key.
-	 * @return The composite key
-	 */
-	public PointId getCompositeKey(){
-		return compositeKey;
-	}
-	
-	/**
-	 * Sets the new composite key to Points.
-	 * @param compositeKey The new composite key to set
-	 */
-	public void setCompositeKey(PointId compositeKey){
-		this.compositeKey = compositeKey;
-	}
+	public Points() { super(); }
 	
 	/**
 	 * Gets the User.
@@ -93,21 +81,5 @@ public class Points {
 	public void setRestaurant(Restaurant restaurant){
 		compositeKey.setRestaurant(restaurant);
 	}
-	
-	/**
-	 * Gets the points.
-	 * @return The points
-	 */
-	public int getPoints(){
-		return points;
-	}
-	
-	/**
-	 * Sets the points.
-	 * @param points The points
-	 */
-	public void setPoints(int points){
-		this.points = points;
-	}
-	
+
 }

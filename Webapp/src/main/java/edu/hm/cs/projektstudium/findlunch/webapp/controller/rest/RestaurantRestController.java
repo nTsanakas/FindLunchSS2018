@@ -122,7 +122,7 @@ public class RestaurantRestController {
 		for (Restaurant restaurant : restaurantList) {
 			for(Points points : pointsList){
 				if(restaurant.getId() == points.getRestaurant().getId()){
-					restaurant.setActuallPoints(points.getPoints());
+					restaurant.setActualPoints(points.getPoints());
 				}
 			}
 		}

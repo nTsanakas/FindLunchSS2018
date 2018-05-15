@@ -17,16 +17,20 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificatio
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
- * The Class Additives.
+ * The Class Additive.
  */
 @Entity
 @Table(name="allergenic")
 @ApiModel (
         description = "Beschreibt ein Allergen, das in Produkten enthalten sein kann."
 )
+@Getter
+@Setter
 public class Allergenic {
 
 	/** The id. */
@@ -59,61 +63,9 @@ public class Allergenic {
 	//bi-directional many-to-many association to Offer
 	@ManyToMany(mappedBy="allergenic")
 	private List<Offer> offers;
-	
+
 	/**
 	 * Instantiates a new allergenic.
 	 */
-	public Allergenic() {
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return this.id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getShortKey() {
-		return shortKey;
-	}
-
-	public void setShortKey(String shortKey) {
-		this.shortKey = shortKey;
-	}
-
-	public List<Offer> getOffers() {
-		return offers;
-	}
-
-	public void setOffers(List<Offer> offers) {
-		this.offers = offers;
-	}
-
+	public Allergenic() { super(); }
 }

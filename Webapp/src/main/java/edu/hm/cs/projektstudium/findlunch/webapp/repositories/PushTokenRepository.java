@@ -7,8 +7,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.PushToken;
 
 /**
  * The repository for the firebase tokens
- * @author Niklas Klotz
- *
  */
 @Repository
 public interface PushTokenRepository extends JpaRepository<PushToken, Integer> {

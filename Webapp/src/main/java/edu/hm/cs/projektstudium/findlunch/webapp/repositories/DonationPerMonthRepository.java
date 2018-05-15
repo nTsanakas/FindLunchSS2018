@@ -25,5 +25,11 @@ public interface DonationPerMonthRepository extends JpaRepository<DonationPerMon
 	 * @return List of donationPerMonth (ordered by date descending)
 	 */
 	List<DonationPerMonth> findByRestaurantIdAndBillIdOrderByDateDesc(int restaurantId, Integer billId);
-	
+
+	/**
+	 *
+	 * @param restaurantId
+	 * @return
+	 */
+	List<DonationPerMonth> findByRestaurantId(int restaurantId);
 }

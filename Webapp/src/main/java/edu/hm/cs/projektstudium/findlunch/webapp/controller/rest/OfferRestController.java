@@ -3,7 +3,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseTypes;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseType;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.TimeSchedule;
@@ -97,11 +97,11 @@ public class OfferRestController {
 		Map<String, List<Offer>> offers = new LinkedHashMap<String, List<Offer>>();
 		
 		// Put the orders together with the coursetypes and order them by their sort by value
-		for(CourseTypes course : courseTypeRepo.findByRestaurantIdOrderBySortByAsc(restaurantId)){
+		for(CourseType course : courseTypeRepo.findByRestaurantIdOrderBySortByAsc(restaurantId)){
 			
 			List<Offer> offersInCourse = new LinkedList<Offer>();
 			for(Offer offer  : result){
-				if(offer.getCourseType() == course.getId() && !offer.getSold_out()){
+				if(offer.getCourseType() == course.getId() && !offer.isSold_out()){
 					offersInCourse.add(offer);
 				}
 			}

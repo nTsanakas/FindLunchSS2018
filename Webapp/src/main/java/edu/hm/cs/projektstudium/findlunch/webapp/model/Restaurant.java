@@ -25,6 +25,8 @@ import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
@@ -46,6 +48,8 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 @ApiModel(
 		description = "Ein Restaurant."
 )
+@Getter
+@Setter
 public class Restaurant implements Serializable {
 
 	/** The Constant serialVersionUID. */
@@ -260,6 +264,16 @@ public class Restaurant implements Serializable {
 	@ApiModelProperty(notes = "Aktuell geöffnet")
 	@Transient
 	private boolean currentlyOpen;
+
+	@Column(name = "swa_offer_modify_permission")
+	private boolean offerModifyPermission;
+
+	@Column(name = "swa_blocked")
+	private boolean blocked;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "swa_sales_person_id")
+	private SalesPerson salesPerson;
 	
 	/**
 	 * Instantiates a new restaurant.
@@ -274,234 +288,6 @@ public class Restaurant implements Serializable {
 			defaultLogo = this.restaurantLogos.get(0);
 		
 		return defaultLogo;
-	}
-
-	public void setDefaultLogo(RestaurantLogo defaultLogo) {
-		this.defaultLogo = defaultLogo;
-	}
-
-	public List<RestaurantLogo> getRestaurantLogos() {
-		return restaurantLogos;
-	}
-
-	public void setRestaurantLogos(List<RestaurantLogo> restaurantLogos) {
-		this.restaurantLogos = restaurantLogos;
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return this.id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
-	 * Gets the city.
-	 *
-	 * @return the city
-	 */
-	public String getCity() {
-		return this.city;
-	}
-
-	/**
-	 * Sets the city.
-	 *
-	 * @param city the new city
-	 */
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	/**
-	 * Gets the email.
-	 *
-	 * @return the email
-	 */
-	public String getEmail() {
-		return this.email;
-	}
-
-	/**
-	 * Sets the email.
-	 *
-	 * @param email the new email
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	/**
-	 * Gets the location latitude.
-	 *
-	 * @return the location latitude
-	 */
-	public float getLocationLatitude() {
-		return this.locationLatitude;
-	}
-
-	/**
-	 * Sets the location latitude.
-	 *
-	 * @param locationLatitude the new location latitude
-	 */
-	public void setLocationLatitude(float locationLatitude) {
-		this.locationLatitude = locationLatitude;
-	}
-
-	/**
-	 * Gets the location longitude.
-	 *
-	 * @return the location longitude
-	 */
-	public float getLocationLongitude() {
-		return this.locationLongitude;
-	}
-
-	/**
-	 * Sets the location longitude.
-	 *
-	 * @param locationLongitude the new location longitude
-	 */
-	public void setLocationLongitude(float locationLongitude) {
-		this.locationLongitude = locationLongitude;
-	}
-
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
-	 * Sets the name.
-	 *
-	 * @param name the new name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Gets the phone.
-	 *
-	 * @return the phone
-	 */
-	public String getPhone() {
-		return this.phone;
-	}
-
-	/**
-	 * Sets the phone.
-	 *
-	 * @param phone the new phone
-	 */
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	/**
-	 * Gets the street.
-	 *
-	 * @return the street
-	 */
-	public String getStreet() {
-		return this.street;
-	}
-
-	/**
-	 * Sets the street.
-	 *
-	 * @param street the new street
-	 */
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	/**
-	 * Gets the street number.
-	 *
-	 * @return the street number
-	 */
-	public String getStreetNumber() {
-		return this.streetNumber;
-	}
-
-	/**
-	 * Sets the street number.
-	 *
-	 * @param streetNumber the new street number
-	 */
-	public void setStreetNumber(String streetNumber) {
-		this.streetNumber = streetNumber;
-	}
-
-	/**
-	 * Gets the url.
-	 *
-	 * @return the url
-	 */
-	public String getUrl() {
-		return this.url;
-	}
-
-	/**
-	 * Sets the url.
-	 *
-	 * @param url the new url
-	 */
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	/**
-	 * Gets the zip.
-	 *
-	 * @return the zip
-	 */
-	public String getZip() {
-		return this.zip;
-	}
-
-	/**
-	 * Sets the zip.
-	 *
-	 * @param zip the new zip
-	 */
-	public void setZip(String zip) {
-		this.zip = zip;
-	}
-
-	/**
-	 * Gets the offers.
-	 *
-	 * @return the offers
-	 */
-	public List<Offer> getOffers() {
-		return this.offers;
-	}
-
-	/**
-	 * Sets the offers.
-	 *
-	 * @param offers the new offers
-	 */
-	public void setOffers(List<Offer> offers) {
-		this.offers = offers;
 	}
 
 	/**
@@ -528,69 +314,6 @@ public class Restaurant implements Serializable {
 		offer.setRestaurant(null);
 
 		return offer;
-	}
-
-	/**
-	 * Gets the country.
-	 *
-	 * @return the country
-	 */
-	public Country getCountry() {
-		return this.country;
-	}
-
-	/**
-	 * Sets the country.
-	 *
-	 * @param country the new country
-	 */
-	public void setCountry(Country country) {
-		this.country = country;
-	}
-
-	/**
-	 * Gets the kitchen types.
-	 *
-	 * @return the kitchen types
-	 */
-	public List<KitchenType> getKitchenTypes() {
-		return this.kitchenTypes;
-	}
-
-	/**
-	 * Sets the kitchen types.
-	 *
-	 * @param kitchenTypes the new kitchen types
-	 */
-	public void setKitchenTypes(List<KitchenType> kitchenTypes) {
-		this.kitchenTypes = kitchenTypes;
-	}
-
-	/**
-	 * Gets the restaurant type.
-	 *
-	 * @return the restaurant type
-	 */
-	public RestaurantType getRestaurantType() {
-		return this.restaurantType;
-	}
-
-	/**
-	 * Sets the restaurant type.
-	 *
-	 * @param restaurantType the new restaurant type
-	 */
-	public void setRestaurantType(RestaurantType restaurantType) {
-		this.restaurantType = restaurantType;
-	}
-
-	/**
-	 * Gets the time schedules.
-	 *
-	 * @return the time schedules
-	 */
-	public List<TimeSchedule> getTimeSchedules() {
-		return this.timeSchedules;
 	}
 
 	/**
@@ -636,24 +359,6 @@ public class Restaurant implements Serializable {
 	}
 
 	/**
-	 * Gets the admins.
-	 *
-	 * @return the admins
-	 */
-	public List<User> getAdmins() {
-		return this.admins;
-	}
-
-	/**
-	 * Sets the admins.
-	 *
-	 * @param admins the new admins
-	 */
-	public void setAdmins(List<User> admins) {
-		this.admins = admins;
-	}
-
-	/**
 	 * Adds an admin.
 	 *
 	 * @param admin the admin
@@ -661,7 +366,7 @@ public class Restaurant implements Serializable {
 	 */
 	public User addAdmin(User admin) {
 		getAdmins().add(admin);
-		admin.setAdministratedRestaurant(this);
+		admin.setRestaurant(this);
 
 		return admin;
 	}
@@ -674,161 +379,11 @@ public class Restaurant implements Serializable {
 	 */
 	public User removeAdmin(User admin) {
 		getAdmins().remove(admin);
-		admin.setAdministratedRestaurant(null);
+		admin.setRestaurant(null);
 
 		return admin;
 	}
 
-	/**
-	 * Gets the distance.
-	 *
-	 * @return the distance
-	 */
-	public int getDistance() {
-		return distance;
-	}
-
-	/**
-	 * Sets the distance.
-	 *
-	 * @param distance the new distance
-	 */
-	public void setDistance(int distance) {
-		this.distance = distance;
-	}
-	
-	/**
-	 * Gets the fav users.
-	 *
-	 * @return the fav users
-	 */
-	public List<User> getFavUsers() {
-		return this.favUsers;
-	}
-
-	/**
-	 * Sets the fav user.
-	 *
-	 * @param users the new fav user
-	 */
-	public void setFavUser(List<User> users) {
-		this.favUsers = users;
-	}
-
-	/**
-	 * Checks if the restaurant is a favorite of the user.
-	 *
-	 * @return true, if is favorite
-	 */
-	public boolean isFavorite() {
-		return isFavorite;
-	}
-
-	/**
-	 * Sets the restaurant as favorite for a user (transient).
-	 *
-	 * @param isFavorite the new favorite
-	 */
-	public void setFavorite(boolean isFavorite) {
-		this.isFavorite = isFavorite;
-	}
-	
-	/**
-	 * Gets points of restaurant.
-	 * @return List of points
-	 */
-	public List<Points> getRestaurantPoints(){
-		return restaurantPoints;
-	}
-	
-	/**
-	 * Sets the points of restaurant.
-	 * @param restaurantPoints List of points to set
-	 */
-	public void setRestaurantPoints(List<Points> restaurantPoints){
-		this.restaurantPoints = restaurantPoints;
-	}
-	
-	/**
-	 * Gets the actual point (transient).
-	 * @return current points
-	 */
-	public int getActuallPoints() {
-		return actualPoints;
-	}
-
-	/**
-	 * Sets the acutalPoints.
-	 * @param actuallPoints actualPoints to set
-	 */
-	public void setActuallPoints(int actuallPoints) {
-		this.actualPoints = actuallPoints;
-	}
-	
-	/**
-	 * Gets the qr-code uuid as byte array.
-	 * @return the qr-code as a byte array
-	 */
-	public byte[] getQrUuid() {
-		return qrUuid;
-	}
-
-	/**
-	 * Sets the qr-code
-	 * @param qrUuid bytes to set
-	 */
-	public void setQrUuid(byte[] qrUuid) {
-		this.qrUuid = qrUuid;
-	}
-	
-	/**
-	 * Gets the uuid from restaurant.
-	 * @return Uuid form restaurant
-	 */
-	public String getRestaurantUuid() {
-		return restaurantUuid;
-	}
-
-	/**
-	 * Sets the uuid from restaurant
-	 * @param restaurantUuid Uuid to set
-	 */
-	public void setRestaurantUuid(String restaurantUuid) {
-		this.restaurantUuid = restaurantUuid;
-	}
-	
-	/**
-	 * Gets the base64 encoded qr-code
-	 * @return encoded qr-code
-	 */
-	public String getBase64Encoded() {
-		return base64Encoded;
-	}
-	
-	/**
-	 * Sets the base64 encoded qr-code.
-	 * @param base64Encoded the base64 encoded code
-	 */
-	public void setBase64Encoded(String base64Encoded) {
-		this.base64Encoded = base64Encoded;
-	}
-	
-	/**
-	 * Gets the donations from a restaurant.
-	 * @return the donations
-	 */
-	public List<DonationPerMonth> getDonations() {
-		return donations;
-	}
-	
-	/**
-	 * Sets the donations from a restaurant.
-	 * @param donations List of donations to set
-	 */
-	public void setDonations(List<DonationPerMonth> donations) {
-		this.donations = donations;
-	}
-	
 	/**
 	 * Add a new donationPerMonth.
 	 * @param donationPerMonth donation to add
@@ -840,59 +395,11 @@ public class Restaurant implements Serializable {
 
 		return donationPerMonth;
 	}
-
-	/**
-	 * Gets the bills from a restaurant.
-	 * @return bills of the restaurant
-	 */
-	public List<Bill> getBills() {
-		return bills;
-	}
-
-	/**
-	 * Sets the bills from a restaurant.
-	 * @param bills Bills to set
-	 */
-	public void setBills(List<Bill> bills) {
-		this.bills = bills;
-	}
-
-	/**
-	 * Gets the customer id from a restaurant.
-	 * @return cusomerId from restaurant
-	 */
-	public int getCustomerId() {
-		return customerId;
-	}
-
-	/**
-	 * Sets the customerId from a restaurant.
-	 * @param customerId CustomerId to set
-	 */
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
-
-	/**
-	 * Gets the reservations.
-	 * @return the reservations
-	 */
-	public List<Reservation> getReservation() {
-		return reservation;
-	}
-
-	/**
-	 * Sets the reservations.
-	 * @param reservation the reservations
-	 */
-	public void setReservation(List<Reservation> reservation) {
-		this.reservation = reservation;
-	}
 	
 	/**
 	 * Adds the restaurant logo.
 	 *
-	 * @param RestaurantLogo the restuarant logo
+	 * @param restaurantLogo the restuarant logo
 	 * @return the restaurant logo
 	 */
 	public RestaurantLogo addRestaurantLogo(RestaurantLogo restaurantLogo) {
@@ -910,7 +417,7 @@ public class Restaurant implements Serializable {
 	/**
 	 * Removes the restaurant logo.
 	 *
-	 * @param RestaurantLogo the restaurant logo
+	 * @param restaurantLogo the restaurant logo
 	 * @return the restaurant logo
 	 */
 	public RestaurantLogo removeRestaurantLogo(RestaurantLogo restaurantLogo) {
@@ -973,12 +480,5 @@ public class Restaurant implements Serializable {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * @param isOpen the isOpen to set
-	 */
-	public void setcurrentlyOpen(boolean currentlyOpen) {
-		this.currentlyOpen = currentlyOpen;
 	}
 }

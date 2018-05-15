@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
@@ -22,6 +24,8 @@ import org.springframework.format.annotation.NumberFormat.Style;
 @ApiModel(
 		description = "Definiert, wie viel ein Punkt wert ist."
 )
+@Getter
+@Setter
 public class EuroPerPoint {
 
 	/** The id. */
@@ -33,27 +37,13 @@ public class EuroPerPoint {
 	/** The euro per point.*/
 	@ApiModelProperty(notes = "Euro pro Punkt")
 	@NumberFormat(style=Style.DEFAULT)
-	private float euro;
+	private double euro;
 	
 	/** The reservations*/
 	@ApiModelProperty(notes = "Reservierungen")
 	@OneToMany(mappedBy="euroPerPoint")
 	private List<Reservation> reservations;
 
-	/**
-	 * Gets the Euro per point.
-	 * @return
-	 */
-	public float getEuro() {
-		return euro;
-	}
-	
-	/**
-	 * Sets the euro per point.
-	 * @param euro the new euro per point
-	 */
-	public void setEuro(float euro) {
-		this.euro = euro;
-	}
+	public EuroPerPoint() { super(); }
 	
 }

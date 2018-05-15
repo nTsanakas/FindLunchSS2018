@@ -22,7 +22,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 	 * @param endDate the end date
 	 * @return List of bookings
 	 */
-	public List<Booking> findByBookingTimeBetween(Date startDate, Date endDate);
+	List<Booking> findByBookingTimeBetween(Date startDate, Date endDate);
 	
 	/**
 	 * Calculate sum of bookings from an account.
@@ -30,5 +30,5 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 	 * @return result as a float
 	 */
 	@Query(value = "SELECT SUM(b.amount) FROM Booking b WHERE b.account.id=:accountId")
-	public Float findCurrentAmountOfAccount(@Param("accountId") int accountId);
+	Float findCurrentAmountOfAccount(@Param("accountId") int accountId);
 }

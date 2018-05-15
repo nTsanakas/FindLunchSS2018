@@ -137,6 +137,12 @@
 		    <artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.20</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<!-- Used for integration testing -->
 		<dependency>
@@ -249,6 +255,7 @@
                         <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
                         <SCHEMA>FindLunch_v5.sql</SCHEMA>
                         <DATA>data_v5.sql</DATA>
+                        <SWA_SCHEMA>FindLunch_v6.sql</SWA_SCHEMA>
                         <SUP_CONF>supervisord.conf</SUP_CONF>
                         <STARTUP>findlunch.sh</STARTUP>
                     </buildArgs>

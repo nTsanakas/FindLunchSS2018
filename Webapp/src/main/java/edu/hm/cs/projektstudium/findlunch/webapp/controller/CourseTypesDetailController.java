@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseTypes;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
@@ -73,12 +73,12 @@ public class CourseTypesDetailController {
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User authenticatedUser = (User)((Authentication)principal).getPrincipal();
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be added."));
 			return "redirect:/restaurant/add?required";
 		}
 		
-		CourseTypes courseType = new CourseTypes();
+		CourseType courseType = new CourseType();
 		model.addAttribute("courseType", courseType);
 		return "coursetypeDetails";
 	}
@@ -98,12 +98,12 @@ public class CourseTypesDetailController {
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be edited."));
 			return "redirect:/restaurant/add?required";
 		}
 		
-		CourseTypes courseType = courseTypeRepository.findById(coursetypeId);
+		CourseType courseType = courseTypeRepository.findById(coursetypeId);
 		if(courseType == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The coursetype with id " + courseType + " could not be found"));
 			return "redirect:/coursetype?invalid_id";
@@ -122,11 +122,11 @@ public class CourseTypesDetailController {
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path={"/coursetype/edit/{coursetypesId}", "/coursetype/add"}, method=RequestMethod.POST, params={"saveCourse"})
-	public String saveCourseType(@Valid @ModelAttribute("courseType") final CourseTypes courseType, BindingResult bindingResult, Principal principal, Model model, HttpServletRequest request) {
+	public String saveCourseType(@Valid @ModelAttribute("courseType") final CourseType courseType, BindingResult bindingResult, Principal principal, Model model, HttpServletRequest request) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
 		
-		Restaurant restaurant = restaurantRepository.findOne(authenticatedUser.getAdministratedRestaurant().getId());
+		Restaurant restaurant = restaurantRepository.findOne(authenticatedUser.getRestaurant().getId());
 		
 		courseTypeValidator.validate(courseType, bindingResult);
 		if(bindingResult.hasErrors()) {
@@ -135,8 +135,8 @@ public class CourseTypesDetailController {
 		}
 		
 		courseType.setRestaurantId(restaurant.getId());
-		if(!courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getAdministratedRestaurant().getId()).contains(courseType)){
-			courseType.setSortBy(courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getAdministratedRestaurant().getId()).size()+1);
+		if(!courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()).contains(courseType)){
+			courseType.setSortBy(courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()).size()+1);
 		}
 		courseTypeRepository.save(courseType);
 		return "redirect:/coursetype?success";
@@ -171,18 +171,18 @@ public class CourseTypesDetailController {
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be edited."));
 			return "redirect:/restaurant/add?required";
 		}
 		
 		// if the given courestype can not be found in the database
-		CourseTypes courseType = courseTypeRepository.findById(coursetypeId);
+		CourseType courseType = courseTypeRepository.findById(coursetypeId);
 		if(courseType == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The coursetype with id " + courseType + " could not be found"));
 			return "redirect:/coursetype?invalid_id";
 		}
-		List<Offer> offers = (ArrayList<Offer>) offerRepository.findByRestaurant_idOrderByOrderAsc(authenticatedUser.getAdministratedRestaurant().getId());
+		List<Offer> offers = (ArrayList<Offer>) offerRepository.findByRestaurant_idOrderByOrderAsc(authenticatedUser.getRestaurant().getId());
 		List<Offer> courseOffers = new ArrayList<Offer>();
 		
 		for(Offer offer : offers) {
@@ -191,7 +191,7 @@ public class CourseTypesDetailController {
 			}
 		}
 		if(courseOffers.isEmpty()){
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The restaurant with id " + authenticatedUser.getAdministratedRestaurant().getId() + " has no offers in coursetype " +courseType));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The restaurant with id " + authenticatedUser.getRestaurant().getId() + " has no offers in coursetype " +courseType));
 			return "redirect:/coursetype?no_offers";
 		}
 		
@@ -215,7 +215,7 @@ public class CourseTypesDetailController {
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
-		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(courseId, authenticatedUser.getAdministratedRestaurant().getId());
+		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(courseId, authenticatedUser.getRestaurant().getId());
 		
 		int courseTypeId = offer.getCourseType();
 		List<Offer> offersInCourse = offerRepository.findByCourseTypeOrderByOrderAsc(courseTypeId);
@@ -251,7 +251,7 @@ public class CourseTypesDetailController {
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
-		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(courseId, authenticatedUser.getAdministratedRestaurant().getId());
+		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(courseId, authenticatedUser.getRestaurant().getId());
 		
 		int courseTypeId = offer.getCourseType();
 		List<Offer> offersInCourse = offerRepository.findByCourseTypeOrderByOrderAsc(courseTypeId);

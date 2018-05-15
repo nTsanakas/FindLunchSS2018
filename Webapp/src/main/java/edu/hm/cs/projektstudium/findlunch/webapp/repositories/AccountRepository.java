@@ -19,13 +19,13 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 	 * @param users List of user
 	 * @return the account
 	 */
-	public Account findByUsers(List<User> users);
+	Account findByUsers(List<User> users);
 	
 	/**
 	 * Find a Account by its id.
 	 * @param accountTypeId the account id.
 	 * @return the account
 	 */
-	public Account findByAccountTypeId(int accountTypeId);
+	Account findByAccountTypeId(int accountTypeId);
 
 }

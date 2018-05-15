@@ -1,9 +1,7 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller;
 
-import java.applet.AppletContext;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.file.Files;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -20,17 +18,13 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.plaf.synth.SynthSeparatorUI;
 import javax.validation.Valid;
 
-import org.apache.catalina.core.ApplicationContext;
 import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,7 +32,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,8 +56,6 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Account;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.DayOfWeek;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.OfferPhoto;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.OpeningTime;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.RestaurantLogo;
@@ -155,7 +146,7 @@ public class RestaurantController {
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 
-		if (authenticatedUser.getAdministratedRestaurant() != null) {
+		if (authenticatedUser.getRestaurant() != null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " already has a restaurant. Another restaurant cannot be added."));
 			return "redirect:/offer";
 		} else {
@@ -244,12 +235,12 @@ public class RestaurantController {
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers it can be edited."));
 			return "redirect:/restaurant/add";
 		}
 		
-		Restaurant restaurant = restaurantRepository.findById(authenticatedUser.getAdministratedRestaurant().getId());
+		Restaurant restaurant = restaurantRepository.findById(authenticatedUser.getRestaurant().getId());
 
 		if(restaurant == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers it can be edited."));
@@ -539,7 +530,7 @@ public class RestaurantController {
 
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		User u = userRepository.findOne(authenticatedUser.getId());
-		u.setAdministratedRestaurant(restaurant);
+		u.setRestaurant(restaurant);
 		restaurant.addAdmin(u);
 		
 		//
@@ -733,12 +724,12 @@ public class RestaurantController {
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers it can be edited."));
 			return "redirect:/restaurant/add";
 		}
 		
-		Restaurant restaurant = restaurantRepository.findById(authenticatedUser.getAdministratedRestaurant().getId());
+		Restaurant restaurant = restaurantRepository.findById(authenticatedUser.getRestaurant().getId());
 
 		if(restaurant == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers it can be edited."));

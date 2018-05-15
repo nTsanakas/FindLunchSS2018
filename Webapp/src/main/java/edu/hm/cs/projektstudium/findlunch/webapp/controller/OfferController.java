@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.AdditivesRepository;
+import edu.hm.cs.projektstudium.findlunch.webapp.repositories.AdditiveRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.AllergenicRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.CourseTypeRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.DayOfWeekRepository;
@@ -41,7 +41,7 @@ public class OfferController {
 	
 	/** The additive repository. */
 	@Autowired
-	private AdditivesRepository additivesRepository;
+	private AdditiveRepository additiveRepository;
 	
 	/** The allergenic repository. */
 	@Autowired
@@ -71,18 +71,18 @@ public class OfferController {
 		User authenticatedUser = (User)((Authentication)principal).getPrincipal();
 		
 		
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
 			return "redirect:/restaurant/add?required";
 		}
 		
-		List<Offer> offers = (ArrayList<Offer>) offerRepository.findByRestaurant_idOrderByOrderAsc(authenticatedUser.getAdministratedRestaurant().getId());
+		List<Offer> offers = (ArrayList<Offer>) offerRepository.findByRestaurant_idOrderByOrderAsc(authenticatedUser.getRestaurant().getId());
 		model.addAttribute("offers", offers);
 		model.addAttribute("dayOfWeeks", dayOfWeekRepository.findAll());
-		model.addAttribute("additives", additivesRepository.findAll());
+		model.addAttribute("additives", additiveRepository.findAll());
 		model.addAttribute("allergenic", allergenicRepository.findAll());
 		//model.addAttribute("courseTypes" , getCourseTypesForOffers(offers));
-		model.addAttribute("courseTypes" , courserTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getAdministratedRestaurant().getId()));
+		model.addAttribute("courseTypes" , courserTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
 		
 		return "offer";
 	}
@@ -104,14 +104,14 @@ public class OfferController {
 		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "offerId", offerId.toString()));
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
 			return "redirect:/restaurant/add?required";
 		}
 		
-		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(offerId, authenticatedUser.getAdministratedRestaurant().getId());
+		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(offerId, authenticatedUser.getRestaurant().getId());
 		if(offer == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The offer with id " + offerId + " could not be found for the given restaurant with id " + authenticatedUser.getAdministratedRestaurant().getId() + "."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The offer with id " + offerId + " could not be found for the given restaurant with id " + authenticatedUser.getRestaurant().getId() + "."));
 			return "redirect:/offer?invalid_id";
 		}
 
@@ -125,18 +125,18 @@ public class OfferController {
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
 		
-		if(authenticatedUser.getAdministratedRestaurant() == null) {
+		if(authenticatedUser.getRestaurant() == null) {
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
 			return "redirect:/restaurant/add?required";
 		}
 		
-		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(offerId, authenticatedUser.getAdministratedRestaurant().getId());
+		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(offerId, authenticatedUser.getRestaurant().getId());
 		if(offer == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The offer with id " + offerId + " could not be found for the given restaurant with id " + authenticatedUser.getAdministratedRestaurant().getId() + "."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The offer with id " + offerId + " could not be found for the given restaurant with id " + authenticatedUser.getRestaurant().getId() + "."));
 			return "redirect:/offer?invalid_id";
 		}
 
-		if(!offer.getSold_out()){
+		if(!offer.isSold_out()){
 			offer.setSold_out(true);
 			offerRepository.save(offer);
 			return "redirect:/offer?soldOut";

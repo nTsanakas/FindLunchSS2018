@@ -16,24 +16,24 @@ public interface BillRepository extends JpaRepository<Bill, Integer>{
 	 * @param restaurantId Id of the restaurant
 	 * @return List of bills from a restaurant
 	 */
-	public List<Bill> findByRestaurantId(int restaurantId);
+	List<Bill> findByRestaurantId(int restaurantId);
 	
 	/**
 	 * Find bill with the bill Number.
 	 * @param billNumber The bill number
 	 * @return The bill
 	 */
-	public Bill findByBillNumber(String billNumber);
+	Bill findByBillNumber(String billNumber);
 	
 	/**
 	 * Find all Bills that are paid.
 	 * @return List of bills
 	 */
-	public List<Bill> findByPaidTrue();
+	List<Bill> findByPaidTrue();
 	
 	/**
 	 * Find all Bills that are not paid.
 	 * @return List of bills
 	 */
-	public List<Bill> findByPaidFalse();
+	List<Bill> findByPaidFalse();
 }

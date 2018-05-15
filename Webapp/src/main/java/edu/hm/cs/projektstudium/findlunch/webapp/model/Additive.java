@@ -17,17 +17,21 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificatio
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
- * The Class Additives.
+ * The Class Additive.
  */
 @Entity
 @Table(name="additives")
 @ApiModel(
 		description = "Beschreibt einen Zusatz, der in Produkten enthalten sein kann."
 )
-public class Additives {
+@Getter
+@Setter
+public class Additive {
 
 	/** The id. */
 	@Id
@@ -63,57 +67,6 @@ public class Additives {
 	/**
 	 * Instantiates a new additive.
 	 */
-	public Additives() {
+	public Additive() {
 	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return this.id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getShortKey() {
-		return shortKey;
-	}
-
-	public void setShortKey(String shortKey) {
-		this.shortKey = shortKey;
-	}
-
-	public List<Offer> getOffers() {
-		return offers;
-	}
-
-	public void setOffers(List<Offer> offers) {
-		this.offers = offers;
-	}
-
 }

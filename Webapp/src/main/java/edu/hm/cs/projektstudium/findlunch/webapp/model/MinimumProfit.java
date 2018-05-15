@@ -2,6 +2,8 @@ package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -18,6 +20,8 @@ import javax.persistence.OneToMany;
 @ApiModel(
 		description = "Definiert den minimalen Gewinn für ein Restaurant."
 )
+@Getter
+@Setter
 public class MinimumProfit {
 
 	/** The id. */
@@ -35,53 +39,5 @@ public class MinimumProfit {
 	@OneToMany(mappedBy="minimumProfit")
 	private List<Bill> bills;
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
-	 * Gets the profit.
-	 * @return the profit
-	 */
-	public float getProfit() {
-		return profit;
-	}
-
-	/**
-	 * Sets the new profit.
-	 * @param profit Profit to set
-	 */
-	public void setProfit(float profit) {
-		this.profit = profit;
-	}
-
-	/**
-	 * Gets the bills.
-	 * @return The bills
-	 */
-	public List<Bill> getBills() {
-		return bills;
-	}
-
-	/**
-	 * Sets the bills.
-	 * @param bills The bills to set
-	 */
-	public void setBills(List<Bill> bills) {
-		this.bills = bills;
-	}
+	public MinimumProfit() { super(); }
 }
