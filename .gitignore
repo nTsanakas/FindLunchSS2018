@@ -7,5 +7,5 @@ org.eclipse.*
 .editorconfig
 target
 findlunch.sh
-*.iml
-*.log
+**.iml
+**.log
