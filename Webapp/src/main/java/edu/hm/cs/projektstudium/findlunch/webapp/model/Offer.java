@@ -20,10 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -38,6 +35,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView;
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
@@ -209,6 +207,42 @@ public class Offer {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "swa_last_changed_by_sales_person_id")
 	private SalesPerson salesPerson;
+
+	@Column(name = "swa_change_request")
+	private boolean changeRequest;
+
+	// Regex-Source: https://stackoverflow.com/questions/8937408/regular-expression-for-date-format-dd-mm-yyyy-in-javascript
+	@Pattern(regexp = "(^(((0[1-9]|1[0-9]|2[0-8])[-](0[1-9]|1[012]))|((29|30|31)[-](0[13578]|1[02]))|((29|30)[-](0[4,6,9]|11)))[-](19|[2-9][0-9])\\d\\d$)|(^29[-]02[-](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)", message = "{offer.validation.startDate}")
+	@Transient
+	private String startDateAsString;
+
+	// Regex-Source: https://stackoverflow.com/questions/8937408/regular-expression-for-date-format-dd-mm-yyyy-in-javascript
+	@Pattern(regexp = "(^(((0[1-9]|1[0-9]|2[0-8])[-](0[1-9]|1[012]))|((29|30|31)[-](0[13578]|1[02]))|((29|30)[-](0[4,6,9]|11)))[-](19|[2-9][0-9])\\d\\d$)|(^29[-]02[-](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)", message = "{offer.validation.endDate}")
+	@Transient
+	private String endDateAsString;
+
+	//The number of images per offer is limited to three
+	@Transient
+	private MultipartFile firstOfferImage;
+
+	@Transient
+	private MultipartFile secondOfferImage;
+
+	@Transient
+	private MultipartFile thirdOfferImage;
+
+	@Size(min=0, max=65535, message = "{offer.validation.changeComment}")
+	@Transient
+	private String newChangeComment;
+
+	@Transient
+	private boolean keepFirstImage; //used in the offerChangeRequest
+
+	@Transient
+	private boolean keepSecondImage;
+
+	@Transient
+	private boolean keepThirdImage;
 
 	/**
 	 * Instantiates a new offer.

@@ -3,6 +3,8 @@ package edu.hm.cs.projektstudium.findlunch.webapp.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseType;
@@ -11,7 +13,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseType;
  * The repository for the coursetypes.
  */
 @Repository
-public interface CourseTypeRepository extends JpaRepository<CourseType, Integer>{
+public interface CourseTypeRepository extends JpaRepository<CourseType, Integer> {
 
 	List<CourseType> findByNameAndRestaurantId(String courseTypeAsString, int restaurantId);
 
@@ -38,4 +40,8 @@ public interface CourseTypeRepository extends JpaRepository<CourseType, Integer>
 	 * @return
 	 */
 	CourseType findByIdAndRestaurantId(int id, int restaurant_id);
+
+	@Modifying
+	@Query("delete from CourseType where id = ?1")
+	void deleteById(int id);
 }

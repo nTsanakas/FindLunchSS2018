@@ -2,6 +2,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import edu.hm.cs.projektstudium.findlunch.webapp.components.RestaurantTimeContainer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -274,6 +276,15 @@ public class Restaurant implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "swa_sales_person_id")
 	private SalesPerson salesPerson;
+
+    @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<CourseType> courseTypeList;
+
+	@Transient
+	private List<RestaurantTimeContainer> openingTimes;
+
+	@Transient
+	private List<RestaurantTimeContainer> offerTimes;
 	
 	/**
 	 * Instantiates a new restaurant.
@@ -481,4 +492,65 @@ public class Restaurant implements Serializable {
 		}
 		return false;
 	}
+
+	public void orderRestaurantTimeContainers() {
+		openingTimes.sort(Comparator.comparingInt(RestaurantTimeContainer::getDayNumber));
+		offerTimes.sort(Comparator.comparingInt(RestaurantTimeContainer::getDayNumber));
+	}
+
+	public void restaurantTimeContainerFiller() {
+
+		if(timeSchedules.size() > 7) {
+			try {
+				throw new Exception("Error - The Table Time_Schedule contains more than 7 entries per week for restaurant-ID: " + id);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		int dayNumber = 0;
+		Date openingTime;
+		Date closingTime;
+		Date offerStartTime;
+		Date offerEndTime;
+
+		openingTimes = new ArrayList<>();
+		offerTimes = new ArrayList<>();
+		List<TimeSchedule> timeScheduleList = timeSchedules;
+
+		for (int i = 0; i < 7; i++) {
+			TimeSchedule timeSchedule = new TimeSchedule();
+
+			try {
+				timeSchedule = timeScheduleList.get(i);
+			} catch (Exception e) {
+				//no entry in the db
+			}
+
+			openingTime = null;
+			closingTime = null;
+
+			try {
+				dayNumber = timeSchedule.getDayOfWeek().getId();
+			} catch (Exception e) {
+				//new time schedule
+			}
+			if(dayNumber == 0) {
+				dayNumber = i+1;
+			}
+
+			offerStartTime = timeSchedule.getOfferStartTime();
+			offerEndTime = timeSchedule.getOfferEndTime();
+			offerTimes.add(new RestaurantTimeContainer(offerStartTime, offerEndTime, dayNumber));
+
+			//The DB allows for more than one time schedule entry per day. But the FindLunchApplication only allows one pair of opening times per day.
+			//The SWApp handles this similar. If there is more than one pair of opening times per day it is ignored.
+			if(timeSchedule.getOpeningTimes().size() > 0) {
+				openingTime = timeSchedule.getOpeningTimes().get(0).getOpeningTime();
+				closingTime = timeSchedule.getOpeningTimes().get(0).getClosingTime();
+			}
+			openingTimes.add(new RestaurantTimeContainer(openingTime, closingTime, dayNumber));
+		}
+	}
+
 }

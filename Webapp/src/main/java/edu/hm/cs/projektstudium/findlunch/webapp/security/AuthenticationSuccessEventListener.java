@@ -32,7 +32,12 @@ public final class AuthenticationSuccessEventListener
         final WebAuthenticationDetails authenticationDetails = (WebAuthenticationDetails)
                 e.getAuthentication().getDetails();
 
-        final String userPassword = e.getAuthentication().getCredentials().toString();
+        try {
+            // SWA Authentizierung gibt hier immer eine NullPointer.
+            final String userPassword = e.getAuthentication().getCredentials().toString();
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
 
         //TODO use strong password or comment this password checker (This is just a conceptual idea and may not be an appropriate approach for a productive system.)
         /*

@@ -3,11 +3,14 @@ package edu.hm.cs.projektstudium.findlunch.webapp.config;
 import edu.hm.cs.projektstudium.findlunch.webapp.security.ConsumerUserDetailsService;
 import edu.hm.cs.projektstudium.findlunch.webapp.security.CsrfAccessDeniedHandler;
 import edu.hm.cs.projektstudium.findlunch.webapp.security.RestaurantUserDetailsService;
+import edu.hm.cs.projektstudium.findlunch.webapp.service.impl.LoginServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,7 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 /**
  * This class is responsible for configuring the Spring Security context.
@@ -34,7 +37,7 @@ public class SecurityConfig {
 	 * annotations.
 	 */
 	@Configuration
-	@Order(1)
+	@Order(2)
 	@EnableGlobalMethodSecurity(prePostEnabled = true)
 	public static class StatelessApiSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
@@ -126,7 +129,7 @@ public class SecurityConfig {
 	 * filter chain is executed after the stateless security chain.
 	 */
 	@Configuration
-	@Order(2)
+	@Order(3)
 	public static class StatefulLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
 		/** Userdetailsserice to get restaurant users for authentication */
@@ -217,6 +220,65 @@ public class SecurityConfig {
 
 		}
 		
+	}
+
+	/**
+	 * Class for the Sales Webapp authentication configuration.
+	 */
+	@Configuration
+	@Order(1)
+	public static class SwaSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+		@Autowired
+		private LoginServiceImpl authenticationService;
+
+		@Autowired
+		public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+			ShaPasswordEncoder encoder = new ShaPasswordEncoder(256);
+			auth.userDetailsService(authenticationService).passwordEncoder(encoder);
+		}
+
+		@Override
+		protected void configure(HttpSecurity httpSecurity) throws Exception {
+
+			httpSecurity.formLogin().loginPage("/swa/login")
+					.usernameParameter("userId")
+					.passwordParameter("password");
+
+			httpSecurity.formLogin().defaultSuccessUrl("/swa/home")
+					.failureUrl("/swa/login?error");
+			//Logout is handled manually by the HomeController
+
+			httpSecurity.authorizeRequests()
+					.antMatchers("/swa/login").permitAll()
+					.antMatchers("/swa/home/**").access("hasRole('VMA')")
+					.antMatchers("/swa/profile/**").access("hasRole('VMA')")
+					.antMatchers("/swa/saveProfile/**").access("hasRole('VMA')")
+					.antMatchers("/swa/offer/**").access("hasRole('VMA')")
+					.antMatchers("/swa/emptyOffer/**").access("hasRole('VMA')")
+					.antMatchers("/swa/newOfferForRestaurant/**").access("hasRole('VMA')")
+					.antMatchers("/swa/saveOffer/**").access("hasRole('VMA')")
+					.antMatchers("/swa/restaurant/**").access("hasRole('VMA')")
+					.antMatchers("/swa/newRestaurant/**").access("hasRole('VMA')")
+					.antMatchers("/swa/saveRestaurant/**").access("hasRole('VMA')")
+					.antMatchers("/swa/emptyOfferOverview/**").access("hasRole('VMA')")
+					.antMatchers("/swa/offerOverviewByRestaurant/**").access("hasRole('VMA')")
+					.antMatchers("/swa/offerOverviewByCourseType/**").access("hasRole('VMA')")
+					.antMatchers("/swa/cancelOfferOverview/**").access("hasRole('VMA')")
+					.antMatchers("/swa/offerOverview/**").access("hasRole('VMA')")
+					.antMatchers("/swa/offerChangeRequest/**").access("hasRole('VMA')")
+					.antMatchers("/swa/saveOfferChangeRequest/**").access("hasRole('VMA')");
+
+			httpSecurity.csrf().disable();
+			httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED); //equals default
+			httpSecurity.sessionManagement().maximumSessions(1); //Allows only one login per user. If a user logs in again the first login will be invalid.
+			httpSecurity.sessionManagement().invalidSessionUrl("/swa/login"); //The user is send to this page after he closed the browser and opens the SalesWebApp again. Does count also for expired sessions.
+		}
+
+		@Bean
+		public HttpSessionEventPublisher httpSessionEventPublisher() {
+			return new HttpSessionEventPublisher(); //Ensures that the Spring Security session registry is notified when the session is destroyed.
+		}
 	}
 	
 }
