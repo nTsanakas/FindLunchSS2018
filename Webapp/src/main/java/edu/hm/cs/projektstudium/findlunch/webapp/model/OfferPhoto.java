@@ -13,7 +13,7 @@ import lombok.Setter;
 
 
 /**
- * The Class OfferPhoto.
+ * The Class OfferPhoto. Includes a photo from a offer.
  */
 @Entity
 @Table(name="offer_photo")

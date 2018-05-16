@@ -16,7 +16,7 @@ import lombok.Setter;
 
 
 /**
- * The Class KitchenType.
+ * The Class KitchenType. Defines different kitchen types.
  */
 @Entity
 @Table(name="kitchen_type")

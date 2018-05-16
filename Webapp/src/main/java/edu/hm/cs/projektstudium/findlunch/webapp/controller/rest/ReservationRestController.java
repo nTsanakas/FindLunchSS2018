@@ -78,10 +78,19 @@ public class ReservationRestController {
 	/** The token repository. */
 	private final PushTokenRepository tokenRepository;
 
+	/**
+	 * The mail service.
+	 */
 	private final MailService mailService;
 	
+	/**
+	 * http string
+	 */
 	private static final String HTTP = "http://";
 	
+	/**
+	 * https string
+	 */
 	private static final String HTTPS= "https://";
 	
 	/** The Logger. */

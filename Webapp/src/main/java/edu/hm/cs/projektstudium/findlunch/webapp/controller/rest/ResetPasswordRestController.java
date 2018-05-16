@@ -38,20 +38,50 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 		description="Verarbeitung von Passwort-Zurücksetzen-Anfragen.")
 public class ResetPasswordRestController {
 
+	/**
+	 * The user repository
+	 */
 	final UserRepository userRepository;
 	
+	/**
+	 * The reset password repository
+	 */
 	private final ResetPasswordRepository resetPasswordRepository;
 	
+	/**
+	 * The mail service
+	 */
 	private final MailService mailService;
 	
+	/**
+	 * The password encoder
+	 */
 	private final BCryptPasswordEncoder passwordEncoder;
 	
+	/**
+	 * http string
+	 */
 	private static final String HTTP = "http://";
 	
+	/**
+	 * https string
+	 */
 	private static final String HTTPS= "https://";
 	
+	/**
+	 * The logger
+	 */
 	private final Logger LOGGER = LoggerFactory.getLogger(ResetPasswordRestController.class);
 
+
+	/**
+	 * The controller to reset a users password.
+	 * 
+	 * @param userRepository the user repository
+	 * @param resetPasswordRepository the reset password repository
+	 * @param mailService the mail service
+	 * @param passwordEncoder the password encoder
+	 */
 	@Autowired
 	public ResetPasswordRestController(UserRepository userRepository, ResetPasswordRepository resetPasswordRepository, MailService mailService, BCryptPasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
@@ -141,16 +171,35 @@ public class ResetPasswordRestController {
 		return new ResponseEntity<>(0, HttpStatus.OK);*/
 	}
 	
+	/**
+	 * Validates the password date.
+	 * 
+	 * @param dateToValidate 
+	 * @return if the date of the password is valid.
+	 */
 	private boolean validatePasswordDate(Date dateToValidate){
 		LocalDateTime dtv = LocalDateTime.ofInstant(dateToValidate.toInstant(), ZoneId.systemDefault());
 		LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
 		return dtv.isAfter(yesterday);
 	}
 	
+	/**
+	 * Gets the url to reset the password.
+	 * 
+	 * @param request the HttpServletRequest
+	 * @param user the user
+	 * @return a url to reset the password
+	 */
 	private String getPasswordResetUrl(HttpServletRequest request, User user) {
 		return getProtocol(request.isSecure()) + request.getServerName()+":"+request.getServerPort()+"/resetpassword/"+user.getResetPassword().getToken();
 	}
 	
+	/**
+	 * Gets the used protocol.
+	 * 
+	 * @param https the https protocol
+	 * @return the used protocol
+	 */
 	private String getProtocol(boolean https){
 		return https ? HTTPS : HTTP;
 	}

@@ -14,7 +14,7 @@ import javax.persistence.*;
 
 
 /**
- * The Class RestaurantType.
+ * The Class RestaurantType. Defines the type of restaurant.
  */
 @Entity
 @Table(name="restaurant_type")

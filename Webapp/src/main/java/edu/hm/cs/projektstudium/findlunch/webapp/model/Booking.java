@@ -17,7 +17,7 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 /**
- * The Class Booking.
+ * The Class Booking. Describes book entrys.
  */
 @Entity
 @ApiModel(

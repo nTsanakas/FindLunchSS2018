@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 /**
- * The Class ReservationList.
+ * The Class ReservationList. Wrapper class to have access to the reservation object.
  */
 /*
  * Wrapper Klasse, da man sonst keinen zugriff auf die reservation Objekt hat

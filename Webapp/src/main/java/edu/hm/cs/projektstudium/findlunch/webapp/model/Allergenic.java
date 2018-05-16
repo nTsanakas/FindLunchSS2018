@@ -22,7 +22,7 @@ import lombok.Setter;
 
 
 /**
- * The Class Additive.
+ * The Class Allergenic. Describes the allergenes that could be contained in a product.
  */
 @Entity
 @Table(name="allergenic")

@@ -114,6 +114,10 @@ public class Beans extends WebMvcConfigurerAdapter{
             };
 	  }
 	
+	/**
+	 * Sets the Docket api.
+	 * @return
+	 */
 	@Bean
 	public Docket api() {                
 	    return new Docket(DocumentationType.SWAGGER_2)
@@ -128,7 +132,11 @@ public class Beans extends WebMvcConfigurerAdapter{
 	            //Metadaten (Überschrift, etc.) hinzufügen.
                 .apiInfo(apiInfo());
 	}
-	 
+
+	/**
+	 * Gives information regarding the api.
+	 * @return Returns title, description, version, license, licenseUrl, contact and build of the api.
+	 */
 	private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("FindLunch REST-Schnittstelle")
@@ -140,6 +148,9 @@ public class Beans extends WebMvcConfigurerAdapter{
                 .build();
 	}
 
+	/**
+	 * Adds resource handlers to swagger and webjars.
+	 */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("swagger-ui.html")
@@ -256,5 +267,5 @@ public class Beans extends WebMvcConfigurerAdapter{
 		resolver.setDefaultEncoding("UTF-8");
 		return resolver;
 	}
-	
+
 }

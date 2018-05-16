@@ -16,26 +16,30 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ResetPasswordRepository;
 
 /**
- * The class MailService
+ * The class MailService <p>
  * The class is responsible for sending emails to the customers and restaurants
  * 
- * @author Deniz Mardin, Niklas Klotz
+ * @author Deniz Mardin, Niklas Klotz, Martin Obermaier
  *
  */
 @Service
 public class MailService {
 
-	/** The MailSender */
+	/** 
+	 * The MailSender 
+	 * */
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	/** The resetpassword repository*/
+	/** 
+	 * The resetpassword repository
+	 * */
 	@Autowired
 	ResetPasswordRepository resetPasswordRepository;
 	
 	/**
-	 * Sends a mail for a new reservation
-	 * @param user the restaurant
+	 * Sends a mail for a new reservation 
+	 * @param restaurant the restaurant
 	 * @param reservatin the reservation
 	 * @param url the url to the reservation
 	 */
@@ -46,8 +50,8 @@ public class MailService {
 	
 	/**
 	 * Sends a mail to reset the password
-	 * @param user
-	 * @param resetLink
+	 * @param user the user
+	 * @param resetLink a link to reset the password
 	 * @throws MailException
 	 */
 	public void sendResetPwMail(User user, String resetLink) throws MailException{
@@ -57,10 +61,10 @@ public class MailService {
 	
 	/**
 	 * Builds the content of a new reservation mail
-	 * @param user the restaurant
+	 * @param restaurant the restaurant
 	 * @param reservation the reservation
 	 * @param url the url to the reservation
-	 * @return
+	 * @return returns the mail
 	 */
 	private SimpleMailMessage configureReservtionMail(Restaurant restaurant, Reservation reservation, String url) {
 		ResourceBundle messages = getResurceBundel();
@@ -74,10 +78,10 @@ public class MailService {
 	}
 	
 	/**
-	 * Builds a password mail
-	 * @param user
-	 * @param resetLink
-	 * @return
+	 * Builds a password mail 
+	 * @param user the user
+	 * @param resetLink link to reset the password
+	 * @return returns the mail
 	 */
 	private SimpleMailMessage configurePasswordMail(User user, String resetLink){
 		ResourceBundle messages = getResurceBundel();
@@ -102,7 +106,7 @@ public class MailService {
 	
 	/**
 	 * Sets the token for the password reset
-	 * @param user
+	 * @param user the user
 	 */
 	public void sendPasswordRestToken(User user){
 		SimpleMailMessage mail = configureCustomerPasswordMail(user);

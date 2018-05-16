@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 /**
  * The Class UserType.
+ * Defines different types of users.
  */
 @Entity
 @Table(name="user_type")

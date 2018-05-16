@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * The Class Country.
+ * The Class Country. The country of a business.
  */
 @Entity
 @JsonIgnoreProperties(ignoreUnknown=true)

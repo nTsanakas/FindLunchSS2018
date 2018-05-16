@@ -5,13 +5,15 @@ import org.springframework.stereotype.Repository;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Allergenic;
 
-import java.util.List;
+/**
+ * The Interface AllergenicRepository. Abstraction for the data access layer.
+ */
 
 @Repository
 public interface AllergenicRepository extends JpaRepository<Allergenic, Integer>{
 
 	/**
-	 * 
+	 * Finds allerginics by the name of the product.
 	 * @param name
 	 * @return
 	 */

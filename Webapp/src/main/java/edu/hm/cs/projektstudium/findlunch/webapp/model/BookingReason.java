@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 /**
- * The Class BookingReason.
+ * The Class BookingReason. Describes the reason for a booking.
  */
 @Entity
 @ApiModel(

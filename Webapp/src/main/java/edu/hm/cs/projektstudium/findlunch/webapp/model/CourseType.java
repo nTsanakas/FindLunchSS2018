@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.CourseTypeView;
 /**
- * The Class CourseType.
+ * The Class CourseType. Describes different dishes served.
  */
 @Entity
 @Table(name="course_types")

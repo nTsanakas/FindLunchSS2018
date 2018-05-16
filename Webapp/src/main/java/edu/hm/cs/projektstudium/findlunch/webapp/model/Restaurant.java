@@ -44,6 +44,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 
 /**
  * The Class Restaurant.
+ * Sets important information about a restaurant.
  */
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -285,7 +286,7 @@ public class Restaurant implements Serializable {
 
 	@Transient
 	private List<RestaurantTimeContainer> offerTimes;
-	
+
 	/**
 	 * Instantiates a new restaurant.
 	 */
@@ -294,6 +295,10 @@ public class Restaurant implements Serializable {
 
 	}
 	
+	/**
+	 * Gets the default logo.
+	 * @return the default logo
+	 */
 	public RestaurantLogo getDefaultLogo() {
 		if(this.restaurantLogos != null && this.restaurantLogos.size() > 0)
 			defaultLogo = this.restaurantLogos.get(0);
@@ -439,6 +444,7 @@ public class Restaurant implements Serializable {
 	}
 
 	/**
+	 * Checks if the restaurant is currently open.
 	 * @return the isOpen
 	 */
 	public boolean getCurrentlyOpen() {

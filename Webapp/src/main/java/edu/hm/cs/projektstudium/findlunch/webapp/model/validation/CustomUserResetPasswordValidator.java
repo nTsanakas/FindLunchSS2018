@@ -22,7 +22,11 @@ public class CustomUserResetPasswordValidator implements Validator{
 	public boolean supports(Class<?> clazz) {
 		return User.class.equals(clazz);
 	}
-
+	/**
+	 * Defines the objects to validate.
+	 * @param objectToValidate the object to validate
+	 * @param bindingResult the binding result 
+	 */	
 	@Override
 	public void validate(Object objectToValidate, Errors bindingResult) {
 		User user = (User)objectToValidate;
@@ -44,6 +48,11 @@ public class CustomUserResetPasswordValidator implements Validator{
 			bindingResult.rejectValue("password", "user.passwordRulesNotMatched");
 	}
 	
+	/**
+	 * Checks the user name.
+	 * @param user the user
+	 * @param bindingResult the binding result
+	 */
 	private void checkUsername(User user, Errors bindingResult)
 	{
 		if (!validateEmail(user.getUsername()))

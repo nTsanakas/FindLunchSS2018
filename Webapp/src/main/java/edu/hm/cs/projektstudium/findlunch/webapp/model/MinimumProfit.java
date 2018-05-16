@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 /**
- * The Class MinimumProfit.
+ * The Class MinimumProfit. Defines the minimal profit for a restaurant.
  */
 @Entity
 @ApiModel(

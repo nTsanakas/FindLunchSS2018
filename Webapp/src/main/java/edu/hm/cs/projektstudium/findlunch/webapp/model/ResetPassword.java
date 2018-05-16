@@ -15,6 +15,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+/**
+ * Class to reset the password.
+ */
 @Entity
 @ApiModel(
 		description = "Beinhaltet Daten zum Zurücksetzen des Passwortes."

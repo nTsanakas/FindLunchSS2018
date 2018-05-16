@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * The class AccountResult.
+ * The class AccountResult. Describes the result of a account.
  */
 @ApiModel(
 		description = "Beschreibt das Ergebnis zum Account."

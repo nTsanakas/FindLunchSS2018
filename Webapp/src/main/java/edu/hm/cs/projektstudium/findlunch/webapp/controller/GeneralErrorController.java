@@ -11,6 +11,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 
 /**
  * The Class GeneralErrorController.
+ * Designed to handle occuring errors.
  */
 @ControllerAdvice(assignableTypes={AboutController.class, FaqCustomerController.class, FaqRestaurantController.class, HomeController.class, LoginController.class, OfferController.class, OfferDetailController.class, PrivacyController.class, RegisterController.class, RestaurantController.class, TermController.class, CourseTypesController.class, CourseTypesDetailController.class})
 public class GeneralErrorController {

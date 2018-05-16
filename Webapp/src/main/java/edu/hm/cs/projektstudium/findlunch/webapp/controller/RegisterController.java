@@ -48,7 +48,7 @@ public class RegisterController {
 	@Autowired
 	private RestaurantUserDetailsService customUserDetailsService;
 	
-	/** The custom user validator. Handled enhanced checks not handled by the hibernate annotation */
+	/** The custom user validator. Handles enhanced checks not handled by the hibernate annotation */
 	@Autowired
 	private CustomUserValidator customUserValidator;
 	
@@ -79,7 +79,7 @@ public class RegisterController {
 	 * @param bindingResult
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param request
 	 *			Request sent by the user. Used to get a new session for the user.
 	 * @return the string for the corresponding HTML page

@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 /**
- * The Class AccountType.
+ * The Class AccountType. Defines different types of accounts.
  */
 @Entity
 @ApiModel(

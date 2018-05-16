@@ -22,6 +22,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Class to define the reservation at a restaurant.
+ */
 @Entity
 @ApiModel(
 		description = "Definiert Reservierung eines Produkts."

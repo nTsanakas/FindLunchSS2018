@@ -187,7 +187,7 @@ public class PushNotificationManager implements PushMessagingInterface {
 	}
 	
 	/**
-	 * Generates a Reservation confirmation push notification
+	 * Generates a Reservation confirmation push notification.
 	 * @param reservation the reservation
 	 * @param token the fcm token
 	 * @return the notification
@@ -206,7 +206,7 @@ public class PushNotificationManager implements PushMessagingInterface {
 	
 
 	/**
-	 * Generates a Reservation rejection push notification
+	 * Generates a Reservation rejection push notification.
 	 * @param reservation the reservation
 	 * @param token the fcm token
 	 * @return the notification
@@ -224,7 +224,7 @@ public class PushNotificationManager implements PushMessagingInterface {
 	}
 	
 	/**
-	 * Generates a Reservation rejection push notification
+	 * Generates a Reservation rejection push notification.
 	 * @param reservation the reservation
 	 * @param token the fcm token
 	 * @return the notification
@@ -242,12 +242,12 @@ public class PushNotificationManager implements PushMessagingInterface {
 	}
 	
 	/**
-	 * Generates a push notification fot the daily update
+	 * Generates a push notification for the daily update.
 	 * @param p the daily notification
-	 * @param restaurantsForPushCount 
-	 * @param pushKitchenTypeIds
-	 * @param token
-	 * @return
+	 * @param restaurantsForPushCount the number of restaurants
+	 * @param pushKitchenTypeIds the kitchen type IDs
+	 * @param token the token
+	 * @return the push notification
 	 */
 	@SuppressWarnings("unchecked")
 	public JSONObject generateFromDaily(DailyPushNotificationData p, Integer restaurantsForPushCount, List<Integer> pushKitchenTypeIds, String token){

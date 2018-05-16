@@ -21,7 +21,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * The Class RestaurantLogo
+ * The Class RestaurantLogo.
  */
 @Entity
 @Table(name="restaurant_logo")

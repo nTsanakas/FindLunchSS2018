@@ -45,7 +45,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantReposito
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 
 /**
- * The class is responsible for handling http calls related to the process of manage the reservations.
+ * The class is responsible for handling http calls related to the process of managing the reservations.
  */
 @Controller 
 class ReservationController {
@@ -83,7 +83,7 @@ class ReservationController {
 	
 	/**
 	 * Get the page for showing the reservation.
-	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param model Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal principal Currently logged in user
 	 * @param request request the HttpServletRequest
 	 * @return the string for the corresponding HTML page
@@ -110,7 +110,7 @@ class ReservationController {
 	
 	/**
 	 * Confirm selected reservations.
-	 * @param reservationList List of reservation
+	 * @param reservationList List of reservations
 	 * @param principal principal Currently logged in user
 	 * @param request request the HttpServletRequest
 	 * @return the string for the corresponding HTML page
@@ -154,8 +154,8 @@ class ReservationController {
 	}
 	
 	/**
-	 * Reject the selected reservations
-	 * @param reservationList List of reservation
+	 * Reject the selected reservations.
+	 * @param reservationList List of reservations
 	 * @param principal the currently logged in user
 	 * @param request http request
 	 * @return redirect to the webpage
@@ -195,9 +195,9 @@ class ReservationController {
 	}
 	
 	/**
-	 * Reject the submitted reservation
-	 * @param reservationId
-	 * @param reasonId
+	 * Reject the submitted reservation.
+	 * @param reservationId the reservation id
+	 * @param reasonId the reason id
 	 * @param principal the currently logged in user
 	 * @param request http request
 	 * @return redirect to the webpage
@@ -221,9 +221,9 @@ class ReservationController {
 	
 	
 	/**
-	 * Confirm the submitted reservation
-	 * @param reservationId
-	 * @param waittimeRestaurant
+	 * Confirm the submitted reservation.
+	 * @param reservationId the reservation id
+	 * @param waittimeRestaurant the waiting time within the restaurant
 	 * @param principal the currently logged in user
 	 * @param request http request
 	 * @return redirect to the webpage
@@ -282,7 +282,7 @@ class ReservationController {
 	}
 	
 	/**
-	 * Calculate the earned points for this reservations and add them to the points of the user.
+	 * Calculate the earned points for the reservations and add them to the points of the user.
 	 * @param reservation reservation
 	 */
 	private void increaseConsumerPoints(Reservation reservation) {
@@ -318,7 +318,7 @@ class ReservationController {
 	}
 
 	/**
-	 * Sends a confirmation or rejection of the reservation via firebase push to the customer
+	 * Sends a confirmation or rejection of the reservation via firebase push to the customer.
 	 * @param reservation the reservation
 	 * @return ture if a message was send
 	 */
@@ -345,7 +345,7 @@ class ReservationController {
 	}
 	
 	/**
-	 * Gets the pints for the reservation
+	 * Gets the points for the reservation.
 	 * @param reservation_Offers the list of offers within the reservation
 	 * @return the points for the reservation
 	 */
@@ -362,12 +362,12 @@ class ReservationController {
 	}
 	
 	/**
-	 * Gets the details of a given reservation
+	 * Gets the details of a given reservation.
 	 * @param reservationId the reservation
-	 * @param model Model in which necessary object are placed to be displayed on the website.
+	 * @param model Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal the currently logged in user
 	 * @param request http request
-	 * @return the reservation detials into the corresponding html fragment
+	 * @return the reservation details into the corresponding html fragment
 	 */
 	@RequestMapping(path="/reservations/details/{reservationId}", method=RequestMethod.GET)
 	public String getReservationDetails(@PathVariable("reservationId") String reservationId, ModelMap model, Principal principal, HttpServletRequest request){
@@ -394,12 +394,12 @@ class ReservationController {
 	}
 	
 	/**
-	 * Gets data for the reservation Reject Modal
+	 * Gets data for the reservation Reject Modal.
 	 * @param reservationId the reservation
-	 * @param model Model in which necessary object are placed to be displayed on the website.
+	 * @param model Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal the currently logged in user
 	 * @param request http request
-	 * @return the reservation detials into the corresponding html fragment
+	 * @return the reservation details into the corresponding html fragment
 	 */
 	@RequestMapping(path="/reservations/rejectModal/{reservationId}", method=RequestMethod.GET)
 	public String getReservationDeclineModal(@PathVariable("reservationId") String reservationId, ModelMap model, Principal principal, HttpServletRequest request){
@@ -409,12 +409,12 @@ class ReservationController {
 	}
 	
 	/**
-	 * Gets data for the reservation Confirm Modal
+	 * Gets data for the reservation Confirm Modal.
 	 * @param reservationId the reservation
-	 * @param model Model in which necessary object are placed to be displayed on the website.
+	 * @param model Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal the currently logged in user
 	 * @param request http request
-	 * @return the reservation detials into the corresponding html fragment
+	 * @return the reservation details into the corresponding html fragment
 	 */
 	@RequestMapping(path="/reservations/confirmModal/{reservationId}", method=RequestMethod.GET)
 	public String getReservationConfirmModal(@PathVariable("reservationId") String reservationId, ModelMap model, Principal principal, HttpServletRequest request){

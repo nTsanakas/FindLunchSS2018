@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * The Class PointId.
+ * The Class PointId. Defines points to a restaurant and user.
  */
 @Embeddable
 @ApiModel(

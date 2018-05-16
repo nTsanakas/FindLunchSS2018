@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 
 /**
- * The Class BillList.
+ * The Class BillList. Combines multiple bills to a list.
  */
 @ApiModel(
 		description = "Fasst mehrere Rechnungen zu einer Liste zusammen."

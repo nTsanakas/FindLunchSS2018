@@ -39,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 /**
- * The Class Offer.
+ * The Class Offer. Describes a food offer.
  */
 @Entity
 @ApiModel(
