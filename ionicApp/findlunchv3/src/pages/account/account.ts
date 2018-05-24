@@ -50,6 +50,10 @@ export class AccountPage implements OnInit{
     console.log('ionViewDidLoad AccountPage');
   }
 
+  /*
+  *
+  * Once the Page is initialized all the translations will be done
+   */
   public ngOnInit(): void {
     this.translate.get('Error.login').subscribe(
       (value: string) => {
@@ -98,6 +102,7 @@ export class AccountPage implements OnInit{
    * @param password
    */
   onLogInAction(userName: string, password: string): void {
+
     const user: User = {
       username: userName,
       password: password
@@ -166,51 +171,50 @@ export class AccountPage implements OnInit{
    * @param username = email adress of user
    */
   public sendPasswordReset(username: string): void {
-    const user: any = {username: username};
 
-    const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-        body: JSON.stringify(user)
-    });
+      const headers: HttpHeaders = new HttpHeaders({
+        'Content-Type': 'application/json',
+      });
 
-    const loader: Loading = this.loading.prepareLoader();
-    loader.present().then(() => {
-      this.http.get(`${SERVER_URL}/api/get_reset_token`, {headers}, )
-        .timeout(8000)
-        .subscribe(
-          res => {
-            let msg: string;
-            switch (res) {
-              case 0:
-                msg = this.strPasswordResetSuccess;
-                break;
-              default:
-                msg = this.strConnectionError;
-                break;
+      const loader: Loading = this.loading.prepareLoader();
+      loader.present().then(() => {
+        this.http.post(`${SERVER_URL}/api/get_reset_token`, username, {headers},)
+          .timeout(8000)
+          .subscribe(
+            res => {
+              let msg: string;
+              switch (res) {
+                case 0:
+                  msg = this.strPasswordResetSuccess;
+                  break;
+                default:
+                  msg = this.strConnectionError;
+                  break;
+              }
+              const toast: Toast = this.toastCtrl.create({
+                message: msg,
+                duration: 3000
+              });
+              loader.dismiss();
+              toast.present();
+            },
+            err => {
+              loader.dismiss();
+              console.error(err);
+              const alert: Alert = this.alertCtrl.create({
+                title: this.strError,
+                message: this.strConnectionError,
+                buttons: [{
+                  text: 'Ok',
+                  role: 'cancel'
+                }]
+              });
+              alert.present();
             }
-            const toast: Toast = this.toastCtrl.create({
-              message: msg,
-              duration: 3000
-            });
-            loader.dismiss();
-            toast.present();
-          },
-          err => {
-            loader.dismiss();
-            console.error(err);
-            const alert: Alert = this.alertCtrl.create({
-              title: this.strError,
-              message: this.strConnectionError,
-              buttons: [{
-                text: 'Ok',
-                role: 'cancel'
-              }]
-            });
-            alert.present();
-          }
-        );
-    });
-  }
+          );
+      });
+    }
+
 
 
 }

@@ -1,17 +1,27 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component, OnInit} from '@angular/core';
+import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {AccountPage} from "../account/account";
 import {RegisterPage} from "../register/register";
 import {TranslateService} from "@ngx-translate/core";
+import {AuthService} from "../../shared/auth.service";
+import {HttpClient} from "@angular/common/http";
+import {PushService} from "../../shared/push.service";
+import {LoadingService} from "../../shared/loading.service";
 
 @IonicPage()
 @Component({
   selector: 'page-choose-login',
   templateUrl: 'choose-login.html',
 })
-export class ChooseLoginPage {
+export class ChooseLoginPage implements OnInit{
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public translate: TranslateService) {
+  ngOnInit(): void {
+
+  }
+
+  constructor(public navCtrl: NavController,
+              private push: PushService,
+              private translate: TranslateService) {
   }
 
   ionViewDidLoad() {

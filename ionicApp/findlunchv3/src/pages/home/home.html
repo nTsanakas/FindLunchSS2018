@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>{{'HomePage.title'| translate}}</ion-title>
+  <ion-navbar color="flColor">
+    <ion-title>{{ 'HomePage.title' | translate }}</ion-title>
     <ion-buttons end>
       <!-- button for putting in a custom location -->
       <button ion-button icon-only (click)="toggleSearch()">
@@ -10,8 +10,8 @@
       <button ion-button icon-only [disabled]="!allRestaurants" (click)="openFilterDialog($event)">
         <ion-icon name="ios-funnel"></ion-icon>
       </button>
-      <button ion-button icon-only (click)="loadMap()">
-        <ion-icon name="refresh"></ion-icon>
+      <button ion-button icon-only (click)="registerPush()">
+        <ion-icon name="notifications"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>

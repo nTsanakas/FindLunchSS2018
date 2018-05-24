@@ -1,8 +1,6 @@
  import {Component, ViewChild} from '@angular/core';
 import {IonicPage, Nav, NavController, NavParams, Toast, ToastController} from 'ionic-angular';
 import {AuthService} from '../../shared/auth.service';
-import {RegisterPage} from "../register/register";
-import {TabsPage} from "../tabs/tabs";
 import {QRService} from "../../pages/bonus/qr.service";
 import {TranslateService} from "@ngx-translate/core";
 import {APP_LANG} from "../../app/app.module";
@@ -30,7 +28,6 @@ export class AccountDetailsPage {
   private strLogoutSuccess: string;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
               public auth: AuthService,
               public toastCtrl: ToastController,
               public qr: QRService,

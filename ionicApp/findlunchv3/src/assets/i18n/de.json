@@ -1,6 +1,7 @@
 {
     "HomePage":{
-      "title" : "findlunch"
+      "title" : "findlunch",
+      "adressInpunt": "Adresseingabe"
     },
     "BonusPage": {
         "title": "Meine Bonuspunkte"
@@ -8,6 +9,13 @@
     "RestaurantPage": {
         "title": "Info",
         "openingTimes": "Öffnungszeiten"
+    },
+    "ChooseLoginPage": {
+      "title": "Wilkommen bei findlunch!",
+      "register": "Ansonsten registriere dich hier!",
+      "login": "Du bist bereits Kunde?",
+      "loginButton": "Anmelden",
+      "registerButton": "Registrieren"
     },
     "ReservationsPage": {
         "title": "Meine Bestellungen",
@@ -24,10 +32,12 @@
     "LoginPage": {
         "title": "Login",
         "password": "Passwort",
+        "userName": "Benutzername",
         "login": "Einloggen",
+        "loginFacebook": "Login mit Facebook",
         "register": "Registrieren",
-        "passwordReset": "Passwort vergessen",
-        "securityToken": "Sicherheitstoken anfordern"
+        "passwordReset": "Passwort vergessen?",
+        "securityToken": "Hier klicken!"
     },
     "OrderDetailsPage": {
         "title": "Warenkorb",
@@ -53,17 +63,21 @@
         "termsAndConditions": "allgemeinen Geschäftsbedingungen",
         "termsAndConditions1": "Ich habe die",
         "termsAndConditions2": "gelesen und stimme ihnen hiermit zu.",
-        "register": "Registrierung absenden",
-        "confirmPassword": "Passwort bestätigen"
+        "registerFacebook": "Registrieren mit Facebook",
+        "confirmPassword": "Passwort bestätigen",
+        "or": "ODER"
     },
     "OffersProductPage": {
         "priceInPoints": "Preis in Treuepunkten",
         "prepTime": "Zubereitungszeit in Minuten",
         "addToCart": "Zum Warenkorb hinzufügen"
     },
+    "AboutPage": {
+        "title": "Über uns"
+    },
     "home": "Home",
-    "containsAllergenics": "Enthaltene Allergene",
-    "containsAdditives": "Enthaltene Zusatzstoffe",
+    "containsAllergenics": "Enthaltene Allergene:",
+    "containsAdditives": "Enthaltene Zusatzstoffe:",
     "allergenics": "Allergene",
     "additives": "Zusatzstoffe",
     "password" : "Passwort",

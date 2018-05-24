@@ -9,6 +9,7 @@ import {Error} from "tslint/lib/error";
 import {AuthService} from "./auth.service"
 import {TranslateService} from "@ngx-translate/core";
 import {User} from "../model/User";
+import {DailyPushNotificationData} from "../model/DailyPushNotificationData";
 
 
 /**
@@ -56,7 +57,7 @@ export class PushService {
                     ios: {
                         alert: 'false',
                         badge: true,
-                        sound: 'false'
+                        sound: 'true'
                     }
                 };
                 this.pushObject = this.push.init(pushOptions);
@@ -80,41 +81,30 @@ export class PushService {
      *  Setup of the display settings of the push notification
      */
     public notificationSetup(): void {
-      console.log('SERVUS Notification');
         //noinspection TsLint
-        this.push.hasPermission()
-            .then((data: any) => {
-                if (data.isEnabled) {
-                    console.warn('Push permission granted');
-                    this.pushObject.on('notification')
-                        .subscribe((notification: EventResponse) => {
-                            // Foreground handling
-                            if (notification.additionalData.foreground) {
-                                const alert: Alert = this.alertCtrl.create({
-                                    title: notification.title,
-                                    message: notification.message,
-                                    buttons: [{
-                                        text: 'Ok',
-                                        role: 'cancel'
-                                    }],
-                                    enableBackdropDismiss: false
-                                });
-                                alert.present();
-
-                                // dismiss after 10 seconds
-                                setTimeout(
-                                    () => {
-                                        alert.dismiss();
-                                    },
-                                    10000);
-                            }
-                            // If background then display as typical notification
-                        });
+        this.fcm.onNotification().subscribe(
+            (data => {
+              const alert: Alert = this.alertCtrl.create({
+                title: "Bestellstatus geändert",
+                message: "Der Status deiner Bestellung hat sich geändert. Du kannst ihn unter 'Meine Bestellungen' einsehen.",
+                buttons: [{
+                  text: 'Ok',
+                  role: 'cancel'
+                },{
+                  text: 'Meine Bestellungen',
+                  handler: (): void => {
+                    this.openReservations();
+                  }
+                }]
+              });
+              alert.present();
+                if (data.wasTapped) {
 
                 } else {
                     console.warn("Not logged in or push permission NOT granted, reservation confirmation can not received!");
-                }
-            });
+                };
+            })
+        );
     }
 
     /**
@@ -124,12 +114,13 @@ export class PushService {
 
             const headers = new HttpHeaders({
                 'Content-Type': 'application/json',
+
             });
         this.platform.ready().then(
           () => {
             this.fcm.getToken().then(token => {
 
-              this.http.put(`${SERVER_URL}/api/submitToken/${token}`,user, {headers})
+              this.http.put(`${SERVER_URL}/api/submitToken/${token}`, user, {headers})
                 .retry(2)
                 .subscribe(
                   res => {
@@ -163,4 +154,58 @@ export class PushService {
             alert.present();
           });
     }
+
+    /*
+    Method to register the daily push notification via REST
+    @param pushData the data that the notification needs
+    @param user Username and Password of the user that is currently logged in
+    @rest: /api/register_push
+     */
+    public registerPush(pushData: DailyPushNotificationData){
+
+      console.log('im dritten push');
+      const encodedCredentials: string = btoa(`${pushData.user.username}:${pushData.user.password}`);
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${encodedCredentials}`
+      });
+
+
+      this.fcm.getToken().then(token => {
+
+        console.log('im zweiten push');
+        pushData.fcmToken = token;
+
+        this.http.post(`${SERVER_URL}/api/register_push`, pushData, {headers}).retry(2).subscribe(
+          res => {
+            console.log('im vierten push');
+            const alert: Alert = this.alertCtrl.create({
+              title: "Push Benachrichtigung angelegt!",
+              message: "Ihre Anfrage auf regelmäßige Push Benachrichtigungen wurde erfolgreichverarbeitet! ",
+              buttons: [{
+                text: 'Ok',
+                role: 'cancel'
+              }]
+            });
+            alert.present();
+          }, err => {
+            console.error(err);
+            const alert: Alert = this.alertCtrl.create({
+              title: this.strError,
+              message: "Push Benachrichtigungen konnten nicht angelegt werden, es ist ein Fehler aufgetreten.",
+              buttons: [{
+                text: 'Ok',
+                role: 'cancel'
+              }]
+            });
+            alert.present();
+      })
+      })
+    }
+
+    private openReservations() {
+
+    }
+
+
 }

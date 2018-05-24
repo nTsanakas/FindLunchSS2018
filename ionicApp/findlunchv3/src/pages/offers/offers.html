@@ -1,11 +1,11 @@
 <ion-header>
-  <ion-navbar color="dark">
+  <ion-navbar color="flColor">
     <button ion-button menuToggle>
       <ion-icon md="md-menu" name="menu"></ion-icon>
     </button>
 
     <ion-title (click)="onRestaurantClicked($event)">
-
+      {{restaurant.name}}
     </ion-title>
     <ion-buttons end>
       <button id="favorite" *ngIf="this.auth.getLoggedIn()" ion-button icon-only (click)="toggleIsFavorite()">
@@ -33,34 +33,15 @@
       </ion-list-header>
       <div *ngIf="isGroupShown(category)">
         <div *ngFor="let offer of offers[category]; let i=index">
-          <ion-list-header>
+          <ion-list-header align="center">
             <div (click)="onOfferClicked($event, offer)">
               <img id="product-image" [src]="'data:image/jpg;base64,' + offer.defaultPhoto.thumbnail">
               <p align="center" id="offerText">{{offer.title}}</p>
               <p align="center" id="offerText1">{{offer.price | currency:'EUR':true}}</p>
             </div>
           </ion-list-header>
-
         </div>
       </div>
-
     </ion-item>
   </ion-list>
-  <ion-row>
-    <ion-col class="allergenics-area-border">
-      <h6 class="allergenics-header">{{ 'allergenics' | translate }}</h6>
-      <ion-row *ngFor="let allerg of allergenics$ | async" class="allergenics">
-        {{allerg.shortKey}} {{allerg.name}}
-      </ion-row>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>
-      <h6 class="allergenics-header">{{ 'additives' | translate }}</h6>
-      <div *ngFor="let additive of additives$ | async" class="allergenics">
-        {{additive.shortKey}} {{additive.name}}
-      </div>
-    </ion-col>
-  </ion-row>
-
 </ion-content>
