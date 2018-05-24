@@ -26,7 +26,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.DayOfWeekRepositor
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.OfferRepository;
 
 /**
- * The class is responsible for handling http calls related to the offer overview page.
+ * The class is responsible for handling http calls related to offer overview page.
  */
 @Controller
 public class OfferController {
@@ -47,8 +47,7 @@ public class OfferController {
 	@Autowired
 	private AllergenicRepository allergenicRepository;
 	
-	/** NIKLAS KLOTZ <p>
-	 * The courser type repository.*/
+	/** NIKLAS KLOTZ */
 	@Autowired
 	private CourseTypeRepository courserTypeRepository;
 	
@@ -60,8 +59,8 @@ public class OfferController {
 	 *
 	 * @param request the HttpServletRequest
 	 * @param model
-	 * 			Model in which necessary objects are placed to be displayed on the website.
-	 * @param principal the principal.
+	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * @param principal the principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page
 	 */
@@ -95,7 +94,7 @@ public class OfferController {
 	 * @param offerId 
 	 * 			Id of the offer to be deleted.
 	 * @param model
-	 * 			Model in which necessary objects are placed to be displayed on the website.
+	 * 			Model in which necessary object are placed to be displayed on the website.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page
@@ -120,18 +119,6 @@ public class OfferController {
 		return "redirect:/offer?deleted";
 	}
 	
-	/**
-	 * Checks if an offer is sold out.
-	 *
-	 * @param request the HttpServletRequest
-	 * @param offerId 
-	 * 			Id of the sold out offer.
-	 * @param model
-	 * 			Model in which necessary objects are placed to be displayed on the website.
-	 * @param principal
-	 * 			Currently logged in user.
-	 * @return the string for the corresponding HTML page
-	 */
 	@RequestMapping(path="/offer/soldout/{offerId}", method=RequestMethod.GET)
 	public String soldoutOffer(@PathVariable("offerId") Integer offerId, Model model, Principal principal, HttpServletRequest request){
 		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "offerId", offerId.toString()));

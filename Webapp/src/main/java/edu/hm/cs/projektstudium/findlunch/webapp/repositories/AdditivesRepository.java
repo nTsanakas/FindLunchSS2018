@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Additives;
 
 /**
- * The Interface AdditivesRepository. Abstraction for the data access layer.
+ * 
  * @author Basti Heller
  *
  */
@@ -14,21 +14,21 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.Additives;
 public interface AdditivesRepository extends JpaRepository<Additives, Integer>{
 
 	/**
-	 * Finds additives by the name of the product.
+	 * 
 	 * @param courseType
 	 * @return
 	 */
 	Additives findByName(String name);
 	
 	/**
-	 * Finds additives by the key of the product.
+	 * 
 	 * @param courseType
 	 * @return
 	 */
 	Additives findByShortKey(String key);
 	
 	/**
-	 * Finds additives by the id of the product.
+	 * 
 	 * @param id
 	 * @return
 	 */

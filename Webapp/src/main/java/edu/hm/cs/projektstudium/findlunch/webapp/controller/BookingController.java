@@ -44,7 +44,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.BookingRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
 
 /**
- * The class is responsible for handling http calls related to the process of managing the bookings for FindLunch.
+ * The class is responsible for handling http calls related to the process of manage the bookings for FindLunch.
  */
 @Controller
 public class BookingController {
@@ -182,7 +182,7 @@ public class BookingController {
 	/**
 	 * Calculate a Claim for a given bookingResult.
 	 * @param bookingResult BookingResult
-	 * @param model Model in which necessary objects are placed to be displayed on the website.
+	 * @param model Model in which necessary object are placed to be displayed on the website
 	 * @param principal principal Currently logged in user
 	 * @param request request the HttpServletRequest
 	 * @return the string for the corresponding HTML page
@@ -223,7 +223,7 @@ public class BookingController {
 	
 	/**
 	 * Calculate the account balance.
-	 * @return List of accounts with the respective current balance.
+	 * @return List of accounts with the current balance
 	 */
 	private List<AccountResult> getAccountsResults(){
 		List<AccountResult> accountResults = new ArrayList<>();

@@ -29,7 +29,8 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseTypes;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
 
 /**
- * The class is responsible for handling http calls related to the coursetype page.
+ * The class CourseTypesController
+ * The class is responsible for handling http calls related to the coursetype page
  * 
  * @author Niklas Klotz
  *

@@ -12,34 +12,26 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 
 /**
- * The Class RestaurantType. Defines the type of restaurant.
+ * The Class RestaurantType.
  */
 @Entity
 @Table(name="restaurant_type")
-@ApiModel(
-		description = "Definiert Restauranttypen."
-)
 public class RestaurantType  {
 
 	/** The id. */
-	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@JsonView(RestaurantView.RestaurantRest.class)
 	private int id;
 
 	/** The name. */
-	@ApiModelProperty(notes = "Name")
 	@JsonView(RestaurantView.RestaurantRest.class)
 	private String name;
 
 	/** The restaurants. */
-	@ApiModelProperty(notes = "Restaurants")
 	//bi-directional many-to-one association to Restaurant
 	@OneToMany(mappedBy="restaurantType")
 	private List<Restaurant> restaurants;

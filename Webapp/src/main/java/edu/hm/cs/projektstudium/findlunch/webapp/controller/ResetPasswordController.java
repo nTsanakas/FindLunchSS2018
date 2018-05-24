@@ -28,62 +28,35 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ResetPasswordRepos
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 
 /**
- * The class is responsible for handling http calls related to the process of resetting the password.
+ * The Class ResetPasswordController
+ * 
+ * @author Deniz Mardin
+ *
  */
 @Controller
 public class ResetPasswordController {
 
-	/**
-	 * The logger.
-	 */
 	private final Logger LOGGER = LoggerFactory.getLogger(ResetPasswordController.class);
 	
-	/**
-	 * The user repository.
-	 */
 	@Autowired
 	private UserRepository userRepository;
 	
-	/**
-	 * The reset password repository.
-	 */
 	@Autowired
 	private ResetPasswordRepository resetPasswordRepository;
 	
-	/**
-	 * The mail service.
-	 */
 	@Autowired
 	private MailService mailService;
 	
-	/**
-	 * The password encoder.
-	 */
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
-	/**
-	 * The password reset validator.
-	 */
 	@Autowired
 	private CustomUserResetPasswordValidator customUserResetPasswordValidator;
 	
-	/**
-	 * The http string.
-	 */
 	private static final String HTTP = "http://";
 	
-	/**
-	 * The https string.
-	 */
 	private static final String HTTPS= "https://";
 	
-	/**
-	 * Get the page to reset the password.
-	 * @param model Model in which necessary object are placed to be displayed on the website
-	 * @param request request the HttpServletRequest
-	 * @return the string for the corresponding HTML page
-	 */
 	@CrossOrigin
 	@RequestMapping(path ="/resetpassword", method = RequestMethod.GET)
 	public String getResetPassword(Model model, HttpServletRequest request){
@@ -93,13 +66,6 @@ public class ResetPasswordController {
 		return "resetpassword";
 	}
 	
-	/**
-	 * Resets the password and sends a mail to the user if successful.
-	 * 
-	 * @param request request the HttpServletRequest
-	 * @param user the user
-	 * @return the string for the corresponding HTML page
-	 */
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.POST, path="/resetpassword", params = "resetUserPassword")
 	public String resetPassword(HttpServletRequest request, User user){
@@ -146,24 +112,11 @@ public class ResetPasswordController {
 		return "redirect:/home?mailSend";
 	}
 	
-	/**
-	 * Gets the url to reset the password.
-	 * 
-	 * @param request request the HttpServletRequest
-	 * @param user the user
-	 * @return the url to reset the password
-	 */
 	private String getPasswordResetUrl(HttpServletRequest request, User user) {
-		String url = getProtocol(request.isSecure()) + "demo.findlunch.de" +"/resetpassword/"+user.getResetPassword().getToken();
+		String url = getProtocol(request.isSecure()) + request.getServerName()+":"+request.getServerPort()+"/resetpassword/"+user.getResetPassword().getToken();
 		return url;
 	}
 
-	/**
-	 * Validates the password date.
-	 * 
-	 * @param dateToValidate date which is validated
-	 * @return true if validated date is after yesterday
-	 */
 	private boolean validatePasswordDate(Date dateToValidate){
 		LocalDateTime dtv = LocalDateTime.ofInstant(dateToValidate.toInstant(), ZoneId.systemDefault());
 		LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
@@ -172,13 +125,6 @@ public class ResetPasswordController {
 		return false;
 	}
 	
-	/**
-	 * Cancels the password reset.
-	 * 
-	 * @param request request the HttpServletRequest
-	 * @param user the user
-	 * @return the string for the corresponding HTML page
-	 */
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.POST, path="/resetpassword", params = "resetUserPasswordcancel")
 	public String resetPasswordCancel(HttpServletRequest request, User user){
@@ -186,14 +132,6 @@ public class ResetPasswordController {
 		return "redirect:/home";
 	}
 	
-	/**
-	 * Sets a new password.
-	 * 
-	 * @param token the resetpassword token
-	 * @param request request the HttpServletRequest
-	 * @param model Model in which necessary object are placed to be displayed on the website
-	 * @return resetpassword
-	 */
 	@CrossOrigin
 	@RequestMapping(path ="/resetpassword/{token}", method = RequestMethod.GET)
 	public String setNewPassword(@PathVariable("token") String token, HttpServletRequest request, final Model model){
@@ -207,16 +145,6 @@ public class ResetPasswordController {
 		return "resetpassword";
 	}
 	
-	/**
-	 * Saves the new password.
-	 * 
-	 * @param token the resetpassword token
-	 * @param request request the HttpServletRequest
-	 * @param user the user
-	 * @param bindingresult validates and binds the result. For more information: https://docs.spring.io/spring/docs/2.5.x/javadoc-api/org/springframework/validation/BindingResult.html
-	 * @param model Model in which necessary object are placed to be displayed on the website
-	 * @return the string for the corresponding HTML page
-	 */
 	@CrossOrigin
 	@RequestMapping(path="/resetpassword/{token}", method = RequestMethod.POST)
 	public String saveNewPassword(@PathVariable("token") String token, HttpServletRequest request, User user, BindingResult bindingResult, final Model model){
@@ -244,13 +172,6 @@ public class ResetPasswordController {
 		return "redirect:/home?resetSuccessful";
 	}
 	
-	/**
-	 * Cancels the saving process of a new password.
-	 * 
-	 * @param request request the HttpServletRequest
-	 * @param user the user
-	 * @return the string for the corresponding HTML page
-	 */
 	@CrossOrigin
 	@RequestMapping(path="/resetpassword/{token}", method = RequestMethod.POST, params = "cancel")
 	public String saveNewPasswordCancel(HttpServletRequest request, User user){
@@ -258,12 +179,6 @@ public class ResetPasswordController {
 		return "redirect:/home?resetCancel";
 	}
 	
-	/**
-	 * Gets the protocol which is used.
-	 * 
-	 * @param https the https protocol
-	 * @return the protocol 
-	 */
 	private String getProtocol(boolean https){
 		return https ? HTTPS : HTTP;
 	}

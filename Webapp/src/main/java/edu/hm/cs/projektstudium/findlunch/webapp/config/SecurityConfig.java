@@ -16,7 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * This class is responsible for configuring the Spring Security context.
@@ -56,7 +55,6 @@ public class SecurityConfig {
 		 * config.annotation.authentication.builders.
 		 * AuthenticationManagerBuilder)
 		 */
-
 		/** Configures where to look for users during authentication process **/
 		@Override
 		public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -84,7 +82,6 @@ public class SecurityConfig {
 		protected void configure(HttpSecurity http) throws Exception {
 			
 			http
-
 					// Change the sent server name.
 					.headers().addHeaderWriter(new StaticHeadersWriter("Server", "Unbekannter Webserver")).and()
 					// Add an elementary Content-Security-Policy-Report-Only-header with a reporting URL.
@@ -92,7 +89,7 @@ public class SecurityConfig {
 					"default-src 'self' script-src 'self' 'unsafe-inline' " +
 							"https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ ;" +
 							"; report-uri /api/csp-report-uri"+ "; /js/**"))
-			        .and()
+					.and()
 					.csrf().disable().requestMatchers()
 					// Add a Content-Security-Policy-violation-report-endpoint
 					// The CSRF-protection should be disabled as it is a POST-request.
@@ -138,19 +135,6 @@ public class SecurityConfig {
 		@Autowired
 		private BCryptPasswordEncoder passwordEncoder;
 
-        /**
-         * Whitelist der Swagger-URLs, sodass die Swagger-Rest-API-Dokumentation
-         * ohne Authentifizierung unter <basepath>/swagger-ui.html abgerufen werden kann.
-         */
-		private static final String[] AUTH_WHITELIST = {
-
-                // -- swagger ui
-                "/swagger-resources/**",
-                "/swagger-ui.html",
-                "/v2/api-docs",
-                "/webjars/**"
-        };
-
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -168,6 +152,8 @@ public class SecurityConfig {
 			auth.eraseCredentials(false);
 
 			auth.userDetailsService(restaurantUserDetailsService).passwordEncoder(passwordEncoder);
+
+			
 		}
 
 		/*
@@ -178,11 +164,10 @@ public class SecurityConfig {
 		 * WebSecurityConfigurerAdapter#configure(org.springframework.security.
 		 * config.annotation.web.builders.HttpSecurity)
 		 */
-
 		/**
 		 * Configures which urls are protected by this configuration. A login
 		 * page should be used, using a formlogin with the default Spring
-		 * Security login entrypoints.
+		 * Security login entrypoints
 		 **/
 		
 		@Override
@@ -203,13 +188,11 @@ public class SecurityConfig {
 					// A custom AccessDeniedHandler in order to handle CSRF-attacks.
 					.exceptionHandling().accessDeniedHandler(new CsrfAccessDeniedHandler()).and()
 					.authorizeRequests()
-					    .antMatchers("/", "/login", "/home", "/register", "/privacy", "/terms", "/faq_customer",
-							    "/faq_restaurant", "/about_findlunch", "/css/**", "/api/**", "/js/**", "/fonts/**",
-							    "/images/**", "/course_type/**", "coursetype/**","/resetpassword/**")
-                    .permitAll()
-                    //Swagger-Dokumentation ist ohne Authentifizierung zugängig:
-                    .antMatchers(AUTH_WHITELIST).permitAll()
-                    .antMatchers("/booking/**").hasAuthority("Betreiber")
+					.antMatchers("/", "/login", "/home", "/register", "/privacy", "/terms", "/faq_customer",
+							"/faq_restaurant", "/about_findlunch", "/css/**", "/api/**", "/js/**", "/fonts/**",
+							"/images/**", "/course_type/**", "coursetype/**","/resetpassword/**")
+					.permitAll()
+					.antMatchers("/booking/**").hasAuthority("Betreiber")
 					.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and()
 					.logout();
 			// The CSRF-protection should be enabled.

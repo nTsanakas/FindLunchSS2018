@@ -27,11 +27,6 @@ public class CustomCourseTypeValidator implements Validator{
 		return CourseTypes.class.equals(clazz);
 	}
 
-	/**
-	 * Defines the objects to validate.
-	 * @param objectToValidate the object to validate
-	 * @param bindingResult the binding result 
-	 */
 	@Override
 	public void validate(Object objectToValidate, Errors bindingResult) {
 		

@@ -15,6 +15,7 @@ DROP SCHEMA IF EXISTS `findlunch` ;
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `findlunch` DEFAULT CHARACTER SET utf8 ;
 USE `findlunch` ;
+
 -- -----------------------------------------------------
 -- Table `findlunch`.`country`
 -- -----------------------------------------------------

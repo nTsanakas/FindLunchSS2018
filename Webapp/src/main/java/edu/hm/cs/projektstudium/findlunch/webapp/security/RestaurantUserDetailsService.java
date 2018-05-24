@@ -21,12 +21,6 @@ public class RestaurantUserDetailsService implements UserDetailsService {
 	/* (non-Javadoc)
 	 * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
 	 */
-	/**
-	 * Loads user depending on the username, throws an exception if the username was not found.
-	 * 
-	 * @param username the user name
-	 * @return the user name and type
-	 */
 	@Override
 	public User loadUserByUsername(String username) throws UsernameNotFoundException {
 		if(username.equals("owner@owner.com")) return userRepository.findByUsernameAndUserType_name(username,"Betreiber");

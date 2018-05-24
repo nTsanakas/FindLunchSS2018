@@ -13,8 +13,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.NumberFormat;
@@ -28,38 +26,31 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 
 /**
- * The Class CourseType. Describes different types of courses.
+ * The Class CourseType.
  * @author Niklas Klotz
  *
  */
 @Entity
 @Table(name="course_types")
-@ApiModel(
-		description = "Beschreibt Kurstypen."
-)
 public class CourseTypes {
 
 	/** The id. */
-	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@JsonView({CourseTypeView.CourseTypeRest.class})
 	private int id;
 	
 	/** The name. */
-	@ApiModelProperty(notes = "Name des Kurstypen")
 	@Column(name="name")
 	@JsonView({CourseTypeView.CourseTypeRest.class})
 	@NotBlank(message="{courstype.name.notBlank}")
 	@Size(min=2, max=60, message= "{coursetype.name.lengthInvalid}")
 	private String name;
-
-	@ApiModelProperty(notes = "Restaurant-ID")
+	
 	@Column(name="restaurant_id")
 	@JsonView({CourseTypeView.CourseTypeRest.class})
 	private int restaurantId;
-
-	@ApiModelProperty(notes = "Sortierung")
+	
 	@Column(name="sort_by")
 	@JsonView({CourseTypeView.CourseTypeRest.class})
 	@NumberFormat(style = Style.NUMBER)

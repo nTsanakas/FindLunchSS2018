@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.RestaurantType;;
 
 /**
- * The Interface RestaurantTypeRepository. Abstraction for the data access layer.
+ * The Interface RestaurantTypeRepository. Abstraction for the data access layer
  */
 public interface RestaurantTypeRepository extends JpaRepository<RestaurantType, Integer>{
 

@@ -1,8 +1,5 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,25 +16,19 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name="user_pushtoken")
-@ApiModel(
-		description = "Beschreibt einen Token für die Push-Mitteilungen."
-)
 public class PushToken {
 
 	/** The id. */
-	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
 	/** The user*/
-	@ApiModelProperty(notes = "Benutzer")
 	@Column(name="user_id")
 	@NotNull
 	private int userId;
 	
 	/** The token*/
-	@ApiModelProperty(notes = "FCM-Token")
 	@Column(name="fcm_token")
 	@NotNull
 	private String fcmToken;

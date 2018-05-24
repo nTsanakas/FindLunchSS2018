@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.OfferPhoto;
 
 /**
- * The Interface OfferPhotoRepository. Abstraction for the data access layer.
+ * The Interface OfferPhotoRepository. Abstraction for the data access layer
  */
 public interface OfferPhotoRepository extends JpaRepository<OfferPhoto, Integer>{
 	

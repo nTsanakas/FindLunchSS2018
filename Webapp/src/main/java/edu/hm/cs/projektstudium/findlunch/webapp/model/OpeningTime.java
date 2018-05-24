@@ -15,8 +15,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -26,23 +24,18 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 
 
 /**
- * The Class OpeningTime. Describes the opening time of a restaurant.
+ * The Class OpeningTime.
  */
 @Entity
 @Table(name="opening_time")
-@ApiModel(
-		description = "Beschreibt die Öffnungszeiten eines Restaurants."
-)
 public class OpeningTime {
 
 	/** The id. */
-	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 
 	/** The closing time. */
-	@ApiModelProperty(notes = "Schließungszeit")
 	@JsonView(RestaurantView.RestaurantRest.class)
 	@Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd.MM.yyyy HH:mm", locale="de", timezone="Europe/Berlin")
@@ -51,7 +44,6 @@ public class OpeningTime {
 	private Date closingTime;
 
 	/** The opening time. */
-	@ApiModelProperty(notes = "Öffnungszeit")
 	@JsonView(RestaurantView.RestaurantRest.class)
 	@Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd.MM.yyyy HH:mm", locale="de", timezone="Europe/Berlin")
@@ -60,7 +52,6 @@ public class OpeningTime {
 	private Date openingTime;
 
 	/** The time schedule. */
-	@ApiModelProperty(notes = "Geschäftszeiten")
 	//bi-directional many-to-one association to TimeSchedule
 	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="time_schedule_id")

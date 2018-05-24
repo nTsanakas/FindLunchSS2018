@@ -25,8 +25,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
@@ -39,23 +37,18 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView
 
 
 /**
- * The Class Offer. Describes a food offer.
+ * The Class Offer.
  */
 @Entity
-@ApiModel(
-		description = "Beschreibt ein Essensangebot."
-)
 public class Offer {
 
 	/** The id. */
-	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@JsonView({OfferView.OfferRest.class, ReservationView.ReservationRest.class})
 	private int id;
 
 	/** The description. */
-	@ApiModelProperty(notes = "Beschreibung")
 	@Lob
 	@JsonView({OfferView.OfferRest.class, ReservationView.ReservationRest.class})
 	@NotBlank(message="{offer.description.notBlank}")
@@ -63,7 +56,6 @@ public class Offer {
 	private String description;
 
 	/** The end date. */
-	@ApiModelProperty(notes = "Angebotsende")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="dd.MM.yyy")
 	@Column(name="end_date")
@@ -71,21 +63,18 @@ public class Offer {
 	private Date endDate;
 
 	/** The preparation time. */
-	@ApiModelProperty(notes = "Zubereitungszeit")
 	@Column(name="preparation_time")
 	@JsonView({OfferView.OfferRest.class, ReservationView.ReservationRest.class})
 	@Min(value=1, message="{offer.preparationTime.invalidMinValue}")
 	private int preparationTime;
 
 	/** The price. */
-	@ApiModelProperty(notes = "Preis")
 	@JsonView({OfferView.OfferRest.class, ReservationView.ReservationRest.class})
 	@NumberFormat(style=Style.DEFAULT)
 	@DecimalMin(value="0.5", message="{offer.price.invalidMinValue}")
 	private float price;
 
 	/** The start date. */
-	@ApiModelProperty(notes = "Beginn")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="dd.MM.yyy")
 	@Column(name="start_date")
@@ -93,26 +82,22 @@ public class Offer {
 	private Date startDate;
 
 	/** The title. */
-	@ApiModelProperty(notes = "Bezeichnung")
 	@JsonView({OfferView.OfferRest.class, ReservationView.ReservationRest.class})
 	@NotBlank(message="{offer.title.notBlank}")
 	@Size(min=2, max=60, message= "{offer.title.lengthInvalid}")
 	private String title;
 
 	/** The default photo. */
-	@ApiModelProperty(notes = "Foto")
 	@Transient
 	@JsonView({OfferView.OfferRest.class, ReservationView.ReservationRest.class})
 	private OfferPhoto defaultPhoto;
 	
 	/** The needed point*/
-	@ApiModelProperty(notes = "Anzahl benötigter Punkte")
 	@JsonView({OfferView.OfferRest.class, ReservationView.ReservationRest.class})
 	@Min(value=1, message="{offer.neededPoints.invalidMinValue}")
 	private int neededPoints;
 	
 	/** The offers within the reservation */
-	@ApiModelProperty(notes = "Angebote innerhalb der Bestellung")
 	@OneToMany(mappedBy="offer", cascade=CascadeType.ALL)
 	private List<ReservationOffers> reservation_offers;
 	

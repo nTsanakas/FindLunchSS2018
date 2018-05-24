@@ -15,8 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import org.json.simple.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -33,59 +31,47 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificatio
  */
 @Entity
 @Table(name="push_notification")
-@ApiModel(
-		description = "Repräsentiert eine Push-Benachrichtigung."
-)
 public class DailyPushNotificationData implements Serializable {
 	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 	
 	/** The id. */
-	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue 
 	@JsonView(PushNotificationView.PushNotificationRest.class)
 	private int id;
 	
 	/** The title. */
-	@ApiModelProperty(notes = "Titel")
 	@JsonView(PushNotificationView.PushNotificationRest.class)
 	private String title;
  
 	/** The fcm token. */
-	@ApiModelProperty(notes = "FCM-Token")
 	@Lob
 	@Column(name="fcm_token")
 	private String fcmToken;
 	
 	/** The sns token. */
-	@ApiModelProperty(notes = "SNS-Token")
 	@Lob
 	@Column(name="sns_token")
 	private String snsToken;
 
 	/** The latitude. */
-	@ApiModelProperty(notes = "Breitengrad")
 	private float latitude;
 
 	/** The longitude. */
-	@ApiModelProperty(notes = "Längengrad")
 	private float longitude;
 
 
 	/** The radius. */
-	@ApiModelProperty(notes = "Radius")
 	private int radius;
 
 	/** The user. */
 	//bi-directional many-to-one association to User
-	@ApiModelProperty(notes = "Benutzer")
 	@ManyToOne
 	private User user;
 	
 	/** The day of weeks. */
-	@ApiModelProperty(notes = "Wochentag")
 	//bi-directional many-to-many association to DayOfWeek
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
@@ -101,7 +87,6 @@ public class DailyPushNotificationData implements Serializable {
 	private List<DayOfWeek> dayOfWeeks;
 
 	/** The kitchen types. */
-	@ApiModelProperty(notes = "Küchentyp")
 	//bi-directional many-to-many association to KitchenType
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(

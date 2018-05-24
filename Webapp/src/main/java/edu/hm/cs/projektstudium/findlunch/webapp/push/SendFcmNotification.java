@@ -49,14 +49,12 @@ public class SendFcmNotification extends PushNotificationManager implements Runn
 	 * Url for sending Google FCM notification.
 	 */
 	private final String FCM_NOT_URL = "https://fcm.googleapis.com/fcm/send";
+	private static final String FCM_SERVER_KEY = "AIzaSyCI1nu3pSn5VC0vt8iRBfFf1caGrVEYZSI";
 	
 	public SendFcmNotification(JSONObject push){
 		this.push = push;
 	}
 	
-	/**
-	 * Sends the fcm notification.
-	 */
 	public void run() {
 
 		//Direct HTTP-client usable for sending push json-based.
@@ -70,7 +68,7 @@ public class SendFcmNotification extends PushNotificationManager implements Runn
 				.url(FCM_NOT_URL)
 				.post(body)
 				.addHeader("Content-type", mediaType.toString())
-				.addHeader("Authorization", "key="+FCM_SENDER_ID).build();
+				.addHeader("Authorization", "key="+FCM_SERVER_KEY).build();
 		try {
 			
 			//Execute request.

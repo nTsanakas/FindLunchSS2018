@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 
 /**
- * The Interface UserRepository. Abstraction for the data access layer.
+ * The Interface UserRepository. Abstraction for the data access layer
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>{

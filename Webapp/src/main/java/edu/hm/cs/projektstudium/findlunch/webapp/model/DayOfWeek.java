@@ -15,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificationView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 
 /**
@@ -24,43 +22,34 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @Entity
 @Table(name="day_of_week")
-@ApiModel(
-		description = "Klasse für Wochentag."
-)
 public class DayOfWeek {
 
 	/** The id. */
-	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@JsonView({RestaurantView.RestaurantRest.class, PushNotificationView.PushNotificationRest.class})
 	private int id;
 
 	/** The day number. */
-	@ApiModelProperty(notes = "Wochentag-Nummer")
 	@Column(name="day_number")
 	@JsonView({RestaurantView.RestaurantRest.class, PushNotificationView.PushNotificationRest.class})
 	private int dayNumber;
 
 	/** The name. */
-	@ApiModelProperty(notes = "Name des Wochentags")
 	@JsonView({RestaurantView.RestaurantRest.class, PushNotificationView.PushNotificationRest.class})
 	private String name;
 
 	/** The offers. */
-	@ApiModelProperty(notes = "Angebote am Wochentag")
 	//bi-directional many-to-many association to Offer
 	@ManyToMany(mappedBy="dayOfWeeks")
 	private List<Offer> offers;
 	
 	/** The push notifications. */
-	@ApiModelProperty(notes = "Push-Benachrichtigungen")
 	//bi-directional many-to-many association to PushNotification
 	@ManyToMany(mappedBy="dayOfWeeks")
 	private List<DailyPushNotificationData> pushNotifications;
 
 	/** The time schedules. */
-	@ApiModelProperty(notes = "Zeitpläne")
 	//bi-directional many-to-one association to TimeSchedule
 	@OneToMany(mappedBy="dayOfWeek")
 	private List<TimeSchedule> timeSchedules;

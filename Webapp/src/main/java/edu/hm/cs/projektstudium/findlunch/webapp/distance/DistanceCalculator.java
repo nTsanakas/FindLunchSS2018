@@ -6,9 +6,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.distance;
  */
 public class DistanceCalculator {
 	
-	/** 
-	 * The Constant AVERAGE_RADIUS_OF_EARTH. 
-	 * */
+	/** The Constant AVERAGE_RADIUS_OF_EARTH. */
 	private final static double AVERAGE_RADIUS_OF_EARTH = 6371;
 	
 	/**

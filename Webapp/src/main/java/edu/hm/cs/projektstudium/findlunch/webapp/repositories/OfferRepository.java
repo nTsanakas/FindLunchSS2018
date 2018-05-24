@@ -10,7 +10,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseTypes;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
 
 /**
- * The Interface OfferRepository. Abstraction for the data access layer.
+ * The Interface OfferRepository. Abstraction for the data access layer
  */
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Serializable>{

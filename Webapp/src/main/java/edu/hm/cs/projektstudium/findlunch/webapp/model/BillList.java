@@ -1,20 +1,13 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 import java.util.ArrayList;
 
 /**
- * The Class BillList. Combines multiple bills to a list.
+ * The Class BillList.
  */
-@ApiModel(
-		description = "Fasst mehrere Rechnungen zu einer Liste zusammen."
-)
 public class BillList {
 	
 	/** The list of bills */
-	@ApiModelProperty(notes = "Rechnungsliste")
 	private ArrayList<Bill> bills = new ArrayList<Bill>();
 
 	/**
