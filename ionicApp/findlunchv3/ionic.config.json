@@ -1,0 +1,8 @@
+{
+  "name": "findlunchv2",
+  "app_id": "0ac52cc0",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
