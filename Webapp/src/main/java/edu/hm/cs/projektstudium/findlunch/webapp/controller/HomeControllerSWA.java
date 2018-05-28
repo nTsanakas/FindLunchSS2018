@@ -42,7 +42,7 @@ public class HomeControllerSWA {
 
         //Checks if the todo exist`s and the user has access to it. (security check, if the call parameter has been altered manually)
         if(!homeService.toDoAssignedToSalePerson(toDoId)) {
-            return "redirect:/home?noValidAccessToToDo";
+            return "redirect:/swa/home?noValidAccessToToDo";
         }
         homeService.deleteToDo(toDoId);
 

@@ -141,11 +141,11 @@
 
             <tbody>
             <tr th:each="toDo : ${toDos}">
-                <td> <a class="btn-link" th:href="@{/restaurant(id=${toDo.restaurant})}" th:text="${toDo.restaurantName}" /> </td>
+                <td> <a class="btn-link" th:href="@{/swa/restaurant(id=${toDo.restaurant})}" th:text="${toDo.restaurantName}" /> </td>
                 <td>
                     <!-- Displays the processId(id) as a link if the requestTyp is a changeRequest -->
                     <div th:switch="${toDo.requestTyp}">
-                        <span th:case="'Änderung freigeben'"> <a class="btn-link" th:href="@{/offerChangeRequest(id=${toDo.id})}" th:text="${toDo.id}" /> </span>
+                        <span th:case="'Änderung freigeben'"> <a class="btn-link" th:href="@{/swa/offerChangeRequest(id=${toDo.id})}" th:text="${toDo.id}" /> </span>
                         <span th:case="'Besuchsaufforderung'"> <span th:text="${toDo.id}" /> </span>
                         <span th:case="'Umsatzwarnung'"> <span th:text="${toDo.id}" /> </span>
                     </div>
@@ -165,12 +165,12 @@
                     <div th:switch="${toDo.requestTyp}">
                         <span th:case="'Änderung freigeben'">  </span>
                         <span th:case="'Besuchsaufforderung'">
-                            <a th:href="@{/home/remove(toDo=${toDo.id})}" class="label label-danger">
+                            <a th:href="@{/swa/home/remove(toDo=${toDo.id})}" class="label label-danger">
                                 <span class="glyphicon glyphicon-remove" /> <span style="font-size: 125%" th:text="#{universal.label.delete}" />
                             </a>
                         </span>
                         <span th:case="'Umsatzwarnung'">
-                            <a th:href="@{/home/remove(toDo=${toDo.id})}" class="label label-danger">
+                            <a th:href="@{/swa/home/remove(toDo=${toDo.id})}" class="label label-danger">
                                 <span class="glyphicon glyphicon-remove" /> <span style="font-size: 125%" th:text="#{universal.label.delete}" />
                             </a>
                         </span>
@@ -201,7 +201,7 @@
 
             <tbody>
             <tr th:each="restaurant : ${restaurants}">
-                <td> <a class="btn-link" th:href="@{/restaurant(id=${restaurant.id})}" th:text="${restaurant.name}" /> </td>
+                <td> <a class="btn-link" th:href="@{/swa/restaurant(id=${restaurant.id})}" th:text="${restaurant.name}" /> </td>
                 <td> <span th:text="${restaurant.email}" /> </td>
                 <td> <span th:text="${restaurant.phone}" /> </td>
                 <td> <span th:text="${restaurant.street}" /> <span th:text="${restaurant.streetNumber}" /> </td>

@@ -19,6 +19,7 @@ import javax.persistence.TemporalType;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -127,4 +128,56 @@ public class TimeSchedule {
 		return openingTime;
 	}
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+
+        TimeSchedule other = (TimeSchedule) obj;
+        if (Integer.valueOf(id) == null) {
+            if (Integer.valueOf(other.id) != null)
+                return false;
+        }
+
+        if (id != other.getId()) {
+            return false;
+        }
+
+        if(offerStartTime != null) {
+            if (!offerStartTime.equals(other.getOfferStartTime())) {
+                return false;
+            }
+        }
+
+        if(offerEndTime != null) {
+            if (!offerEndTime.equals(other.getOfferEndTime())) {
+                return false;
+            }
+        }
+
+        if(openingTimes != null) {
+            if (!openingTimes.containsAll(other.getOpeningTimes())) {
+                return false;
+            }
+        }
+
+        if (dayOfWeek.getId() != (other.getDayOfWeek().getId())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((Integer.valueOf(id) == null) ? 0 : (Integer.valueOf(id).hashCode()));
+
+        return result;
+    }
 }

@@ -20,7 +20,7 @@ public class KitchenTypeValidator implements Validator {
         Object kitchenType = null;
 
         try {
-            kitchenType = restaurant.getKitchenTypes().get(0);
+            kitchenType = restaurant.getKitchenTypesAsString().get(0);
         } catch (Exception e) {
             //kitchenTypesAsString is empty
         }

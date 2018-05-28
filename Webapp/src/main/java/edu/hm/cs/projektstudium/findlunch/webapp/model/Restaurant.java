@@ -287,11 +287,32 @@ public class Restaurant implements Serializable {
 	@Transient
 	private List<RestaurantTimeContainer> offerTimes;
 
+	@Transient
+	private String restaurantTypeAsString;
+
+	@Transient
+	private List<String> kitchenTypesAsString;
+
+	//Needed for the Regex Validator needs a String
+	//Regex-Sourece: https://stackoverflow.com/questions/3518504/regular-expression-for-matching-latitude-longitude-coordinates
+	@Transient
+	@Pattern(regexp = "(^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$)|", message = "{restaurant.validation.coordinatesLatitude}")
+	private String locationLatitudeAsString;
+
+	//Needed for the Regex Validator needs a String
+	//Regex-Sourece: https://stackoverflow.com/questions/3518504/regular-expression-for-matching-latitude-longitude-coordinates
+	@Transient
+	@Pattern(regexp = "(^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$)|", message = "{restaurant.validation.coordinatesLongitude}")
+	private String locationLongitudeAsString;
+
+	@Transient
+	private int idOfSalesPerson;
+
 	/**
 	 * Instantiates a new restaurant.
 	 */
 	public Restaurant() {
-		this.admins = new ArrayList<User>();
+		this.admins = new ArrayList<>();
 
 	}
 	
@@ -499,6 +520,16 @@ public class Restaurant implements Serializable {
 		return false;
 	}
 
+	public void restaurantKitchenTypesAsStringFiller() {
+		kitchenTypesAsString = new ArrayList<>();
+
+		if(kitchenTypes != null) {
+			for(KitchenType kitchenType : kitchenTypes) {
+				kitchenTypesAsString.add(kitchenType.getName());
+			}
+		}
+	}
+
 	public void orderRestaurantTimeContainers() {
 		openingTimes.sort(Comparator.comparingInt(RestaurantTimeContainer::getDayNumber));
 		offerTimes.sort(Comparator.comparingInt(RestaurantTimeContainer::getDayNumber));
@@ -557,6 +588,120 @@ public class Restaurant implements Serializable {
 			}
 			openingTimes.add(new RestaurantTimeContainer(openingTime, closingTime, dayNumber));
 		}
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		Restaurant other = (Restaurant) obj;
+		if (Integer.valueOf(id) == null) {
+			if (Integer.valueOf(other.id) != null)
+				return false;
+		}
+
+		if (id != other.getId()) {
+			return false;
+		}
+
+		if (customerId != other.getCustomerId()) {
+			return false;
+		}
+
+		if (!name.equals(other.getName())) {
+			return false;
+		}
+
+		if (!street.equals(other.getStreet())) {
+			return false;
+		}
+
+		if (!streetNumber.equals(other.getStreetNumber())) {
+			return false;
+		}
+
+		if (!zip.equals(other.getZip())) {
+			return false;
+		}
+
+		if (!city.equals(other.getCity())) {
+			return false;
+		}
+
+		if (!phone.equals(other.getPhone())) {
+			return false;
+		}
+
+		if (!country.getCountryCode().equals(other.getCountry().getCountryCode())) {
+			return false;
+		}
+
+		if (!email.equals(other.getEmail())) {
+			return false;
+		}
+
+		if (locationLatitude != other.getLocationLatitude()) {
+			return false;
+		}
+
+
+		if (locationLongitude != other.getLocationLongitude()) {
+			return false;
+		}
+
+		if(url != null && other.getUrl() != null) {
+			if (!url.equals(other.getUrl())) {
+				return false;
+			}
+		}
+
+		if (!restaurantType.getName().equals(other.getRestaurantType().getName())) {
+			return false;
+		}
+
+		if (!restaurantUuid.equals(other.getRestaurantUuid())) {
+			return false;
+		}
+
+		if (!offerModifyPermission == other.isOfferModifyPermission()) {
+			return false;
+		}
+
+		if (!blocked == other.isBlocked()) {
+			return false;
+		}
+
+		if (salesPerson.getId() != other.getSalesPerson().getId()) {
+			return false;
+		}
+
+		if (!kitchenTypes.containsAll(other.getKitchenTypes())) {
+			return false;
+		}
+
+		if (!courseTypeList.containsAll(other.getCourseTypeList())) {
+			return false;
+		}
+
+		if (!timeSchedules.containsAll(other.getTimeSchedules())) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((Integer.valueOf(id) == null) ? 0 : (Integer.valueOf(id).hashCode()));
+
+		return result;
 	}
 
 }

@@ -193,10 +193,14 @@ public class SecurityConfig {
 			http
 					.authorizeRequests().antMatchers("https://localhost:8443/**").permitAll().and()
 					// Change the sent server name.
-					.headers().addHeaderWriter(new StaticHeadersWriter("Server", "Unbekannter Webserver")).and()
+					.headers().addHeaderWriter(new StaticHeadersWriter("Server",
+                    "Unbekannter Webserver"))
+                    .and()
 					// Add an elementary Content-Security-Policy-header with a reporting URL.
 					// (Google.com has to be added as reCaptcha is loaded from their website(s).)
-					// See: https://developers.google.com/recaptcha/docs/faq#im-using-content-security-policy-csp-on-my-website-how-can-i-configure-it-to-work-with-recaptcha
+					// See: https://developers.google.com/recaptcha/docs
+                    // /faq#im-using-content-security-policy-csp-on-my-website-how-can-i-configure-it-to-work-
+                    // with-recaptcha
 					.headers().addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy",
 							"default-src 'self' data:; script-src 'self' 'unsafe-inline' " +
 									"https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ ;" +
@@ -224,7 +228,7 @@ public class SecurityConfig {
 
 	/**
 	 * Class for the Sales Webapp authentication configuration.
-	 */
+    */
 	@Configuration
 	@Order(1)
 	public static class SwaSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -241,15 +245,8 @@ public class SecurityConfig {
 		@Override
 		protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-			httpSecurity.formLogin().loginPage("/swa/login")
-					.usernameParameter("userId")
-					.passwordParameter("password");
-
-			httpSecurity.formLogin().defaultSuccessUrl("/swa/home")
-					.failureUrl("/swa/login?error");
-			//Logout is handled manually by the HomeController
-
-			httpSecurity.authorizeRequests()
+			httpSecurity
+                    .antMatcher("/swa/**").authorizeRequests()
 					.antMatchers("/swa/login").permitAll()
 					.antMatchers("/swa/home/**").access("hasRole('VMA')")
 					.antMatchers("/swa/profile/**").access("hasRole('VMA')")
@@ -267,17 +264,30 @@ public class SecurityConfig {
 					.antMatchers("/swa/cancelOfferOverview/**").access("hasRole('VMA')")
 					.antMatchers("/swa/offerOverview/**").access("hasRole('VMA')")
 					.antMatchers("/swa/offerChangeRequest/**").access("hasRole('VMA')")
-					.antMatchers("/swa/saveOfferChangeRequest/**").access("hasRole('VMA')");
-
-			httpSecurity.csrf().disable();
-			httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED); //equals default
-			httpSecurity.sessionManagement().maximumSessions(1); //Allows only one login per user. If a user logs in again the first login will be invalid.
-			httpSecurity.sessionManagement().invalidSessionUrl("/swa/login"); //The user is send to this page after he closed the browser and opens the SalesWebApp again. Does count also for expired sessions.
+					.antMatchers("/swa/saveOfferChangeRequest/**").access("hasRole('VMA')")
+                    .and()
+                    .formLogin()
+                    .loginPage("/swa/login")
+                    .usernameParameter("userId")
+                    .passwordParameter("password")
+                    .defaultSuccessUrl("/swa/home")
+                    .failureUrl("/swa/login?error")
+            .and()
+            .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                    .maximumSessions(1)
+                    .and()
+                    //The user is send to this page after he closed the browser and opens the SalesWebApp again.
+                    // Does count also for expired sessions.
+                    .invalidSessionUrl("/swa/login")
+            .and()
+            .csrf().disable();
 		}
 
 		@Bean
 		public HttpSessionEventPublisher httpSessionEventPublisher() {
-			return new HttpSessionEventPublisher(); //Ensures that the Spring Security session registry is notified when the session is destroyed.
+			return new HttpSessionEventPublisher(); //Ensures that the Spring Security session registry is notified
+            // when the session is destroyed.
 		}
 	}
 	

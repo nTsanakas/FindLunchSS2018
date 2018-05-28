@@ -196,8 +196,7 @@ public class RestaurantRestController {
 	 * @return the restaurants within the given radius. The flag "isFavorite" is
 	 *         always false
 	 */
-	public List<Restaurant> getAllRestaurants(float longitude, float latitude, int radius)
-	{
+	public List<Restaurant> getAllRestaurants(float longitude, float latitude, int radius) {
 		List<Restaurant> restaurantList = restaurantRepo.findAll();
 
 		for (int i = 0; i < restaurantList.size(); i++) {

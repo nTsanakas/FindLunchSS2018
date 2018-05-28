@@ -30,9 +30,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by Alexander Carl on 18.06.2017.
- */
 @Service
 public class DbWriterServiceImpl implements DbWriterService {
 
@@ -154,7 +151,7 @@ public class DbWriterServiceImpl implements DbWriterService {
 
         if (restaurantId == 0) {
             restaurantToSave = new Restaurant();
-            restaurantToSave.setSalesPerson(salesPersonRepository.findById(restaurantData.getSalesPerson().getId()));
+            restaurantToSave.setSalesPerson(salesPersonRepository.findById(restaurantData.getIdOfSalesPerson()));
         } else {
             restaurantToSave = restaurantRepository.findById(restaurantId);
         }
@@ -175,14 +172,14 @@ public class DbWriterServiceImpl implements DbWriterService {
         restaurantToSave.setBlocked(restaurantData.isBlocked());
 
         //Sets the restaurant type
-        RestaurantType restaurantType = typeRepository.findByName(restaurantData.getRestaurantType().getName());
+        RestaurantType restaurantType = typeRepository.findByName(restaurantData.getRestaurantTypeAsString());
         restaurantToSave.setRestaurantType(restaurantType);
 
         //Sets the kitchen types
         List<KitchenType> restaurantKitchenTypes = new ArrayList<>();
 
-        for (KitchenType kitchenType : restaurantData.getKitchenTypes()) {
-            restaurantKitchenTypes.add(kitchenTypeRepository.findByName(kitchenType.getName()));
+        for (String kitchenTypeName : restaurantData.getKitchenTypesAsString()) {
+            restaurantKitchenTypes.add(kitchenTypeRepository.findByName(kitchenTypeName));
         }
         restaurantToSave.setKitchenTypes(restaurantKitchenTypes);
 
@@ -203,9 +200,39 @@ public class DbWriterServiceImpl implements DbWriterService {
 
     //Part of saveRestaurant
     private Restaurant getCoordinates (Restaurant restaurantData, Restaurant restaurantToSave)   {
-        restaurantToSave.setLocationLatitude(restaurantData.getLocationLatitude());
-        restaurantToSave.setLocationLongitude(restaurantData.getLocationLongitude());
 
+        //Sets the coordinates with GoogleMaps if left empty
+        if (restaurantData.getLocationLatitudeAsString() == "" || restaurantData.getLocationLongitudeAsString() == "") {
+            //No Valid  Google API-Key for the google service
+            //HashMap<String, Float> googleMapsLocationValues = getLocationOfRestaurant(restaurantData);
+            HashMap<String, Float> googleMapsLocationValues = null;
+
+            if(googleMapsLocationValues == null) {
+
+                if(restaurantData.getLocationLatitudeAsString() == "") {
+                    restaurantToSave.setLocationLatitude(new Float(0.0f));
+                } else {
+                    restaurantToSave.setLocationLatitude(Float.parseFloat(restaurantData.getLocationLatitudeAsString()));
+                }
+
+                if(restaurantData.getLocationLongitudeAsString() == "") {
+                    restaurantToSave.setLocationLongitude(new Float(0.0f));
+                } else {
+                    restaurantToSave.setLocationLongitude(Float.parseFloat(restaurantData.getLocationLongitudeAsString()));
+                }
+            }
+
+            if (googleMapsLocationValues != null && restaurantData.getLocationLongitudeAsString() == null) {
+                restaurantToSave.setLocationLongitude(googleMapsLocationValues.get("locationLongitude"));
+            }
+
+            if (googleMapsLocationValues != null && restaurantData.getLocationLatitudeAsString() == null) {
+                restaurantToSave.setLocationLatitude(googleMapsLocationValues.get("locationLatitude"));
+            }
+        } else {
+            restaurantToSave.setLocationLatitude(Float.parseFloat(restaurantData.getLocationLatitudeAsString()));
+            restaurantToSave.setLocationLongitude(Float.parseFloat(restaurantData.getLocationLongitudeAsString()));
+        }
         return restaurantToSave;
     }
 
@@ -215,7 +242,7 @@ public class DbWriterServiceImpl implements DbWriterService {
 
         List<TimeSchedule> timeSchedulesToBeSaved = restaurantToSave.getTimeSchedules();
         if (timeSchedulesToBeSaved == null) {
-            timeSchedulesToBeSaved = new ArrayList<TimeSchedule>();
+            timeSchedulesToBeSaved = new ArrayList<>();
 
             for(int i = 0; i < 7; i++) {
                 TimeSchedule timeSchedule = new TimeSchedule();
@@ -286,7 +313,7 @@ public class DbWriterServiceImpl implements DbWriterService {
 
             //Setting the opening time as a list is questionable as the program (findLunch & SWA) only support one opening time per day.
             List<OpeningTime> openingTimesList = timeSchedule.getOpeningTimes();
-            if (openingTimesList == null) {openingTimesList = new ArrayList<OpeningTime>(); }
+            if (openingTimesList == null) {openingTimesList = new ArrayList<>(); }
 
             openingTime.setTimeSchedule(timeSchedule);
             openingTimesList.add(openingTime);
@@ -301,7 +328,7 @@ public class DbWriterServiceImpl implements DbWriterService {
         // Replace the API key below with a valid API key.
         GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyAvO9bl1Yi2hn7mkTSniv5lXaPRii1JxjI");
         GeocodingApiRequest req = GeocodingApi.newRequest(context).address(String.format("%1$s %2$s, %3$s %4$s", restaurantData.getStreetNumber(), restaurantData.getStreet(), restaurantData.getZip(), restaurantData.getCity()));
-        HashMap<String, Float> googleMapsLocationValues = new HashMap<String, Float>();
+        HashMap<String, Float> googleMapsLocationValues = new HashMap<>();
 
         try {
             GeocodingResult[] result = req.await();
@@ -743,9 +770,7 @@ public class DbWriterServiceImpl implements DbWriterService {
     }
 
     private byte[] createThumbnail(MultipartFile multipartFile) throws IOException {
-        InputStream inputStream = null;
-
-        inputStream = new ByteArrayInputStream(multipartFile.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(multipartFile.getBytes());;
         BufferedImage image = ImageIO.read(inputStream);
         inputStream.close();
 

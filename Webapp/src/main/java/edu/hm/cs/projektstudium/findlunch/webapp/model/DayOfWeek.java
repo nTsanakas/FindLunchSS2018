@@ -10,6 +10,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificatio
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,7 @@ import lombok.Setter;
 )
 @Getter
 @Setter
+@EqualsAndHashCode(of={"ID", "dayNumber", "name"})
 public class DayOfWeek {
 
 	/** The id. */

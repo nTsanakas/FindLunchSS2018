@@ -168,7 +168,7 @@ public class RestaurantController {
 	 * @return the restaurant types
 	 */
 	private List<RestaurantType> getRestaurantTypes() {
-		List<RestaurantType> result = new ArrayList<RestaurantType>();
+		List<RestaurantType> result = new ArrayList<>();
 		result.addAll(restaurantTypeRepository.findAllByOrderByNameAsc());
 
 		RestaurantType noType = new RestaurantType();
@@ -205,7 +205,7 @@ public class RestaurantController {
 		setBase64(restaurant);
 
 		// add TimeSchedule entry for each day of week
-		ArrayList<TimeSchedule> times = new ArrayList<TimeSchedule>();
+		ArrayList<TimeSchedule> times = new ArrayList<>();
 		List<DayOfWeek> days = dayOfWeekRepository.findAll();
 		for (DayOfWeek day : days) {
 
@@ -247,7 +247,7 @@ public class RestaurantController {
 			return "redirect:/restaurant/add";
 		}
 		
-		List<TimeSchedule> existingTimes = new ArrayList<TimeSchedule>();
+		List<TimeSchedule> existingTimes = new ArrayList<>();
 		existingTimes.addAll(restaurant.getTimeSchedules());
 		
 		// all elements have to be cleared and copied to a new list
@@ -301,7 +301,7 @@ public class RestaurantController {
 		o.setOpeningTime(ot.getOpeningTime());
 		
 		if (t.getOpeningTimes() == null) {
-			t.setOpeningTimes(new ArrayList<OpeningTime>());
+			t.setOpeningTimes(new ArrayList<>());
 		}
 		
 		t.addOpeningTime(o);
@@ -341,7 +341,7 @@ public class RestaurantController {
 			if (t.getOpeningTimes() == null) {
 				// first OpeningTime for that day
 				// initialize list
-				t.setOpeningTimes(new ArrayList<OpeningTime>());
+				t.setOpeningTimes(new ArrayList<>());
 			}
 
 			// add new OpeningTime
@@ -993,7 +993,6 @@ public class RestaurantController {
 	/**
 	 * Adds the default logo to the restaurant
 	 * @param restaurant the restaurant
-	 * @author Niklas Klotz
 	 */
 	private void addDefaultLogo(Restaurant restaurant) {
 		try{	

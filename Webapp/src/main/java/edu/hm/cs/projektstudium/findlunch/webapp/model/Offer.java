@@ -271,7 +271,6 @@ public class Offer {
 	 * @param offerPhoto the offer photo
 	 * @return the offer photo
 	 */
-	// TODO: Es hat keinen Sinn, das Argument zurückzugeben. Vorerst behalten, muss aber geändert werden.
 	public OfferPhoto removeOfferPhoto(OfferPhoto offerPhoto) {
 		getOfferPhotos().remove(offerPhoto);
 		offerPhoto.setOffer(null);
