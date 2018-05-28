@@ -582,7 +582,7 @@ public class Restaurant implements Serializable {
 
 			//The DB allows for more than one time schedule entry per day. But the FindLunchApplication only allows one pair of opening times per day.
 			//The SWApp handles this similar. If there is more than one pair of opening times per day it is ignored.
-			if(timeSchedule.getOpeningTimes().size() > 0) {
+			if(timeSchedule != null && timeSchedule.getOpeningTimes().size() > 0) {
 				openingTime = timeSchedule.getOpeningTimes().get(0).getOpeningTime();
 				closingTime = timeSchedule.getOpeningTimes().get(0).getClosingTime();
 			}

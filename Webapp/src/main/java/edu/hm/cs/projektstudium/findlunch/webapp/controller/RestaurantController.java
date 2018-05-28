@@ -508,7 +508,8 @@ public class RestaurantController {
 		if (result != null) {
 			model.addAttribute("geocodingException", result);
 			
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The Location of the restaurant could not be retrieved."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    "The Location of the restaurant could not be retrieved."));
 			return "restaurant";
 		}
 		
@@ -516,7 +517,8 @@ public class RestaurantController {
 		customRestaurantValidator.validate(restaurant, bindingResult);
 
 		if (bindingResult.hasErrors()) {
-			LOGGER.error(LogUtils.getValidationErrorString(request, bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName()));
+			LOGGER.error(LogUtils.getValidationErrorString(request, bindingResult,
+                    Thread.currentThread().getStackTrace()[1].getMethodName()));
 			return "restaurant";
 		}
 

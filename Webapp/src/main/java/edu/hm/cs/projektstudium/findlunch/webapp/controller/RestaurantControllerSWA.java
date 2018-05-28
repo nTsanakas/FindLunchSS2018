@@ -132,7 +132,8 @@ public class RestaurantControllerSWA {
         //Security check for the bound restaurant fields
         String[] suppressedFields = restaurantBinder.getSuppressedFields();
         if (suppressedFields.length > 0) {
-            throw new RuntimeException("Attempting to bind disallowed fields: " + StringUtils.arrayToCommaDelimitedString(suppressedFields));
+            throw new RuntimeException("Attempting to bind disallowed fields: " +
+                    StringUtils.arrayToCommaDelimitedString(suppressedFields));
         }
         int restaurantId = restaurant.getId();
 

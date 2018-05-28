@@ -187,7 +187,13 @@ public class DbWriterServiceImpl implements DbWriterService {
         restaurantToSave = getCoordinates(restaurantData, restaurantToSave);
 
         //Offer/Opening times
-        restaurantToSave.setTimeSchedules(getTimeScheduleList(restaurantData, restaurantToSave));
+        List<TimeSchedule> timeSchedules = new ArrayList<>(getTimeScheduleList(restaurantData, restaurantToSave));
+        // Setzen der Liste als neue Liste, um CondurrentModificationException zu vermeiden.
+        restaurantToSave.setTimeSchedules(new ArrayList<>());
+        // Direktes Setzen der Liste führt dazu, dass die Liste im Resataurant leer wird.
+        for (TimeSchedule t : timeSchedules) {
+            restaurantToSave.addTimeSchedule(t);
+        }
 
         restaurantRepository.saveAndFlush(restaurantToSave);
 
@@ -245,13 +251,13 @@ public class DbWriterServiceImpl implements DbWriterService {
             timeSchedulesToBeSaved = new ArrayList<>();
 
             for(int i = 0; i < 7; i++) {
-                TimeSchedule timeSchedule = new TimeSchedule();
                 timeSchedulesToBeSaved.add(new TimeSchedule());
             }
         }
 
         for(int i = 1; i < 8; i++) {
-            //The TimeContainers are ordered and the list.index reflects there day number. Therefore we have to transfer this information to the variable dayNumber.
+            // The TimeContainers are ordered and the list.index reflects their day number.
+            // Therefore we have to transfer this information to the variable dayNumber.
             RestaurantTimeContainer timeContainerOfferTimes = restaurantData.getOfferTimes().get(i-1);
             RestaurantTimeContainer timeContainerOpeningTimes = restaurantData.getOpeningTimes().get(i-1);
             DayOfWeek dayOfWeek = dayOfWeekRepository.findById(i);
@@ -280,14 +286,11 @@ public class DbWriterServiceImpl implements DbWriterService {
                 timeSchedule.setOfferEndTime(null);
             }
 
-            OpeningTime openingTime = null;
+            OpeningTime openingTime;
             try {
                 openingTime = timeSchedule.getOpeningTimes().get(0);
             } catch (Exception e) {
                 //no existing opening time
-            }
-
-            if(openingTime == null) {
                 openingTime = new OpeningTime();
             }
 
@@ -311,13 +314,9 @@ public class DbWriterServiceImpl implements DbWriterService {
                 openingTime.setClosingTime(null);
             }
 
-            //Setting the opening time as a list is questionable as the program (findLunch & SWA) only support one opening time per day.
-            List<OpeningTime> openingTimesList = timeSchedule.getOpeningTimes();
-            if (openingTimesList == null) {openingTimesList = new ArrayList<>(); }
 
             openingTime.setTimeSchedule(timeSchedule);
-            openingTimesList.add(openingTime);
-            timeSchedule.setOpeningTimes(openingTimesList);
+            timeSchedule.addOpeningTime(openingTime);
         }
         return timeSchedulesToBeSaved;
     }
