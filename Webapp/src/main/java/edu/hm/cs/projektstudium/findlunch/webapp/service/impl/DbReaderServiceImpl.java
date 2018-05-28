@@ -32,7 +32,7 @@ public class DbReaderServiceImpl implements DbReaderService {
     private RestaurantTypeRepository restaurantTypeRepository;
 
     @Autowired
-    private RestaurantKitchenTypeRepository restaurantKitchenTypeRepository;
+    private KitchenTypeRepository restaurantKitchenTypeRepository;
 
     @Autowired
     private OfferRepository offerRepository;
@@ -105,7 +105,7 @@ public class DbReaderServiceImpl implements DbReaderService {
     public List<Offer> getAllOffersOfRestaurant(int restaurantId) {
 
         List<Offer> offerList = offerRepository.findByRestaurant_idOrderByOrderAsc(restaurantId);
-        List<Offer> offerListToReturn = new ArrayList<Offer>();
+        List<Offer> offerListToReturn = new ArrayList<>();
 
         for(Offer offer : offerList) {
             if(offer.isChangeRequest() == false) {

@@ -19,7 +19,7 @@ public interface KitchenTypeRepository extends JpaRepository<KitchenType, Intege
 	 *
 	 * @return the list of KitchenType (ordered by name ascending)
 	 */
-	List<KitchenTypeRepository> findAllByOrderByNameAsc();
+	List<KitchenType> findAllByOrderByNameAsc();
 	
 	/**
 	 * Find KitchenTypes by their name.

@@ -46,7 +46,7 @@ public class DbWriterServiceImpl implements DbWriterService {
     private CourseTypeRepository courseTypeRepository;
 
     @Autowired
-    private RestaurantKitchenTypeRepository kitchenTypeRepository;
+    private KitchenTypeRepository kitchenTypeRepository;
 
     @Autowired
     private RestaurantTypeRepository typeRepository;
@@ -179,7 +179,7 @@ public class DbWriterServiceImpl implements DbWriterService {
         List<KitchenType> restaurantKitchenTypes = new ArrayList<>();
 
         for (String kitchenTypeName : restaurantData.getKitchenTypesAsString()) {
-            restaurantKitchenTypes.add(kitchenTypeRepository.findByName(kitchenTypeName));
+            restaurantKitchenTypes.add(kitchenTypeRepository.findByName(kitchenTypeName).get(0));
         }
         restaurantToSave.setKitchenTypes(restaurantKitchenTypes);
 
