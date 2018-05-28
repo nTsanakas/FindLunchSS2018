@@ -176,7 +176,7 @@ export class RegisterPage {
         this.auth.register(username, password)
           .subscribe(
             resp => {
-              const encodedCredentials: string = btoa(`${username}{password}`);
+              const encodedCredentials: string = btoa(`${username}:${password}`);
               window.localStorage.setItem("username", username);
               window.localStorage.setItem(username, encodedCredentials);
               this.auth.userName = window.localStorage.getItem("username");
@@ -203,7 +203,7 @@ export class RegisterPage {
               loader.dismiss();
               let alert: Alert;
               const body: string = err.toString();
-              console.log(err);
+              console.log(JSON.stringify(err));
               switch (body) {
                 case "1" :
                   alert = this.alertCtrl.create({

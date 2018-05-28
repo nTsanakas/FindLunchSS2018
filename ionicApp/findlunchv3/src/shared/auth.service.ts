@@ -61,7 +61,7 @@ export class AuthService {
       const headers: HttpHeaders = new HttpHeaders({
         'Content-Type': 'application/json'
       });
-
+      console.log(`Try to call ${SERVER_URL}/api/register_user`);
      return this.http.post<boolean>(`${SERVER_URL}/api/register_user`, this.user, {headers});
 
     }
