@@ -188,7 +188,7 @@ public class CourseTypesDetailController {
 		List<Offer> courseOffers = new ArrayList<Offer>();
 		
 		for(Offer offer : offers) {
-			if(offer.getCourseType() == coursetypeId){
+			if(offer.getCourseTypeId() == coursetypeId){
 				courseOffers.add(offer);
 			}
 		}
@@ -219,7 +219,7 @@ public class CourseTypesDetailController {
 		
 		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(courseId, authenticatedUser.getRestaurant().getId());
 		
-		int courseTypeId = offer.getCourseType();
+		int courseTypeId = offer.getCourseTypeId();
 		List<Offer> offersInCourse = offerRepository.findByCourseTypeOrderByOrderAsc(courseTypeId);
 		int position = offer.getOrder();
 		
@@ -255,7 +255,7 @@ public class CourseTypesDetailController {
 		
 		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(courseId, authenticatedUser.getRestaurant().getId());
 		
-		int courseTypeId = offer.getCourseType();
+		int courseTypeId = offer.getCourseTypeId();
 		List<Offer> offersInCourse = offerRepository.findByCourseTypeOrderByOrderAsc(courseTypeId);
 		int position = offer.getOrder();
 		

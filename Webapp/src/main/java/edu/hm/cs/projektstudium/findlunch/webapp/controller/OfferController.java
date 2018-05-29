@@ -46,9 +46,8 @@ public class OfferController {
 	/** The allergenic repository. */
 	@Autowired
 	private AllergenicRepository allergenicRepository;
-	
-	/** NIKLAS KLOTZ <p>
-	 * The courser type repository.*/
+
+	/** The course type repository.*/
 	@Autowired
 	private CourseTypeRepository courserTypeRepository;
 	
@@ -77,7 +76,7 @@ public class OfferController {
 			return "redirect:/restaurant/add?required";
 		}
 		
-		List<Offer> offers = (ArrayList<Offer>) offerRepository.findByRestaurant_idOrderByOrderAsc(authenticatedUser.getRestaurant().getId());
+		List<Offer> offers = offerRepository.findByRestaurant_idOrderByOrderAsc(authenticatedUser.getRestaurant().getId());
 		model.addAttribute("offers", offers);
 		model.addAttribute("dayOfWeeks", dayOfWeekRepository.findAll());
 		model.addAttribute("additives", additiveRepository.findAll());

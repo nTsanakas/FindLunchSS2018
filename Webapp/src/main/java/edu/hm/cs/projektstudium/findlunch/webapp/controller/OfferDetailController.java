@@ -235,7 +235,7 @@ public class OfferDetailController implements HandlerExceptionResolver {
 		}
 		
 		if(!offerRepository.findByRestaurant_idOrderByOrderAsc(authenticatedUser.getId()).contains(offer)){
-			offer.setOrder(offerRepository.findByCourseTypeOrderByOrderAsc(offer.getCourseType()).size()+1);
+			offer.setOrder(offerRepository.findByCourseTypeOrderByOrderAsc(offer.getCourseTypeId()).size()+1);
 		}
 		
 		offerRepository.save(offer);
@@ -273,8 +273,6 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param file
 	 * 			Uploaded file.
-	 * @param session
-	 * 			Session of the current user. Used to store offer photos.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page

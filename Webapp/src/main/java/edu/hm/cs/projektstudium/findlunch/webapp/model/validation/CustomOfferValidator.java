@@ -58,7 +58,7 @@ public class CustomOfferValidator implements Validator {
 		Offer offer = (Offer) objectToValidate;
 		checkDescription(offer.getDescription(), bindingResult);
 		checkTitle(offer.getTitle(), bindingResult);
-		checkCourseType(offer.getCourseType(), bindingResult);
+		checkCourseType(offer.getCourseTypeId(), bindingResult);
 
 		if (offer.getStartDate() != null && offer.getEndDate() != null) {
 			boolean offerDatesAreValid = checkOfferDates(offer, bindingResult);

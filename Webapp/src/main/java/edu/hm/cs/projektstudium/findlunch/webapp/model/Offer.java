@@ -22,6 +22,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.*;
 
+import edu.hm.cs.projektstudium.findlunch.webapp.components.RestaurantTimeContainer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -175,8 +176,14 @@ public class Offer {
 	
 	/** The coursetype */
 	@ApiModelProperty(notes = "Typ des Essenangebots.")
-	@Column(name="course_type")
-	private int courseType;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="course_type")
+	private CourseType courseType;
+
+	// Für die Findlunch Webapp
+	public int getCourseTypeId() {
+		return courseType.getId();
+	}
 	
 	/** The order of the offer within the coursetype */
 	@ApiModelProperty(notes = "Hilfsattribut zur Sortierung.")
@@ -221,6 +228,21 @@ public class Offer {
 	@Transient
 	private String endDateAsString;
 
+	@Transient
+	private String courseTypeAsString;
+
+	@Transient
+	private List<String> additivesAsString;
+
+	@Transient
+	private List<String> allergenicsAsString;
+
+	@Transient
+	private List<RestaurantTimeContainer> offerTimes;
+
+	@Transient
+	private List<String> validnessDaysOfWeekAsString;
+
 	//The number of images per offer is limited to three
 	@Transient
 	private MultipartFile firstOfferImage;
@@ -244,12 +266,113 @@ public class Offer {
 	@Transient
 	private boolean keepThirdImage;
 
+	@Pattern(regexp = "^[1-9][0-9]{0,2}$", message = "{offer.validation.neededPoints}")
+	@Transient
+	private String neededPointsAsString;
+
+	@Transient
+	private int idOfRestaurant;
+
+	// Regex-Source: http://www.regexpal.com/93999
+	// The bean-validation via regex requires a String but it is much better than the standard @Digits validation.
+	@Pattern(regexp = "(\\d+\\.\\d{1,2})", message = "{offer.validation.price}")
+	@Transient
+	private String priceAsString;
+
+	// The bean-validation via regex requires a String but it is much better than the standard @Digits validation.
+	@Pattern(regexp = "^[0-9]{1,2}$", message = "{offer.validation.preparationTime}")
+	@Transient
+	private String preparationTimeAsString;
+
 	/**
 	 * Instantiates a new offer.
 	 */
 	public Offer() {
 		
-		this.offerPhotos = new ArrayList<OfferPhoto>();
+		this.offerPhotos = new ArrayList<>();
+	}
+
+	//Loads the value of the "offerHasAdditives/Allergenics" in different format which is better to handle with Thymeleaf.
+	public void allergenicFiller() {
+		allergenicsAsString = new ArrayList<>();
+
+		if(allergenic != null) {
+			for(Allergenic offerHasAllergenic : allergenic) {
+				allergenicsAsString.add(offerHasAllergenic.getName());
+			}
+		}
+	}
+
+	public void additivesFiller() {
+		additivesAsString = new ArrayList<>();
+
+		if(additives != null) {
+			for(Additive offerHasAdditive : additives) {
+				additivesAsString.add(offerHasAdditive.getName());
+			}
+		}
+	}
+
+	//changes the the date format (String) from 2017-08-31 (yyyy-mm-dd) to 31-08-2017 (dd-mm-yyyy) to better match the regex validation
+	public String reOrderDate(String date) {
+		String year = date.substring(0,4);
+		String month = date.substring(5,7);
+		String day = date.substring(8,10);
+
+		return day + "-" + month + "-" + year;
+	}
+
+	public void daysOfWeekAsStringFiller() {
+		validnessDaysOfWeekAsString = new ArrayList<String>();
+
+		if(dayOfWeeks != null) {
+			for(DayOfWeek dayOfWeek : dayOfWeeks) {
+				validnessDaysOfWeekAsString.add(String.valueOf(dayOfWeek.getId()));
+			}
+		}
+	}
+
+	public void offerTimesContainerFiller(Restaurant restaurant) {
+		List<TimeSchedule> timeScheduleList = new ArrayList<TimeSchedule>();
+
+		try {
+			timeScheduleList = restaurant.getTimeSchedules();
+		} catch (Exception e) {
+			try {
+				throw new Exception("Error - The Restaurant (ID: " + restaurant.getId() + ") has no time schedule.");
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+
+		int dayNumber = 0;
+		Date offerStartTime;
+		Date offerEndTime;
+
+		offerTimes = new ArrayList<RestaurantTimeContainer>();
+
+		for (int i = 0; i < 7; i++) {
+			TimeSchedule timeSchedule = new TimeSchedule();
+
+			try {
+				timeSchedule = timeScheduleList.get(i);
+			} catch (Exception e) {
+				//no entry in the db
+			}
+
+			try {
+				dayNumber = timeSchedule.getDayOfWeek().getId();
+			} catch (Exception e) {
+				//new time schedule
+			}
+			if(dayNumber == 0) {
+				dayNumber = i+1;
+			}
+
+			offerStartTime = timeSchedule.getOfferStartTime();
+			offerEndTime = timeSchedule.getOfferEndTime();
+			offerTimes.add(new RestaurantTimeContainer(offerStartTime, offerEndTime, dayNumber));
+		}
 	}
 
 	/**
