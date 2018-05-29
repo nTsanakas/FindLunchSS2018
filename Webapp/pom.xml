@@ -286,6 +286,7 @@
                         <SCHEMA>FindLunch_v5.sql</SCHEMA>
                         <DATA>data_v5.sql</DATA>
                         <SWA_SCHEMA>FindLunch_v6.sql</SWA_SCHEMA>
+						<SWA_DATA>data_v6.sql</SWA_DATA>
                         <SUP_CONF>supervisord.conf</SUP_CONF>
                         <STARTUP>findlunch.sh</STARTUP>
                     </buildArgs>

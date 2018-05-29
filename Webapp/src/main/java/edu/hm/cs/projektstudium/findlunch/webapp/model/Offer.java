@@ -200,7 +200,7 @@ public class Offer {
 	@ApiModelProperty(notes = "Gibt an, ob der Angebotsvorrat ausverkauft ist.")
 	@Column(name="sold_out")
 	@JsonView(OfferView.OfferRest.class)
-	private boolean sold_out;
+	private boolean soldOut;
 
 	@ApiModelProperty(notes = "Die Id vom Änderungsantrag des Anbieters.")
 	@Column(name = "swa_change_request_id")
@@ -400,4 +400,185 @@ public class Offer {
 
 		return offerPhoto;
 	}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+
+        Offer other = (Offer) obj;
+        if(Integer.valueOf(id) == null) {
+            if (Integer.valueOf(other.id) != null)
+                return false;
+        }
+
+        if (id != other.getId()) {
+            return false;
+        }
+
+        if (changeRequestId != other.getChangeRequestId()) {
+            return false;
+        }
+
+        int restaurantId = restaurant.getId();
+        int otherRestaurantId = other.getRestaurant().getId();
+        if (restaurantId != otherRestaurantId) {
+            return false;
+        }
+
+        if(!title.equals(other.getTitle())) {
+            return false;
+        }
+
+        if(!description.equals(other.getDescription())) {
+            return false;
+        }
+
+        if(!(Double.compare(price, other.getPrice()) == 0)) {
+            return false;
+        }
+
+        if(preparationTime != other.getPreparationTime()) {
+            return false;
+        }
+
+        if(startDate.compareTo(other.getStartDate()) != 0) {
+            return false;
+        }
+
+        if(endDate.compareTo(other.getEndDate()) != 0) {
+            return false;
+        }
+
+        if(neededPoints != other.getNeededPoints()) {
+            return false;
+        }
+
+        if(soldOut != other.isSoldOut()) {
+            return false;
+        }
+
+        if(courseType != null && other.getCourseType() != null) {
+            if(courseType.getId() != other.getCourseType().getId()) {
+                return false;
+            }
+        }
+
+        if(commentOfLastChange != null && other.getCommentOfLastChange() != null) {
+            if (!commentOfLastChange.equals(other.getCommentOfLastChange())) {
+                return false;
+            }
+        }
+
+        if(salesPerson != null && other.getSalesPerson() != null) {
+            if (salesPerson.getId() != other.getSalesPerson().getId()) {
+                return false;
+            }
+        }
+
+        //DayOfWeeks check
+        if(dayOfWeeks != null && other.getDayOfWeeks() != null) {
+            List<Integer> dayOfWeeksIds = new ArrayList<Integer>();
+            List<Integer> otherDayOfWeeksIds = new ArrayList<Integer>();
+
+            for(DayOfWeek dayOfWeek : dayOfWeeks) {
+                dayOfWeeksIds.add(dayOfWeek.getId());
+            }
+
+            for(DayOfWeek dayOfWeek : other.getDayOfWeeks()) {
+                otherDayOfWeeksIds.add(dayOfWeek.getId());
+            }
+
+            if(!dayOfWeeksIds.containsAll(otherDayOfWeeksIds)) {
+                return false;
+            }
+        }
+
+        if(dayOfWeeks == null && other.getDayOfWeeks() != null || dayOfWeeks != null && other.getDayOfWeeks() == null) {
+            return false;
+        }
+
+        //OfferHasAdditives check
+        if(additives != null && other.getAdditives() != null) {
+            List<Integer> offerHasAdditivesIds = new ArrayList<Integer>();
+            List<Integer> otherOfferHasAdditivesIds = new ArrayList<Integer>();
+
+            for(Additive offerHasAdditive : additives) {
+                offerHasAdditivesIds.add(offerHasAdditive.getId());
+            }
+
+            for(Additive offerHasAdditive : other.getAdditives()) {
+                otherOfferHasAdditivesIds.add(offerHasAdditive.getId());
+            }
+
+            if(!offerHasAdditivesIds.containsAll(otherOfferHasAdditivesIds)) {
+                return false;
+            }
+        }
+
+        if(additives == null && other.getAdditives() != null || additives != null && other.getAdditives() == null) {
+            return false;
+        }
+
+        //Allergenic check
+        if(allergenic != null && other.getAllergenic() != null) {
+            List<Integer> offerHasAllergenicsIds = new ArrayList<Integer>();
+            List<Integer> otherOfferHasAllergenicsIds = new ArrayList<Integer>();
+
+            for(Allergenic offerHasAllergenic : allergenic) {
+                offerHasAllergenicsIds.add(offerHasAllergenic.getId());
+            }
+
+            for(Allergenic offerHasAllergenic : other.getAllergenic()) {
+                otherOfferHasAllergenicsIds.add(offerHasAllergenic.getId());
+            }
+
+            if(!offerHasAllergenicsIds.containsAll(otherOfferHasAllergenicsIds)) {
+                return false;
+            }
+        }
+
+        if(allergenic == null && other.getAllergenic() != null || allergenic != null && other.getAllergenic() == null) {
+            return false;
+        }
+
+        //Offer photos check
+        if(offerPhotos != null && other.getOfferPhotos() != null) {
+            List<Integer> offerPhotosIds = new ArrayList<Integer>();
+            List<Integer> otherOfferPhotosIds = new ArrayList<Integer>();
+
+            for(OfferPhoto offerPhoto : offerPhotos) {
+                offerPhotosIds.add(offerPhoto.getId());
+            }
+
+            for(OfferPhoto offerPhoto : other.getOfferPhotos()) {
+                if(offerPhoto.getBase64Encoded() != null) {
+                    otherOfferPhotosIds.add(offerPhoto.getId());
+                }
+            }
+
+            if(!offerPhotosIds.containsAll(otherOfferPhotosIds)) {
+                return false;
+            }
+        }
+
+        if(offerPhotos == null && other.getOfferPhotos() != null || offerPhotos != null && other.getOfferPhotos() == null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((Integer.valueOf(id) == null) ? 0 : (Integer.valueOf(id).hashCode()));
+
+        return result;
+    }
 }

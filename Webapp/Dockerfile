@@ -40,6 +40,8 @@ ARG DATA
 ADD ${DATA} /docker-entrypoint-initdb.d/01-data.sql
 ARG SWA_SCHEMA
 ADD ${SWA_SCHEMA} /docker-entrypoint-initdb.d/02-swa_schema.sql
+ARG SWA_DATA
+ADD ${SWA_DATA} /docker-entrypoint-initdb.d/03-swa_data.sql
 
 # Copy the application JAR in the container
 ARG JAR_FILE

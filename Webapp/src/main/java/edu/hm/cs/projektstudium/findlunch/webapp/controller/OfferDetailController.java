@@ -307,7 +307,7 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(path={"/offer/add", "/offer/edit/{offerId}"}, method=RequestMethod.POST, params={"addImage"})
-	public String addImage(final Offer offer, Model model, @RequestParam("img") MultipartFile file, Principal principal,
+	public String addImage(final Offer offer, Model model, MultipartFile file, Principal principal,
                            HttpServletRequest request) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request,
                 Thread.currentThread().getStackTrace()[1].getMethodName()));

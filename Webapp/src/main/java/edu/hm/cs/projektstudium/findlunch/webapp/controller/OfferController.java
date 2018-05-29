@@ -167,13 +167,13 @@ public class OfferController {
 			return "redirect:/offer?invalid_id";
 		}
 
-		if(!offer.isSold_out()){
-			offer.setSold_out(true);
+		if(!offer.isSoldOut()){
+			offer.setSoldOut(true);
 			offerRepository.save(offer);
 			return "redirect:/offer?soldOut";
 		}
 		
-		offer.setSold_out(false);
+		offer.setSoldOut(false);
 		offerRepository.save(offer);
 		return "redirect:/offer?availabile";		
 	}

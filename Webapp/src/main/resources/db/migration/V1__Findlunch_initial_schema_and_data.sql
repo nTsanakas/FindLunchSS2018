@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `findlunch`.`course_types` (
     FOREIGN KEY (`restaurant_id`)
     REFERENCES `findlunch`.`restaurant` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)  
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `findlunch`.`offer` (
   `start_date` DATE NULL DEFAULT NULL,
   `end_date` DATE NULL DEFAULT NULL,
   `needed_points` INT NOT NULL,
-  `sold_out` TINYINT(1) NOT NULL,
+  `soldOut` TINYINT(1) NOT NULL,
   `course_type` INT(11) NOT NULL,
   `sort` INT(11) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),

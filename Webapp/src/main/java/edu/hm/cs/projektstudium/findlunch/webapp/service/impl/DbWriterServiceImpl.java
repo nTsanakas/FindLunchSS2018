@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DbWriterServiceImpl implements DbWriterService {
@@ -370,13 +371,13 @@ public class DbWriterServiceImpl implements DbWriterService {
             offerToSave.setRestaurant(restaurantRepository.findById(offer.getRestaurant().getId()));
         } else {
             offerToSave.setId(offerId);
-            offerToSave.setRestaurant(restaurantRepository.findById(offer.getRestaurant().getId()));
+            offerToSave.setRestaurant(restaurantRepository.findById(offer.getIdOfRestaurant()));
         }
 
         offerToSave.setTitle(offer.getTitle());
         offerToSave.setDescription(offer.getDescription());
-        offerToSave.setPrice(Double.valueOf(offer.getPrice()));
-        offerToSave.setPreparationTime(offer.getPreparationTime());
+        offerToSave.setPrice(Double.valueOf(offer.getPriceAsString()));
+        offerToSave.setPreparationTime(Integer.parseInt(offer.getPreparationTimeAsString()));
         offerToSave.setChangeRequestId(offer.getChangeRequestId());
 
         //Start- + Enddate
@@ -388,7 +389,7 @@ public class DbWriterServiceImpl implements DbWriterService {
             e.printStackTrace();
         }
 
-        offerToSave.setNeededPoints(Integer.parseInt(offer.getNeededPoints() + ""));
+        offerToSave.setNeededPoints(Integer.parseInt(offer.getNeededPointsAsString()));
         offerToSave.setCourseType(offer.getCourseType());
 
         if(!offer.getNewChangeComment().equals("")) {
@@ -397,9 +398,21 @@ public class DbWriterServiceImpl implements DbWriterService {
             offerToSave.setCommentOfLastChange(offer.getCommentOfLastChange());
         }
 
-        offerToSave.setSalesPerson(offer.getSalesPerson());
-        offerToSave.setAdditives(offer.getAdditives());
-        offerToSave.setAllergenic(offer.getAllergenic());
+        offerToSave.setSalesPerson(offerToSave.getRestaurant().getSalesPerson());
+
+        List<String> additiveNames = offer.getAdditivesAsString();
+        List<Additive> additives = additiveNames
+                .stream().map(a -> additiveRepository.findByName(a))
+                .collect(Collectors.toList());
+        offerToSave.setAdditives(new ArrayList<>(additives));
+
+        List<String> allergenNames = offer.getAllergenicsAsString();
+        List<Allergenic> allergens = allergenNames
+                .stream()
+                .map(a -> allergenicRepository.findByName(a))
+                .collect(Collectors.toList());
+        offerToSave.setAllergenic(new ArrayList<>(allergens));
+
         offerToSave.setDayOfWeeks(offer.getDayOfWeeks());
 
         //Photos
@@ -412,7 +425,7 @@ public class DbWriterServiceImpl implements DbWriterService {
             }
 
             if(offerPhotos == null) {
-                offerPhotos = new ArrayList<OfferPhoto>();
+                offerPhotos = new ArrayList<>();
             }
 
             if(offer.getFirstOfferImage() != null) {

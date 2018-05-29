@@ -101,7 +101,7 @@ public class OfferRestController {
 			
 			List<Offer> offersInCourse = new LinkedList<Offer>();
 			for(Offer offer  : result){
-				if(offer.getCourseTypeId() == course.getId() && !offer.isSold_out()){
+				if(offer.getCourseTypeId() == course.getId() && !offer.isSoldOut()){
 					offersInCourse.add(offer);
 				}
 			}

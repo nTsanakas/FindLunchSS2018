@@ -195,7 +195,7 @@ public class ReservationRestController {
 			}
 			
 			// Angebot ist ausverkauft
-			if(offer.isSold_out()){
+			if(offer.isSoldOut()){
 				LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Das Offer "+reservation_offer.getOffer().getId()+" is sold out"));
 				return new ResponseEntity<>(5, HttpStatus.CONFLICT);
 			}

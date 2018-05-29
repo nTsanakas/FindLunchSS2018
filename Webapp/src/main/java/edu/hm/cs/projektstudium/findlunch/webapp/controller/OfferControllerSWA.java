@@ -153,7 +153,7 @@ public class OfferControllerSWA {
     }
 
     @RequestMapping(value = "/swa/saveOffer", method = RequestMethod.POST)
-    public String saveOffer(Model model, @Valid Offer offer, BindingResult offerBinder, HttpServletRequest request,
+    public String saveOffer(Model model, Offer offer, BindingResult offerBinder, HttpServletRequest request,
                             @RequestParam(required = false, value = "home") String homeFlag,
                             @RequestParam(required = false, value = "offerOverview") String offerOverviewFlag) {
 

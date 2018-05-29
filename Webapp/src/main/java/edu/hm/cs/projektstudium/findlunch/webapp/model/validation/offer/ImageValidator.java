@@ -18,7 +18,7 @@ public class ImageValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Offer offer = (Offer) target;
 
-        List<MultipartFile> multipartFiles = new ArrayList<MultipartFile>();
+        List<MultipartFile> multipartFiles = new ArrayList<>();
         if(offer.getFirstOfferImage() != null) {
             multipartFiles.add(offer.getFirstOfferImage());
         }
