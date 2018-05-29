@@ -107,7 +107,8 @@ public class RestaurantController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	/** The custom user details service for restaurant users. Used to refresh the SecurityContextHolder after a restaurant is added */
+	/** The custom user details service for restaurant users. Used to refresh the SecurityContextHolder
+	 * after a restaurant is added */
 	@Autowired
 	private RestaurantUserDetailsService customUserDetailsService;
 	
@@ -142,12 +143,15 @@ public class RestaurantController {
 	 */
 	@RequestMapping(path = { "/restaurant/add" }, method = RequestMethod.GET)
 	public String addRestaurant(Model model, Principal principal, HttpServletRequest request, HttpSession session) {
-		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+		LOGGER.info(LogUtils
+				.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 
 		if (authenticatedUser.getRestaurant() != null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " already has a restaurant. Another restaurant cannot be added."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The user " + authenticatedUser.getUsername() + " already has a restaurant. Another " +
+							"restaurant cannot be added."));
 			return "redirect:/offer";
 		} else {
 			Restaurant r = getNewRestaurant();
@@ -231,19 +235,24 @@ public class RestaurantController {
 	 */
 	@RequestMapping(path = { "/restaurant/edit" }, method = RequestMethod.GET)
 	public String editRestaurant(Model model, Principal principal, HttpSession session, HttpServletRequest request) {
-		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+		LOGGER.info(LogUtils
+				.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
 		if(authenticatedUser.getRestaurant() == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers it can be edited."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant" +
+							" has to be added before offers it can be edited."));
 			return "redirect:/restaurant/add";
 		}
 		
 		Restaurant restaurant = restaurantRepository.findById(authenticatedUser.getRestaurant().getId());
 
 		if(restaurant == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers it can be edited."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant" +
+							" has to be added before offers it can be edited."));
 			return "redirect:/restaurant/add";
 		}
 		
@@ -314,7 +323,8 @@ public class RestaurantController {
 	 * @param restaurant
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
-	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation
+	 * 			and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
 	 * @param request
@@ -322,8 +332,10 @@ public class RestaurantController {
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path = { "/restaurant/add", "/restaurant/edit" }, params = { "addOpeningTime" })
-	public String addOpeningTime(final Restaurant restaurant, final BindingResult bindingResult, HttpSession session, final Model model, final HttpServletRequest request) {
-		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+	public String addOpeningTime(final Restaurant restaurant, final BindingResult bindingResult, HttpSession session,
+								 final Model model, final HttpServletRequest request) {
+		LOGGER.info(LogUtils
+				.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		setBase64(restaurant);
 		List<RestaurantLogo> restaurantLogos = (List<RestaurantLogo>) session.getAttribute("logoList");
@@ -362,7 +374,8 @@ public class RestaurantController {
 	 * @param restaurant
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
-	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation
+	 * 			and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
 	 * @param request
@@ -370,8 +383,10 @@ public class RestaurantController {
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path = { "/restaurant/add", "/restaurant/edit" }, params = { "removeOpeningTime" })
-	public String removeOpeningTime(final Restaurant restaurant, final BindingResult bindingResult, HttpSession session, final Model model, final HttpServletRequest request) {
-		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+	public String removeOpeningTime(final Restaurant restaurant, final BindingResult bindingResult, HttpSession session,
+									final Model model, final HttpServletRequest request) {
+		LOGGER.info(LogUtils
+				.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		model.addAttribute("kitchenTypes", kitchenTypeRepository.findAllByOrderByNameAsc());
 		model.addAttribute("restaurantTypes", getRestaurantTypes());
@@ -406,7 +421,8 @@ public class RestaurantController {
 	 * @param restaurant
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
-	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation
+	 * 			and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
 	 * @param request
@@ -414,8 +430,10 @@ public class RestaurantController {
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path = { "/restaurant/add", "/restaurant/edit" }, params = { "removeOfferTime" })
-	public String removeOfferTime(final Restaurant restaurant, final BindingResult bindingResult, HttpSession session, final Model model, final HttpServletRequest request) {
-		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+	public String removeOfferTime(final Restaurant restaurant, final BindingResult bindingResult, HttpSession session,
+								  final Model model, final HttpServletRequest request) {
+		LOGGER.info(LogUtils
+				.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		setBase64(restaurant);
 		List<RestaurantLogo> restaurantLogos = (List<RestaurantLogo>) session.getAttribute("logoList");
@@ -445,7 +463,8 @@ public class RestaurantController {
 	 * @param restaurant
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
-	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation
+	 * 			and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
 	 * @param request
@@ -453,7 +472,8 @@ public class RestaurantController {
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path = { "/restaurant/add", "/restaurant/edit" }, params = { "addOfferTime" })
-	public String addOfferTime(final Restaurant restaurant, final BindingResult bindingResult, HttpSession session, final Model model, final HttpServletRequest request) {
+	public String addOfferTime(final Restaurant restaurant, final BindingResult bindingResult, HttpSession session,
+							   final Model model, final HttpServletRequest request) {
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		setBase64(restaurant);
@@ -484,7 +504,8 @@ public class RestaurantController {
 	 * @param restaurant
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
-	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation
+	 * 			annotation and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal
@@ -492,9 +513,12 @@ public class RestaurantController {
 	 * @return  the string for the corresponding HTML page
 	 */
 	@SuppressWarnings("unchecked")
-	@RequestMapping(method = RequestMethod.POST, path = { "/restaurant/add", "/restaurant/edit" }, params = { "saveRestaurant" })
-	public String saveRestaurant(@Valid final Restaurant restaurant, BindingResult bindingResult, final Model model, Principal principal, HttpServletRequest request) {
-		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+	@RequestMapping(method = RequestMethod.POST, path = { "/restaurant/add", "/restaurant/edit" },
+			params = { "saveRestaurant" })
+	public String saveRestaurant(@Valid final Restaurant restaurant, BindingResult bindingResult,
+								 final Model model, Principal principal, HttpServletRequest request) {
+		LOGGER.info(LogUtils.getInfoStringWithParameterList(request,
+				Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		HttpSession session = request.getSession();
 		setBase64(restaurant);
@@ -574,14 +598,16 @@ public class RestaurantController {
 		
 		// Update UserDetails
 		User updatedUserDetails = customUserDetailsService.loadUserByUsername(authenticatedUser.getUsername());
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(updatedUserDetails, null, updatedUserDetails.getAuthorities());
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(updatedUserDetails,
+				null, updatedUserDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(token);
 
 		return "redirect:/home?success";
 	}
 
 	/**
-	 * Handles the upload of a new logo. Resolves the image format, generates the base64 string for the website. Stores the newly added image to the session.
+	 * Handles the upload of a new logo. Resolves the image format, generates the base64 string for the website.
+	 * Stores the newly added image to the session.
 	 *
 	 * @param request the HttpServletRequest
 	 * @param restaurant
@@ -596,8 +622,10 @@ public class RestaurantController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(path={"/restaurant/add", "/restaurant/edit"}, method=RequestMethod.POST, params={"addLogo"})
-	public String addLogo(final Restaurant restaurant, Model model, @RequestParam("img") MultipartFile file, Principal principal, HttpServletRequest request) {
-		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+	public String addLogo(final Restaurant restaurant, Model model, @RequestParam("img") MultipartFile file,
+						  Principal principal, HttpServletRequest request) {
+		LOGGER.info(LogUtils.getInfoStringWithParameterList(request,
+				Thread.currentThread().getStackTrace()[1].getMethodName()));
 		HttpSession session = request.getSession();
 		
 		String imageFormat = resolveImageFormat(file.getContentType());
@@ -628,7 +656,9 @@ public class RestaurantController {
 			
 			restaurant.setRestaurantLogos((List<RestaurantLogo>)session.getAttribute("logoList"));
 			
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The logo type was invalid. Only images are allowed, but type was: " + file.getContentType() + " with image format: " + imageFormat));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The logo type was invalid. Only images are allowed, but type was: " +
+							file.getContentType() + " with image format: " + imageFormat));
 			return "restaurant";
 		}
 		
@@ -646,7 +676,8 @@ public class RestaurantController {
 			model.addAttribute("countries", countryRepository.findAll());
 			restaurant.setRestaurantLogos((List<RestaurantLogo>)session.getAttribute("logoList"));
 			
-			LOGGER.error(LogUtils.getExceptionMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), e));
+			LOGGER.error(LogUtils.getExceptionMessage(request,
+					Thread.currentThread().getStackTrace()[1].getMethodName(), e));
 			return "restaurant";
 		}
 		
@@ -677,7 +708,8 @@ public class RestaurantController {
 	private void handleTimeSchedule(Restaurant restaurant, int i)
 	{
 		TimeSchedule t = restaurant.getTimeSchedules().get(i);
-		if (t.getOfferStartTime() == null && t.getOfferEndTime() == null && (t.getOpeningTimes() == null || t.getOpeningTimes().size() == 0)) {
+		if (t.getOfferStartTime() == null && t.getOfferEndTime() == null && (t.getOpeningTimes() == null ||
+				t.getOpeningTimes().size() == 0)) {
 			// remove entry
 			restaurant.removeTimeSchedule(t);
 		} else {
@@ -706,7 +738,8 @@ public class RestaurantController {
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @return the string for the corresponding HTML page
 	 */
-	@RequestMapping(path = { "/restaurant/add", "/restaurant/edit" }, method = RequestMethod.POST, params = { "cancel" })
+	@RequestMapping(path = { "/restaurant/add", "/restaurant/edit" }, method = RequestMethod.POST,
+			params = { "cancel" })
 	public String cancelRestaurant(Model model, HttpServletRequest request) {
 		LOGGER.info(LogUtils.getCancelInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
@@ -727,14 +760,18 @@ public class RestaurantController {
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
 		if(authenticatedUser.getRestaurant() == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers it can be edited."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant" +
+							" has to be added before offers it can be edited."));
 			return "redirect:/restaurant/add";
 		}
 		
 		Restaurant restaurant = restaurantRepository.findById(authenticatedUser.getRestaurant().getId());
 
 		if(restaurant == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers it can be edited."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant " +
+							"has to be added before offers it can be edited."));
 			return "redirect:/restaurant/add";
 		}
 		
@@ -770,7 +807,8 @@ public class RestaurantController {
 		
 		// Replace the API key below with a valid API key.
 		GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyAvO9bl1Yi2hn7mkTSniv5lXaPRii1JxjI");
-		GeocodingApiRequest req = GeocodingApi.newRequest(context).address(String.format("%1$s %2$s, %3$s %4$s", restaurant.getStreetNumber(), restaurant.getStreet(), restaurant.getZip(), restaurant.getCity()));
+		GeocodingApiRequest req = GeocodingApi.newRequest(context).address(String.format("%1$s %2$s, %3$s %4$s",
+				restaurant.getStreetNumber(), restaurant.getStreet(), restaurant.getZip(), restaurant.getCity()));
 
 		try {
 			GeocodingResult[] result = req.await();
@@ -781,14 +819,18 @@ public class RestaurantController {
 					restaurant.setLocationLatitude((float) firstMatch.geometry.location.lat);
 					restaurant.setLocationLongitude((float) firstMatch.geometry.location.lng);
 				} else {
-					return messageSource.getMessage("restaurant.addressNotResolveable", null, Locale.getDefault());
+					return messageSource.getMessage("restaurant.addressNotResolveable",
+							null, Locale.getDefault());
 				}
 			} else {
-				return messageSource.getMessage("restaurant.addressNotFound", null, Locale.getDefault());
+				return messageSource.getMessage("restaurant.addressNotFound",
+						null, Locale.getDefault());
 			}
 		} catch (Exception e) {
-			LOGGER.error(LogUtils.getExceptionMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), e));
-			return messageSource.getMessage("restaurant.googleApiError", new String[] { e.getMessage() }, Locale.getDefault());
+			LOGGER.error(LogUtils.getExceptionMessage(request,
+					Thread.currentThread().getStackTrace()[1].getMethodName(), e));
+			return messageSource.getMessage("restaurant.googleApiError", new String[] { e.getMessage() },
+					Locale.getDefault());
 		}
 		return null;
 	}
@@ -822,8 +864,10 @@ public class RestaurantController {
 		
 		//create the QR-Code and safe it
 		String information = new String(qrCodeData.getBytes(charset), charset);
-		BitMatrix matrix = new MultiFormatWriter().encode(information, BarcodeFormat.QR_CODE, 250, 250, hintMap);
-		MatrixToImageWriter.writeToFile(matrix, filePath.substring(filePath.lastIndexOf('.') + 1), new File(filePath));
+		BitMatrix matrix = new MultiFormatWriter().encode(information,
+				BarcodeFormat.QR_CODE, 250, 250, hintMap);
+		MatrixToImageWriter.writeToFile(matrix,
+				filePath.substring(filePath.lastIndexOf('.') + 1), new File(filePath));
 		
 		//convert to byte
 		BufferedImage bm = ImageIO.read(new File(filePath));
@@ -909,8 +953,12 @@ public class RestaurantController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(path={"/restaurant/add", "/restaurant/edit"}, method=RequestMethod.POST, params={"deleteLogo"})
-	public String deleteImage(final Restaurant restaurant, Model model, @RequestParam("deleteLogo") Integer imageId, Principal principal, HttpServletRequest request) {
-		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+	public String deleteImage(final Restaurant restaurant, Model model, @RequestParam("deleteLogo") Integer imageId,
+							  Principal principal, HttpServletRequest request) {
+
+		LOGGER.info(LogUtils.getInfoStringWithParameterList(request,
+				Thread.currentThread().getStackTrace()[1].getMethodName()));
+
 		HttpSession session = request.getSession();
 		User authenticatedUser = (User) ((Authentication)principal).getPrincipal();
 		

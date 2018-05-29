@@ -101,17 +101,24 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path="/offer/add", method=RequestMethod.GET)
-	public String getOfferDetailNewOffer(Model model, Principal principal, HttpSession session, HttpServletRequest request) {
-		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+	public String getOfferDetailNewOffer(Model model, Principal principal, HttpSession session,
+										 HttpServletRequest request) {
+		LOGGER.info(LogUtils.getDefaultInfoString(request,
+				Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User authenticatedUser = (User)((Authentication)principal).getPrincipal();
 		if(authenticatedUser.getRestaurant() == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be added."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant " +
+							"has to be added before offers can be added."));
 			return "redirect:/restaurant/add?required";
 		}
-		List<CourseType> courseTypes = courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
+		List<CourseType> courseTypes = courseTypeRepository
+				.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
 		 if(courseTypes.isEmpty()){
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The restaurant with id " + authenticatedUser.getRestaurant().getId() + " has no coursetypes."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The restaurant with id " + authenticatedUser.getRestaurant().getId() +
+							" has no coursetypes."));
 			return "redirect:/coursetype/add?required";
 		}
 		
@@ -141,24 +148,35 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path="/offer/edit/{offerId}", method=RequestMethod.GET)
-	public String getOfferDetailUpdateOffer(@PathVariable("offerId") Integer offerId, Model model, Principal principal, HttpSession session, HttpServletRequest request) {
-		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "offerId", offerId.toString()));
+	public String getOfferDetailUpdateOffer(@PathVariable("offerId") Integer offerId, Model model, Principal principal,
+											HttpSession session, HttpServletRequest request) {
+		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request,
+				Thread.currentThread().getStackTrace()[1].getMethodName(),
+				"offerId", offerId.toString()));
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
 		if(authenticatedUser.getRestaurant() == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be edited."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant" +
+							" has to be added before offers can be edited."));
 			return "redirect:/restaurant/add?required";
 		}
-		List<CourseType> courseTypes = courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
+		List<CourseType> courseTypes = courseTypeRepository
+				.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
 		 if(courseTypes.isEmpty()){
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The restaurant with id " + authenticatedUser.getRestaurant().getId() + " has no coursetypes."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The restaurant with id " + authenticatedUser.getRestaurant().getId() +
+							" has no coursetypes."));
 			return "redirect:/coursetype/add?required";
 		}
 		
-		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(offerId, authenticatedUser.getRestaurant().getId());
+		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(offerId,
+				authenticatedUser.getRestaurant().getId());
 		if(offer == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The offer with id " + offerId + " could not be found for the given restaurant with id " + authenticatedUser.getRestaurant().getId() + "."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The offer with id " + offerId + " could not be found for the given restaurant " +
+							"with id " + authenticatedUser.getRestaurant().getId() + "."));
 			return "redirect:/offer?invalid_id";
 		}
 		
@@ -174,25 +192,27 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	}
 	
 	/**
-	 * Save the offer to the database. New offers are stored, edited offers are updated. Before storing the offer, a thumbail is created for all photos to be stored with the offer.
+	 * Save the offer to the database. New offers are stored, edited offers are updated. Before storing the offer,
+	 * a thumbail is created for all photos to be stored with the offer.
 	 *
 	 * @param request the HttpServletRequest
 	 * @param offer
 	 * 			Offer object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
-	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation
+	 * 			and custom validator classes.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
-	 * @param session
-	 * 			Session of the current user. Used to store offer photos.
 	 * @return the string for the corresponding HTML page
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(path={"/offer/add", "/offer/edit/{offerId}"}, method=RequestMethod.POST, params={"saveOffer"})
-	public String saveOffer(@Valid final Offer offer, BindingResult bindingResult, Principal principal, Model model, HttpServletRequest request) {
-		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+	public String saveOffer(@Valid final Offer offer, BindingResult bindingResult, Principal principal, Model model,
+							HttpServletRequest request) {
+		LOGGER.info(LogUtils.getInfoStringWithParameterList(request,
+				Thread.currentThread().getStackTrace()[1].getMethodName()));
 		HttpSession session = request.getSession();
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
 		
@@ -207,11 +227,15 @@ public class OfferDetailController implements HandlerExceptionResolver {
 			model.addAttribute("dayOfWeeks", dayOfWeekRepository.findAll());
 			model.addAttribute("additives", additiveRepository.findAll());
 			model.addAttribute("allergenic", allergenicRepository.findAll());
-			model.addAttribute("courseTypes" , courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
-			model.addAttribute("restaurant",restaurantRepository.findById(authenticatedUser.getRestaurant().getId()));
-			model.addAttribute("courseTypes", courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
+			model.addAttribute("courseTypes" , courseTypeRepository
+					.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
+			model.addAttribute("restaurant",restaurantRepository
+					.findById(authenticatedUser.getRestaurant().getId()));
+			model.addAttribute("courseTypes", courseTypeRepository
+					.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
 			
-			LOGGER.error(LogUtils.getValidationErrorString(request, bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName()));
+			LOGGER.error(LogUtils.getValidationErrorString(request, bindingResult,
+					Thread.currentThread().getStackTrace()[1].getMethodName()));
 			return "offerDetail";			
 		}
 						
@@ -225,17 +249,20 @@ public class OfferDetailController implements HandlerExceptionResolver {
 			model.addAttribute("invalidPicture", true);
 			model.addAttribute("dayOfWeeks", dayOfWeekRepository.findAll());
 			model.addAttribute("additives", additiveRepository.findAll());
-			model.addAttribute("courseTypes" , courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
+			model.addAttribute("courseTypes" , courseTypeRepository
+					.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
 			model.addAttribute("allergenic", allergenicRepository.findAll());
-			model.addAttribute("restaurant",restaurantRepository.findById(authenticatedUser.getRestaurant().getId()));
+			model.addAttribute("restaurant",restaurantRepository
+					.findById(authenticatedUser.getRestaurant().getId()));
 			offer.setOfferPhotos((List<OfferPhoto>)session.getAttribute("photoList"));
 			
-			LOGGER.error(LogUtils.getExceptionMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), e));
+			LOGGER.error(LogUtils.getExceptionMessage(request,
+					Thread.currentThread().getStackTrace()[1].getMethodName(), e));
 			return "offerDetail";
 		}
 		
 		if(!offerRepository.findByRestaurant_idOrderByOrderAsc(authenticatedUser.getId()).contains(offer)){
-			offer.setOrder(offerRepository.findByCourseTypeOrderByOrderAsc(offer.getCourseTypeId()).size()+1);
+			offer.setOrder(offerRepository.findByCourseTypeOrderByOrderAsc(offer.getCourseType()).size()+1);
 		}
 		
 		offerRepository.save(offer);
@@ -264,7 +291,8 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	}
 	
 	/**
-	 * Handles the upload of a new offer photo. Resolves the image format, generates the base64 string for the website. Stores the newly added image to the session.
+	 * Handles the upload of a new offer photo. Resolves the image format, generates the base64 string for the website.
+	 * Stores the newly added image to the session.
 	 *
 	 * @param request the HttpServletRequest
 	 * @param offer
@@ -279,8 +307,10 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(path={"/offer/add", "/offer/edit/{offerId}"}, method=RequestMethod.POST, params={"addImage"})
-	public String addImage(final Offer offer, Model model, @RequestParam("img") MultipartFile file, Principal principal, HttpServletRequest request) {
-		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+	public String addImage(final Offer offer, Model model, @RequestParam("img") MultipartFile file, Principal principal,
+                           HttpServletRequest request) {
+		LOGGER.info(LogUtils.getInfoStringWithParameterList(request,
+                Thread.currentThread().getStackTrace()[1].getMethodName()));
 		HttpSession session = request.getSession();
 		
 		User authenticatedUser = (User) ((Authentication)principal).getPrincipal();
@@ -295,7 +325,8 @@ public class OfferDetailController implements HandlerExceptionResolver {
 			model.addAttribute("dayOfWeeks", dayOfWeekRepository.findAll());
 			model.addAttribute("additives", additiveRepository.findAll());
 			model.addAttribute("allergenic", allergenicRepository.findAll());
-			model.addAttribute("courseTypes" , courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
+			model.addAttribute("courseTypes" , courseTypeRepository
+                    .findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
 			model.addAttribute("restaurant",
 					restaurantRepository.findById(authenticatedUser.getRestaurant().getId()));
 			offer.setOfferPhotos((List<OfferPhoto>)session.getAttribute("photoList"));
@@ -310,11 +341,15 @@ public class OfferDetailController implements HandlerExceptionResolver {
 			model.addAttribute("dayOfWeeks", dayOfWeekRepository.findAll());
 			model.addAttribute("additives", additiveRepository.findAll());
 			model.addAttribute("allergenic", allergenicRepository.findAll());
-			model.addAttribute("courseTypes" , courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
-			model.addAttribute("restaurant", restaurantRepository.findById(authenticatedUser.getRestaurant().getId()));
+			model.addAttribute("courseTypes" , courseTypeRepository
+                    .findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
+			model.addAttribute("restaurant", restaurantRepository
+                    .findById(authenticatedUser.getRestaurant().getId()));
 			offer.setOfferPhotos((List<OfferPhoto>)session.getAttribute("photoList"));
 			
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The picture type was invalid. Only images are allowed, but type was: " + file.getContentType() + " with image format: " + imageFormat));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    "The picture type was invalid. Only images are allowed, but type was: " +
+                            file.getContentType() + " with image format: " + imageFormat));
 			return "offerDetail";
 		}
 		
@@ -328,11 +363,14 @@ public class OfferDetailController implements HandlerExceptionResolver {
 			model.addAttribute("dayOfWeeks", dayOfWeekRepository.findAll());
 			model.addAttribute("additives", additiveRepository.findAll());
 			model.addAttribute("allergenic", allergenicRepository.findAll());
-			model.addAttribute("courseTypes" , courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
-			model.addAttribute("restaurant", restaurantRepository.findById(authenticatedUser.getRestaurant().getId()));
+			model.addAttribute("courseTypes" , courseTypeRepository
+                    .findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
+			model.addAttribute("restaurant", restaurantRepository
+                    .findById(authenticatedUser.getRestaurant().getId()));
 			offer.setOfferPhotos((List<OfferPhoto>)session.getAttribute("photoList"));
 			
-			LOGGER.error(LogUtils.getExceptionMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), e));
+			LOGGER.error(LogUtils.getExceptionMessage(request,
+                    Thread.currentThread().getStackTrace()[1].getMethodName(), e));
 			return "offerDetail";
 		}
 		
@@ -342,7 +380,8 @@ public class OfferDetailController implements HandlerExceptionResolver {
 		model.addAttribute("dayOfWeeks", dayOfWeekRepository.findAll());
 		model.addAttribute("additives", additiveRepository.findAll());
 		model.addAttribute("allergenic", allergenicRepository.findAll());
-		model.addAttribute("courseTypes" , courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
+		model.addAttribute("courseTypes" , courseTypeRepository
+                .findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
 		model.addAttribute("restaurant", restaurantRepository.findById(authenticatedUser.getRestaurant().getId()));
 		session.setAttribute("photoList", offer.getOfferPhotos());
 		return "offerDetail";
@@ -398,16 +437,16 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param imageId
 	 * 			Id of the images to be deleted.
-	 * @param session
-	 * 			Session of the current user. Used to store offer photos.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(path={"/offer/add", "/offer/edit/{offerId}"}, method=RequestMethod.POST, params={"deleteImage"})
-	public String deleteImage(final Offer offer, Model model, @RequestParam("deleteImage") Integer imageId, Principal principal, HttpServletRequest request) {
-		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+	public String deleteImage(final Offer offer, Model model, @RequestParam("deleteImage") Integer imageId,
+                              Principal principal, HttpServletRequest request) {
+		LOGGER.info(LogUtils
+                .getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		HttpSession session = request.getSession();
 		User authenticatedUser = (User) ((Authentication)principal).getPrincipal();
 		
@@ -417,7 +456,8 @@ public class OfferDetailController implements HandlerExceptionResolver {
 		model.addAttribute("dayOfWeeks", dayOfWeekRepository.findAll());
 		model.addAttribute("additives", additiveRepository.findAll());
 		model.addAttribute("allergenic", allergenicRepository.findAll());
-		model.addAttribute("courseTypes" , courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
+		model.addAttribute("courseTypes" , courseTypeRepository
+                .findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
 		model.addAttribute("restaurant", restaurantRepository.findById(authenticatedUser.getRestaurant().getId()));
 		session.setAttribute("photoList", offer.getOfferPhotos());
 		return "offerDetail";

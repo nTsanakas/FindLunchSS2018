@@ -176,7 +176,7 @@ public class Offer {
 	
 	/** The coursetype */
 	@ApiModelProperty(notes = "Typ des Essenangebots.")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name="course_type")
 	private CourseType courseType;
 

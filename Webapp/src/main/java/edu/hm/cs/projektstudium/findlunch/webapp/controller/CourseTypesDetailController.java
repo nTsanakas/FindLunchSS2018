@@ -116,7 +116,6 @@ public class CourseTypesDetailController {
 	
 	/**
 	 *  Save the coursetypes to the database. New coursetypes are stored, edited offers are updated.
-	 * @param coursetype the coursetype
 	 * @param bindingResult the binding resultes
 	 * @param principal the currently logged in user
 	 * @param model Model in which necessary object are placed to be displayed on the website.
@@ -219,8 +218,8 @@ public class CourseTypesDetailController {
 		
 		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(courseId, authenticatedUser.getRestaurant().getId());
 		
-		int courseTypeId = offer.getCourseTypeId();
-		List<Offer> offersInCourse = offerRepository.findByCourseTypeOrderByOrderAsc(courseTypeId);
+		CourseType courseType = offer.getCourseType();
+		List<Offer> offersInCourse = offerRepository.findByCourseTypeOrderByOrderAsc(courseType);
 		int position = offer.getOrder();
 		
 		if(position!=0){
@@ -235,7 +234,7 @@ public class CourseTypesDetailController {
 			
 		}
 
-		return "redirect:/coursetype/overview/"+courseTypeId;
+		return "redirect:/coursetype/overview/"+courseType.getId();
 	}
 	
 	/**
@@ -255,11 +254,11 @@ public class CourseTypesDetailController {
 		
 		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(courseId, authenticatedUser.getRestaurant().getId());
 		
-		int courseTypeId = offer.getCourseTypeId();
-		List<Offer> offersInCourse = offerRepository.findByCourseTypeOrderByOrderAsc(courseTypeId);
+		CourseType courseType = offer.getCourseType();
+		List<Offer> offersInCourse = offerRepository.findByCourseTypeOrderByOrderAsc(courseType);
 		int position = offer.getOrder();
 		
-		if(position!=offerRepository.findByCourseTypeOrderByOrderAsc(courseTypeId).size()){
+		if(position!=offerRepository.findByCourseTypeOrderByOrderAsc(courseType).size()){
 			for(Offer offerEntry : offersInCourse){
 				if(offerEntry.getOrder()==position+1){
 					offerEntry.setOrder(position);
@@ -271,6 +270,6 @@ public class CourseTypesDetailController {
 			
 		}
 
-		return "redirect:/coursetype/overview/"+courseTypeId;
+		return "redirect:/coursetype/overview/"+courseType.getId();
 	}
 }

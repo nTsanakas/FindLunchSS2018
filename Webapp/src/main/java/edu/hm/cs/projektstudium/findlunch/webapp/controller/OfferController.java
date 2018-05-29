@@ -1,7 +1,6 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +48,7 @@ public class OfferController {
 
 	/** The course type repository.*/
 	@Autowired
-	private CourseTypeRepository courserTypeRepository;
+	private CourseTypeRepository courseTypeRepository;
 	
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(OfferController.class);
@@ -72,17 +71,21 @@ public class OfferController {
 		
 		
 		if(authenticatedUser.getRestaurant() == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant" +
+							" has to be added before offers can be selected."));
 			return "redirect:/restaurant/add?required";
 		}
 		
-		List<Offer> offers = offerRepository.findByRestaurant_idOrderByOrderAsc(authenticatedUser.getRestaurant().getId());
+		List<Offer> offers = offerRepository
+				.findByRestaurant_idOrderByOrderAsc(authenticatedUser.getRestaurant().getId());
 		model.addAttribute("offers", offers);
 		model.addAttribute("dayOfWeeks", dayOfWeekRepository.findAll());
 		model.addAttribute("additives", additiveRepository.findAll());
 		model.addAttribute("allergenic", allergenicRepository.findAll());
 		//model.addAttribute("courseTypes" , getCourseTypesForOffers(offers));
-		model.addAttribute("courseTypes" , courserTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
+		model.addAttribute("courseTypes" , courseTypeRepository
+				.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId()));
 		
 		return "offer";
 	}
@@ -100,18 +103,26 @@ public class OfferController {
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path="/offer/delete/{offerId}", method=RequestMethod.GET)
-	public String deleteOffer(@PathVariable("offerId") Integer offerId, Model model, Principal principal, HttpServletRequest request) {
-		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "offerId", offerId.toString()));
+	public String deleteOffer(@PathVariable("offerId") Integer offerId, Model model, Principal principal,
+							  HttpServletRequest request) {
+		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request,
+				Thread.currentThread().getStackTrace()[1].getMethodName(),
+				"offerId", offerId.toString()));
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
 		if(authenticatedUser.getRestaurant() == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant " +
+							"has to be added before offers can be selected."));
 			return "redirect:/restaurant/add?required";
 		}
 		
-		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(offerId, authenticatedUser.getRestaurant().getId());
+		Offer offer = offerRepository
+                .findByIdAndRestaurant_idOrderByOrderAsc(offerId, authenticatedUser.getRestaurant().getId());
 		if(offer == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The offer with id " + offerId + " could not be found for the given restaurant with id " + authenticatedUser.getRestaurant().getId() + "."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The offer with id " + offerId + " could not be found for the given restaurant " +
+							"with id " + authenticatedUser.getRestaurant().getId() + "."));
 			return "redirect:/offer?invalid_id";
 		}
 
@@ -132,19 +143,27 @@ public class OfferController {
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path="/offer/soldout/{offerId}", method=RequestMethod.GET)
-	public String soldoutOffer(@PathVariable("offerId") Integer offerId, Model model, Principal principal, HttpServletRequest request){
-		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "offerId", offerId.toString()));
+	public String soldoutOffer(@PathVariable("offerId") Integer offerId, Model model, Principal principal,
+							   HttpServletRequest request){
+		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request,
+				Thread.currentThread().getStackTrace()[1].getMethodName(),
+				"offerId", offerId.toString()));
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
 		
 		if(authenticatedUser.getRestaurant() == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant " +
+							"has to be added before offers can be selected."));
 			return "redirect:/restaurant/add?required";
 		}
 		
-		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(offerId, authenticatedUser.getRestaurant().getId());
+		Offer offer = offerRepository.findByIdAndRestaurant_idOrderByOrderAsc(offerId,
+				authenticatedUser.getRestaurant().getId());
 		if(offer == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The offer with id " + offerId + " could not be found for the given restaurant with id " + authenticatedUser.getRestaurant().getId() + "."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The offer with id " + offerId + " could not be found for the given restaurant " +
+							"with id " + authenticatedUser.getRestaurant().getId() + "."));
 			return "redirect:/offer?invalid_id";
 		}
 

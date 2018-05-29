@@ -22,7 +22,7 @@
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 			</button></a> <br />
 
-		<div th:each="courseType : ${courseType}" class="col-md-8" style="width: 100%; overflow: auto">
+		<div th:each="courseType : ${courseTypes}" class="col-md-8" style="width: 100%; overflow: auto">
 		<h3 th:text="${courseType.name}"></h3>
 		<table class="table table-hover" th:title="${courseType.name}">
 
@@ -61,7 +61,7 @@
 
 
 
-			<div th:each="offer, stat: *{offers}" th:if="${offer.courseType == courseType.getId()}">
+			<div th:each="offer, stat: *{offers}" th:if="${offer.courseTypeId == courseType.getId()}">
 					<tr
 						th:if="${#dates.format(#dates.createNow(), 'yyyyMMdd')} ge ${#dates.format(offer.startDate, 'yyyyMMdd')} and ${#dates.format(#dates.createNow(), 'yyyyMMdd')} le ${#dates.format(offer.endDate, 'yyyyMMdd')}">
 						<td th:text="*{offer.title}"></td>

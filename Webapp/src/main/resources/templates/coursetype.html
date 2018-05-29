@@ -28,7 +28,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="courseType, stat: *{courseType}">
+				<tr th:each="courseType, stat: *{courseTypes}">
 					<td th:text="*{courseType.name}">
 					</td>
 					<td th:text="*{courseType.sortBy}">

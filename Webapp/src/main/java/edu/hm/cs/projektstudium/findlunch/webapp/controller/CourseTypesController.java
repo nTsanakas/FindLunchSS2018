@@ -26,9 +26,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
 
 /**
  * The class is responsible for handling http calls related to the coursetype page.
- * 
- * @author Niklas Klotz
- *
  */
 @Controller
 public class CourseTypesController {
@@ -57,13 +54,16 @@ public class CourseTypesController {
 
 		User authenticatedUser = (User)((Authentication)principal).getPrincipal();
 		if(authenticatedUser.getRestaurant() == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant " +
+							"has to be added before offers can be selected."));
 			return "redirect:/restaurant/add?required";
 		}
 		
-			ArrayList<CourseType> courseTypes = (ArrayList<CourseType>) courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
-			model.addAttribute("courseTypes", courseTypes);
-			return "coursetype";	
+		ArrayList<CourseType> courseTypes = (ArrayList<CourseType>) courseTypeRepository
+				.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
+		model.addAttribute("courseTypes", courseTypes);
+		return "coursetype";
 	}
 	
 	/**
@@ -75,31 +75,43 @@ public class CourseTypesController {
 	 * @return the page coursetype with parameter
 	 */
 	@RequestMapping(path="/coursetype/delete/{courseId}", method=RequestMethod.GET)
-	public String delteCourseType(@PathVariable("courseId") Integer courseId, Model model, Principal principal, HttpServletRequest request){
-		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "courseId", courseId.toString()));
+	public String delteCourseType(@PathVariable("courseId") Integer courseId, Model model,
+                                  Principal principal, HttpServletRequest request){
+		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request,
+                Thread.currentThread().getStackTrace()[1].getMethodName(),
+                "courseId", courseId.toString()));
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
 		if(authenticatedUser.getRestaurant() == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant has to be added before offers can be selected."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    "The user " + authenticatedUser.getUsername() + " has no restaurant. A restaurant" +
+                            " has to be added before offers can be selected."));
 			return "redirect:/restaurant/add?required";
 		}
 		
 		// if the given id of coursetyope is not in the database
-		CourseType coursetype = courseTypeRepository.findByIdAndRestaurantId(courseId, authenticatedUser.getRestaurant().getId());
+		CourseType coursetype = courseTypeRepository.findByIdAndRestaurantId(courseId,
+                authenticatedUser.getRestaurant().getId());
 		if(coursetype == null) {
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The coursetype with id " + courseId + " could not be found for the given restaurant with id " + authenticatedUser.getRestaurant().getId() + "."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    "The coursetype with id " + courseId + " could not be found for the given " +
+                            "restaurant with id " + authenticatedUser.getRestaurant().getId() + "."));
 			return "redirect:/coursetype?invalid_id";
 		}
 		
-		List<Offer> offersInCourse = offerRepository.findByCourseTypeOrderByOrderAsc(coursetype.getId());
+		List<Offer> offersInCourse = offerRepository.findByCourseTypeOrderByOrderAsc(coursetype);
 		// if the coursetype contains offers
 		if(!offersInCourse.isEmpty()){
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The coursetype with id " + courseId + " contains " + offersInCourse.size() + " offers."));
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    "The coursetype with id " + courseId + " contains " + offersInCourse.size() +
+                            " offers."));
 			return "redirect:/coursetype?containsOffers";
 		}
 		// if the restaurant deleted its last coursetype
-		if(offerRepository.findByCourseTypeOrderByOrderAsc(coursetype.getId()).size()==1){
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The restaurant with the Id " + authenticatedUser.getRestaurant().getId() + " deleted his last coursetype."));
+		if(offerRepository.findByCourseTypeOrderByOrderAsc(coursetype).size()==1){
+			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    "The restaurant with the Id " + authenticatedUser.getRestaurant().getId() +
+                            " deleted his last coursetype."));
 			courseTypeRepository.delete(coursetype);
 			return "/coursetype/add";
 		}
@@ -118,17 +130,22 @@ public class CourseTypesController {
 	 * @return redirect to the page coursetype
 	 */
 	@RequestMapping(path="coursetype/up/{courseId}", method=RequestMethod.GET)
-	public String offerUp(@PathVariable("courseId") Integer courseId, Model model, Principal principal, HttpSession session, HttpServletRequest request){
-		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "courseId ", courseId.toString()));
+	public String offerUp(@PathVariable("courseId") Integer courseId, Model model, Principal principal,
+						  HttpSession session, HttpServletRequest request){
+		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request,
+				Thread.currentThread().getStackTrace()[1].getMethodName(),
+				"courseId ", courseId.toString()));
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
 		CourseType course = courseTypeRepository.findById(courseId);
-		List<CourseType> restaurantCourses = courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
+		List<CourseType> restaurantCourses = courseTypeRepository
+				.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
 		
 		int position = course.getSortBy();
 		
-		// it the current possition of the coursetype is not 0, which is the lowest availabile, its order will be changed
+		// if the current possition of the coursetype is not 0, which is the lowest availabile,
+        // its order will be changed
 		if(position!=0){
 			for(CourseType type : restaurantCourses){
 				if(type.getSortBy()==position-1){
@@ -153,13 +170,17 @@ public class CourseTypesController {
 	 * @return redirect to the page coursetype
 	 */
 	@RequestMapping(path="coursetype/down/{courseId}", method=RequestMethod.GET)
-	public String offerDown(@PathVariable("courseId") Integer courseId, Model model, Principal principal, HttpSession session, HttpServletRequest request){
-		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "courseId ", courseId.toString()));
+	public String offerDown(@PathVariable("courseId") Integer courseId, Model model, Principal principal,
+                            HttpSession session, HttpServletRequest request){
+		LOGGER.info(LogUtils.getDefaultInfoStringWithPathVariable(request,
+                Thread.currentThread().getStackTrace()[1].getMethodName(),
+                "courseId ", courseId.toString()));
 		
 		User authenticatedUser = (User)((Authentication) principal).getPrincipal();
 		
 		CourseType course = courseTypeRepository.findById(courseId);
-		List<CourseType> restaurantCourses = courseTypeRepository.findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
+		List<CourseType> restaurantCourses = courseTypeRepository
+                .findByRestaurantIdOrderBySortByAsc(authenticatedUser.getRestaurant().getId());
 		
 		int position = course.getSortBy();
 		
@@ -185,8 +206,10 @@ public class CourseTypesController {
 	 */
 	@RequestMapping(path="coursetype/checkDelete/{courseId}", method=RequestMethod.GET)
 	public Boolean checkDelete(@PathVariable("courseId") Integer courseId){
+
+	    CourseType courseT = courseTypeRepository.findById(courseId);
 		
-		List<Offer> offersInCourse = offerRepository.findByCourseTypeOrderByOrderAsc(courseId);
+		List<Offer> offersInCourse = offerRepository.findByCourseTypeOrderByOrderAsc(courseT);
 		if(offersInCourse.isEmpty()){
 			return true;
 		}
