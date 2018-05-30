@@ -78,17 +78,17 @@ INSERT IGNORE INTO `findlunch`.`course_types` (`id`, `restaurant_id`, `name`, `s
 
 -- User Data
 INSERT IGNORE INTO `findlunch`.`user` (`id`, `username`, `password`, `restaurant_id`, `user_type_id`, `account_id`) VALUES
-(1, 'admin@admin.com', '$2a$10$Wo0WJitsLCrhuY4LJoOFRO.xfAWvTVuB8ktPZCqx1lFi67XnIimd6', NULL, 1, NULL),
-(2, 'user@user.de', '$2a$10$mkHTGZbKAMRsC54cH6kOYenXTnk4vFOTBQBFYgrQsJ7hkL3oClFSC', NULL, 2, NULL),
-(3, 'owner@owner.com', '$2a$10$TlzzmKRGrRe/KzPUp111Ue0i.jMm.6uk5b62NCoL6N5DNZEmLkqFa', NULL, 3, 1),
-(4, 'fh@fh.com', '$2a$10$TlzzmKRGrRe/KzPUp111Ue0i.jMm.6uk5b62NCoL6N5DNZEmLkqFa', 11, 1, 2),
-(5, 'mellow@mellow.com', '$2a$10$1ALnrR/Wd/2dRLE7Kq8Gy.o.EyfPriBI6LB/ICae2DrHpHzgCNkVe', 12, 1, 3),
-(6, 'soon@soon.com', '$2a$10$0T975lF3u9yG/rdBdsZL/uA5HBcx49W4OF8jaVMUKNbQdtnw2i7Zu', 13, 1, 4),
-(8, 'a@aname.com', '$2a$10$4AjQi77uMdNczVoma.zdWubOlOgot.LHvraZOV0ILo/srOH639DTq', NULL, 2, NULL),
-(9, 'deniz@deniz.com', '$2a$10$JqPp8yWlIq4YYAHQ38NnKunWlGd1G7oQG1oe3njjyeVTdKvD4ULUe', NULL, 2, NULL),
-(10, 'tom@tom.com', '$2a$10$wz4cYgRAo91l/rP7pT6i2uOjOrVG1YQ1YVZwLU7mQF8.EBBHJ9Kfi', NULL, 2, NULL),
-(101, 'restaurant@ionic.com', '$2a$10$AM5MLDZLCINLkGqWSQdIkeI/RR2DzlIWXP8UMLmJTNfjnrBFO7meu', 101, 1, 101),
-(100, 'ionic@ionic.com', '$2a$10$AM5MLDZLCINLkGqWSQdIkeI/RR2DzlIWXP8UMLmJTNfjnrBFO7meu', NULL, 2, NULL);
+(1, 'admin@admin.com', '$2a$10$IDuTFwOGL4lFhzFG77UAB.oTVbtlvp35KeU835ihaVmR8SNdCEQx.', NULL, 1, NULL),
+(2, 'user@user.de', '$2a$10$IDuTFwOGL4lFhzFG77UAB.oTVbtlvp35KeU835ihaVmR8SNdCEQx.', NULL, 2, NULL),
+(3, 'owner@owner.com', '$2a$10$IDuTFwOGL4lFhzFG77UAB.oTVbtlvp35KeU835ihaVmR8SNdCEQx.', NULL, 3, 1),
+(4, 'fh@fh.com', '$2a$10$IDuTFwOGL4lFhzFG77UAB.oTVbtlvp35KeU835ihaVmR8SNdCEQx.', 11, 1, 2),
+(5, 'mellow@mellow.com', '$2a$10$IDuTFwOGL4lFhzFG77UAB.oTVbtlvp35KeU835ihaVmR8SNdCEQx.', 12, 1, 3),
+(6, 'soon@soon.com', '$2a$10$IDuTFwOGL4lFhzFG77UAB.oTVbtlvp35KeU835ihaVmR8SNdCEQx.', 13, 1, 4),
+(8, 'a@aname.com', '$2a$10$IDuTFwOGL4lFhzFG77UAB.oTVbtlvp35KeU835ihaVmR8SNdCEQx.', NULL, 2, NULL),
+(9, 'deniz@deniz.com', '$2a$10$IDuTFwOGL4lFhzFG77UAB.oTVbtlvp35KeU835ihaVmR8SNdCEQx.', NULL, 2, NULL),
+(10, 'tom@tom.com', '$2a$10$IDuTFwOGL4lFhzFG77UAB.oTVbtlvp35KeU835ihaVmR8SNdCEQx.', NULL, 2, NULL),
+(101, 'restaurant@ionic.com', '$2a$10$IDuTFwOGL4lFhzFG77UAB.oTVbtlvp35KeU835ihaVmR8SNdCEQx.', 101, 1, 101),
+(100, 'ionic@ionic.com', '$2a$10$IDuTFwOGL4lFhzFG77UAB.oTVbtlvp35KeU835ihaVmR8SNdCEQx.', NULL, 2, NULL);
 
 -- offer
 INSERT IGNORE INTO `findlunch`.`offer` (`id`, `restaurant_id`, `course_type`, `title`, `description`, `price`, `preparation_time`, `start_date`, `end_date`, `needed_points`) VALUES

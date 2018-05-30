@@ -12,6 +12,8 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.restaurant.Kit
 import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.restaurant.OfferTimesValidator;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.restaurant.OpeningTimesValidator;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.restaurant.RestaurantValidator;
+import org.apache.catalina.connector.Connector;
+import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.MultipartConfigFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
@@ -80,6 +82,18 @@ public class Beans extends WebMvcConfigurerAdapter{
 	}
 
 	/**
+	 * Validator bean that is used during Hibernate annotation validation.
+	 * This validator bean makes it possible to resolve the error messages defined within the message source files.
+	 *
+	 * @return the local validator factory bean
+	 */
+	@Bean
+	public LocalValidatorFactoryBean validator() {
+		LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
+		validatorFactoryBean.setValidationMessageSource(messageSource());
+		return validatorFactoryBean;
+	}
+	/**
 	 * Message source which defines the basenames of the files in which messages/content for the homepage are stored.
 	 *
 	 * @return the resource bundle message source
@@ -92,29 +106,37 @@ public class Beans extends WebMvcConfigurerAdapter{
 				"messages/messages");
 		return messageSource;	
 	}
-	
+
 	/**
 	 * Container customizer. Configures the embedded tomcat (e.g. post size)
 	 *
 	 * @return the embedded servlet container customizer
 	 * @throws Exception the exception
 	 */
-	@Bean 
+	@Bean
 	public EmbeddedServletContainerCustomizer containerCustomizer(
-	        ) throws Exception {
-	 
-	      
-	      return container -> {
+	) throws Exception {
 
-                if (container instanceof TomcatEmbeddedServletContainerFactory) {
 
-                    TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
-                    tomcat.addConnectorCustomizers((TomcatConnectorCustomizer) connector -> {
-                          connector.setMaxPostSize(20000000);//20MB
-                      });
-                }
-            };
-	  }
+		return new EmbeddedServletContainerCustomizer() {
+			@Override
+			public void customize(ConfigurableEmbeddedServletContainer container) {
+
+				if (container instanceof TomcatEmbeddedServletContainerFactory) {
+
+					TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
+					tomcat.addConnectorCustomizers(
+							new TomcatConnectorCustomizer() {
+								@Override
+								public void customize(Connector connector) {
+									connector.setMaxPostSize(20000000);//20MB
+								}
+							}
+					);
+				}
+			}
+		};
+	}
 	
 	/**
 	 * Sets the Docket api.
@@ -162,26 +184,7 @@ public class Beans extends WebMvcConfigurerAdapter{
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
-	@Bean
-	public ViewResolver viewResolver() {
-		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-		resolver.setTemplateEngine((SpringTemplateEngine) templateEngine());
-		resolver.setCharacterEncoding("UTF-8");
-		return resolver;
-	}
 
-	private TemplateEngine templateEngine() {
-		SpringTemplateEngine engine = new SpringTemplateEngine();
-		engine.setTemplateResolver(templateResolver());
-		return engine;
-	}
-
-	private ITemplateResolver templateResolver() {
-		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-		resolver.setPrefix("/templates/**");
-		resolver.setTemplateMode("HTML5");
-		return resolver;
-	}
 
 	@Bean
 	public LocaleResolver localeResolver() {
@@ -190,7 +193,7 @@ public class Beans extends WebMvcConfigurerAdapter{
 		return  resolver;
 	}
 
-	@Override
+	/*@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		LocaleChangeInterceptor localChangeInterceptor = new LocaleChangeInterceptor();
 		localChangeInterceptor.setParamName("language");
@@ -210,20 +213,7 @@ public class Beans extends WebMvcConfigurerAdapter{
 		factory.setMaxFileSize("9999KB");
 		factory.setMaxRequestSize("9999KB");
 		return factory.createMultipartConfig();
-	}
-
-	/**
-	 * Validator bean that is used during Hibernate annotation validation.
-	 * This validator bean makes it possible to resolve the error messages defined within the message source files.
-	 *
-	 * @return the local validator factory bean
-	 */
-	@Bean(name = "validator")
-	public LocalValidatorFactoryBean validator() {
-		LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-		bean.setValidationMessageSource(messageSource());
-		return bean;
-	}
+	}*/
 
 	@Override
 	public Validator getValidator() {
@@ -270,11 +260,4 @@ public class Beans extends WebMvcConfigurerAdapter{
 		return offerValidator;
 	}
 
-	@Override
-	public void configurePathMatch(PathMatchConfigurer configurer) {
-		UrlPathHelper urlPathHelper = new UrlPathHelper();
-		urlPathHelper.setRemoveSemicolonContent(false);
-
-		configurer.setUrlPathHelper(urlPathHelper);
-	}
 }
