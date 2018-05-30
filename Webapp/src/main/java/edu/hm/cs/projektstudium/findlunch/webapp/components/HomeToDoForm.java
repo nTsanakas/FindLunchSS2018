@@ -22,7 +22,7 @@ public class HomeToDoForm {
     public HomeToDoForm(ToDo toDo) {
         this.id = toDo.getId();
         this.restaurantId = toDo.getRestaurant().getId();
-        this.requestTyp = toDo.getToDoRequestTyp().getName();
+        this.requestTyp = toDo.getToDoRequestTyp().getTodoRequestTyp();
         this.restaurantName = toDo.getRestaurant().getName();
 
         String time = toDo.getDatetime().toString();

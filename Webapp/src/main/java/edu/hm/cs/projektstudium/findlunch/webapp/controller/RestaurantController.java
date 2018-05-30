@@ -1074,9 +1074,9 @@ public class RestaurantController {
 			defaultLogos.add(defaultLogo);
 			restaurant.setRestaurantLogos(defaultLogos);
 			fis.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

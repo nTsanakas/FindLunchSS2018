@@ -141,7 +141,7 @@
 
             <tbody>
             <tr th:each="toDo : ${toDos}">
-                <td> <a class="btn-link" th:href="@{/swa/restaurant(id=${toDo.restaurant})}" th:text="${toDo.restaurantName}" /> </td>
+                <td> <a class="btn-link" th:href="@{/swa/restaurant(id=${toDo.restaurantId})}" th:text="${toDo.restaurantName}" /> </td>
                 <td>
                     <!-- Displays the processId(id) as a link if the requestTyp is a changeRequest -->
                     <div th:switch="${toDo.requestTyp}">

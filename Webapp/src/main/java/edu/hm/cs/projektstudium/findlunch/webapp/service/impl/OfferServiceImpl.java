@@ -14,9 +14,8 @@ import org.springframework.ui.Model;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -124,27 +123,30 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public String getDefaultOfferImageBase64() {
-        BufferedImage defaultImage;
-        byte[] defaultImageAsByte = null;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        File file = null;
 
-        try {
-            file = new ClassPathResource("/static/images/defaultOfferImage.jpg").getFile();
-        } catch (IOException e) {
+        String defaultImageBase64 = "";
+
+        try{
+            InputStream in = getClass().getClassLoader()
+                    .getResourceAsStream("static/images/defaultOfferImage.jpg");
+
+            File file = File.createTempFile(String.valueOf(in.hashCode()), ".tmp");
+            file.deleteOnExit();
+
+            try (FileOutputStream out = new FileOutputStream(file)) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = in.read(buffer)) != -1) out.write(buffer, 0, bytesRead);
+            }
+
+            byte[] bytes = new byte[(int) file.length()];
+            FileInputStream fis =new FileInputStream(file);
+            fis.read(bytes);
+            defaultImageBase64 = Base64.getEncoder().encodeToString(bytes);
+            fis.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        try {
-            defaultImage = ImageIO.read(file);
-            ImageIO.write(defaultImage, "jpg", baos);
-            defaultImageAsByte = baos.toByteArray();
-            baos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String defaultImageBase64 = Base64.getEncoder().encodeToString(defaultImageAsByte);
-
         return defaultImageBase64;
     }
 

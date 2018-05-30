@@ -15,9 +15,9 @@ public class ToDoRequestTyp {
     @Id
     private int id;
 
-    private String name;
+    private String todoRequestTyp;
 
-    @OneToMany(mappedBy = "toDoRequestTyp", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
     private List<ToDo> toDos;
 
     public ToDoRequestTyp() { super(); }
