@@ -13,6 +13,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.restaurant.Off
 import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.restaurant.OpeningTimesValidator;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.restaurant.RestaurantValidator;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.MultipartConfigFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +46,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import javax.servlet.MultipartConfigElement;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -195,6 +197,21 @@ public class Beans extends WebMvcConfigurerAdapter{
 		registry.addInterceptor(localChangeInterceptor);
 	}
 
+	@Bean(name = "multipartResolver")
+	public CommonsMultipartResolver createMultipartResolver() {
+		CommonsMultipartResolver resolver=new CommonsMultipartResolver();
+		resolver.setDefaultEncoding("utf-8");
+		return resolver;
+	}
+
+	@Bean
+	public MultipartConfigElement multipartConfigElement() {
+		MultipartConfigFactory factory = new MultipartConfigFactory();
+		factory.setMaxFileSize("9999KB");
+		factory.setMaxRequestSize("9999KB");
+		return factory.createMultipartConfig();
+	}
+
 	/**
 	 * Validator bean that is used during Hibernate annotation validation.
 	 * This validator bean makes it possible to resolve the error messages defined within the message source files.
@@ -260,12 +277,4 @@ public class Beans extends WebMvcConfigurerAdapter{
 
 		configurer.setUrlPathHelper(urlPathHelper);
 	}
-
-	@Bean
-	public CommonsMultipartResolver multipartResolver(){
-		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-		resolver.setDefaultEncoding("UTF-8");
-		return resolver;
-	}
-
 }
