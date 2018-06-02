@@ -96,7 +96,7 @@ public class IngredientRestController {
             HttpServletRequest request) {
 
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
-		Offer offer = offerRepository.getOne(offerId);
+		Offer offer = offerRepository.findOne(offerId);
 		
 		return offer.getAllergenic();
 	}

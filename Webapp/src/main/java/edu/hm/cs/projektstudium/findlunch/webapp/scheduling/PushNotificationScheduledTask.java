@@ -95,16 +95,22 @@ public class PushNotificationScheduledTask {
 
 			// Determine if the push notification shall be sent today.
 			List<DayOfWeek> daysOfWeekPushList = p.getDayOfWeeks();
-			Boolean sendPushToday = false;
-			for (int i = 0; i < daysOfWeekPushList.size() && sendPushToday == false; i++) {
+			Boolean sendPushToday = true;
+			/*
+			 * TODO: Fürs erste ist die Abfrage der Tage zur Vereinfachung ausgeklammert, da über ein anderes Konzept der Push-Benachrichtigung nachgedacht wird.
+			 *
+			 *
+			 for (int i = 0; i < daysOfWeekPushList.size() && sendPushToday == false; i++) {
 				int dayOfWeekPush = daysOfWeekPushList.get(i).getDayNumber();
 				sendPushToday = (dayOfWeekPush == dayNumberToday);
-			}
+			}*/
+
 			if (sendPushToday) {
 				// Get list of Restaurants matching push notification location.
 				List<Restaurant> restaurantsNearbyList = new ArrayList<Restaurant>();
-				restaurantsNearbyList = restaurantRest.getAllRestaurants(p.getLongitude(), p.getLatitude(), p.getRadius());
-				
+//				restaurantsNearbyList = restaurantRest.getAllRestaurants(p.getLongitude(), p.getLatitude(), p.getRadius());
+				restaurantsNearbyList = restaurauntRepo.findAll();
+				LOGGER.info("Gefundene Restaurants:" + restaurantsNearbyList.size());
 				Integer restaurantsForPushCount = 0;
 				List<Integer> pushKitchenTypeIds = new ArrayList<Integer>();
 				for (KitchenType k : p.getKitchenTypes()) {
@@ -134,18 +140,15 @@ public class PushNotificationScheduledTask {
 					PushNotificationManager manager = new PushNotificationManager();
 					
 					User receiver = p.getUser();
-					p.setFcmToken(tokenRepo.findById(receiver.getId()).toString());
+					p.setFcmToken(p.getFcmToken());
 					
-					JSONObject notification = manager.generateFromDaily(p, restaurantsForPushCount, pushKitchenTypeIds, tokenRepo.findById(receiver.getId()).toString());
+					JSONObject notification = manager.generateFromDaily(p, restaurantsForPushCount, pushKitchenTypeIds, p.getFcmToken());
 					
 					//Check which push notification token is valid, process data at sender manager.
 					if(!p.getFcmToken().equals(NOT_AVAILABLE)) {
 						
 						senderBase.sendFcmNotification(notification);
 						//senderBase.sendFcmDailyNotification(p, restaurantsForPushCount, pushKitchenTypeIds);
-					}
-					if(!p.getSnsToken().equals(NOT_AVAILABLE)) {
-						senderBase.sendAdmNotification(p, restaurantsForPushCount, pushKitchenTypeIds);
 					}
 				}
 

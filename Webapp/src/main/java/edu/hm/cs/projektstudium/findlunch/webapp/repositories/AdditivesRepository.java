@@ -15,14 +15,14 @@ public interface AdditivesRepository extends JpaRepository<Additives, Integer>{
 
 	/**
 	 * Finds additives by the name of the product.
-	 * @param courseType
+	 * @param name
 	 * @return
 	 */
 	Additives findByName(String name);
 	
 	/**
 	 * Finds additives by the key of the product.
-	 * @param courseType
+	 * @param key
 	 * @return
 	 */
 	Additives findByShortKey(String key);

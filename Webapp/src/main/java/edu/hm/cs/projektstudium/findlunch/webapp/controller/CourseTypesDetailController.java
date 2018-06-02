@@ -60,14 +60,10 @@ public class CourseTypesDetailController {
 	
 	/**
 	 * Gets the page for adding a new courseType.
-	 * @param model 
-	 * 			Model in which necessary objects are placed to be displayed on the website.
-	 * @param principal
-	 * 			Currently logged in user.
-	 * @param session
-	 * 			Current session.
-	 * @param request
-	 * 			http request.
+	 * @param model Model in which necessary objects are placed to be displayed on the website.
+	 * @param principal Currently logged in user.
+	 * @param session Current session.
+	 * @param request http request.
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path="/coursetype/add", method=RequestMethod.GET)
@@ -116,7 +112,7 @@ public class CourseTypesDetailController {
 	
 	/**
 	 *  Save the coursetypes to the database. New coursetypes are stored, edited offers are updated.
-	 * @param coursetype the coursetype
+	 * @param courseType the coursetype
 	 * @param bindingResult the binding resultes
 	 * @param principal the currently logged in user
 	 * @param model Model in which necessary object are placed to be displayed on the website.

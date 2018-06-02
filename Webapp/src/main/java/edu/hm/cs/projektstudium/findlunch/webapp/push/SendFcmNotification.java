@@ -15,8 +15,6 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.DailyPushNotificationData;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.PushToken;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepository;
 
 /**
@@ -49,7 +47,8 @@ public class SendFcmNotification extends PushNotificationManager implements Runn
 	 * Url for sending Google FCM notification.
 	 */
 	private final String FCM_NOT_URL = "https://fcm.googleapis.com/fcm/send";
-	
+	private static final String FCM_SERVER_KEY = "AIzaSyCI1nu3pSn5VC0vt8iRBfFf1caGrVEYZSI";
+
 	public SendFcmNotification(JSONObject push){
 		this.push = push;
 	}
@@ -70,7 +69,7 @@ public class SendFcmNotification extends PushNotificationManager implements Runn
 				.url(FCM_NOT_URL)
 				.post(body)
 				.addHeader("Content-type", mediaType.toString())
-				.addHeader("Authorization", "key="+FCM_SENDER_ID).build();
+				.addHeader("Authorization", "key="+FCM_SERVER_KEY).build();
 		try {
 			
 			//Execute request.

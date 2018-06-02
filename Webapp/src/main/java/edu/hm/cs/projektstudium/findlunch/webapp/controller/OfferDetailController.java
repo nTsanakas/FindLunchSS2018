@@ -200,8 +200,6 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 * 			Currently logged in user.
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
-	 * @param session
-	 * 			Session of the current user. Used to store offer photos.
 	 * @return the string for the corresponding HTML page
 	 */
 	@SuppressWarnings("unchecked")
@@ -288,8 +286,6 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param file
 	 * 			Uploaded file.
-	 * @param session
-	 * 			Session of the current user. Used to store offer photos.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page
@@ -415,8 +411,6 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param imageId
 	 * 			Id of the images to be deleted.
-	 * @param session
-	 * 			Session of the current user. Used to store offer photos.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page

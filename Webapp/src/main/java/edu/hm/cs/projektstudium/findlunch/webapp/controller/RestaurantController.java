@@ -337,7 +337,7 @@ public class RestaurantController {
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
-	 * @param req
+	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
 	 */
@@ -385,7 +385,7 @@ public class RestaurantController {
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
-	 * @param req
+	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
 	 */
@@ -429,7 +429,7 @@ public class RestaurantController {
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
-	 * @param req
+	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
 	 */
@@ -468,7 +468,7 @@ public class RestaurantController {
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
-	 * @param req
+	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
 	 */
@@ -608,8 +608,6 @@ public class RestaurantController {
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param file
 	 * 			Uploaded file.
-	 * @param session
-	 * 			Session of the current user. Used to store restaurant logos.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page
@@ -917,14 +915,12 @@ public class RestaurantController {
 	 * Deletes an restaurant logo from the session. It is deleted from the database after the offer is saved.
 	 *
 	 * @param request the HttpServletRequest
-	 * @param restuarant
+	 * @param restaurant
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param imageId
 	 * 			Id of the images to be deleted.
-	 * @param session
-	 * 			Session of the current user. Used to store restaurant logo.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page

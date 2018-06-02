@@ -186,7 +186,7 @@ public class ReservationRestController {
 				return new ResponseEntity<>(2, HttpStatus.CONFLICT);
 			}
 
-			Offer offer = offerRepository.findOne(reservation_offer.getOffer().getId());
+			Offer offer = offerRepository.getOne(reservation_offer.getOffer().getId());
 			
 			// Angebots ID ist nicht in der DB
 			if(offer==null){

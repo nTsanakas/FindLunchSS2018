@@ -107,10 +107,10 @@ public class ResetPasswordRestController {
 					name = "user",
 					value = "Benutzer",
 					required = true)
-			User user){
+			String userName){
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
-		User u = userRepository.findByUsername(user.getUsername());
+		User u = userRepository.findByUsername(userName);
 		if(u == null){
 			LOGGER.info(LogUtils.getErrorMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),"Not existed Username(E-Mail) was entered."));
 			//send always a success Mail because of IT-Sec reasons.Also add the difference of the needed time to send a Mail.

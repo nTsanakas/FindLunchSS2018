@@ -154,7 +154,7 @@ public class ResetPasswordController {
 	 * @return the url to reset the password
 	 */
 	private String getPasswordResetUrl(HttpServletRequest request, User user) {
-		String url = getProtocol(request.isSecure()) + "demo.findlunch.de" +"/resetpassword/"+user.getResetPassword().getToken();
+		String url = getProtocol(request.isSecure()) + request.getServerName()+":"+request.getServerPort()+"/resetpassword/"+user.getResetPassword().getToken();
 		return url;
 	}
 
@@ -213,7 +213,7 @@ public class ResetPasswordController {
 	 * @param token the resetpassword token
 	 * @param request request the HttpServletRequest
 	 * @param user the user
-	 * @param bindingresult validates and binds the result. For more information: https://docs.spring.io/spring/docs/2.5.x/javadoc-api/org/springframework/validation/BindingResult.html
+	 * @param bindingResult validates and binds the result. For more information: https://docs.spring.io/spring/docs/2.5.x/javadoc-api/org/springframework/validation/BindingResult.html
 	 * @param model Model in which necessary object are placed to be displayed on the website
 	 * @return the string for the corresponding HTML page
 	 */

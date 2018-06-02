@@ -38,8 +38,6 @@ public final class AuthenticationHelper {
 
     /**
      * The constructor which mainly sets the caches.
-     * @param attemptsCacheIDAddress Cache for the IP Address
-     * @param attemptsCacheSessionID Cache for the Session ID 
      */
     private AuthenticationHelper() {
         super();

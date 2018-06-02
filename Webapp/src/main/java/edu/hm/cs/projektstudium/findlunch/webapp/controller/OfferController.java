@@ -47,8 +47,7 @@ public class OfferController {
 	@Autowired
 	private AllergenicRepository allergenicRepository;
 	
-	/** NIKLAS KLOTZ <p>
-	 * The courser type repository.*/
+	/** The courser type repository.*/
 	@Autowired
 	private CourseTypeRepository courserTypeRepository;
 	

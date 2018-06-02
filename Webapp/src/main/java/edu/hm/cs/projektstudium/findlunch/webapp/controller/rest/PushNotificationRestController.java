@@ -96,16 +96,14 @@ public class PushNotificationRestController {
 	})
 	@RequestMapping(
 			path = "/api/register_push",
-			method = RequestMethod.POST,
-			produces = "text/html")
+			method = RequestMethod.POST)
 	public ResponseEntity<Integer> registerPush(
 			@RequestBody DailyPushNotificationData pushNotification,
-			Principal principal,
 			HttpServletRequest request) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
-		User requestUser = (User) ((Authentication) principal).getPrincipal();
-		User authenticatedUser = userRepository.findOne(requestUser.getId());
+		User requestUser = pushNotification.getUser();
+		User authenticatedUser = userRepository.findByUsername(requestUser.getUsername());
 
 		//Initial push for user with current device token
 		//Updating all pushes of this user with new tokens in database.
@@ -113,13 +111,17 @@ public class PushNotificationRestController {
 			
 			List<DailyPushNotificationData> allNotificationsOfCurrentUser = pushNotificationRepository.findByUser_id(authenticatedUser.getId());
 
-			for (DailyPushNotificationData pushToModify : allNotificationsOfCurrentUser) {
+			for(int i = 0; i < allNotificationsOfCurrentUser.size(); i++) {
+				DailyPushNotificationData pushToModify = allNotificationsOfCurrentUser.get(i);
 				//delete old
 				pushNotificationRepository.delete(pushToModify);
 
 				//add with new token
+				/*
+				 * TODO: SNS Token aus Datenbank entfernen! Bis dahin dummy wert.
+				 */
 				pushToModify.setFcmToken(pushNotification.getFcmToken());
-				pushToModify.setSnsToken(pushNotification.getSnsToken());
+				pushToModify.setSnsToken("dummy");
 
 				//token info log
 				LOGGER.info(pushNotification.getSnsToken());
@@ -133,24 +135,21 @@ public class PushNotificationRestController {
 
 			
 		} else {
-			//Not initial push, operation after update.
-			List<DayOfWeek> daysOfWeekComplete = new ArrayList<>();
 			
-			if (pushNotification.getDayOfWeeks() == null || 
-					pushNotification.getDayOfWeeks().size() <= 0) {
-				// No DayOfWeek specified for PushNotification
-				LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The push notification has no DayOfWeek."));
-				return new ResponseEntity<>(4, HttpStatus.CONFLICT);
-			} else {
-				List<DayOfWeek> daysOfWeek = pushNotification.getDayOfWeeks();
-				for (DayOfWeek d : daysOfWeek) {
-					String dayOfWeekName = d.getName();
-					daysOfWeekComplete.add(dayOfWeekRepository.findByName(dayOfWeekName));
-					pushNotification.setDayOfWeeks(daysOfWeekComplete);
-				}
-			}
 
-			List<KitchenType> kitchenTypeComplete = new ArrayList<>();
+	/*
+	 * TODO: Solange An jedem Tag ein Puish gesendet wird ist der Code Irrelevant
+	 * //Not initial push, operation after update.
+			List<DayOfWeek> daysOfWeekComplete = new ArrayList<DayOfWeek>();
+
+			List<DayOfWeek> daysOfWeek = pushNotification.getDayOfWeeks();
+			for (DayOfWeek d : daysOfWeek) {
+				String dayOfWeekName = d.getName();
+				daysOfWeekComplete.add(dayOfWeekRepository.findByName(dayOfWeekName));
+				pushNotification.setDayOfWeeks(daysOfWeekComplete);
+			}
+*/
+			List<KitchenType> kitchenTypeComplete = new ArrayList<KitchenType>();
 			if (pushNotification.getKitchenTypes() != null && pushNotification.getKitchenTypes().size() > 0) {
 				List<KitchenType> kitchenTypesList = pushNotification.getKitchenTypes();
 				for (KitchenType k : kitchenTypesList) {
@@ -158,6 +157,11 @@ public class PushNotificationRestController {
 					kitchenTypeComplete.add(kitchenTypeRepository.findById(kitchenTypeId));
 				}
 			}
+			//Nur vorrübergehend so gelöst
+			pushNotification.setSnsToken("dummy");
+
+
+
 			pushNotification.setKitchenTypes(kitchenTypeComplete);
 
 			pushNotification.setUser(authenticatedUser);

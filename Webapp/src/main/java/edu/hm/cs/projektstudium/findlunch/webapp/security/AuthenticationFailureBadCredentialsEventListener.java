@@ -34,6 +34,8 @@ public class AuthenticationFailureBadCredentialsEventListener
         final WebAuthenticationDetails authenticationDetails = (WebAuthenticationDetails)
                 e.getAuthentication().getDetails();
 
+        // When this event gets fired we delegate the handling to the helper class.
+        // Either use the session and IP-address of an user or just the IP-address if the session is not existent.
         if (authenticationDetails.getSessionId() != null) {
             authenticationHelper.loginFailedIpAddressAndSessionId(authenticationDetails.getRemoteAddress(),
                     authenticationDetails.getSessionId());

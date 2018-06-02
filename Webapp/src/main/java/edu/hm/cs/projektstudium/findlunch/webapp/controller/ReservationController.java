@@ -223,7 +223,7 @@ class ReservationController {
 	/**
 	 * Confirm the submitted reservation.
 	 * @param reservationId the reservation id
-	 * @param waittimeRestaurant the waiting time within the restaurant
+	 * @param model tthe model
 	 * @param principal the currently logged in user
 	 * @param request http request
 	 * @return redirect to the webpage
@@ -247,7 +247,7 @@ class ReservationController {
 	 * Confirm selected reservations that are costless.
 	 * @param reservationList List of reservation
 	 * @param principal principal Currently logged in user
-	 * @param requestrequest the HttpServletRequest
+	 * @param request the HttpServletRequest
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path = "/reservations", method = RequestMethod.POST, params={"confirmFreeReservation"})
