@@ -91,7 +91,7 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	@Autowired
 	private AllergenicRepository allergenicRepository;
 	
-	/** Niklas Klotz */
+	/** The course type repository. */
 	@Autowired
 	private CourseTypeRepository courseTypeRepository;
 	
@@ -107,7 +107,7 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 *
 	 * @param request the HttpServletRequest
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal 
 	 * 			Currently logged in user.
 	 * @param session the session
@@ -147,7 +147,7 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 * @param offerId
 	 * 			Id of the offer to be edited.
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @param session
@@ -198,9 +198,7 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
-	 * @param session
-	 * 			Session of the current user. Used to store offer photos.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @return the string for the corresponding HTML page
 	 */
 	@SuppressWarnings("unchecked")
@@ -264,7 +262,7 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 *
 	 * @param request the HttpServletRequest
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param session
 	 * 			Session of the current user. Used to store offer photos.
 	 * @return the string for the corresponding HTML page
@@ -284,11 +282,9 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 * @param offer
 	 * 			Offer object to be saved. Populated by the content of the html form field.
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param file
 	 * 			Uploaded file.
-	 * @param session
-	 * 			Session of the current user. Used to store offer photos.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page
@@ -368,7 +364,7 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 * In order to prevent information disclosure this method was added. Without this method a full stack trace
 	 * was shown to the user when a file bigger than the defined multipart.maxFileSize was sent by the user.
 	 * This stack trace could reveal some sensitive information to a potential attacker.
-	 * This is a quite unclean approach but shows the problematic.
+	 * This is a quite unclean approach but solves the problem.
 	 *
 	 * @param httpServletRequest the HttpServletRequest
 	 * @param httpServletResponse the HttpServletResponse
@@ -411,11 +407,9 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	 * @param offer
 	 * 			Offer object to be saved. Populated by the content of the html form field.
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param imageId
 	 * 			Id of the images to be deleted.
-	 * @param session
-	 * 			Session of the current user. Used to store offer photos.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page

@@ -187,7 +187,7 @@ public class PushNotificationManager implements PushMessagingInterface {
 	}
 	
 	/**
-	 * Generates a Reservation confirmation push notification
+	 * Generates a Reservation confirmation push notification.
 	 * @param reservation the reservation
 	 * @param token the fcm token
 	 * @return the notification
@@ -196,24 +196,24 @@ public class PushNotificationManager implements PushMessagingInterface {
 	public JSONObject generateReservationConfirm(Reservation reservation, String token){
 		JSONObject body = new JSONObject();
 		body.put("to", token);
-		
+
 		JSONObject notification = new JSONObject();
 		notification.put("title","Deine Bestellung");
 		notification.put("body", "Deine Bestellung "+reservation.getReservationNumber()+ " wurd durch das Restaurant "+reservation.getRestaurant().getName()+" bestätigt");
-		
+
 		JSONObject data = new JSONObject();
 		data.put("KEY-1", "JSA DATA 1");
 		data.put("KEY-2", "JSA DATA ");
-		
+
 		body.put("notification", notification);
 		body.put("data", data);
-		
+
 		return body;
 	}
 	
 
 	/**
-	 * Generates a Reservation rejection push notification
+	 * Generates a Reservation rejection push notification.
 	 * @param reservation the reservation
 	 * @param token the fcm token
 	 * @return the notification
@@ -222,23 +222,23 @@ public class PushNotificationManager implements PushMessagingInterface {
 	public JSONObject generateReservationReject(Reservation reservation, String token){
 		JSONObject body = new JSONObject();
 		body.put("to", token);
-		
+
 		JSONObject notification = new JSONObject();
 		notification.put("title","Deine Bestellung");
 		notification.put("body", "Deine Bestellung "+reservation.getReservationNumber()+ " wurde durch das Restaurant "+reservation.getRestaurant().getName()+" abgelehnt. Begründung: "+reservation.getReservationStatus().getStatus());
-		
+
 		JSONObject data = new JSONObject();
 		data.put("KEY-1", "JSA DATA 1");
 		data.put("KEY-2", "JSA DATA ");
-		
+
 		body.put("notification", notification);
 		body.put("data", data);
-		
+
 		return body;
 	}
 	
 	/**
-	 * Generates a Reservation rejection push notification
+	 * Generates a Reservation rejection push notification.
 	 * @param reservation the reservation
 	 * @param token the fcm token
 	 * @return the notification
@@ -247,46 +247,46 @@ public class PushNotificationManager implements PushMessagingInterface {
 	public JSONObject generateReservationNotProcessed(Reservation reservation, String token) {
 		JSONObject body = new JSONObject();
 		body.put("to", token);
-		
+
 		JSONObject notification = new JSONObject();
 		notification.put("title","Deine Bestellung");
 		notification.put("body", "Deine Bestellung "+reservation.getReservationNumber()+ " wurde durch das Restaurant "+reservation.getRestaurant().getName()+" nicht rechtzeitig bearbeitet");
-		
+
 		JSONObject data = new JSONObject();
 		data.put("KEY-1", "JSA DATA 1");
 		data.put("KEY-2", "JSA DATA ");
-		
+
 		body.put("notification", notification);
 		body.put("data", data);
-		
+
 		return body;
 	}
 	
 	/**
-	 * Generates a push notification fot the daily update
+	 * Generates a push notification for the daily update.
 	 * @param p the daily notification
-	 * @param restaurantsForPushCount 
-	 * @param pushKitchenTypeIds
-	 * @param token
-	 * @return
+	 * @param restaurantsForPushCount the number of restaurants
+	 * @param pushKitchenTypeIds the kitchen type IDs
+	 * @param token the token
+	 * @return the push notification
 	 */
 	@SuppressWarnings("unchecked")
 	public JSONObject generateFromDaily(DailyPushNotificationData p, Integer restaurantsForPushCount, List<Integer> pushKitchenTypeIds, String token){
 		JSONObject body = new JSONObject();
 		body.put("to", token);
-		
-		
+
+
 		JSONObject notification = new JSONObject();
 		notification.put("title", p.getTitle());
 		notification.put("body", "Im Moment sind " + restaurantsForPushCount + " Restaurants mit leckeren Angeboten in deiner Nähe. Schau doch mal bei uns vorbei.");
-		
+
 		JSONObject data = new JSONObject();
 		data.put("KEY-1", "JSA DATA 1");
 		data.put("KEY-2", "JSA DATA ");
-		
+
 		body.put("notification", notification);
 		body.put("data", data);
-		
+
 		return body;
 	}
 }

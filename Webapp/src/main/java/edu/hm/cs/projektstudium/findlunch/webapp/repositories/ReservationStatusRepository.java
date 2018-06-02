@@ -8,20 +8,20 @@ import org.springframework.stereotype.Repository;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.ReservationStatus;
 
 /**
- * The Interface ReservationStatusRepository. Abstraction for the data access layer
+ * The Interface ReservationStatusRepository. Abstraction for the data access layer.
  */
 @Repository
 public interface ReservationStatusRepository extends JpaRepository<ReservationStatus, Integer>{
 
 	/**
-	 * 
-	 * @param key
+	 * Finds the reservation status by key.
+	 * @param statusKey
 	 * @return List ReservationStatus
 	 */
 	List<ReservationStatus> findByKey(int statusKey);
 	
 	/**
-	 * 
+	 * Finds the reservation status by id.
 	 * @param id
 	 * @return ReservationStatus
 	 */
