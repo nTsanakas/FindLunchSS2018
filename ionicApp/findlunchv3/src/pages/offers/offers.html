@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar color="flColor">
+    <button ion-button menuToggle>
+      <ion-icon md="md-menu" name="menu"></ion-icon>
+    </button>
+
+    <ion-title (click)="onRestaurantClicked($event)">
+      {{restaurant.name}}
+    </ion-title>
+    <ion-buttons end>
+      <button id="favorite" *ngIf="this.auth.getLoggedIn()" ion-button icon-only (click)="toggleIsFavorite()">
+        <ion-icon name="star-outline" *ngIf="this.auth.getLoggedIn()&& !restaurant.isFavorite"></ion-icon>
+        <ion-icon name="star" *ngIf="this.auth.getLoggedIn()&&restaurant.isFavorite"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="goToCheckout()">
+        <ion-icon name="cart">
+          <ion-badge class="cartBadge">{{getCartItemCount()}}</ion-badge>
+        </ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list id="foodMenu">
+    <ion-item *ngFor="let category of categories" text-wrap no-lines="" (click)="toggleGroup(category)"
+              [ngClass]="{active: isGroupShown(category)}">
+      <ion-list-header>
+        {{category}}
+        <ion-icon color="success" item-right
+                  [name]="isGroupShown(category) ? 'arrow-dropdown' : 'arrow-dropleft'"></ion-icon>
+      </ion-list-header>
+      <div *ngIf="isGroupShown(category)">
+        <div *ngFor="let offer of offers[category]; let i=index">
+          <ion-list-header align="center">
+            <div (click)="onOfferClicked($event, offer)">
+              <img id="product-image" [src]="'data:image/jpg;base64,' + offer.defaultPhoto.thumbnail">
+              <p align="center" id="offerText">{{offer.title}}</p>
+              <p align="center" id="offerText1">{{offer.price | currency:'EUR':true}}</p>
+            </div>
+          </ion-list-header>
+        </div>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>
