@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.DayOfWeek;
 
 /**
- * The Interface DayOfWeekRepository. Abstraction for the data access layer
+ * The Interface DayOfWeekRepository. Abstraction for the data access layer.
  */
 @Repository
 public interface DayOfWeekRepository extends JpaRepository<DayOfWeek, Integer>{

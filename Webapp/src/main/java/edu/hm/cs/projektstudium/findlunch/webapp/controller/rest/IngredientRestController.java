@@ -110,10 +110,10 @@ public class IngredientRestController {
 	@CrossOrigin
 	@JsonView(RestaurantView.RestaurantRest.class)
 	@ApiOperation(
-	        value = "Abruf aller Zusätze.",
+	        value = "Abruf aller Zusaetze.",
             response = List.class)
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Zusätze erfolgreich zurückgegeben.", response = Additives.class)
+			@ApiResponse(code = 200, message = "Zusätze erfolgreich zurückgegeben.")
 	})
 	@RequestMapping(
 	        path = "/api/all_additives",
@@ -152,7 +152,7 @@ public class IngredientRestController {
             HttpServletRequest request) {
 
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
-		Offer offer = offerRepository.findOne(offerId);
+		Offer offer = offerRepository.getOne(offerId);
 		
 		return offer.getAdditives();
 	}

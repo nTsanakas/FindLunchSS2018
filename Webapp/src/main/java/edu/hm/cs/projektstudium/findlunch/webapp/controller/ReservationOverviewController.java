@@ -92,9 +92,9 @@ class ReservationOverviewController {
 	}
 	
 	/**
-	 * Gets the details of a given reservation
+	 * Gets the details of a given reservation.
 	 * @param reservationId the reservation
-	 * @param model Model in which necessary object are placed to be displayed on the website.
+	 * @param model Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal the currently logged in user
 	 * @param request http request
 	 * @return the reservation detials into the corresponding html fragment

@@ -157,7 +157,7 @@ public class Beans extends WebMvcConfigurerAdapter{
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
-
+	
 	/**
 	 * Returns the local validator.
 	 */

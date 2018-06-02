@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 
 /**
- * The Interface UserRepository. Abstraction for the data access layer
+ * The Interface UserRepository. Abstraction for the data access layer.
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>{
@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	 * @param username the name of the user
 	 * @return the user
 	 */
-	User findByUsername(String username);
+	public User findByUsername(String username);
 	
 	/**
 	 * Find a User by its username and a user type.
@@ -26,5 +26,5 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	 * @param userType the user type (as string)
 	 * @return the user
 	 */
-	User findByUsernameAndUserType_name(String username, String userType);
+	public User findByUsernameAndUserType_name(String username, String userType);
 }

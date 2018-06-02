@@ -31,7 +31,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationRepository;
 
 /**
- * The class is responsible for handling http calls related to the process of manage the reservations.
+ * This class is responsible for handling http calls related to the process of manage the reservations.
  */
 @Controller 
 class ReservationStatistikController {
@@ -45,7 +45,7 @@ class ReservationStatistikController {
 	
 	/**
 	 * Get the page for showing the reservation.
-	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param model Model in which necessary objects are placed to be displayed on the website
 	 * @param principal principal Currently logged in user
 	 * @param request request the HttpServletRequest
 	 * @return the string for the corresponding HTML page

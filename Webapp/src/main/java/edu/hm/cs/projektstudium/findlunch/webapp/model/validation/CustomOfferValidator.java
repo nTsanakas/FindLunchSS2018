@@ -51,6 +51,11 @@ public class CustomOfferValidator implements Validator {
 	/* (non-Javadoc)
 	 * @see org.springframework.validation.Validator#validate(java.lang.Object, org.springframework.validation.Errors)
 	 */
+	/**
+	 * Defines the objects to validate.
+	 * @param objectToValidate the object to validate
+	 * @param bindingResult the binding result 
+	 */
 	@Override
 	public void validate(Object objectToValidate, Errors bindingResult) {
 
@@ -231,6 +236,11 @@ public class CustomOfferValidator implements Validator {
 		return matcher.matches();
 	}
 	
+	/**
+	 * Gets the valid days of a week as string.
+	 * @param allowedDays the allowed days (input as list)
+	 * @return the valid days of a week as string
+	 */
 	private StringBuilder getValidDaysOfWeekAsString(List<Integer> allowedDays){
 		
 		List<DayOfWeek> allDayOfWeeks = dayOfWeekRepository.findAll();

@@ -1,5 +1,8 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -9,20 +12,26 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 /**
- * The Class MinimumProfit.
+ * The Class MinimumProfit. Defines the minimal profit for a restaurant.
  */
 @Entity
+@ApiModel(
+		description = "Definiert den minimalen Gewinn für ein Restaurant."
+)
 public class MinimumProfit {
 
 	/** The id. */
+	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
 	/** The profit.*/
+	@ApiModelProperty(notes = "Gewinn")
 	private float profit;
 	
 	/** The bills.*/
+	@ApiModelProperty(notes = "Minimaler Gewinn")
 	@OneToMany(mappedBy="minimumProfit")
 	private List<Bill> bills;
 

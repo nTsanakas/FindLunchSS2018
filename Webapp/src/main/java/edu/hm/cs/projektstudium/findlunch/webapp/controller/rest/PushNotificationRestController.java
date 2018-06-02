@@ -96,8 +96,7 @@ public class PushNotificationRestController {
 	})
 	@RequestMapping(
 			path = "/api/register_push",
-			method = RequestMethod.POST,
-			produces = "text/html")
+			method = RequestMethod.POST)
 	public ResponseEntity<Integer> registerPush(
 			@RequestBody DailyPushNotificationData pushNotification,
 			HttpServletRequest request) {
@@ -158,7 +157,7 @@ public class PushNotificationRestController {
 					kitchenTypeComplete.add(kitchenTypeRepository.findById(kitchenTypeId));
 				}
 			}
-			//Nur vorübergehend so gelöst
+			//Nur vorrübergehend so gelöst
 			pushNotification.setSnsToken("dummy");
 
 

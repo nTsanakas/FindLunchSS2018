@@ -125,7 +125,7 @@ public class RestaurantController {
 	@Autowired
 	private RestaurantUserDetailsService customUserDetailsService;
 	
-	/** The custom restaurant validator. Handled enhanced checks not handled by the hibernate annotation */
+	/** The custom restaurant validator. Handles enhanced checks not handled by the hibernate annotation */
 	@Autowired
 	private CustomRestaurantValidator customRestaurantValidator;
 	
@@ -133,9 +133,15 @@ public class RestaurantController {
 	@Autowired
 	private MessageSource messageSource;
 	
+	/**
+	 * The account type repository.
+	 */
 	@Autowired
 	private AccountTypeRepository accountTypeRepository;
 	
+	/**
+	 * The account repository.
+	 */
 	@Autowired
 	private AccountRepository accountRepository;
 	
@@ -149,7 +155,7 @@ public class RestaurantController {
 	 *
 	 * @param request the HttpServletRequest
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page
@@ -194,7 +200,7 @@ public class RestaurantController {
 	}
 	
 	/**
-	 * Gets the new restaurant.
+	 * Gets a new restaurant. Generates a ID and UUID for the restaurant.
 	 *
 	 * @return the new restaurant
 	 */
@@ -238,7 +244,7 @@ public class RestaurantController {
 	 *
 	 * @param request the HttpServletRequest
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page
@@ -330,8 +336,8 @@ public class RestaurantController {
 	 * @param bindingResult
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
-	 * @param req
+	 * 			Model in which necessary objects are placed to be displayed on the website.
+	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
 	 */
@@ -378,8 +384,8 @@ public class RestaurantController {
 	 * @param bindingResult
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
-	 * @param req
+	 * 			Model in which necessary objects are placed to be displayed on the website.
+	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
 	 */
@@ -422,8 +428,8 @@ public class RestaurantController {
 	 * @param bindingResult
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
-	 * @param req
+	 * 			Model in which necessary objects are placed to be displayed on the website.
+	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
 	 */
@@ -461,8 +467,8 @@ public class RestaurantController {
 	 * @param bindingResult
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
-	 * @param req
+	 * 			Model in which necessary objects are placed to be displayed on the website.
+	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
 	 */
@@ -492,7 +498,7 @@ public class RestaurantController {
 	}
 
 	/**
-	 * Save the restaurant to the database.
+	 * Saves the restaurant to the database.
 	 *
 	 * @param request the HttpServletRequest
 	 * @param restaurant
@@ -500,7 +506,7 @@ public class RestaurantController {
 	 * @param bindingResult
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return  the string for the corresponding HTML page
@@ -599,11 +605,9 @@ public class RestaurantController {
 	 * @param restaurant
 	 * 			restaurant object to be saved. Populated by the content of the html form field.
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param file
 	 * 			Uploaded file.
-	 * @param session
-	 * 			Session of the current user. Used to store restaurant logos.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page
@@ -717,7 +721,7 @@ public class RestaurantController {
 	 *
 	 * @param request the HttpServletRequest
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path = { "/restaurant/add", "/restaurant/edit" }, method = RequestMethod.POST, params = { "cancel" })
@@ -911,14 +915,12 @@ public class RestaurantController {
 	 * Deletes an restaurant logo from the session. It is deleted from the database after the offer is saved.
 	 *
 	 * @param request the HttpServletRequest
-	 * @param restuarant
+	 * @param restaurant
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param model
-	 * 			Model in which necessary object are placed to be displayed on the website.
+	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param imageId
 	 * 			Id of the images to be deleted.
-	 * @param session
-	 * 			Session of the current user. Used to store restaurant logo.
 	 * @param principal
 	 * 			Currently logged in user.
 	 * @return the string for the corresponding HTML page

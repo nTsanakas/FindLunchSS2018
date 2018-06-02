@@ -17,25 +17,39 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * Class to define the reservation of a product.
+ * @author oberm
+ *
+ */
 @Entity
+@ApiModel(
+		description = "Definiert Reservierung eines Produkts."
+)
 public class Reservation {
 	
 	/** The id. */
+	@ApiModelProperty(notes = "ID")
 	@Id
 	@JsonView({ReservationView.ReservationRest.class})
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
 	/** The donation. */
+	@ApiModelProperty(notes = "Spende")
 	@JsonView({ReservationView.ReservationRest.class})
 	private float donation;
 
 	/** The total price. */
+	@ApiModelProperty(notes = "Gesamtpreis")
 	@JsonView({ReservationView.ReservationRest.class})
 	private float totalPrice;
 	
 	/** Is used points. */
+	@ApiModelProperty(notes = "Benutzte Punkte")
 	@JsonView({ReservationView.ReservationRest.class})
 	private boolean usedPoints;
 	
@@ -45,58 +59,69 @@ public class Reservation {
 	private boolean pointsCollected;
 	
 	/** The points collected by the customer */
+	@ApiModelProperty(notes = "Gesammelte Punkte")
 	@Column(name="points")
 	@JsonView({ReservationView.ReservationRest.class})
 	private float points;
 	
 	/** The reservation number*/
+	@ApiModelProperty(notes = "Bestellnummer")
 	@JsonView({ReservationView.ReservationRest.class})
 	private int reservationNumber;
 
 	/** The user.*/
+	@ApiModelProperty(notes = "Benutzer")
 	// @JsonIgnore
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id")
 	private User user;
 	
 	/** The offers within the reservation */
+	@ApiModelProperty(notes = "Angebote in der Bestellung")
 	@OneToMany(mappedBy="reservation", cascade=CascadeType.ALL)
 	@JsonView({ReservationView.ReservationRest.class})
 	private List<ReservationOffers> reservation_offers;
 	
 	/** The euroPerPoint.*/
+	@ApiModelProperty(notes = "Euro pro Punkt")
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="euro_per_point_id")
 	private EuroPerPoint euroPerPoint;
 	
 	/** The restaurant.*/
+	@ApiModelProperty(notes = "Restaurant")
 	@JsonView({ReservationView.ReservationRest.class})
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="restaurant_id")
 	private Restaurant restaurant;
 	
 	/** The bill.*/
+	@ApiModelProperty(notes = "Rechnung")
 	@ManyToOne(fetch=FetchType.EAGER)
 	//@JsonView({ReservationView.ReservationRest.class})
 	private Bill bill;
 
 	/** The reservationStatus.*/
+	@ApiModelProperty(notes = "Reservierungsstatus")
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JsonView({ReservationView.ReservationRest.class})
 	@JoinColumn(name="reservation_status_id")
 	private ReservationStatus reservationStatus;
 	
 	/** The collect_time. */
+	@ApiModelProperty(notes = "Zeit")
 	@JsonView({ReservationView.ReservationRest.class})
 	@Column(name="collect_time")
 	private Date collectTime;
 	
 	/** The reservation time. */
+	@ApiModelProperty(notes = "Bestellzeit empfangen")
 	//@JsonView({ReservationView.ReservationRest.class})
 	@Column(name="timestamp_received")
 	private Date timestampReceived;
 	
 	/** The reservation time. */
+	@ApiModelProperty(notes = "Geantwortete Bestellzeit")
 	//@JsonView({ReservationView.ReservationRest.class})
 	@Column(name="timestamp_responded")
 	private Date timestampResponded;
@@ -247,10 +272,18 @@ public class Reservation {
 		this.reservationNumber = reservationNumber;
 	}
 
+	/**
+	 * Gets the reservation offers.
+	 * @return the reservation offers
+	 */
 	public List<ReservationOffers> getReservation_offers() {
 		return reservation_offers;
 	}
 
+	/**
+	 * Sets the reservation offers.
+	 * @param reservation_offers the reservation offers
+	 */
 	public void setReservation_offers(List<ReservationOffers> reservation_offers) {
 		this.reservation_offers = reservation_offers;
 	}
@@ -263,6 +296,7 @@ public class Reservation {
 	}
 
 	/**
+	 * Sets the reservation status
 	 * @param reservationStatus the reservationStatus to set
 	 */
 	public void setReservationStatus(ReservationStatus reservationStatus) {

@@ -1,5 +1,8 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -9,20 +12,26 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 /**
- * The Class BookingReason.
+ * The Class BookingReason. Describes the reason for a booking.
  */
 @Entity
+@ApiModel(
+		description = "Beschreibt den Grund für eine Buchung."
+)
 public class BookingReason {
 
 	/** The id. */
+	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
 	/** The reason. */
+	@ApiModelProperty(notes = "Grund")
 	private String reason;
 	
 	/** The bookings. */
+	@ApiModelProperty(notes = "Buchungen")
 	@OneToMany(mappedBy="bookingReason")
 	private List<Booking> bookings;
 

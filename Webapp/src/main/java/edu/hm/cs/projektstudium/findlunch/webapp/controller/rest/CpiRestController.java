@@ -3,17 +3,12 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import edu.hm.cs.projektstudium.findlunch.webapp.controller.NotificationController;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -30,10 +25,10 @@ import java.io.InputStreamReader;
         description="Einblick in Policy-Verletzungen.")
 class CpiRestController {
 
-    /**
-     * The logger.
-     */
-    private final Logger LOGGER = LoggerFactory.getLogger(CpiRestController.class);
+	/**
+	 * The logger.
+	 */
+	private final Logger LOGGER = LoggerFactory.getLogger(CpiRestController.class);
 
     /**
      * This method handles the received Content-Security-Policy-violations and forwards them to a mobile device
@@ -46,8 +41,7 @@ class CpiRestController {
     @RequestMapping(
             path = "/api/csp-report-uri",
             method = RequestMethod.POST)
-    public void getCspViolations(@RequestParam(name = "JSON csp-report", required = true)
-                                     final HttpServletRequest request) throws IOException {
+    public void getCspViolations(@RequestParam(name = "JSON csp-report", required = true) final HttpServletRequest request) throws IOException {
     	
         LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 

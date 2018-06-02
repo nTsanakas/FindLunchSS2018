@@ -13,9 +13,19 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * The class ReservationStatus. Information about the state of a reservation.
+ * @author oberm
+ *
+ */
 @Entity
 @Table(name="reservation_status")
+@ApiModel(
+		description = "Status der Reservierung."
+)
 public class ReservationStatus {
 	
 	public static final int RESERVATION_KEY_NEW = 0;
@@ -24,22 +34,26 @@ public class ReservationStatus {
 	public static final int RESERVATION_KEY_UNPROCESSED = 3;
 	
 	/** The id. */
+	@ApiModelProperty(notes = "ID")
 	@Id
 	@JsonView({ReservationView.ReservationRest.class})
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 
 	/** The status. */
+	@ApiModelProperty(notes = "Bestellstatus")
 	@JsonView({ReservationView.ReservationRest.class})
 	@Column(name="status")
 	private String status;
 	
 	/** The key. */
+	@ApiModelProperty(notes = "Schlüssel")
 	@JsonView({ReservationView.ReservationRest.class})
 	@Column(name="statkey")
 	private int key;
 
 	/** The reservations.*/
+	@ApiModelProperty(notes = "Bestellungen")
 	@OneToMany(mappedBy="reservationStatus")
 	private List<Reservation> reservation;
 	
@@ -79,7 +93,7 @@ public class ReservationStatus {
 	}
 
 	/**
-	 * @param key the statuskey to set
+	 * @param statuskey the statuskey to set
 	 */
 	public void setKey(int key) {
 		this.key = key;

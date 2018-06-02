@@ -91,7 +91,8 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	@Autowired
 	private AllergenicRepository allergenicRepository;
 	
-	/** The course type repository. */
+	/** Niklas Klotz
+	 * The course type repository. */
 	@Autowired
 	private CourseTypeRepository courseTypeRepository;
 	

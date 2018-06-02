@@ -223,12 +223,13 @@ class ReservationController {
 	/**
 	 * Confirm the submitted reservation.
 	 * @param reservationId the reservation id
+	 * @param model tthe model
 	 * @param principal the currently logged in user
 	 * @param request http request
 	 * @return redirect to the webpage
 	 */
 	@RequestMapping(path = "/reservations/saveReservationStatusConfirm/{reservationId}", method = RequestMethod.GET)
-	public String confirmReservationByOwnerAJAX(@PathVariable("reservationId") String reservationId, ModelMap model, Principal principal, HttpServletRequest request){
+	public String confirmReservationByOwnerAJAX(@PathVariable("reservationId") String reservationId,ModelMap model, Principal principal, HttpServletRequest request){
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		int res_id = Integer.parseInt(reservationId);

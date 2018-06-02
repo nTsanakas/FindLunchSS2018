@@ -107,7 +107,7 @@ public class ResetPasswordRestController {
 					name = "user",
 					value = "Benutzer",
 					required = true)
-					String userName){
+			String userName){
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User u = userRepository.findByUsername(userName);

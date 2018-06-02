@@ -29,7 +29,8 @@ public final class AuthenticationHelper {
     private static final int MAX_ATTEMPT = 6;
 
     /**
-     * Two caches which keep the failed attempts. A time limit when the caches should be cleared can be assigned.
+     * Two caches which keep the failed attempts. <p>
+     * A time limit when the caches should be cleared can be assigned. <p>
      * See: https://google.github.io/guava/releases/18.0/api/docs/com/google/common/cache/CacheBuilder.html
      */
     private static LoadingCache<String, Integer> attemptsCacheIpAddress;

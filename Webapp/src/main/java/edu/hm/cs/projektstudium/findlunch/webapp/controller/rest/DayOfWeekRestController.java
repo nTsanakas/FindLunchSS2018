@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
@@ -32,12 +33,12 @@ public class DayOfWeekRestController {
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(DayOfWeekRestController.class);
 
-	@Autowired
-	public DayOfWeekRestController(DayOfWeekRepository dowRepository) {
-		this.dowRepository = dowRepository;
-	}
+    @Autowired
+    public DayOfWeekRestController(DayOfWeekRepository dowRepository) {
+        this.dowRepository = dowRepository;
+    }
 
-	/**
+    /**
 	 * Gets all days of week.
 	 *
 	 * @param request the HttpServletRequest

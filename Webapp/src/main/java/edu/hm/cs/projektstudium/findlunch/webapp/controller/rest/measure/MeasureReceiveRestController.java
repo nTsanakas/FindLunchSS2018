@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import edu.hm.cs.projektstudium.findlunch.webapp.measurement.MeasureUnit;
 import edu.hm.cs.projektstudium.findlunch.webapp.measurement.PushMeasureBase;
-import javax.servlet.http.HttpServletRequest;
 
 /**
 *
@@ -101,7 +100,6 @@ public class MeasureReceiveRestController {
 	 * Extraction of title (push number, user id) and timestamp of push measure.
 	 * 
 	 * @param msg The push measure as a map.
-	 * @param request The HttpServletRequest.
 	 * @return The response entity representing a status code.
 	 */
 	@CrossOrigin
@@ -122,7 +120,7 @@ public class MeasureReceiveRestController {
 					name = "Hash-Map",
 					value = "Messdaten in Form von Key-Value-Paaren.",
 					required = true)
-			HashMap<String, String> msg, HttpServletRequest request) {
+			HashMap<String, String> msg) {
 
 		String pushMessageTitle = msg.get("title");
 		String pushMessageTimeStamp = msg.get("timestamp");
@@ -238,7 +236,7 @@ public class MeasureReceiveRestController {
 	 */
 	private double calcAvgTime() {
 		double avgTime = 0;
-		long takenTimeInMs = 0;
+		long takenTimeInMs;
 		for (MeasureUnit mu : measure) {
 			takenTimeInMs = mu.getReceiveTimeL() - mu.getTimeStampL();
 			avgTime += takenTimeInMs;
