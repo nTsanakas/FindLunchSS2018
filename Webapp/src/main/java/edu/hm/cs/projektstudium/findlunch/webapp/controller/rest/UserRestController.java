@@ -1,7 +1,6 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Additives;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 import io.swagger.annotations.ApiResponse;
@@ -13,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
 
 /**
@@ -39,12 +40,16 @@ public class UserRestController {
      *
      * @param id            Id des Users, bei dem ein Attribut geändert werden soll.
      * @param patchValue    Key-Value-Paar mit Attributname und Parameter.
+     * @param principal     Principal des eingeloggten Users.
      * @param request       HTTP-Request
      * @return              Response mit Statuscode.
      */
     @CrossOrigin
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(path = "/api/users/{id}", method = RequestMethod.PATCH)
+    @RequestMapping(
+            path = "/api/users/{id}",
+            method = RequestMethod.PATCH,
+            consumes = "application/JSON")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Parameter geändert"),
             @ApiResponse(code = 401, message = "User nicht gefunden"),
@@ -53,27 +58,28 @@ public class UserRestController {
     public ResponseEntity<Integer> changeUserAttribute(
             @PathVariable("id") int id,
             @RequestBody Pair<String, Object> patchValue,
-            HttpServletRequest request) {
+            HttpServletRequest request,
+            Principal principal) {
 
         LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
         // User anhand ID finden.
         User user = userRepository.findOne(id);
         if(user != null) {
-            // Wenn User zur ID vorhanden ist,
-            switch(patchValue.getKey()){
-                // Key = PushNotificationEnabled
-                case "pushNotificationEnabled":
-                    return changePushSubscription(user, patchValue.getValue());
-                    break;
-                // Platz für weitere Patch-Anwendungsfälle
-                // ...
-                default:
-                    return new ResponseEntity<Integer>(0, HttpStatus.NOT_FOUND);
+            // Wenn User zur ID vorhanden ist, prüfen, ob ID der des anfragenden Users entspricht.
+            if (id == ((User) ((Authentication) principal).getPrincipal()).getId()){
+                switch (patchValue.getKey()) {
+                    // Key = PushNotificationEnabled
+                    case "pushNotificationEnabled":
+                        return changePushSubscription(user, patchValue.getValue());
+                    // Platz für weitere Patch-Anwendungsfälle
+                    // ...
+                    default:
+                        return new ResponseEntity<>(0, HttpStatus.NOT_FOUND);
+                }
             }
-        } else {
-            return new ResponseEntity<Integer>(0, HttpStatus.UNAUTHORIZED)
         }
+        return new ResponseEntity<>(0, HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -87,10 +93,9 @@ public class UserRestController {
 
         try {
             user.setPushNotificationEnabled((Boolean) pushNotificationEnabled);
-            return new ResponseEntity<Integer>(0, HttpStatus.OK);
+            return new ResponseEntity<>(0, HttpStatus.OK);
         } catch(Exception e) {
-            return new ResponseEntity<Integer>(0, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(0, HttpStatus.NOT_ACCEPTABLE);
         }
     }
-
 }
