@@ -17,7 +17,7 @@ public class LogUtils {
 	
 	/**
 	 * Gets the default info string.
-	 *
+	 * 
 	 * @param request the request
 	 * @param methodName the method name
 	 * @return the default info string

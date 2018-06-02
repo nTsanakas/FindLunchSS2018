@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
 /**
- * This class handles successful login attempts.
+ * This class handles successful login attempts.<p>
  * This class is based on the idea of: http://www.baeldung.com/spring-security-block-brute-force-authentication-attempts
  */
 @Component

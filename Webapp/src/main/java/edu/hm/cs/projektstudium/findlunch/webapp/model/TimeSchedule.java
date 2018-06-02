@@ -18,6 +18,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -26,18 +28,23 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 
 /**
- * The Class TimeSchedule.
+ * The Class TimeSchedule. Defines a period of time in which a offer is valid.
  */
 @Entity
 @Table(name = "time_schedule")
+@ApiModel(
+		description = "Definiert einen Zeitraum, innerhalb dessen ein Angebot gültig ist."
+		)
 public class TimeSchedule {
 
 	/** The id. */
+	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
 	/** The offer end time. */
+	@ApiModelProperty(notes = "Ende der Angebotszeit")
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm", locale = "de", timezone = "Europe/Berlin")
 	@DateTimeFormat(pattern = "HH:mm")
@@ -46,6 +53,7 @@ public class TimeSchedule {
 	private Date offerEndTime;
 
 	/** The offer start time. */
+	@ApiModelProperty(notes = "Start der Angebotszeit")
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm", locale = "de", timezone = "Europe/Berlin")
 	@DateTimeFormat(pattern = "HH:mm")
@@ -54,12 +62,14 @@ public class TimeSchedule {
 	private Date offerStartTime;
 
 	/** The opening times. */
+	@ApiModelProperty(notes = "Öffnungszeiten")
 	// bi-directional many-to-one association to OpeningTime
 	@JsonView(RestaurantView.RestaurantRest.class)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "timeSchedule", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OpeningTime> openingTimes;
 
 	/** The day of week. */
+	@ApiModelProperty(notes = "Wochentag")
 	// bi-directional many-to-one association to DayOfWeek
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "day_of_week_id")
@@ -67,6 +77,7 @@ public class TimeSchedule {
 	private DayOfWeek dayOfWeek;
 
 	/** The restaurant. */
+	@ApiModelProperty(notes = "Restaurant")
 	// bi-directional many-to-one association to Restaurant
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Restaurant restaurant;

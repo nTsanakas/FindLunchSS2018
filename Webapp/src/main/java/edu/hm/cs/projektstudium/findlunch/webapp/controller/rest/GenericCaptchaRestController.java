@@ -1,19 +1,14 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import okhttp3.FormBody;
+import io.swagger.annotations.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -24,6 +19,9 @@ import java.io.IOException;
  * this class.
  */
 @RestController
+@Api(
+        value="Captcha-Behalung",
+        description="Kann für Captcha-Handling-Prozess verwendet werden.")
 public class GenericCaptchaRestController {
     private final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(GenericCaptchaRestController.class);
 
@@ -34,16 +32,31 @@ public class GenericCaptchaRestController {
      * @return the log file.
      */
     @CrossOrigin
-	@ApiResponses(value = { 
-			@ApiResponse (code = 200, message = "Log File und HTTP OK")})
-    @RequestMapping(path = "/api/captcha", method = RequestMethod.GET, params = {"provider"})
-    public final ResponseEntity<String> getRemoteContent(final HttpServletRequest request) throws IOException {
+    @ApiOperation(
+            value = "Abruf eines Captcha vom gewünschten Provider.",
+            response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Captcha erfolgreich abgerufen."),
+            @ApiResponse(code = 400, message = "Fehler beim Abruf.")
+    })
+    @RequestMapping(
+            path = "/api/captcha",
+            method = RequestMethod.GET,
+            produces = "text/html")
+    public final ResponseEntity<String> getRemoteContent(
+            @RequestParam(name = "provider")
+            @ApiParam(
+                    name = "Provider",
+                    value = "URL des Captcha-Anbieters",
+                    required = true)
+            String provider,
+            final HttpServletRequest request) throws IOException {
         LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
         Response response = null;
         try {
             response = new OkHttpClient().newCall(new Request.Builder()
-                    .url(request.getParameterValues("provider")[0])
+                    .url(provider)
                     .get()
                     .build()).execute();
         } catch (IOException e) {
@@ -52,5 +65,4 @@ public class GenericCaptchaRestController {
 
         return new ResponseEntity<>(response != null ? response.body().string() : "No body", HttpStatus.OK);
     }
-
 }

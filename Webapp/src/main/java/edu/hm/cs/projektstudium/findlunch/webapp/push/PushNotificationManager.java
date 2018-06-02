@@ -187,106 +187,85 @@ public class PushNotificationManager implements PushMessagingInterface {
 	}
 	
 	/**
-	 * Generates a Reservation confirmation push notification
+	 * Generates a Reservation confirmation push notification.
 	 * @param reservation the reservation
 	 * @param token the fcm token
 	 * @return the notification
 	 */
 	@SuppressWarnings("unchecked")
 	public JSONObject generateReservationConfirm(Reservation reservation, String token){
-		JSONObject body = new JSONObject();
-		body.put("to", token);
-		
 		JSONObject notification = new JSONObject();
-		notification.put("title","Deine Bestellung");
-		notification.put("body", "Deine Bestellung "+reservation.getReservationNumber()+ " wurd durch das Restaurant "+reservation.getRestaurant().getName()+" bestätigt");
-		
+		notification.put("to", token);
 		JSONObject data = new JSONObject();
-		data.put("KEY-1", "JSA DATA 1");
-		data.put("KEY-2", "JSA DATA ");
-		
-		body.put("notification", notification);
-		body.put("data", data);
-		
-		return body;
+		data.put("title","Deine Bestellung");
+		data.put("body", "Deine Bestellung "+reservation.getReservationNumber()+ " wurd durch das Restaurant "+reservation.getRestaurant().getName()+" bestätigt");
+		data.put("icon", "/images/FL.png");
+		notification.put("data", data);
+		return notification;
 	}
 	
 
 	/**
-	 * Generates a Reservation rejection push notification
+	 * Generates a Reservation rejection push notification.
 	 * @param reservation the reservation
 	 * @param token the fcm token
 	 * @return the notification
 	 */
 	@SuppressWarnings("unchecked")
 	public JSONObject generateReservationReject(Reservation reservation, String token){
-		JSONObject body = new JSONObject();
-		body.put("to", token);
-		
 		JSONObject notification = new JSONObject();
-		notification.put("title","Deine Bestellung");
-		notification.put("body", "Deine Bestellung "+reservation.getReservationNumber()+ " wurde durch das Restaurant "+reservation.getRestaurant().getName()+" abgelehnt. Begründung: "+reservation.getReservationStatus().getStatus());
-		
+		notification.put("to", token);
 		JSONObject data = new JSONObject();
-		data.put("KEY-1", "JSA DATA 1");
-		data.put("KEY-2", "JSA DATA ");
-		
-		body.put("notification", notification);
-		body.put("data", data);
-		
-		return body;
+		data.put("title","Deine Bestellung");
+		data.put("body", "Deine Bestellung "+reservation.getReservationNumber()+ " wurde durch das Restaurant "+reservation.getRestaurant().getName()+" abgelehnt. Begründung: "+reservation.getReservationStatus().getStatus());
+		data.put("icon", "/images/FL.png");
+		notification.put("data", data);
+		return notification;
 	}
 	
 	/**
-	 * Generates a Reservation rejection push notification
+	 * Generates a Reservation rejection push notification.
 	 * @param reservation the reservation
 	 * @param token the fcm token
 	 * @return the notification
 	 */
 	@SuppressWarnings("unchecked")
 	public JSONObject generateReservationNotProcessed(Reservation reservation, String token) {
-		JSONObject body = new JSONObject();
-		body.put("to", token);
-		
 		JSONObject notification = new JSONObject();
-		notification.put("title","Deine Bestellung");
-		notification.put("body", "Deine Bestellung "+reservation.getReservationNumber()+ " wurde durch das Restaurant "+reservation.getRestaurant().getName()+" nicht rechtzeitig bearbeitet");
-		
+		notification.put("to", token);
 		JSONObject data = new JSONObject();
-		data.put("KEY-1", "JSA DATA 1");
-		data.put("KEY-2", "JSA DATA ");
-		
-		body.put("notification", notification);
-		body.put("data", data);
-		
-		return body;
+		data.put("titel","Deine Bestellung: "+reservation.getReservationNumber());
+		data.put("body", "Deine Bestellung "+reservation.getReservationNumber()+ " wurde durch das Restaurant "+reservation.getRestaurant().getName()+" nicht rechtzeitig bearbeitet");
+		data.put("icon", "/images/FL.png");
+		notification.put("data", data);
+		return notification;
 	}
 	
 	/**
-	 * Generates a push notification fot the daily update
+	 * Generates a push notification for the daily update.
 	 * @param p the daily notification
-	 * @param restaurantsForPushCount 
-	 * @param pushKitchenTypeIds
-	 * @param token
-	 * @return
+	 * @param restaurantsForPushCount the number of restaurants
+	 * @param pushKitchenTypeIds the kitchen type IDs
+	 * @param token the token
+	 * @return the push notification
 	 */
 	@SuppressWarnings("unchecked")
 	public JSONObject generateFromDaily(DailyPushNotificationData p, Integer restaurantsForPushCount, List<Integer> pushKitchenTypeIds, String token){
-		JSONObject body = new JSONObject();
-		body.put("to", token);
-		
-		
 		JSONObject notification = new JSONObject();
-		notification.put("title", p.getTitle());
-		notification.put("body", "Im Moment sind " + restaurantsForPushCount + " Restaurants mit leckeren Angeboten in deiner Nähe. Schau doch mal bei uns vorbei.");
-		
+		notification.put("to", token);
 		JSONObject data = new JSONObject();
-		data.put("KEY-1", "JSA DATA 1");
-		data.put("KEY-2", "JSA DATA ");
 		
-		body.put("notification", notification);
-		body.put("data", data);
-		
-		return body;
+		data.put("title", p.getTitle());
+		data.put("numberOfRestaurants", restaurantsForPushCount.toString());
+		data.put("longitude", String.valueOf(p.getLongitude()));
+		data.put("latitude", String.valueOf(p.getLatitude()));
+		data.put("radius", String.valueOf(p.getRadius()));
+		data.put("kitchenTypeIds", pushKitchenTypeIds.toString());
+		data.put("pushId", String.valueOf(p.getId()));
+
+		notification.put("collapse_key", COLLAPSE_KEY + "_" + p.getId());
+		notification.put("time_to_live", 21600);
+		notification.put("data: ", data);
+		return notification;
 	}
 }

@@ -10,6 +10,8 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PointsView;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * The Class Points.
@@ -18,17 +20,22 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PointsView;
 @AssociationOverrides({
 	@AssociationOverride(name="compositeKey.user", joinColumns=@JoinColumn(name="user_id")),
 	@AssociationOverride(name="compositeKey.restaurant", joinColumns=@JoinColumn(name="restaurant_id"))})
+@ApiModel(
+		description = "Bonuspunkte"
+)
 public class Points {
 
 	/**
 	 * The point id (composite key).
 	 */
+	@ApiModelProperty(notes = "ID")
 	//composite-id key
 	@EmbeddedId
 	@JsonView(PointsView.PointsRest.class)
 	private PointId compositeKey;//= new PointId()
 	
 	/** The points.*/
+	@ApiModelProperty(notes = "Punkte")
 	@JsonView(PointsView.PointsRest.class)
 	private int points;
 	

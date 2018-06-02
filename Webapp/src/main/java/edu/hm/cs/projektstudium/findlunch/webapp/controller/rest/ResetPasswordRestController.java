@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
-
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.mail.MailService;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.ResetPassword;
@@ -35,32 +33,84 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
  *
  */
 @RestController
+@Api(
+		value="Passwort-Zurücksetzung",
+		description="Verarbeitung von Passwort-Zurücksetzen-Anfragen.")
 public class ResetPasswordRestController {
 
-	@Autowired
-	UserRepository userRepository;
+	/**
+	 * The user repository
+	 */
+	final UserRepository userRepository;
 	
-	@Autowired
-	private ResetPasswordRepository resetPasswordRepository;
+	/**
+	 * The reset password repository
+	 */
+	private final ResetPasswordRepository resetPasswordRepository;
 	
-	@Autowired
-	private MailService mailService;
+	/**
+	 * The mail service
+	 */
+	private final MailService mailService;
 	
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	/**
+	 * The password encoder
+	 */
+	private final BCryptPasswordEncoder passwordEncoder;
 	
+	/**
+	 * http string
+	 */
 	private static final String HTTP = "http://";
 	
+	/**
+	 * https string
+	 */
 	private static final String HTTPS= "https://";
 	
+	/**
+	 * The logger
+	 */
 	private final Logger LOGGER = LoggerFactory.getLogger(ResetPasswordRestController.class);
-	
+
+
+	/**
+	 * The controller to reset a users password.
+	 * 
+	 * @param userRepository the user repository
+	 * @param resetPasswordRepository the reset password repository
+	 * @param mailService the mail service
+	 * @param passwordEncoder the password encoder
+	 */
+	@Autowired
+	public ResetPasswordRestController(UserRepository userRepository, ResetPasswordRepository resetPasswordRepository, MailService mailService, BCryptPasswordEncoder passwordEncoder) {
+		this.userRepository = userRepository;
+		this.resetPasswordRepository = resetPasswordRepository;
+		this.mailService = mailService;
+		this.passwordEncoder = passwordEncoder;
+	}
+
 	@CrossOrigin
-	@RequestMapping(path ="api/get_reset_token", method = RequestMethod.POST)
-	public ResponseEntity<Integer> getResetPassword(HttpServletRequest request, @RequestBody String userName){
+	@ApiOperation(
+			value = "Token für Passwort-Zurücksetzung beantragen.",
+			response = Integer.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Token erfolgreich beantragt.")
+	})
+	@RequestMapping(
+			path ="api/get_reset_token",
+			method = RequestMethod.POST,
+			produces = "application/json")
+	public ResponseEntity<Integer> getResetPassword(HttpServletRequest request,
+			@RequestBody
+			@ApiParam(
+					name = "user",
+					value = "Benutzer",
+					required = true)
+			User user){
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
-		User u = userRepository.findByUsername(userName);
+		User u = userRepository.findByUsername(user.getUsername());
 		if(u == null){
 			LOGGER.info(LogUtils.getErrorMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),"Not existed Username(E-Mail) was entered."));
 			//send always a success Mail because of IT-Sec reasons.Also add the difference of the needed time to send a Mail.
@@ -121,26 +171,63 @@ public class ResetPasswordRestController {
 		return new ResponseEntity<>(0, HttpStatus.OK);*/
 	}
 	
+	/**
+	 * Validates the password date.
+	 * 
+	 * @param dateToValidate 
+	 * @return if the date of the password is valid.
+	 */
 	private boolean validatePasswordDate(Date dateToValidate){
 		LocalDateTime dtv = LocalDateTime.ofInstant(dateToValidate.toInstant(), ZoneId.systemDefault());
 		LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-		if (dtv.isAfter(yesterday))
-			return true;		
-		return false;
+		return dtv.isAfter(yesterday);
 	}
 	
+	/**
+	 * Gets the url to reset the password.
+	 * 
+	 * @param request the HttpServletRequest
+	 * @param user the user
+	 * @return a url to reset the password
+	 */
 	private String getPasswordResetUrl(HttpServletRequest request, User user) {
-		String url = getProtocol(request.isSecure()) + request.getServerName()+":"+request.getServerPort()+"/resetpassword/"+user.getResetPassword().getToken();
-		return url;
+		return getProtocol(request.isSecure()) + request.getServerName()+":"+request.getServerPort()+"/resetpassword/"+user.getResetPassword().getToken();
 	}
 	
+	/**
+	 * Gets the used protocol.
+	 * 
+	 * @param https the https protocol
+	 * @return the used protocol
+	 */
 	private String getProtocol(boolean https){
 		return https ? HTTPS : HTTP;
 	}
 
 	@CrossOrigin
-	@RequestMapping(path ="api/reset_password/{token}", method = RequestMethod.PUT)
-	public ResponseEntity<Integer> resetPassword(@PathVariable("token") String token,/*@Valid*/ @RequestBody User u, HttpServletRequest request){
+	@ApiOperation(
+			value = "Passwort zurücksetzen.",
+			response = Integer.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Passwort erfolgreich zurückgesetzt.")
+	})
+	@RequestMapping(
+			path ="api/reset_password/{token}",
+			method = RequestMethod.PUT,
+			produces = "text/html")
+	public ResponseEntity<Integer> resetPassword(
+			@PathVariable("token")
+            @ApiParam(
+            		name = "Token",
+                    value = "Token",
+                    required = true)
+            String token,
+			@RequestBody
+			@ApiParam (
+				name = "User",
+				value = "Benutzer",
+				required = true)
+			User u, HttpServletRequest request){
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		ResetPassword rp = resetPasswordRepository.findByToken(token);

@@ -1,18 +1,26 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * The class Captcha.
  */
+@ApiModel(
+        description = "Zur Verwendung des Captchas."
+)
 public class Captcha {
 
     /**
      * The answer to the Captcha of the User.
      */
+    @ApiModelProperty(notes = "Antwort")
     private String answer;
 
     /**
      * The token of the Captcha.
      */
+    @ApiModelProperty(notes = "Token")
     private String imageToken;
 
     /**
