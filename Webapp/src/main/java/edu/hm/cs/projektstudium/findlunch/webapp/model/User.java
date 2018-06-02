@@ -4,19 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
@@ -110,7 +98,12 @@ public class User implements UserDetails {
 	
 	@Transient
 	private SseEmitter emitter;
-	
+
+	//TODO: Mapping auf DB klären.
+	@Column(name="push_notification_enabled")
+	@NotBlank
+	private boolean pushNotificationEnabled;
+
 	public SseEmitter getEmitter() {
 		return emitter;
 	}
@@ -395,6 +388,14 @@ public class User implements UserDetails {
 
 	public void setResetPassword(ResetPassword resetPassword) {
 		this.resetPassword = resetPassword;
+	}
+
+	public boolean isPushNotificationEnabled() {
+		return pushNotificationEnabled;
+	}
+
+	public void setPushNotificationEnabled(boolean pushNotificationEnabled) {
+		this.pushNotificationEnabled = pushNotificationEnabled;
 	}
 
 }
