@@ -97,14 +97,14 @@ public class PushNotificationScheduledTask {
 			List<DayOfWeek> daysOfWeekPushList = p.getDayOfWeeks();
 			Boolean sendPushToday = true;
 			/*
-			 * TODO: Fürs erste ist die Abfrage der Tage zur Vereinfachung ausgeklammert, da über ein anderes Konzept der Push-Benachrichtigung nachgedacht wird.
-			 *
+			 * TODO: Fürs erste ist die Abfrage der Tage zur Vereinfachung ausgeklammert, da über ein anderes Konzept der Push-Benachrichtigung nachgedacht wird. 
+			 * 
 			 *
 			 for (int i = 0; i < daysOfWeekPushList.size() && sendPushToday == false; i++) {
 				int dayOfWeekPush = daysOfWeekPushList.get(i).getDayNumber();
 				sendPushToday = (dayOfWeekPush == dayNumberToday);
 			}*/
-
+			
 			if (sendPushToday) {
 				// Get list of Restaurants matching push notification location.
 				List<Restaurant> restaurantsNearbyList = new ArrayList<Restaurant>();

@@ -1,16 +1,22 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.push;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.DailyPushNotificationData;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.PushToken;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepository;
 
 /**
@@ -44,14 +50,11 @@ public class SendFcmNotification extends PushNotificationManager implements Runn
 	 */
 	private final String FCM_NOT_URL = "https://fcm.googleapis.com/fcm/send";
 	private static final String FCM_SERVER_KEY = "AIzaSyCI1nu3pSn5VC0vt8iRBfFf1caGrVEYZSI";
-
+	
 	public SendFcmNotification(JSONObject push){
 		this.push = push;
 	}
 	
-	/**
-	 * Sends the fcm notification.
-	 */
 	public void run() {
 
 		//Direct HTTP-client usable for sending push json-based.

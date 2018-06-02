@@ -114,7 +114,7 @@ public class CourseTypesDetailController {
 	
 	/**
 	 *  Save the coursetypes to the database. New coursetypes are stored, edited offers are updated.
-	 * @param courseType the coursetype
+	 * @param coursetype the coursetype
 	 * @param bindingResult the binding resultes
 	 * @param principal the currently logged in user
 	 * @param model Model in which necessary object are placed to be displayed on the website.

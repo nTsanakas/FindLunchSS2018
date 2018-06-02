@@ -6,9 +6,9 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
-import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.fasterxml.jackson.annotation.JsonView;
+
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificationView;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.DayOfWeek;
@@ -33,6 +35,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.DayOfWeekRepositor
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.KitchenTypeRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushNotificationRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
+
 
 /**
 *
@@ -49,34 +52,27 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 */
 
 @RestController
-@Api(
-		value="Pushes",
-		description="Verwaltung von Push-Nachrichten.")
 public class PushNotificationRestController {
 
 	/** The push_notification repository. */
-	private final PushNotificationRepository pushNotificationRepository;
+	@Autowired
+	private PushNotificationRepository pushNotificationRepository;
 
 	/** The user repository. */
-	private final UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
 	/** The day_of_week repository. */
-	private final DayOfWeekRepository dayOfWeekRepository;
+	@Autowired
+	private DayOfWeekRepository dayOfWeekRepository;
 
 	/** The kitchen_type repository. */
-	private final KitchenTypeRepository kitchenTypeRepository;
+	@Autowired
+	private KitchenTypeRepository kitchenTypeRepository;
 
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(PushNotificationRestController.class);
-
-	@Autowired
-	public PushNotificationRestController(PushNotificationRepository pushNotificationRepository, UserRepository userRepository, DayOfWeekRepository dayOfWeekRepository, KitchenTypeRepository kitchenTypeRepository) {
-		this.pushNotificationRepository = pushNotificationRepository;
-		this.userRepository = userRepository;
-		this.dayOfWeekRepository = dayOfWeekRepository;
-		this.kitchenTypeRepository = kitchenTypeRepository;
-	}
-
+	
 	/**
 	 * Register push notification.
 	 *
@@ -86,21 +82,9 @@ public class PushNotificationRestController {
 	 * @return the response entity
 	 */
 	@CrossOrigin
+	@RequestMapping(path = "/api/register_push", method = RequestMethod.POST)
 	@PreAuthorize("isAuthenticated()")
-	@ApiOperation(
-			value = "Push-Benachrichtigung registrieren.",
-	        response = Integer.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Erfolgreich registriert."),
-			@ApiResponse(code = 401, message = "Nicht autorisiert.")
-	})
-	@RequestMapping(
-			path = "/api/register_push",
-			method = RequestMethod.POST,
-			produces = "text/html")
-	public ResponseEntity<Integer> registerPush(
-			@RequestBody DailyPushNotificationData pushNotification,
-			HttpServletRequest request) {
+	public ResponseEntity<Integer> registerPush(@RequestBody DailyPushNotificationData pushNotification, HttpServletRequest request) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User requestUser = pushNotification.getUser();
@@ -116,20 +100,20 @@ public class PushNotificationRestController {
 				DailyPushNotificationData pushToModify = allNotificationsOfCurrentUser.get(i);
 				//delete old
 				pushNotificationRepository.delete(pushToModify);
-
+			
 				//add with new token
 				/*
 				 * TODO: SNS Token aus Datenbank entfernen! Bis dahin dummy wert.
 				 */
 				pushToModify.setFcmToken(pushNotification.getFcmToken());
 				pushToModify.setSnsToken("dummy");
-
+				
 				//token info log
 				LOGGER.info(pushNotification.getSnsToken());
 				LOGGER.info(pushNotification.getFcmToken());
-
+				
 				pushNotificationRepository.save(pushToModify);
-
+			
 			}
 			//update info log
 			LOGGER.info("User logged in, all tokens updated to current device");
@@ -137,12 +121,12 @@ public class PushNotificationRestController {
 			
 		} else {
 			
-
-	/*
-	 * TODO: Solange An jedem Tag ein Puish gesendet wird ist der Code Irrelevant
+			
+	/*		
+	 * TODO: Solange An jedem Tag ein Puish gesendet wird ist der Code Irrelevant 
 	 * //Not initial push, operation after update.
 			List<DayOfWeek> daysOfWeekComplete = new ArrayList<DayOfWeek>();
-
+			
 			List<DayOfWeek> daysOfWeek = pushNotification.getDayOfWeeks();
 			for (DayOfWeek d : daysOfWeek) {
 				String dayOfWeekName = d.getName();
@@ -158,11 +142,11 @@ public class PushNotificationRestController {
 					kitchenTypeComplete.add(kitchenTypeRepository.findById(kitchenTypeId));
 				}
 			}
-			//Nur vorübergehend so gelöst
+			//Nur vorrübergehend so gelöst
 			pushNotification.setSnsToken("dummy");
-
-
-
+			
+			
+			
 			pushNotification.setKitchenTypes(kitchenTypeComplete);
 
 			pushNotification.setUser(authenticatedUser);
@@ -171,7 +155,7 @@ public class PushNotificationRestController {
 		}
 		
 
-		return new ResponseEntity<>(0, HttpStatus.OK);
+		return new ResponseEntity<Integer>(0, HttpStatus.OK);
 
 	}
 
@@ -185,17 +169,7 @@ public class PushNotificationRestController {
 	@CrossOrigin
 	@PreAuthorize("isAuthenticated()")
 	@JsonView(PushNotificationView.PushNotificationRest.class)
-	@ApiOperation(
-			value = "Push-Benachrichtigungen des angemeldeten Benutzers abrufen.",
-			response = List.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Erfolgreich registriert."),
-			@ApiResponse(code = 401, message = "Nicht autorisiert.")
-	})
-	@RequestMapping(
-			path = "/api/get_push",
-			method = RequestMethod.GET,
-			produces = "application/json")
+	@RequestMapping(path = "/api/get_push", method = RequestMethod.GET)
 	public List<DailyPushNotificationData> getPush(Principal principal, HttpServletRequest request) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
@@ -216,25 +190,9 @@ public class PushNotificationRestController {
 	 */
 	@CrossOrigin
 	@PreAuthorize("isAuthenticated()")
-	@ApiOperation(
-			value = "Von Push-Benachrichtigung abmelden.",
-			response = Integer.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Erfolgreich von Push-Benachrichtigung abgemeldet."),
-			@ApiResponse(code = 401, message = "Nicht autorisiert."),
-			@ApiResponse(code = 409, message = "Push-Benachrichtigung nicht gefunden oder gehört nicht zum Benutzer.")
-	})
-	@RequestMapping(
-			path = "/api/unregister_push/{pushId}",
-			method = RequestMethod.DELETE,
-			produces = "text/html")
+	@RequestMapping(path = "/api/unregister_push/{pushId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Integer> unregisterPush(
-			@PathVariable("pushId")
-            @ApiParam(
-			    name = "Push-ID",
-			    value = "ID der Push-Notifikation",
-			    required = true)
-            Integer pushId, Principal principal, HttpServletRequest request) {
+			@PathVariable("pushId") Integer pushId, Principal principal, HttpServletRequest request) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User requestUser = (User) ((Authentication) principal).getPrincipal();
@@ -244,15 +202,15 @@ public class PushNotificationRestController {
 		if (pushNotificationToUnregister == null) {
 			// Push Notification not found
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The PushNotification with id " + pushId + " could not be found in the database."));
-			return new ResponseEntity<>(3, HttpStatus.CONFLICT);
+			return new ResponseEntity<Integer>(3, HttpStatus.CONFLICT);
 		} else if (pushNotificationToUnregister.getUser().getId() == authenticatedUser.getId()) {
 			// Push Notification belongs to user
 			pushNotificationRepository.delete(pushNotificationToUnregister);
-			return new ResponseEntity<>(0, HttpStatus.OK);
+			return new ResponseEntity<Integer>(0, HttpStatus.OK);
 		} else {
 			// Push Notification does not belong to user
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The PushNotification with id " + pushId + " does not belong to the user " + authenticatedUser.getUsername()));
-			return new ResponseEntity<>(3, HttpStatus.CONFLICT);
+			return new ResponseEntity<Integer>(3, HttpStatus.CONFLICT);
 		}
 		
 

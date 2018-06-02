@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import io.swagger.annotations.*;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,9 +24,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import edu.hm.cs.projektstudium.findlunch.webapp.measurement.MeasureUnit;
 import edu.hm.cs.projektstudium.findlunch.webapp.measurement.PushMeasureBase;
-import javax.servlet.http.HttpServletRequest;
+
 
 /**
 *
@@ -53,9 +56,6 @@ import javax.servlet.http.HttpServletRequest;
 * 
 */
 @RestController
-@Api(
-		value="Messungen",
-		description="Empfang von Messungen.")
 public class MeasureReceiveRestController {
 
 	/**
@@ -105,24 +105,8 @@ public class MeasureReceiveRestController {
 	 * @return The response entity representing a status code.
 	 */
 	@CrossOrigin
-	@ApiOperation(
-			value = "Senden von Messungen an den Server.",
-			response = Integer.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Log-Datei erfolgreich erhalten."),
-	})
-	@RequestMapping(
-			path = "/api/transmit_measure",
-			method = RequestMethod.POST,
-			consumes = "application/json",
-			produces = "text/html")
-	public ResponseEntity<Integer> transmitMeasure(
-			@RequestBody
-			@ApiParam(
-					name = "Hash-Map",
-					value = "Messdaten in Form von Key-Value-Paaren.",
-					required = true)
-			HashMap<String, String> msg, HttpServletRequest request) {
+	@RequestMapping(value = "/api/transmit_measure", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<Integer> transmitMeasure(@RequestBody HashMap<String,String> msg, HttpServletRequest request) {
 
 		String pushMessageTitle = msg.get("title");
 		String pushMessageTimeStamp = msg.get("timestamp");
@@ -136,7 +120,7 @@ public class MeasureReceiveRestController {
 		oneMessage.setUserId(extractUserId(pushMessageTitle));
 
 		computeFileRecord(oneMessage);
-		return new ResponseEntity<>(0, HttpStatus.OK);
+		return new ResponseEntity<Integer>(0, HttpStatus.OK);
 	}
 
 	
@@ -239,7 +223,8 @@ public class MeasureReceiveRestController {
 	private double calcAvgTime() {
 		double avgTime = 0;
 		long takenTimeInMs = 0;
-		for (MeasureUnit mu : measure) {
+		for(int i = 0; i < measure.size(); i++) {
+			MeasureUnit mu = measure.get(i);
 			takenTimeInMs = mu.getReceiveTimeL() - mu.getTimeStampL();
 			avgTime += takenTimeInMs;
 		}
@@ -266,7 +251,8 @@ public class MeasureReceiveRestController {
 	private int extractPushNumber(String title) {
 		//extract number from "testpushX time" -> time
 		String num = title.substring(10, title.length());
-		return Integer.parseInt(num);
+		int numberOfCurrentPush = Integer.parseInt(num);
+		return numberOfCurrentPush;
 	}
 
 
@@ -280,7 +266,8 @@ public class MeasureReceiveRestController {
 	private int extractUserId(String title) {
 		//extract number from "testpushX time" -> X (ID)
 		String num = title.substring(8, 9);
-		return Integer.parseInt(num);
+		int userId = Integer.parseInt(num);
+		return userId;
 	}
 
 	
@@ -292,8 +279,8 @@ public class MeasureReceiveRestController {
 	 */
 	private void sortScaledMeasure() {
 		HashMap <String, ArrayList<String>> sortedData = new HashMap<>();
-		BufferedReader br;
-		File logF;
+		BufferedReader br = null;
+		File logF = null;
 		try {
 			logF = new File("MeasureLog.txt");
 			br = new BufferedReader(new FileReader(logF));
@@ -326,8 +313,8 @@ public class MeasureReceiveRestController {
 				for(Entry<String, ArrayList<String>> entry : sortedData.entrySet()) {
 					pw.println(entry.getKey());
 					ArrayList<String> values = entry.getValue();
-					for (String value : values) {
-						pw.println(value);
+					for(int i = 0; i < values.size(); i++) {
+						pw.println(values.get(i));
 					}
 					pw.flush();
 				}

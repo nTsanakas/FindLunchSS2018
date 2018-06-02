@@ -79,7 +79,7 @@ public class ReservationStatus {
 	}
 
 	/**
-	 * @param key the statuskey to set
+	 * @param statuskey the statuskey to set
 	 */
 	public void setKey(int key) {
 		this.key = key;
