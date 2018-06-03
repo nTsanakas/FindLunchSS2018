@@ -429,7 +429,27 @@ public class ReservationRestController {
 		
 		return neededPoints;
 	}
-	
+
+
+
+	@ApiOperation(
+			value = "Abholen des Braintree Tokens zum Zahlen mit PayPal.",
+			response = String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Token erfolgreich zurückgegeben."),
+			@ApiResponse(code = 401, message = "Nicht autorisiert.")
+	})
+	@CrossOrigin
+	@PreAuthorize("isAuthenticated()")
+	@RequestMapping(path = "api/paypal/get_token",
+			method = RequestMethod.GET)
+	public ResponseEntity<String> acquirePayPalToken(Principal principal, HttpServletRequest request){
+		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+
+		String token = BraintreeController.gateway.clientToken().generate();
+		return new ResponseEntity<String>(token, HttpStatus.OK);
+	}
+
 	//get Protocol for the email
 	private String getProtocol(boolean https){
 		return https ? HTTPS : HTTP;

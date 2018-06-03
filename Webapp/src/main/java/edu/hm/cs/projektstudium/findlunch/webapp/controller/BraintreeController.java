@@ -17,11 +17,11 @@ public final class BraintreeController {
     public static BraintreeGateway gateway = new BraintreeGateway(
             Environment.SANDBOX,
             // Merchant ID
-            "fnn2qdgmnwx7kswk",
+            "n84zv7kp8cym3stc",
             // Public key
-            "f8xmjpyd6wh7swyh",
+            "wsmy2pdgtpsx74gz",
             // Private key. Secret!
-            "c2738e3d8cb6829ae5ba3ee1bf21b42f"
+            "13d0e621878730bf29bb84d4cb26cf8e"
 
     );
 
