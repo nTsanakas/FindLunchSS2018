@@ -1,15 +1,17 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.AbstractMap;
+import java.util.Map;
 
 
 /**
@@ -39,7 +43,7 @@ public class UserRestController {
      * REST-Endpunkt zum Ändern eines Attributs des Users.
      *
      * @param id            Id des Users, bei dem ein Attribut geändert werden soll.
-     * @param patchValue    Key-Value-Paar mit Attributname und Parameter.
+     * @param enabled       Push-Nachrichten aktiviert oder deaktiviert.
      * @param principal     Principal des eingeloggten Users.
      * @param request       HTTP-Request
      * @return              Response mit Statuscode.
@@ -47,17 +51,19 @@ public class UserRestController {
     @CrossOrigin
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(
-            path = "/api/users/{id}",
-            method = RequestMethod.PATCH,
-            consumes = "application/JSON")
+            path = "/api/users/{id}/pushNotifications",
+            method = RequestMethod.PATCH)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Parameter geändert"),
-            @ApiResponse(code = 401, message = "User nicht gefunden"),
-            @ApiResponse(code = 404, message = "Das Attribut wurde nicht gefunden oder kann nicht geändert werden"),
-            @ApiResponse(code = 406, message = "Datentyp ist für Attribut ungültig")})
-    public ResponseEntity<Integer> changeUserAttribute(
-            @PathVariable("id") int id,
-            @RequestBody Pair<String, Object> patchValue,
+            @ApiResponse(code = 200, message = "Push-Notifikation erfolgreich aktiviert/deaktiviert."),
+            @ApiResponse(code = 401, message = "User nicht gefunden")})
+    public ResponseEntity<Boolean> changePushSubscription(
+            @PathVariable int id,
+            @RequestParam(name = "enabled")
+            @ApiParam(
+                    name = "enabled",
+                    value = "aktiviert",
+                    required = true)
+                    Boolean enabled,
             HttpServletRequest request,
             Principal principal) {
 
@@ -68,34 +74,11 @@ public class UserRestController {
         if(user != null) {
             // Wenn User zur ID vorhanden ist, prüfen, ob ID der des anfragenden Users entspricht.
             if (id == ((User) ((Authentication) principal).getPrincipal()).getId()){
-                switch (patchValue.getKey()) {
-                    // Key = PushNotificationEnabled
-                    case "pushNotificationEnabled":
-                        return changePushSubscription(user, patchValue.getValue());
-                    // Platz für weitere Patch-Anwendungsfälle
-                    // ...
-                    default:
-                        return new ResponseEntity<>(0, HttpStatus.NOT_FOUND);
-                }
+                user.setPushNotificationEnabled(enabled);
+                userRepository.save(user);
+                return new ResponseEntity<>(enabled, HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(0, HttpStatus.UNAUTHORIZED);
-    }
-
-    /**
-     * Methode zum Ändern der Push-Benachrichtigungseinstellung.
-     *
-     * @param user                      User, der bearbeitet werden soll.
-     * @param pushNotificationEnabled   Push-Benachrichtigung aktiviert/deaktiviert
-     * @return                          ResponseEntity
-     */
-    private ResponseEntity<Integer> changePushSubscription(User user, Object pushNotificationEnabled){
-
-        try {
-            user.setPushNotificationEnabled((Boolean) pushNotificationEnabled);
-            return new ResponseEntity<>(0, HttpStatus.OK);
-        } catch(Exception e) {
-            return new ResponseEntity<>(0, HttpStatus.NOT_ACCEPTABLE);
-        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }

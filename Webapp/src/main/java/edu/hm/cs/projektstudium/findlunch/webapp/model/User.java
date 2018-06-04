@@ -117,9 +117,7 @@ public class User implements UserDetails {
 	@Transient
 	private SseEmitter emitter;
 
-	//TODO: Mapping auf DB klären.
-	@Column(name="push_notification_enabled")
-	@NotBlank
+	@ApiModelProperty(notes = "Push-Benachrichtigung eingeschaltet")
 	private boolean pushNotificationEnabled;
 
 	public SseEmitter getEmitter() {

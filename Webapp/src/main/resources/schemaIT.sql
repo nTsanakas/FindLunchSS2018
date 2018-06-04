@@ -153,7 +153,6 @@ CREATE TABLE IF NOT EXISTS `findlunch`.`user` (
   `restaurant_id` INT(11) NULL DEFAULT NULL,
   `user_type_id` INT(11) NOT NULL,
   `account_id` INT(11) NULL,
-  `push_notification_enabled` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   INDEX `fk_user_restaurant1_idx` (`restaurant_id` ASC),
