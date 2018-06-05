@@ -52,7 +52,7 @@ export class OffersService {
      }
 
     // get offers from server otherwise
-    return this.http.get<Offer[]>(`${SERVER_URL}/api/offers?restaurant_id=${restaurantId}`)
+    return this.http.get<Offer[]>(`${SERVER_URL}/api/restaurants/${restaurantId}/offers`)
   }
 
 }
