@@ -13,6 +13,7 @@ import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -76,9 +77,12 @@ public class OfferRestController {
 				required = true)
             int restaurantId,
 			HttpServletRequest request) {
+
+		List<Offer> result;
+		Map<String, List<Offer>> offers = new LinkedHashMap<String, List<Offer>>();
+
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
-		
-		List<Offer> result = new ArrayList<Offer>();
+
 		Restaurant restaurant = restaurantRepo.findById(restaurantId);
 		if (restaurant != null) {
 			Calendar c = Calendar.getInstance();
@@ -91,23 +95,22 @@ public class OfferRestController {
 
 			// only get offers, that are valid at the moment
 			if (ts != null) {
-				getValidOffers(c, ts, restaurantId, result);
-			}
-		}
-		
-		Map<String, List<Offer>> offers = new LinkedHashMap<String, List<Offer>>();
-		
-		// Put the orders together with the coursetypes and order them by their sort by value
-		for(CourseTypes course : courseTypeRepo.findByRestaurantIdOrderBySortByAsc(restaurantId)){
-			
-			List<Offer> offersInCourse = new LinkedList<Offer>();
-			for(Offer offer  : result){
-				if(offer.getCourseType() == course.getId() && !offer.getSold_out()){
-					offersInCourse.add(offer);
+				result = getValidOffers(c, ts, restaurantId);
+				if(result!=null){
+					// Put the orders together with the coursetypes and order them by their sort by value
+					for(CourseTypes course : courseTypeRepo.findByRestaurantIdOrderBySortByAsc(restaurantId)){
+
+						List<Offer> offersInCourse = new LinkedList<Offer>();
+						for(Offer offer  : result){
+							if(offer.getCourseType() == course.getId() && !offer.getSold_out()){
+								offersInCourse.add(offer);
+							}
+						}
+						if(!offersInCourse.isEmpty()){
+							offers.put(course.getName(), offersInCourse);
+						}
+					}
 				}
-			}
-			if(!offersInCourse.isEmpty()){
-				offers.put(course.getName(), offersInCourse);
 			}
 		}
 		return offers;
@@ -160,28 +163,27 @@ public class OfferRestController {
 
 	}
 
-	private Map<String,List<Offer>> getOffersToLocation(float longitude, float latitude, int offerAmount, Calendar c/*, String username*/) {
+	private Map<String,List<Offer>> getOffersToLocation(float longitude, float latitude, int offerNumber, Calendar c/*, String username*/) {
 
 		int radius = 2000;
-		List<Offer> offers = new ArrayList<Offer>();
+		List<Offer> offers;
 		List<Restaurant> restaurants;
+		Map<String, List<Offer>> offersToRestaurant;
 
 		restaurants = getAllRestaurants(longitude, latitude, radius);
-		Map<String, List<Offer>> offersToRestaurant = new LinkedHashMap<String, List<Offer>>();
+		offersToRestaurant = new LinkedHashMap<>();
 		for (Restaurant restaurant:restaurants) {
-			if (restaurant != null) {
-				// check if restaurant has a TimeSchedule for today
-				TimeSchedule ts = restaurant.getTimeSchedules().stream().filter(item -> item.getDayOfWeek().getDayNumber() == c.get(Calendar.DAY_OF_WEEK)).findFirst().orElse(null);
+			// check if restaurant has a TimeSchedule for today
+			TimeSchedule ts = restaurant.getTimeSchedules().stream().filter(item -> item.getDayOfWeek().getDayNumber() == c.get(Calendar.DAY_OF_WEEK)).findFirst().orElse(null);
 
-				// only get , that are valid at the moment
-				if (ts != null) {
-					getValidOffers(c, ts, restaurant.getId(), offers);
+			// only get , that are valid at the moment
+			if (ts != null) {
+				offers = getValidOffers(c, ts, restaurant.getId());
+				if(offers!=null) {
 					offersToRestaurant.put(restaurant.getName(), offers);
 				}
 			}
 		}
-
-
 		return offersToRestaurant;
 
 		/*TODO: 1. Entweder eine SQL-Abfrage schreiben, die eine Anzahl an Angeboten von Restaurants ausgibt, die gerade offen haben und im Umkreis liegen.
@@ -265,10 +267,11 @@ public class OfferRestController {
 	 *            the TimeSchedule that has to be checked
 	 * @param restaurantId
 	 *            the id of the Restaurant
-	 * @param result
-	 *            the result, where the valid offers should be stored
+	 * @return the result, where the valid offers should be stored
 	 */
-	private void getValidOffers(Calendar c, TimeSchedule ts, int restaurantId, List<Offer> result) {
+	private List<Offer> getValidOffers(Calendar c, TimeSchedule ts, int restaurantId) {
+
+		List<Offer> result;
 
 		int currentHour = c.get(Calendar.HOUR_OF_DAY);
 		int currentMin = c.get(Calendar.MINUTE);
@@ -289,6 +292,8 @@ public class OfferRestController {
 		if (startTime <= currentTime && endTime >= currentTime) {
 			Date today = getZeroTimeDate(new Date());
 
+			result = new ArrayList<>();
+
 			for (Offer o : offerRepo.findByRestaurant_idOrderByOrderAsc(restaurantId)) {
 				Date startDate = getZeroTimeDate(o.getStartDate());
 				Date endDate = getZeroTimeDate(o.getEndDate());
@@ -302,7 +307,11 @@ public class OfferRestController {
 					}
 				}
 			}
+			return result.isEmpty() ? null : result;
 		}
+
+		return null;
+
 	}
 
 	/**

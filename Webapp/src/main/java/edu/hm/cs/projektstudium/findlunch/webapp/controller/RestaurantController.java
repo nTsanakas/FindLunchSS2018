@@ -29,6 +29,7 @@ import javax.swing.plaf.synth.SynthSeparatorUI;
 import javax.validation.Valid;
 
 import org.apache.catalina.core.ApplicationContext;
+import org.hibernate.service.spi.InjectService;
 import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -144,8 +145,9 @@ public class RestaurantController {
 	 */
 	@Autowired
 	private AccountRepository accountRepository;
-	
-	private ResourceLoader loader;
+
+	@Autowired
+	private ResourceLoader resourceLoader;
 
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(RestaurantController.class);
@@ -529,6 +531,7 @@ public class RestaurantController {
 			model.addAttribute("geocodingException", result);
 			
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The Location of the restaurant could not be retrieved."));
+			LOGGER.error(">> The Location of the restaurant could not be retrieved.");
 			return "restaurant";
 		}
 		
@@ -537,6 +540,7 @@ public class RestaurantController {
 
 		if (bindingResult.hasErrors()) {
 			LOGGER.error(LogUtils.getValidationErrorString(request, bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName()));
+			LOGGER.error(">> bindingResult.hasErrors()");
 			return "restaurant";
 		}
 
@@ -573,13 +577,13 @@ public class RestaurantController {
 			model.addAttribute("countries", countryRepository.findAll());
 			model.addAttribute("invalidPicture", true);
 			restaurant.setRestaurantLogos((List<RestaurantLogo>)session.getAttribute("photoList"));
-			
+			LOGGER.error(">> Fehler beim Thumbnail-generieren: " + e.getMessage());
 			return "restaurant";
 		}
 
 		session.removeAttribute("logoList");
 		restaurantRepository.save(restaurant);
-		
+		LOGGER.debug(">> Gespeichert: " + restaurant.getName());
 		//
 		Account account = accountRepository.findByUsers(restaurant.getAdmins());
 		if(account == null){
@@ -1016,13 +1020,14 @@ public class RestaurantController {
 	 * @author Niklas Klotz
 	 */
 	private void addDefaultLogo(Restaurant restaurant) {
-		try{	
-			File file = ResourceUtils.getFile("classpath:static/images/restaurantDefault.png");
+		try{
+
+			Resource resource = resourceLoader.getResource("classpath:static/images/restaurantDefault.png");
+
 			String imageFormat = "png";
 			RestaurantLogo defaultLogo = new RestaurantLogo();
-			byte[] bytes = new byte[(int) file.length()];
-			FileInputStream fis =new FileInputStream(file);
-			fis.read(bytes);
+			byte[] bytes = new byte[(int) resource.contentLength()];
+			resource.getInputStream().read(bytes);
 			defaultLogo.setLogo(bytes);
 			defaultLogo.setBase64Encoded(Base64.getEncoder().encodeToString(bytes));
 			defaultLogo.setImageFormat(imageFormat);
@@ -1031,7 +1036,7 @@ public class RestaurantController {
 			List<RestaurantLogo> defaultLogos = new ArrayList<>();
 			defaultLogos.add(defaultLogo);
 			restaurant.setRestaurantLogos(defaultLogos);
-			fis.close();
+			resource.getInputStream().close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
