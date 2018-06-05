@@ -2,7 +2,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
-import edu.hm.cs.projektstudium.findlunch.webapp.distance.DistanceCalculator;
+import edu.hm.cs.projektstudium.findlunch.webapp.service.DistanceCalculator;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.*;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.comparison.RestaurantDistanceComparator;
@@ -49,7 +49,7 @@ public class RestaurantRestController {
 
 	/**
 	 * Gets the restaurants within a given radius with a flag showing if the
-	 * restaurants is a favorite of the authenticated user. Ordered by distance
+	 * restaurants is a favorite of the authenticated user. Ordered by service
 	 * (ascending)
 	 *
 	 * @param request the HttpServletRequest
@@ -132,7 +132,7 @@ public class RestaurantRestController {
 
 	/**
 	 * Gets the restaurants within a given radius. The flag "isFavorite" is
-	 * always false. Ordered by distance (ascending)
+	 * always false. Ordered by service (ascending)
 	 *
 	 * @param request the HttpServletRequest
 	 * @param longitude
@@ -184,7 +184,7 @@ public class RestaurantRestController {
 	
 	/**
 	 * Gets the restaurants within a given radius. The flag "isFavorite" is
-	 * always false. Ordered by distance (ascending)
+	 * always false. Ordered by service (ascending)
 	 *
 	 * @param longitude
 	 *            the longitude used to get the center for the radius
@@ -213,7 +213,7 @@ public class RestaurantRestController {
 			}
 		}
 
-		// sort by distance (ascending)
+		// sort by service (ascending)
 		restaurantList.sort(new RestaurantDistanceComparator());
 		
 		// If the restaurant has no specific openingtimes it has to be set on the offertime

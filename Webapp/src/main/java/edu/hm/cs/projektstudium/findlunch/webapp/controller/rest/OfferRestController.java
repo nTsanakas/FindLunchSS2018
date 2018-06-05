@@ -3,10 +3,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseTypes;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.TimeSchedule;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.*;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.CourseTypeRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.OfferRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
@@ -14,10 +11,15 @@ import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.*;
+
+import static edu.hm.cs.projektstudium.findlunch.webapp.service.LocationBasedService.getOffersToLocation;
 
 /**
  * The Class OfferRestController. The class is responsible for handling rest
@@ -111,6 +113,83 @@ public class OfferRestController {
 		}
 		return offers;
 	}
+
+	/**
+	 * 10 Angebote in der Nähe des Aufenthaltsorts abrufen.
+	 *
+	 * Die Methode
+	 *
+	 * @param request Der HttpServletRequest
+	 * @param latitude Breitengrad
+	 * @param longitude	Längengrad
+	 * @param principal Principal des Nutzers
+	 * @return 10 Angebote im Umkreis des aktuellen Aufenhaltsortes
+	 */
+	@CrossOrigin
+	@JsonView(OfferView.OfferRest.class)
+	@PreAuthorize("isAuthenticated()")
+	@ApiOperation(
+			value = "Angebote rund um eine bestimmte Position abrufen",
+			response = Map.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Angebote erfolgreich abgerufen")
+	})
+	@RequestMapping(
+			path = "/api/offers",
+			method = RequestMethod.GET,
+			produces = "application/json")
+	public Map<String, List<Offer>> getOffers(
+			@RequestParam(name = "longitude")
+			@ApiParam(
+					name = "Longitude",
+					value = "Längengrad",
+					required = true)
+					float longitude,
+			@RequestParam(name = "latitude")
+			@ApiParam(
+					name = "Latitude",
+					value = "Breitengrad",
+					required = true)
+					float latitude,
+			HttpServletRequest request,
+			Principal principal) {
+		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+
+		Calendar c = Calendar.getInstance();
+		c.setTime((new Date()));
+
+		return getOffersToLocation(longitude, latitude, 10,
+				c, ((User) ((Authentication) principal).getPrincipal()).getUsername());
+
+	}
+
+	private Map<String,List<Offer>> getOffersToLocation(float longitude, float latitude, int i, Calendar c, String username) {
+
+		int radius = 2000;
+		List<Restaurant> restaurants;
+
+		restaurants = getAllRestaurants(longitude, latitude, radius);
+
+		/*TODO: 1. Entweder eine SQL-Abfrage schreiben, die eine Anzahl an Angeboten von Restaurants ausgibt, die gerade offen haben und im Umkreis liegen.
+				2. Oder vorhandene tolle Abfragen nutzen und murksen.
+				1. Alle Restaurants im Radius suchen.
+				2. Dazu alle aktuellen Angebote per for-Schleife raussuchen lassen.
+				3. Nur eins nehen je Restaurant.
+
+		*/
+
+		/**
+		 * Rückgabe:
+		 * Nur von aktuell/zur angegebenen Uhrzeit geöffneten Restaurants
+		 * Art des Gangs
+		 * Entfernung
+		 * Angebotsobjekt
+		 * Optional: Favorit ja/nein
+		 *
+		 *
+		 */
+	}
+
 
 	/**
 	 * Gets the valid offers of a restaurant.

@@ -195,7 +195,7 @@ public class Restaurant implements Serializable {
 	@JsonView(RestaurantView.RestaurantRest.class)
 	private RestaurantLogo defaultLogo;
 	
-	/** The distance. */
+	/** The service. */
 	@ApiModelProperty(notes = "Entfernung")
 	@Transient
 	@JsonView(RestaurantView.RestaurantRest.class)
@@ -697,18 +697,18 @@ public class Restaurant implements Serializable {
 	}
 
 	/**
-	 * Gets the distance.
+	 * Gets the service.
 	 *
-	 * @return the distance
+	 * @return the service
 	 */
 	public int getDistance() {
 		return distance;
 	}
 
 	/**
-	 * Sets the distance.
+	 * Sets the service.
 	 *
-	 * @param distance the new distance
+	 * @param distance the new service
 	 */
 	public void setDistance(int distance) {
 		this.distance = distance;
