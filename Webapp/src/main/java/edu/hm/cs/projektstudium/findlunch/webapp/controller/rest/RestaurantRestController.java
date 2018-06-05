@@ -81,21 +81,18 @@ public class RestaurantRestController {
 			headers = { "Authorization" },
 			produces = "application/json")
 	public List<Restaurant> getRestaurantsAsAuthenticated(
-			@RequestParam(name = "longitude")
+			@RequestParam
             @ApiParam(
-            		name = "Longitude",
 					value = "Längengrad",
 					required = true)
             float longitude,
-			@RequestParam(name = "latitude")
+			@RequestParam
 			@ApiParam(
-					name = "Latitude",
 					value = "Breitengrad",
 					required = true)
             float latitude,
-			@RequestParam(name = "radius")
+			@RequestParam
 			@ApiParam(
-					name = "Radius",
 					value = "Bereich, um den herum gesucht werden soll.",
 					required = true)
             int radius, Principal principal, HttpServletRequest request) {
@@ -158,21 +155,18 @@ public class RestaurantRestController {
 			method = RequestMethod.GET,
 			produces = "application/json")
 	public List<Restaurant> getRestaurants(
-			@RequestParam(name = "longitude")
+			@RequestParam
 			@ApiParam(
-					name = "Longitude",
 					value = "Längengrad",
 					required = true)
 					float longitude,
-			@RequestParam(name = "latitude")
+			@RequestParam
 			@ApiParam(
-					name = "Latitude",
 					value = "Breitengrad",
 					required = true)
 					float latitude,
-			@RequestParam(name = "radius")
+			@RequestParam
 			@ApiParam(
-					name = "Radius",
 					value = "Bereich, um den herum gesucht werden soll.",
 					required = true)
 					int radius, HttpServletRequest request) {

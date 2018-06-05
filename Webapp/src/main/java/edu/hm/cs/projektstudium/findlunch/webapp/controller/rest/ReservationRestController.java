@@ -133,7 +133,6 @@ public class ReservationRestController {
 	public ResponseEntity<Integer> registerReservation(
 			@RequestBody
 			@ApiParam(
-					name = "reservation",
 					value = "Reservierung",
 					required = true)
 			Reservation reservation, Principal principal, HttpServletRequest request){

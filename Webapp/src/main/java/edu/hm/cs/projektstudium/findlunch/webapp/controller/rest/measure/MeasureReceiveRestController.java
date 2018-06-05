@@ -117,8 +117,7 @@ public class MeasureReceiveRestController {
 	public ResponseEntity<Integer> transmitMeasure(
 			@RequestBody
 			@ApiParam(
-					name = "Hash-Map",
-					value = "Messdaten in Form von Key-Value-Paaren.",
+					value = "Hash-Map der Messdaten in Form von Key-Value-Paaren.",
 					required = true)
 			HashMap<String, String> msg) {
 

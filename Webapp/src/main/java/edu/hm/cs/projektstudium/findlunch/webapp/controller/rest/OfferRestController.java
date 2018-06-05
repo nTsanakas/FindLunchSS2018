@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.*;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.comparison.RestaurantDistanceComparator;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.CourseTypeRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.OfferRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
+import edu.hm.cs.projektstudium.findlunch.webapp.service.DistanceCalculator;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +20,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.*;
-
-import static edu.hm.cs.projektstudium.findlunch.webapp.service.LocationBasedService.getOffersToLocation;
 
 /**
  * The Class OfferRestController. The class is responsible for handling rest
@@ -66,15 +66,14 @@ public class OfferRestController {
 			@ApiResponse(code = 200, message = "Angebote erfolgreich abgerufen")
 	})
 	@RequestMapping(
-			path = "/api/offers",
+			path = "/api/restaurants/{id}/offers",
 			method = RequestMethod.GET,
 			produces = "application/json")
-	public Map<String, List<Offer>> getOffers(
-			@RequestParam(
-					name = "restaurant_id")
+	public Map<String, List<Offer>> getOffersToRestaurant(
+			@PathVariable("id")
             @ApiParam(
-            		value = "ID des Restaurants",
-					required = true)
+				value = "ID des Restaurants",
+				required = true)
             int restaurantId,
 			HttpServletRequest request) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
@@ -127,7 +126,7 @@ public class OfferRestController {
 	 */
 	@CrossOrigin
 	@JsonView(OfferView.OfferRest.class)
-	@PreAuthorize("isAuthenticated()")
+	//@PreAuthorize("isAuthenticated()")
 	@ApiOperation(
 			value = "Angebote rund um eine bestimmte Position abrufen",
 			response = Map.class)
@@ -138,37 +137,52 @@ public class OfferRestController {
 			path = "/api/offers",
 			method = RequestMethod.GET,
 			produces = "application/json")
-	public Map<String, List<Offer>> getOffers(
-			@RequestParam(name = "longitude")
+	public Map<String, List<Offer>> getLocationBasedOffers(
+			@RequestParam
 			@ApiParam(
-					name = "Longitude",
 					value = "Längengrad",
 					required = true)
 					float longitude,
-			@RequestParam(name = "latitude")
+			@RequestParam
 			@ApiParam(
-					name = "Latitude",
 					value = "Breitengrad",
 					required = true)
 					float latitude,
-			HttpServletRequest request,
-			Principal principal) {
+			HttpServletRequest request/*,
+			Principal principal*/) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
 		Calendar c = Calendar.getInstance();
 		c.setTime((new Date()));
 
 		return getOffersToLocation(longitude, latitude, 10,
-				c, ((User) ((Authentication) principal).getPrincipal()).getUsername());
+				c/*, ((User) ((Authentication) principal).getPrincipal()).getUsername()*/);
 
 	}
 
-	private Map<String,List<Offer>> getOffersToLocation(float longitude, float latitude, int i, Calendar c, String username) {
+	private Map<String,List<Offer>> getOffersToLocation(float longitude, float latitude, int offerAmount, Calendar c/*, String username*/) {
 
 		int radius = 2000;
+		List<Offer> offers = new ArrayList<Offer>();
 		List<Restaurant> restaurants;
 
 		restaurants = getAllRestaurants(longitude, latitude, radius);
+		Map<String, List<Offer>> offersToRestaurant = new LinkedHashMap<String, List<Offer>>();
+		for (Restaurant restaurant:restaurants) {
+			if (restaurant != null) {
+				// check if restaurant has a TimeSchedule for today
+				TimeSchedule ts = restaurant.getTimeSchedules().stream().filter(item -> item.getDayOfWeek().getDayNumber() == c.get(Calendar.DAY_OF_WEEK)).findFirst().orElse(null);
+
+				// only get , that are valid at the moment
+				if (ts != null) {
+					getValidOffers(c, ts, restaurant.getId(), offers);
+					offersToRestaurant.put(restaurant.getName(), offers);
+				}
+			}
+		}
+
+
+		return offersToRestaurant;
 
 		/*TODO: 1. Entweder eine SQL-Abfrage schreiben, die eine Anzahl an Angeboten von Restaurants ausgibt, die gerade offen haben und im Umkreis liegen.
 				2. Oder vorhandene tolle Abfragen nutzen und murksen.
@@ -190,6 +204,57 @@ public class OfferRestController {
 		 */
 	}
 
+
+	/**
+	 * Gets the restaurants within a given radius. The flag "isFavorite" is
+	 * always false. Ordered by service (ascending)
+	 *
+	 * @param longitude
+	 *            the longitude used to get the center for the radius
+	 *            calculation
+	 * @param latitude
+	 *            the latitude used to get the center for the radius calculation
+	 * @param radius
+	 *            the radius within the restaurants should be located
+	 * @return the restaurants within the given radius. The flag "isFavorite" is
+	 *         always false
+	 */
+	private List<Restaurant> getAllRestaurants (float longitude, float latitude, int radius){
+		List<Restaurant> restaurantList = restaurantRepo.findAll();
+
+		for (int i = 0; i < restaurantList.size(); i++) {
+			Restaurant currentRestaurant = restaurantList.get(i);
+			currentRestaurant.setDistance(DistanceCalculator.calculateDistance(latitude, longitude,
+					currentRestaurant.getLocationLatitude(), currentRestaurant.getLocationLongitude()));
+
+			// remove restaurants which are located outside the radius around
+			// the user location.
+			if (currentRestaurant.getDistance() > radius) {
+				restaurantList.remove(i);
+				i--;
+			}
+		}
+
+		// sort by service (ascending)
+		restaurantList.sort(new RestaurantDistanceComparator());
+
+		// If the restaurant has no specific openingtimes it has to be set on the offertime
+		for(Restaurant restaurant : restaurantList) {
+			for(TimeSchedule schedule : restaurant.getTimeSchedules()) {
+				if(schedule.getOpeningTimes().isEmpty()) {
+					List<OpeningTime> openingTimes = new ArrayList<>();
+					OpeningTime open = new OpeningTime();
+
+					open.setTimeSchedule(schedule);
+					open.setOpeningTime(schedule.getOfferStartTime());
+					open.setClosingTime(schedule.getOfferEndTime());
+					openingTimes.add(open);
+					schedule.setOpeningTimes(openingTimes);
+				}
+			}
+		}
+		return restaurantList;
+	}
 
 	/**
 	 * Gets the valid offers of a restaurant.

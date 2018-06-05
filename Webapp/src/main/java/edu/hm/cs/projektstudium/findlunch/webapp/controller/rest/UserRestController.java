@@ -56,7 +56,7 @@ public class UserRestController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Push-Notifikation erfolgreich aktiviert/deaktiviert."),
             @ApiResponse(code = 401, message = "User nicht gefunden")})
-    public ResponseEntity<Boolean> changePushSubscription(
+    public ResponseEntity<String> changePushSubscription(
             @PathVariable int id,
             @RequestParam(name = "enabled")
             @ApiParam(
@@ -76,7 +76,7 @@ public class UserRestController {
             if (id == ((User) ((Authentication) principal).getPrincipal()).getId()){
                 user.setPushNotificationEnabled(enabled);
                 userRepository.save(user);
-                return new ResponseEntity<>(enabled, HttpStatus.OK);
+                return new ResponseEntity<>("push-notifications enabled: " + enabled, HttpStatus.OK);
             }
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
