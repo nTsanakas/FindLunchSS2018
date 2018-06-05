@@ -185,6 +185,7 @@ public class Offer {
 	/** The restaurant. */
 	//bi-directional many-to-one association to Restaurant
 	@ManyToOne(fetch=FetchType.EAGER)
+	@JsonView(OfferView.OfferRest.class)
 	private Restaurant restaurant;
 	
 	/**

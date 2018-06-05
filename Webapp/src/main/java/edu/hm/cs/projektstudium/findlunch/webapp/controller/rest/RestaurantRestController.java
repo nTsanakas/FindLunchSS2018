@@ -2,12 +2,11 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
-import edu.hm.cs.projektstudium.findlunch.webapp.service.DistanceCalculator;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.*;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.comparison.RestaurantDistanceComparator;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PointsRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
+import edu.hm.cs.projektstudium.findlunch.webapp.service.RestaurantOfferService;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,13 +36,17 @@ public class RestaurantRestController {
 	/** The points repository. */
 	private final PointsRepository pointsRepository;
 
+	/** The service for offer- and restaurant-related queries. */
+	private final RestaurantOfferService restaurantOfferService;
+
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(RestaurantRestController.class);
 
 	@Autowired
-	public RestaurantRestController(RestaurantRepository restaurantRepo, PointsRepository pointsRepository) {
+	public RestaurantRestController(RestaurantRepository restaurantRepo, PointsRepository pointsRepository, RestaurantOfferService restaurantOfferService) {
 		this.restaurantRepo = restaurantRepo;
 		this.pointsRepository = pointsRepository;
+		this.restaurantOfferService = restaurantOfferService;
 	}
 
 	/**
@@ -100,7 +102,7 @@ public class RestaurantRestController {
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
 
-		List<Restaurant> restaurantList = getAllRestaurants(longitude, latitude, radius);
+		List<Restaurant> restaurantList = restaurantOfferService.getAllRestaurants(longitude, latitude, radius);
 
 		// Check favorites
 		List<Restaurant> favorites = restaurantRepo.findByFavUsers_username(authenticatedUser.getUsername());
@@ -173,61 +175,7 @@ public class RestaurantRestController {
 
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
-		return getAllRestaurants(longitude, latitude, radius);
-	}
-	
-	/**
-	 * Gets the restaurants within a given radius. The flag "isFavorite" is
-	 * always false. Ordered by service (ascending)
-	 *
-	 * @param longitude
-	 *            the longitude used to get the center for the radius
-	 *            calculation
-	 * @param latitude
-	 *            the latitude used to get the center for the radius calculation
-	 * @param radius
-	 *            the radius within the restaurants should be located
-	 * @return the restaurants within the given radius. The flag "isFavorite" is
-	 *         always false
-	 */
-	public List<Restaurant> getAllRestaurants(float longitude, float latitude, int radius)
-	{
-		List<Restaurant> restaurantList = restaurantRepo.findAll();
-
-		for (int i = 0; i < restaurantList.size(); i++) {
-			Restaurant currentRestaurant = restaurantList.get(i);
-			currentRestaurant.setDistance(DistanceCalculator.calculateDistance(latitude, longitude,
-					currentRestaurant.getLocationLatitude(), currentRestaurant.getLocationLongitude()));
-
-			// remove restaurants which are located outside the radius around
-			// the user location.
-			if (currentRestaurant.getDistance() > radius) {
-				restaurantList.remove(i);
-				i--;
-			}
-		}
-
-		// sort by service (ascending)
-		restaurantList.sort(new RestaurantDistanceComparator());
-		
-		// If the restaurant has no specific openingtimes it has to be set on the offertime
-		for(Restaurant restaurant : restaurantList) {
-			for(TimeSchedule schedule : restaurant.getTimeSchedules()) {
-				if(schedule.getOpeningTimes().isEmpty()) {
-					List<OpeningTime> openingTimes = new ArrayList<>();
-					OpeningTime open = new OpeningTime();
-
-						open.setTimeSchedule(schedule);
-						open.setOpeningTime(schedule.getOfferStartTime());
-						open.setClosingTime(schedule.getOfferEndTime());
-						openingTimes.add(open);
-						schedule.setOpeningTimes(openingTimes);
-				}
-			}
-		}
-		
-		
-		return restaurantList;
+		return restaurantOfferService.getAllRestaurants(longitude, latitude, radius);
 	}
 
 	/**

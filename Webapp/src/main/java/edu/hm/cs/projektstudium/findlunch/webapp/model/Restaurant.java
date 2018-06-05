@@ -195,7 +195,7 @@ public class Restaurant implements Serializable {
 	@JsonView(RestaurantView.RestaurantRest.class)
 	private RestaurantLogo defaultLogo;
 	
-	/** The service. */
+	/** The distance to a given position. */
 	@ApiModelProperty(notes = "Entfernung")
 	@Transient
 	@JsonView(RestaurantView.RestaurantRest.class)
