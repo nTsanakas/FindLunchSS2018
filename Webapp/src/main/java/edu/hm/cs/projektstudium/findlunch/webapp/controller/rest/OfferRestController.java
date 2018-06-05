@@ -14,10 +14,12 @@ import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.*;
 
 /**
@@ -116,20 +118,21 @@ public class OfferRestController {
 	 */
 	@CrossOrigin
 	@JsonView(OfferView.OfferRest.class)
-	//@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated()")
 	@ApiOperation(value = "Angebote rund um eine bestimmte Position abrufen", response = Map.class)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Angebote erfolgreich abgerufen")})
 	@RequestMapping(path = "/api/offers", method = RequestMethod.GET, produces = "application/json")
 	public Map<Integer, List<Offer>> getLocationBasedOffers(
 			@RequestParam @ApiParam(value = "Längengrad", required = true) float longitude,
 			@RequestParam @ApiParam(value = "Breitengrad", required = true) float latitude,
-			HttpServletRequest request/*,
-			Principal principal*/) {
+			HttpServletRequest request,
+			Principal principal) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime((new Date()));
 
+		// Username kann später noch für genauere Angebote genutzt werden wie seine Favoriten, Allergien, ...
 		return restaurantOfferService.getOffersToLocation(longitude, latitude, 5, 2,
 				true, calendar/*, ((User) ((Authentication) principal).getPrincipal()).getUsername()*/);
 	}
