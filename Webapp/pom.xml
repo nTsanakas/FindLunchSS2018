@@ -154,6 +154,12 @@
 			<version>6.2.0</version>
 		</dependency>
 
+		<!-- Braintree integration! Needed for PayPal integration! -->
+		<dependency>
+			<groupId>com.braintreepayments.gateway</groupId>
+			<artifactId>braintree-java</artifactId>
+			<version>2.74.1</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
