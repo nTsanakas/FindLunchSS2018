@@ -1,15 +1,19 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.repositories;
 
+import org.springframework.cglib.core.Predicate;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
+
+import java.util.List;
 
 /**
  * The Interface UserRepository. Abstraction for the data access layer.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>{
+public interface UserRepository extends JpaRepository<User, Integer>, QueryDslPredicateExecutor<User> {
 
 	/**
 	 * Find a User by its username.
@@ -27,4 +31,11 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	 * @return the user
 	 */
 	public User findByUsernameAndUserType_name(String username, String userType);
+
+	/**
+	 * Get a List of Users filtered by enabled push notification.
+	 *
+	 * @return the filtered list of users
+	 */
+	public List<User> findAllByPushNotificationEnabledIsTrue();
 }

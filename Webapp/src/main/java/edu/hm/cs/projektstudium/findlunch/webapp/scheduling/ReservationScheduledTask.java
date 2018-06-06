@@ -31,7 +31,7 @@ public class ReservationScheduledTask {
 	/**
 	 * The logger.
 	 */
-	private final Logger LOGGER = LoggerFactory.getLogger(PushNotificationScheduledTask.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(ReservationScheduledTask.class);
 	
 	/** The reservation repository. */
 	@Autowired
@@ -71,7 +71,7 @@ public class ReservationScheduledTask {
 		//Console log info
 				LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
 						"Check for unprocessed reservations finished."));
-	}
+}
 	
 	/**
 	 * Sends a push notification for reservations.

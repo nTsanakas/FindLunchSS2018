@@ -5,8 +5,7 @@ import org.json.simple.JSONObject;
 /**
  * Base interface / abstract API for sending push-based notifications.
  * 
- * Implementations: 
- * **Amazon Simple Notification Service
+ * Implementations:
  * **Google Firebase Cloud Messaging Service
  *  
  * Created by Maxmilian Haag on 12.12.2016.

@@ -11,18 +11,7 @@
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
-  </class>  
-  <class id="2" language="java" 
-    name="edu.hm.cs.projektstudium.findlunch.webapp.scheduling.PushNotificationScheduledTask" project="webapp" 
-    file="/webapp/src/main/java/edu/hm/cs/projektstudium/findlunch/webapp/scheduling/PushNotificationScheduledTask.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="148" width="240" x="321" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
+  </class>
   <class id="3" language="java" name="edu.hm.cs.projektstudium.findlunch.webapp.scheduling.SendPushNotification" 
     project="webapp" 
     file="/webapp/src/main/java/edu/hm/cs/projektstudium/findlunch/webapp/scheduling/PushNotificationScheduledTask.java" 

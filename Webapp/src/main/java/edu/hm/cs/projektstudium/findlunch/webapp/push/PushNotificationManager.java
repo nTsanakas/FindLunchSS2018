@@ -145,8 +145,6 @@ public class PushNotificationManager implements PushMessagingInterface {
 		notification.put("body", "Deine Bestellung "+reservation.getReservationNumber()+ " wurd durch das Restaurant "+reservation.getRestaurant().getName()+" bestätigt");
 
 		JSONObject data = new JSONObject();
-		data.put("KEY-1", "JSA DATA 1");
-		data.put("KEY-2", "JSA DATA ");
 
 		body.put("notification", notification);
 		body.put("data", data);
@@ -171,8 +169,6 @@ public class PushNotificationManager implements PushMessagingInterface {
 		notification.put("body", "Deine Bestellung "+reservation.getReservationNumber()+ " wurde durch das Restaurant "+reservation.getRestaurant().getName()+" abgelehnt. Begründung: "+reservation.getReservationStatus().getStatus());
 
 		JSONObject data = new JSONObject();
-		data.put("KEY-1", "JSA DATA 1");
-		data.put("KEY-2", "JSA DATA ");
 
 		body.put("notification", notification);
 		body.put("data", data);
@@ -196,8 +192,6 @@ public class PushNotificationManager implements PushMessagingInterface {
 		notification.put("body", "Deine Bestellung "+reservation.getReservationNumber()+ " wurde durch das Restaurant "+reservation.getRestaurant().getName()+" nicht rechtzeitig bearbeitet");
 
 		JSONObject data = new JSONObject();
-		data.put("KEY-1", "JSA DATA 1");
-		data.put("KEY-2", "JSA DATA ");
 
 		body.put("notification", notification);
 		body.put("data", data);
@@ -224,12 +218,15 @@ public class PushNotificationManager implements PushMessagingInterface {
 		notification.put("body", "Im Moment sind " + restaurantsForPushCount + " Restaurants mit leckeren Angeboten in deiner Nähe. Schau doch mal bei uns vorbei.");
 
 		JSONObject data = new JSONObject();
-		data.put("KEY-1", "JSA DATA 1");
-		data.put("KEY-2", "JSA DATA ");
 
 		body.put("notification", notification);
 		body.put("data", data);
 
 		return body;
+	}
+
+	public JSONObject generateDailyPush(String token){
+		JSONObject message = new JSONObject();
+		message.put()
 	}
 }
