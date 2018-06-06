@@ -1,19 +1,12 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.config;
 
 
-import java.util.Collections;
-import java.util.Properties;
-
-import org.apache.catalina.connector.Connector;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -28,19 +21,12 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-
-/*
-AppConfig File
-BEANS
-
-The @Configuration annotation indicates that the class declares one or more @Bean methods. 
-These methods are invoked at runtime by Spring to manage lifecycle of the beans. 
-In our case we have defined @Bean for view resolver for JSP view.
- */
-
-
 /**
- * This class is responsible for defining necessary beans that are handled by Spring application context. These beans can then be injected to classes which need their functionality.
+ * This class is responsible for defining necessary beans that are handled by Spring application context.
+ * These beans can then be injected to classes which need their functionality.
+ *
+ * The @Configuration annotation indicates that the class declares one or more @Bean methods.
+ * These methods are invoked at runtime by Spring to manage lifecycle of the beans.
  */
 @Configuration
 @EnableSwagger2
@@ -92,29 +78,20 @@ public class Beans extends WebMvcConfigurerAdapter{
 	        ) throws Exception {
 	 
 	      
-	      return new EmbeddedServletContainerCustomizer() {
-			@Override
-			public void customize(ConfigurableEmbeddedServletContainer container) {
+	      return container -> {
 
-			      if (container instanceof TomcatEmbeddedServletContainerFactory) {
+                if (container instanceof TomcatEmbeddedServletContainerFactory) {
 
-			          TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
-			          tomcat.addConnectorCustomizers(
-			                  new TomcatConnectorCustomizer() {
-								@Override
-								public void customize(Connector connector) {
-									  connector.setMaxPostSize(20000000);//20MB
-								  }
-							}
-			          );
-			      }
-			  }
-		};
+                    TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
+                    tomcat.addConnectorCustomizers((TomcatConnectorCustomizer) connector -> {
+					connector.setMaxPostSize(20000000);/*20MB*/});
+                }
+            };
 	  }
 	
 	/**
-	 * Sets the Docket api.
-	 * @return 
+	 * Definiert ein Docket für Swaggger
+	 * @return Docket für Swagger
 	 */
 	@Bean
 	public Docket api() {                
