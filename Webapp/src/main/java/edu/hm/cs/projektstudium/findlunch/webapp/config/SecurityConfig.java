@@ -116,6 +116,8 @@ public class SecurityConfig {
 					.antMatchers(HttpMethod.PUT, "/api/reset_password/**")
 					.antMatchers(HttpMethod.GET, "/api/getCustomerReservations")
 					.antMatchers(HttpMethod.GET, "/api/paypal/get_token")
+					.antMatchers(HttpMethod.PUT, "/api/pushNotifications")
+					.antMatchers(HttpMethod.DELETE, "/api/pushNotifications")
 				.and().httpBasic().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		}
