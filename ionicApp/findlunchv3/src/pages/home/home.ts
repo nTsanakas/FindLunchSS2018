@@ -465,7 +465,8 @@ ${this.translatedStrs.distance}: ${restaurant.distance}m<br/>
         user: this.auth.getUser()
       };
       console.log('im ersten push');*/
-      this.push.manageUserPushNotfication(this.auth.getUser(), true);
+      console.log('User getNotification: ' + this.auth.getUser().getNotification);
+      this.push.manageUserPushNotfication(this.auth.getUser(), !this.auth.getUser().getNotification);
     }
      else {
       const alert: Alert = this.alertCtrl.create({

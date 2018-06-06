@@ -44,8 +44,15 @@ export class AuthService {
       Authorization: `Basic ${encodedCredentials}`
     });
 
-    return this.http.get<boolean>(`${SERVER_URL}/api/login_user`,
-      {headers});
+    return this.http.get<any>(`${SERVER_URL}/api/login_user`,
+      {headers}).map(res => {
+        console.log("push: " + res.pushNotificationEnabled);
+        if(res.pushNotificationEnabled === 'true') {
+          return true;
+        } else {
+          return false;
+        }
+    });
   }
 
   /*

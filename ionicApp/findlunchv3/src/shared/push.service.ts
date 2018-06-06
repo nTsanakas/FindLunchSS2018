@@ -93,9 +93,9 @@ export class PushService {
 
     // Aufruf der Rest API (Bei True mit Put, bei False mit Delete)
     if(getPushNotification){
-      this.http.put(`${SERVER_URL}/api/pushNotifications`, {},{headers}).subscribe(
+      this.http.put(`${SERVER_URL}/api/pushNotifications`, {},{headers, responseType: 'text'}).subscribe(
         res => {
-          console.log('push.service.ts - api/pushNotification - put successfull');
+          console.log('push.service.ts - api/pushNotifications - put successfull');
           user.getNotification = true;
           const alert: Alert = this.alertCtrl.create({
             title: "Push Benachrichtigung wurden hinzugefügt!",
@@ -105,10 +105,11 @@ export class PushService {
               role: 'cancel'
             }]
           });
+          alert.present();
         },
         err =>{
-          console.log('push.service.ts - api/pushNotification - put not successfull');
-          console.error(err);
+          console.log('push.service.ts - api/pushNotifications - put not successfull');
+          console.error(JSON.stringify(err));
           user.getNotification = false;
           const alert: Alert = this.alertCtrl.create({
             title: "Error!",
@@ -118,13 +119,14 @@ export class PushService {
               role: 'cancel'
             }]
           });
+          alert.present();
         }
       );
     }
     else{
-      this.http.delete(`${SERVER_URL}/api/pushNotifications`,{headers}).subscribe(
+      this.http.delete(`${SERVER_URL}/api/pushNotifications`,{headers, responseType: 'text'}).subscribe(
         res => {
-          console.log('push.service.ts - api/pushNotification - delete successfull');
+          console.log('push.service.ts - api/pushNotifications - delete successfull');
           user.getNotification = false;
           const alert: Alert = this.alertCtrl.create({
             title: "Push Benachrichtigung entfernt!",
@@ -134,10 +136,11 @@ export class PushService {
               role: 'cancel'
             }]
           });
+          alert.present();
         },
         err =>{
-          console.log('push.service.ts - api/pushNotification - delete not successfull');
-          console.error(err);
+          console.log('push.service.ts - api/pushNotifications - delete not successfull');
+          console.error(JSON.stringify(err));
           user.getNotification = true;
           const alert: Alert = this.alertCtrl.create({
             title: "Error!",
@@ -147,6 +150,7 @@ export class PushService {
               role: 'cancel'
             }]
           });
+          alert.present();
         }
       );
     }
