@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.UserView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
@@ -34,6 +36,7 @@ public class User implements UserDetails {
 	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@JsonView(UserView.UserLoginRest.class)
 	private int id;
 	
 	/** The password. */
@@ -49,9 +52,8 @@ public class User implements UserDetails {
 	/** The username. */
 	@ApiModelProperty(notes = "Benutzername")
 	@NotBlank(message="{user.usernameEmpty}")
+	@JsonView(UserView.UserLoginRest.class)
 	private String username;
-	
-	//private String fcmId;
 
 	/**
 	 * A user object has a Captcha object.
@@ -74,12 +76,6 @@ public class User implements UserDetails {
 			}
 		)
 	private List<Restaurant> favorites;
-	
-	/** The push notifications. */
-	//bi-directional many-to-one association to PushNotification
-	@ApiModelProperty(notes = "Push-Notifikationen")
-	@OneToMany(mappedBy="user")
-	private List<DailyPushNotificationData> pushNotifications;
 
 	/** The restaurant. */
 	@ApiModelProperty(notes = "Restaurants")
@@ -118,6 +114,7 @@ public class User implements UserDetails {
 	private SseEmitter emitter;
 
 	@ApiModelProperty(notes = "Push-Benachrichtigung eingeschaltet")
+	@JsonView(UserView.UserLoginRest.class)
 	private boolean pushNotificationEnabled;
 
 	public SseEmitter getEmitter() {
@@ -218,50 +215,6 @@ public class User implements UserDetails {
 	 */
 	public void setFavorites(List<Restaurant> restaurants) {
 		this.favorites = restaurants;
-	}
-	
-	/**
-	 * Gets the push notifications.
-	 *
-	 * @return the push notifications
-	 */
-	public List<DailyPushNotificationData> getPushNotifications() {
-		return this.pushNotifications;
-	}
-
-	/**
-	 * Sets the push notifications.
-	 *
-	 * @param pushNotifications the new push notifications
-	 */
-	public void setPushNotifications(List<DailyPushNotificationData> pushNotifications) {
-		this.pushNotifications = pushNotifications;
-	}
-	
-	/**
-	 * Adds the push notification.
-	 *
-	 * @param pushNotification the push notification
-	 * @return the push notification
-	 */
-	public DailyPushNotificationData addPushNotification(DailyPushNotificationData pushNotification) {
-		getPushNotifications().add(pushNotification);
-		pushNotification.setUser(this);
-
-		return pushNotification;
-	}
-
-	/**
-	 * Removes the push notification.
-	 *
-	 * @param pushNotification the push notification
-	 * @return the push notification
-	 */
-	public DailyPushNotificationData removePushNotification(DailyPushNotificationData pushNotification) {
-		getPushNotifications().remove(pushNotification);
-		pushNotification.setUser(null);
-
-		return pushNotification;
 	}
 
 	/**
