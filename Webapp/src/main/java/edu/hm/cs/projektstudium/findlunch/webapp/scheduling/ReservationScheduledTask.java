@@ -98,8 +98,5 @@ public class ReservationScheduledTask {
 			LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
 					"No FMC Token for user " + user.getUsername() + " found. Could not send a Notification."));
 		}
-		else{
-			LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(), "No FMC Token for user " + user.getUsername() + " found. Could not send a Notification."));
-		}
 	}
 }

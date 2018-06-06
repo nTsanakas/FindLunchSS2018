@@ -1,10 +1,7 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.repositories;
 
-import org.springframework.cglib.core.Predicate;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.stereotype.Repository;
-
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 
 import java.util.List;
@@ -13,7 +10,7 @@ import java.util.List;
  * The Interface UserRepository. Abstraction for the data access layer.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>, QueryDslPredicateExecutor<User> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
 	/**
 	 * Find a User by its username.

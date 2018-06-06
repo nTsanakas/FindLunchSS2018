@@ -21,12 +21,14 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class FCMClient {
 
-    @Autowired
     private ResourceLoader resourceLoader;
 
     private final Logger LOGGER = LoggerFactory.getLogger(RestaurantController.class);
 
-    public FCMClient() {
+    @Autowired
+    public FCMClient(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+
         Resource resource = resourceLoader.getResource("${push.fcm.adminkey}");
         try {
             FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(GoogleCredentials.fromStream(resource.getInputStream())).build();
