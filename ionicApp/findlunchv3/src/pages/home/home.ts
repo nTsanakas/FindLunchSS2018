@@ -455,8 +455,7 @@ ${this.translatedStrs.distance}: ${restaurant.distance}m<br/>
   registerPush() {
 
     if (this.auth.getLoggedIn()) {
-
-
+/*
       var pushData: DailyPushNotificationData = {
         latitude: this.location.lat,
         longitude: this.location.lng,
@@ -465,8 +464,8 @@ ${this.translatedStrs.distance}: ${restaurant.distance}m<br/>
         fcmToken: "",
         user: this.auth.getUser()
       };
-      console.log('im ersten push');
-      this.push.registerPush(pushData);
+      console.log('im ersten push');*/
+      this.push.manageUserPushNotfication(this.auth.getUser(), true);
     }
      else {
       const alert: Alert = this.alertCtrl.create({

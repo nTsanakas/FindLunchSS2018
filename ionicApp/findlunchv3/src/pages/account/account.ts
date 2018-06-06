@@ -105,7 +105,8 @@ export class AccountPage implements OnInit{
 
     const user: User = {
       username: userName,
-      password: password
+      password: password,
+      getNotification: false
     };
 
 

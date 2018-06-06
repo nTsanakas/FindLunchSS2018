@@ -11,7 +11,7 @@
         <ion-icon name="ios-funnel"></ion-icon>
       </button>
       <button ion-button icon-only (click)="registerPush()">
-        <ion-icon name="notifications"></ion-icon>
+        <ion-toggle ng-model="auth.user.getNotification" name="notifications"></ion-toggle>
       </button>
     </ion-buttons>
   </ion-navbar>
