@@ -160,6 +160,12 @@
 			<artifactId>firebase-client</artifactId>
 			<version>1.0.11</version>
 		</dependency>
+		<!-- Braintree integration! Needed for PayPal integration! -->
+		<dependency>
+			<groupId>com.braintreepayments.gateway</groupId>
+			<artifactId>braintree-java</artifactId>
+			<version>2.74.1</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>

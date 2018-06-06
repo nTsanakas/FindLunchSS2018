@@ -4,8 +4,10 @@ import {Restaurant} from "./Restaurant";
 export interface Reservation {
   id: number;
   donation: number;
+  fee: number;
   totalPrice: number;
   usedPoints: boolean;
+  usedPaypal: boolean;
   points: number;
   pointsCollected: boolean;
   reservationNumber: number;
@@ -18,4 +20,5 @@ export interface Reservation {
       id: number, status: string, key: number
     };
   collectTime: number;
+  nonce: string;
 }

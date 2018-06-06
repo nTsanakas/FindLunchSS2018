@@ -3,16 +3,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -47,11 +38,34 @@ public class Reservation {
 	@ApiModelProperty(notes = "Gesamtpreis")
 	@JsonView({ReservationView.ReservationRest.class})
 	private float totalPrice;
-	
+
+	/** The fee to be payed to PayPal **/
+	@JsonView({ReservationView.ReservationRest.class})
+	private float fee;
+
 	/** Is used points. */
 	@ApiModelProperty(notes = "Benutzte Punkte")
 	@JsonView({ReservationView.ReservationRest.class})
 	private boolean usedPoints;
+
+	/** Used PayPal for payment */
+	@Column(name="used_paypal")
+	@JsonView({ReservationView.ReservationRest.class})
+	private boolean usedPaypal;
+
+	/** Braintree Transaction ID. Uniquely identifies the transaction, is needed to settle or void it
+	 * 	More information: https://developers.braintreepayments.com/reference/general/statuses
+	 */
+	@Column(name="pp_transaction_id")
+	@JsonView({ReservationView.ReservationRest.class})
+	private String ppTransactionId;
+
+	/**
+	 * Makes sure the PayPal-Transaction has succesfully been fninished (either voided or settled)
+	 */
+	@Column(name="pp_transaction_finished")
+	@JsonView({ReservationView.ReservationRest.class})
+	private boolean ppTransactionFinished;
 	
 	/** Points are Collected by the cusomer */
 	@Column(name="points_collected")
@@ -125,7 +139,15 @@ public class Reservation {
 	//@JsonView({ReservationView.ReservationRest.class})
 	@Column(name="timestamp_responded")
 	private Date timestampResponded;
-	
+
+	/**
+	 * 	Payment nonce, used when payment is done via Paypal. This is only in here to be mapped in an incoming REST call.
+	 * 	As this is one-time use sensitive information it will not be stored in the database and is therefore @Transient.
+	 */
+	@Transient
+	@JsonView({ReservationView.ReservationRest.class})
+	private String nonce;
+
 	/**
 	 * Gets the euroPerPoint.
 	 * @return The euroPerPoint
@@ -207,7 +229,19 @@ public class Reservation {
 	public void setTotalPrice(float totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	
+
+	/**
+	 * Gets the fee for PayPal.
+	 * @return fee The fee
+	 */
+	public float getFee() {	return fee;	}
+
+	/**
+	 * Sets the fee for PayPal.
+	 * @param fee
+	 */
+	public void setFee(float fee) {	this.fee = fee;	}
+
 	/**
 	 * Checks if points are used.
 	 * @return true, if points are used
@@ -223,7 +257,43 @@ public class Reservation {
 	public void setUsedPoints(boolean usedPoints) {
 		this.usedPoints = usedPoints;
 	}
-	
+
+	/**
+	 * Checks if PayPal was used.
+	 * @return true, if PayPal was used
+	 */
+	public boolean getUsedPaypal() {return usedPaypal;}
+
+	/**
+	 * Set the flag of used PayPal
+	 * @param usedPaypal true, if PayPal was used
+	 */
+	public void setUsedPaypal(boolean usedPaypal) {this.usedPaypal = usedPaypal;}
+
+	/**
+	 * Get the transaction ID.
+	 * @return braintree transaction ID
+	 */
+	public String getPpTransactionId() { return ppTransactionId; }
+
+	/**
+	 * Set the transaction ID.
+	 * @param ppTransactionId the new transaction ID.
+	 */
+	public void setPpTransactionId(String ppTransactionId) { this.ppTransactionId = ppTransactionId; }
+
+	/**
+	 * Get if the transaction is finished.
+	 * @return Is braintree transaction finished
+	 */
+	public boolean isPpTransactionFinished() { return ppTransactionFinished; }
+
+	/**
+	 * Set the transaction finished.
+	 * @param ppTransactionFinished the new transaction status.
+	 */
+	public void setPpTransactionFinished(boolean ppTransactionFinished) { this.ppTransactionFinished = ppTransactionFinished; }
+
 	/**
 	 * Gets the restaurant.
 	 * @return The restaurant
@@ -381,5 +451,10 @@ public class Reservation {
 	public void setPoints(float points) {
 		this.points = points;
 	}
-	
+
+	/**
+	 * Gets the nonce for PayPal Payment.
+	 * @return The nonce
+	 */
+	public String getNonce() {return nonce;	}
 }
