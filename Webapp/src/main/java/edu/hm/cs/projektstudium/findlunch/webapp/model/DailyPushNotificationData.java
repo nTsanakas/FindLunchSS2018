@@ -1,27 +1,13 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import com.fasterxml.jackson.annotation.JsonView;
+import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificationView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.json.simple.JSONObject;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
-import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificationView;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -58,12 +44,6 @@ public class DailyPushNotificationData implements Serializable {
 	@Lob
 	@Column(name="fcm_token")
 	private String fcmToken;
-	
-	/** The sns token. */
-	@ApiModelProperty(notes = "SNS-Token")
-	@Lob
-	@Column(name="sns_token")
-	private String snsToken;
 
 	/** The latitude. */
 	@ApiModelProperty(notes = "Breitengrad")
@@ -176,21 +156,6 @@ public class DailyPushNotificationData implements Serializable {
 	 */
 	public void setFcmToken(String fcmToken) {
 		this.fcmToken = fcmToken;
-	}
-	
-	
-	/**
-	 * @return
-	 */
-	public String getSnsToken() {
-		return snsToken;
-	}
-
-	/**
-	 * @param snsToken
-	 */
-	public void setSnsToken(String snsToken) {
-		this.snsToken = snsToken;
 	}
 
 	/**

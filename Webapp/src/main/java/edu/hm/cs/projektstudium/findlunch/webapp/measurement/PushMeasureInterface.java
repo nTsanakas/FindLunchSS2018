@@ -11,30 +11,20 @@ package edu.hm.cs.projektstudium.findlunch.webapp.measurement;
  *
  */
 public interface PushMeasureInterface {
-	
-	/**
-	 * Performance SNS measure (high amount of messages).
-	 */
-	public void launchPerformanceSNSMeasure();
-	
+
 	/**
 	 * Performance FCM measure (high amount of messages).
 	 */
-	public void launchPerformanceFCMMeasure();
-	
-	/**
-	 * Single speed SNS measure (long data measurement).
-	 */
-	public void launchSpeedSNSMeasure();
-	
+	void launchPerformanceFCMMeasure();
+
 	/**
 	 * Single speed FCM measure (long data measurement).
 	 */
-	public void launchSpeedFCMMeasure();
+	void launchSpeedFCMMeasure();
 	
 	/**
 	 * Scaled measure, useable with more than one device (up to 10 devices).
 	 */
-	public void launchDeviceScaledFCMMeasure();
+	void launchDeviceScaledFCMMeasure();
 
 }

@@ -49,13 +49,9 @@ public class PushNotificationManager implements PushMessagingInterface {
 	private final Logger LOGGER = LoggerFactory.getLogger(PushNotificationManager.class);
 	
 	/**
-	 * Google FCM / Amazon AWS identification credentials read from /src/main/resources/LiveOpCredentials.conf 
+	 * Google FCM identification credentials read from /src/main/resources/LiveOpCredentials.conf
 	 */
 	protected static String FCM_SENDER_ID;
-	protected static String AWS_CLIENT_ID; 
-	protected static String AWS_CLIENT_SECRET;
-	protected static String AWS_APPLICATION_NAME;
-	protected static String AWS_ENDPOINT_USERDATA;
 
 	/** The collapse key. */
 	protected final String COLLAPSE_KEY = "findLunchDaily";
@@ -89,8 +85,7 @@ public class PushNotificationManager implements PushMessagingInterface {
 	 * Initialize base credentials only once for inherited runnables.
 	 */
 	public PushNotificationManager() {
-		if(FCM_SENDER_ID == null || AWS_CLIENT_ID == null || AWS_CLIENT_SECRET == null ||  AWS_APPLICATION_NAME == null || 
-				AWS_ENDPOINT_USERDATA == null || AWS_ENDPOINT_USERDATA == null) {
+		if(FCM_SENDER_ID == null) {
 			checkLiveOpCredentialsFile();
 		}
 	}
@@ -108,10 +103,6 @@ public class PushNotificationManager implements PushMessagingInterface {
 			
 			//Lines 0-5, data part
 			FCM_SENDER_ID = resReader.readLine().split("=")[1];
-			AWS_CLIENT_ID = resReader.readLine().split("=")[1];
-			AWS_CLIENT_SECRET = resReader.readLine().split("=")[1];
-			AWS_APPLICATION_NAME = resReader.readLine().split("=")[1];
-			AWS_ENDPOINT_USERDATA = resReader.readLine().split("=")[1];
 			
 		} catch (FileNotFoundException e) {
 			LOGGER.error("File not found.");
@@ -131,18 +122,6 @@ public class PushNotificationManager implements PushMessagingInterface {
 	}
 
 	/**
-	 * Execute ADM push, called by scheduler class "PushNotificationScheduledTask".
-	 */
-	/* (non-Javadoc)
-	 * @see edu.hm.cs.projektstudium.findlunch.webapp.push.PushMessagingInterface#sendAdmNotification(edu.hm.cs.projektstudium.findlunch.webapp.model.PushNotification, java.lang.Integer, java.util.List)
-	 */
-	@Override
-	public void sendAdmNotification(DailyPushNotificationData p, Integer restaurantsForPushCount, List<Integer> pushKitchenTypeIds) {
-		executor.execute(new SendAdmNotification(p, restaurantsForPushCount, pushKitchenTypeIds));		
-	}
-
-
-	/**
 	 * Get FCM id.
 	 * @return FCM id.
 	 */
@@ -150,42 +129,6 @@ public class PushNotificationManager implements PushMessagingInterface {
 		return FCM_SENDER_ID;
 	}
 
-
-	/**
-	 * Get AWS client id.
-	 * @return AWS client id.
-	 */
-	public static String getAwsClientId() {
-		return AWS_CLIENT_ID;
-	}
-
-
-	/**
-	 * Get AWS client secret.
-	 * @return AWS client secret.
-	 */
-	public static String getAwsClientSecret() {
-		return AWS_CLIENT_SECRET;
-	}
-
-
-	/**
-	 * Get AWS app name.
-	 * @return AWS app name.
-	 */
-	public static String getAwsApplicationName() {
-		return AWS_APPLICATION_NAME;
-	}
-
-
-	/**
-	 * Get AWS endpoint user data.
-	 * @return AWS endpoint user data.
-	 */
-	public static String getAwsEndpointUserdata() {
-		return AWS_ENDPOINT_USERDATA;
-	}
-	
 	/**
 	 * Generates a Reservation confirmation push notification.
 	 * @param reservation the reservation

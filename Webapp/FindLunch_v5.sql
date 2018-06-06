@@ -377,7 +377,6 @@ CREATE TABLE IF NOT EXISTS `findlunch`.`push_notification` (
   `longitude` FLOAT NOT NULL,
   `radius` INT(11) NOT NULL,
   `fcm_token` TEXT(4096) NOT NULL,
-  `sns_token` TEXT(4096) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_push_notification_user1_idx` (`user_id` ASC),
   CONSTRAINT `fk_push_notification_user1`

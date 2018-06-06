@@ -29,17 +29,16 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushNotificationRe
  * **Live operation has to be disabled at package "scheduling", class "PushNotificationScheduledTask".
  * **Required measurement has to be enabled in this class.
  * 
- * Measures FCM and ADM/SNS push-notifications.
+ * Measures FCM push-notifications.
  * Can be used with other Amazon/Google credentials than live-operation if required.
  * #Credentials configuration:
- * **Configure MeasureCredentials.conf, representing Amazon/Google identification
- * **Configure AwsCredentials.properties, representing Amazon accesskey and secretkey. 
+ * **Configure MeasureCredentials.conf, representing Google identification
  * 
  * #Measure configuration:
  * Uncomment annotation "@PostConstruct" or "@Scheduled" for executing current measure.
  * Only one measure possible at simultaneously.
  * 
- * Speed and performance measure of FCM/SNS require one registred push-notification with title "testpush" in database.
+ * Speed and performance measure of FCM require one registred push-notification with title "testpush" in database.
  * Can be specified for one or more users.
  * Scaled measure only possible with FCM service.
  * Scaled FCM measure, collect all pushes starting with "testpush" of different users for multi-push-message measure.
@@ -72,15 +71,9 @@ public class PushMeasureBase implements PushMeasureInterface {
 	
 
 	/**
-	 * Google / Amazon identification credentials read from /src/main/resources/MeasureCredentials.conf 
+	 * Google identification credentials read from /src/main/resources/MeasureCredentials.conf
 	 */
 	protected static String FCM_SENDER_ID;
-	protected static String AWS_CLIENT_ID; 
-	protected static String AWS_CLIENT_SECRET;
-	protected static String AWS_APPLICATION_NAME;
-	protected static String AWS_ENDPOINT_USERDATA;
-
-
 	
 	/**
 	 * Current registred pushes in database.
@@ -103,35 +96,10 @@ public class PushMeasureBase implements PushMeasureInterface {
 	 * Initialize base credentials only once for inherited runnables.
 	 */
 	public PushMeasureBase() {
-		if(FCM_SENDER_ID == null || AWS_CLIENT_ID == null || AWS_CLIENT_SECRET == null ||  AWS_APPLICATION_NAME == null || 
-				AWS_ENDPOINT_USERDATA == null || AWS_ENDPOINT_USERDATA == null) {
+		if(FCM_SENDER_ID == null) {
 			checkMeasureCredentialsFile();
 		}
 	}
-
-
-	/**
-	 * ##############################################
-	 * # UNCOMMENT "@PostConstruct" FOR MEASUREMENT!#
-	 * ##############################################
-	 * 
-	 * Launches SNS performance measure for high message amount.
-	 * Requires registred Amazon SNS push (SNS token). 
-	 */
-	//@PostConstruct	
-	public void launchPerformanceSNSMeasure() {
-		LOGGER.info("Launching SNS/ADM Performance Measure");
-
-		//Load dummy push notification from db
-		DailyPushNotificationData dummyNotification = extractFromDB();
-	
-		for(int j = 0; j < NUMBER_OF_ITERATIONS; j++) {
-			for(int i = 0; i < NUMBER_OF_PUSHES; i++) {
-				singleEx.execute(new AdmPushMeasure(dummyNotification, i));
-			}
-		}
-	}
-	
 
 	/**
 	 * ##############################################
@@ -155,9 +123,7 @@ public class PushMeasureBase implements PushMeasureInterface {
 		}
 		
 	}
-	
 
-	
 	/**
 	 * ##########################################
 	 * # UNCOMMENT "@Scheduled" FOR MEASUREMENT!#
@@ -181,32 +147,6 @@ public class PushMeasureBase implements PushMeasureInterface {
 			pushCount++;
 		}
 	}
-	
-	
-	/**
-	 * ##########################################
-	 * # UNCOMMENT "@Scheduled" FOR MEASUREMENT!#
-	 * ##########################################
-	 * 
-	 * Launches SNS single speed measure. 
-	 * Long time measure for single sending and receiving of messages to evaluate single RTT speed.
-	 * NOT for high amount of messages (use performance measure above).
-	 * Requires registred Amazon SNS push (SNS token). 
-	 * Sending rate adjustable (current: each 10000 ms)
-	 */
-	//@Scheduled(fixedRate = 10000)
-	public void launchSpeedSNSMeasure() {
-		LOGGER.info("Launching ADM/SNS (Single) Speed Measure");
-
-		//Load dummy push notification from db
-		DailyPushNotificationData dummyNotification = extractFromDB();
-		
-		if(pushCount < NUMBER_OF_PUSHES) {
-			singleEx.execute(new AdmPushMeasure(dummyNotification, pushCount));
-			pushCount++;
-		}
-	}
-
 
 	/**
 	 * ##############################################
@@ -240,11 +180,6 @@ public class PushMeasureBase implements PushMeasureInterface {
 		}
 	}
 
-
-	
-	
-	
-	
 	/**
 	 * Extract one (first) dummy push-notification found in database.
 	 * @return The push-notification to extract.
@@ -260,10 +195,9 @@ public class PushMeasureBase implements PushMeasureInterface {
 		}
 		return p;
 	}
-	
-	
+
 	/**
-	 * Load FCM and SNS identification credentials from file at 
+	 * Load FCM identification credentials from file at
 	 * src/main/resources/MeasureCredentials.conf. 
 	 */
 	private void checkMeasureCredentialsFile() {
@@ -275,10 +209,6 @@ public class PushMeasureBase implements PushMeasureInterface {
 			
 			//Lines 0-5, data part
 			FCM_SENDER_ID = resReader.readLine().split("=")[1];
-			AWS_CLIENT_ID = resReader.readLine().split("=")[1];
-			AWS_CLIENT_SECRET = resReader.readLine().split("=")[1];
-			AWS_APPLICATION_NAME = resReader.readLine().split("=")[1];
-			AWS_ENDPOINT_USERDATA = resReader.readLine().split("=")[1];
 			
 		} catch (FileNotFoundException e) {
 			LOGGER.error("File not found.");

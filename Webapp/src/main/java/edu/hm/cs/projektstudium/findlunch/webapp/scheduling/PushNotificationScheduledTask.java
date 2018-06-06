@@ -79,7 +79,8 @@ public class PushNotificationScheduledTask {
 	 * Checking available push-notifications in database each 200 seconds (~3.5 min).
 	 *  
 	 */
-	@Scheduled(fixedRate = 200000)
+	//@Scheduled(fixedRate = 200000)
+	@Scheduled(cron = "${push.scheduler.daily.cron}", zone = "${push.scheduler.daily.zone}")
 	public void checkPushNotifications()  {
 
 		//Log info
@@ -107,7 +108,7 @@ public class PushNotificationScheduledTask {
 
 			if (sendPushToday) {
 				// Get list of Restaurants matching push notification location.
-				List<Restaurant> restaurantsNearbyList = new ArrayList<Restaurant>();
+				List<Restaurant> restaurantsNearbyList;
 //				restaurantsNearbyList = restaurantRest.getAllRestaurants(p.getLongitude(), p.getLatitude(), p.getRadius());
 				restaurantsNearbyList = restaurauntRepo.findAll();
 				LOGGER.info("Gefundene Restaurants:" + restaurantsNearbyList.size());

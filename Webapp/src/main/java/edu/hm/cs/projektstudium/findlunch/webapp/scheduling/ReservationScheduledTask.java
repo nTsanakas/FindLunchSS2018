@@ -69,7 +69,8 @@ public class ReservationScheduledTask {
 			
 		}
 		//Console log info
-				LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(), "Check for unprocessed reservations finished."));
+				LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
+						"Check for unprocessed reservations finished."));
 	}
 	
 	/**
@@ -77,16 +78,17 @@ public class ReservationScheduledTask {
 	 * @param reservation the reservation
 	 */
 	private void sendPush(Reservation reservation) {
-		
+
 		PushNotificationManager pushManager = new PushNotificationManager();
-		
+
 		User user = reservation.getUser();
 		PushToken userToken = tokenRepository.findByUserId(user.getId());
-		if(userToken!=null) {
-		JSONObject notification = pushManager.generateReservationNotProcessed(reservation, userToken.getFcm_token());
-		pushManager.sendFcmNotification(notification);
+		if (userToken != null) {
+			JSONObject notification = pushManager.generateReservationNotProcessed(reservation, userToken.getFcm_token());
+			pushManager.sendFcmNotification(notification);
+		} else {
+			LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
+					"No FMC Token for user " + user.getUsername() + " found. Could not send a Notification."));
 		}
-		else
-			LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(), "No FMC Token for user "+user.getUsername()+" found. Could not send a Notification."));
 	}
 }

@@ -82,7 +82,6 @@ public class PushNotificationRestController {
 	 *
 	 * @param request the HttpServletRequest
 	 * @param pushNotification the pushNotification
-	 * @param principal the principal
 	 * @return the response entity
 	 */
 	@CrossOrigin
@@ -111,20 +110,14 @@ public class PushNotificationRestController {
 			
 			List<DailyPushNotificationData> allNotificationsOfCurrentUser = pushNotificationRepository.findByUser_id(authenticatedUser.getId());
 
-			for(int i = 0; i < allNotificationsOfCurrentUser.size(); i++) {
-				DailyPushNotificationData pushToModify = allNotificationsOfCurrentUser.get(i);
+			for (DailyPushNotificationData pushToModify : allNotificationsOfCurrentUser) {
 				//delete old
 				pushNotificationRepository.delete(pushToModify);
 
 				//add with new token
-				/*
-				 * TODO: SNS Token aus Datenbank entfernen! Bis dahin dummy wert.
-				 */
 				pushToModify.setFcmToken(pushNotification.getFcmToken());
-				pushToModify.setSnsToken("dummy");
 
 				//token info log
-				LOGGER.info(pushNotification.getSnsToken());
 				LOGGER.info(pushNotification.getFcmToken());
 
 				pushNotificationRepository.save(pushToModify);
@@ -157,15 +150,9 @@ public class PushNotificationRestController {
 					kitchenTypeComplete.add(kitchenTypeRepository.findById(kitchenTypeId));
 				}
 			}
-			//Nur vorrübergehend so gelöst
-			pushNotification.setSnsToken("dummy");
-
-
 
 			pushNotification.setKitchenTypes(kitchenTypeComplete);
-
 			pushNotification.setUser(authenticatedUser);
-
 			pushNotificationRepository.save(pushNotification);
 		}
 		
