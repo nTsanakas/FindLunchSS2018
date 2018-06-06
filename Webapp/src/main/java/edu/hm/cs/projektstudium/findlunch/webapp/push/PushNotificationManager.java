@@ -224,9 +224,4 @@ public class PushNotificationManager implements PushMessagingInterface {
 
 		return body;
 	}
-
-	public JSONObject generateDailyPush(String token){
-		JSONObject message = new JSONObject();
-		message.put()
-	}
 }
