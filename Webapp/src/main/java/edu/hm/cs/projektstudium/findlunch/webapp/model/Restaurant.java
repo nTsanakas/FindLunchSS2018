@@ -951,7 +951,7 @@ public class Restaurant implements Serializable {
 		for (TimeSchedule timeSchedule : this.timeSchedules) {
 			Date actuallyDate = new Date();
 			if(actuallyDate.getDay()+1==timeSchedule.getDayOfWeek().getDayNumber()){
-				
+
 				// check if there is a openingtime for the day
 				List<OpeningTime> openingTimes = timeSchedule.getOpeningTimes();
 				if(!openingTimes.isEmpty()){
@@ -976,18 +976,15 @@ public class Restaurant implements Serializable {
 					closeHour = timeSchedule.getOfferEndTime().getHours();
 					closeMin = timeSchedule.getOfferEndTime().getMinutes();
 				}
-				
+
 				int nowHour = actuallyDate.getHours();
 				int nowMin = actuallyDate.getMinutes();
-				
+
 				if(openHour > nowHour || (openHour == nowHour && openMin > nowMin )){
 					return false;
 				}
-				
-				if(closeHour < nowHour || (closeHour == nowHour && closeMin < nowMin )){
-					return false;
-				}
-				return true;
+
+				return closeHour >= nowHour && (closeHour != nowHour || closeMin >= nowMin);
 			}
 		}
 		return false;
@@ -995,7 +992,7 @@ public class Restaurant implements Serializable {
 
 	/**
 	 * 
-	 * @param isOpen the isOpen to set
+	 * @param currentlyOpen the isOpen to set
 	 */
 	public void setcurrentlyOpen(boolean currentlyOpen) {
 		this.currentlyOpen = currentlyOpen;

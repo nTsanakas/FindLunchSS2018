@@ -1,21 +1,13 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-
-import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificationView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -32,19 +24,14 @@ public class KitchenType {
 	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@JsonView({RestaurantView.RestaurantRest.class, PushNotificationView.PushNotificationRest.class})
+	@JsonView(RestaurantView.RestaurantRest.class)
 	private int id;
 
 	/** The name. */
 	@ApiModelProperty(notes = "Name")
-	@JsonView({RestaurantView.RestaurantRest.class, PushNotificationView.PushNotificationRest.class})
+	@JsonView(RestaurantView.RestaurantRest.class)
 	private String name;
-	
-	/** The push notifications. */
-	//bi-directional many-to-many association to PushNotification
-	@ApiModelProperty(notes = "Push-Benachrichtigungen")
-	@ManyToMany(mappedBy="kitchenTypes")
-	private List<DailyPushNotificationData> pushNotifications;
+
 
 	/** The restaurants. */
 	@ApiModelProperty(notes = "Restaurants")
@@ -93,24 +80,6 @@ public class KitchenType {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	/**
-	 * Gets the push notifications.
-	 *
-	 * @return the push notifications
-	 */
-	public List<DailyPushNotificationData> getPushNotifications() {
-		return this.pushNotifications;
-	}
-
-	/**
-	 * Sets the push notifications.
-	 *
-	 * @param pushNotifications the new push notifications
-	 */
-	public void setPushNotifications(List<DailyPushNotificationData> pushNotifications) {
-		this.pushNotifications = pushNotifications;
 	}
 
 	/**
