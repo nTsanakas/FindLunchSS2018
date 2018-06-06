@@ -16,13 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -134,7 +133,7 @@ public class UserRestController {
             path = "/api/login_user",
             method = RequestMethod.GET,
             produces = "application/json")
-    public ResponseEntity<User> loginUser(HttpServletRequest request, Principal principal) {
+    public ResponseEntity<String> loginUser(HttpServletRequest request, Principal principal) {
         final String ipAddress = getClientIP(request);
 
         // As there is no session-ID with the RESTful-Webservice we just can use the retrieved IP-address.
@@ -142,7 +141,8 @@ public class UserRestController {
             LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
             // User mit den Attributen ID, Name und pushNotificationEnabled zurückgeben.
             User user = userRepository.getOne(((User) ((Authentication) principal).getPrincipal()).getId());
-            return new ResponseEntity<>(user, HttpStatus.OK);
+
+            return new ResponseEntity<>("{\"pushNotificationEnabled\":\"" + user.isPushNotificationEnabled() + "\"}", HttpStatus.OK);
         } else {
             LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()) +
                     " IP-address banned: " + ipAddress);

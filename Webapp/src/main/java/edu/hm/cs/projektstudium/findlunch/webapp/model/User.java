@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonView;
-import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.UserView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
@@ -36,7 +33,6 @@ public class User implements UserDetails {
 	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@JsonView(UserView.UserLoginRest.class)
 	private int id;
 	
 	/** The password. */
@@ -52,7 +48,6 @@ public class User implements UserDetails {
 	/** The username. */
 	@ApiModelProperty(notes = "Benutzername")
 	@NotBlank(message="{user.usernameEmpty}")
-	@JsonView(UserView.UserLoginRest.class)
 	private String username;
 
 	/**
@@ -114,7 +109,6 @@ public class User implements UserDetails {
 	private SseEmitter emitter;
 
 	@ApiModelProperty(notes = "Push-Benachrichtigung eingeschaltet")
-	@JsonView(UserView.UserLoginRest.class)
 	private boolean pushNotificationEnabled;
 
 	public SseEmitter getEmitter() {
