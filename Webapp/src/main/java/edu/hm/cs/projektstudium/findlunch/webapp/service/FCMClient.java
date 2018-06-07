@@ -43,11 +43,14 @@ public class FCMClient {
     public FCMClient(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
 
-        Resource resource = resourceLoader.getResource("${push.fcm.adminkey}");
-        try {
-            FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(GoogleCredentials.fromStream(resource.getInputStream())).build();
-            FirebaseApp.initializeApp(options);
-            LOGGER.info("!!!!!!!FIREBASE INITIALISIERT!!!!!!!!: " + FirebaseApp.getInstance().toString());
+        Resource resource = this.resourceLoader.getResource("classpath:FCMadminkey.json");
+            try {
+                FirebaseOptions options = new FirebaseOptions.Builder()
+                        .setCredentials(GoogleCredentials.fromStream(resource.getInputStream()))
+                        .build();
+                FirebaseApp.initializeApp(options);
+
+            LOGGER.info("FIREBASE INITIALISIERT!: " + FirebaseApp.getInstance().toString());
         } catch (Exception e) {
             LOGGER.error(LogUtils.getExceptionMessage("Constructor of FCMClient", e));
         }

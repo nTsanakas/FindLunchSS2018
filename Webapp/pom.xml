@@ -111,13 +111,6 @@
 			<artifactId>imgscalr-lib</artifactId>
 			<version>4.2</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.gcm/gcm-server -->
-		<dependency>
-		    <groupId>com.google.gcm</groupId>
-		    <artifactId>gcm-server</artifactId>
-		    <version>1.0.0</version>
-		</dependency>
-
 		<!-- QR-Code -->
 		<dependency>
 			<groupId>com.google.zxing</groupId>
@@ -141,12 +134,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.firebase</groupId>
-			<artifactId>firebase-client</artifactId>
-			<version>1.0.11</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.firebase</groupId>
@@ -276,7 +263,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
-
 </project>

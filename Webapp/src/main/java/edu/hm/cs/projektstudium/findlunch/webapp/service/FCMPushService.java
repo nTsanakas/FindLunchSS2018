@@ -106,4 +106,14 @@ public class FCMPushService {
                     e.getMessage()));
         }
     }
+
+    public void sendPush(String token){
+        try {
+        String result = fcmClient.sendNotificationMessage(token, "Test", "TESTTEST");
+        LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(), result));
+        } catch (InterruptedException | ExecutionException e) {
+            LOGGER.error(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    e.getMessage()));
+        }
+    }
 }

@@ -57,7 +57,7 @@ public class PushNotificationScheduledTask {
      * Methode, die um 11 und 17 Uhr die User, bei denen pushNotificationEnabled = true ist, auswählt und veranlasst,
      * dass ihnen eine Push-Nachricht per Firebase gesendet wird.
      */
-    @Scheduled(cron = "${push.scheduler.daily.cron}", zone = "${push.scheduler.daily.zone}")
+    @Scheduled(cron = "0 0 11,17 * * ?", zone = "CET")
     public void sendDailyPushNotifications() {
 
         LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
