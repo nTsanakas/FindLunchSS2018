@@ -114,7 +114,7 @@ public class Beans extends WebMvcConfigurerAdapter{
 	
 	/**
 	 * Sets the Docket api.
-	 * @return 
+	 * @return Docket for Swagger 2 
 	 */
 	@Bean
 	public Docket api() {                

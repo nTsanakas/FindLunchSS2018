@@ -3,7 +3,6 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.view;
 /**
  * The Class OfferView.
  * 
- * @author Niklas Klotz
  */
 public class OfferView {
 

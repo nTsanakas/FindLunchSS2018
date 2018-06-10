@@ -2,7 +2,6 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.view;
 
 /**
  * The class PointsView.
- * @author oberm
  *
  */
 public class PointsView {

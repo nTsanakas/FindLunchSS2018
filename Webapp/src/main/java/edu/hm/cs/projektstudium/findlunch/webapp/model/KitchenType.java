@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 
 /**
- * The Class KitchenType. Defines different kitchen types.
+ * Defines different kitchen types.
  */
 @Entity
 @Table(name="kitchen_type")

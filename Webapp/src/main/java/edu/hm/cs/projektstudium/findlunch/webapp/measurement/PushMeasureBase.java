@@ -23,7 +23,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushNotificationRe
 
 /**
  * 
- * PushMeasureBase class (Main class for measurement!)
+ * PushMeasureBase class (Main class for measurement!).
  * 
  * Separate base class for sending push notification measures (completely separated from live-operation).
  * **Live operation has to be disabled at package "scheduling", class "PushNotificationScheduledTask".

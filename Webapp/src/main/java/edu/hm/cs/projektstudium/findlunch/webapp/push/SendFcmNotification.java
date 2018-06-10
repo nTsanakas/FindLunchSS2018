@@ -19,7 +19,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepositor
 
 /**
  * 
- * Class SendFcmNotification.
  * Prepares and sends Google FCM push messages via Google Url (JSON-HTTP Request) to mobile device.
  * 
  * Created by Maxmilian Haag on 07.02.2017

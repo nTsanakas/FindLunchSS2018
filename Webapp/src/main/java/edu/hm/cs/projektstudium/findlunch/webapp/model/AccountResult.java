@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * The class AccountResult. Describes the result of a account.
+ * Describes the yield of a account.
  */
 @ApiModel(
 		description = "Beschreibt das Ergebnis zum Account."

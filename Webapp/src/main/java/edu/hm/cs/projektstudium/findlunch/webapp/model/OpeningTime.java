@@ -26,7 +26,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 
 
 /**
- * The Class OpeningTime. Describes the opening time of a restaurant.
+ * Describes the opening time of a restaurant.
  */
 @Entity
 @Table(name="opening_time")

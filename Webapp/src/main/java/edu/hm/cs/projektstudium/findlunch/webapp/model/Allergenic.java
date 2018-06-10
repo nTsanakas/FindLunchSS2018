@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 
 /**
- * The Class Additives. Describes the allergenes that could be contained in a product.
+ * Describes the allergenes that could be contained in a product.
  */
 @Entity
 @Table(name="allergenic")

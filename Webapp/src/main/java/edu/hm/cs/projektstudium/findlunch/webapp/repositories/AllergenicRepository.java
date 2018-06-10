@@ -15,22 +15,22 @@ public interface AllergenicRepository extends JpaRepository<Allergenic, Integer>
 
 	/**
 	 * Finds allerginics by the name of the product.
-	 * @param name
-	 * @return
+	 * @param name the name of the product
+	 * @return The found allergenics.
 	 */
 	Allergenic findByName(String name);
 	
 	/**
-	 * Finds allerginics by the name of the product.
-	 * @param key
-	 * @return
+	 * Finds allerginics by the key of the product.
+	 * @param key the key of the product
+	 * @return The found allergenics.
 	 */
 	Allergenic findByShortKey(String key);
 	
 	/**
-	 * Finds allerginics by the name of the product.
-	 * @param id
-	 * @return
+	 * Finds allerginics by the id of the product.
+	 * @param id the id of the product
+	 * @return The found allergenics.
 	 */
 	Allergenic findById(int id);
 	

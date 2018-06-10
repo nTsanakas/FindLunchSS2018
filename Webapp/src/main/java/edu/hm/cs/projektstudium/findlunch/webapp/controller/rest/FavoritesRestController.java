@@ -29,8 +29,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * The Class FavoritesRestController. The class is responsible for handling rest
- * calls related to favorites of users.
+ * The class is responsible for handling rest calls related to favorites of users.
  */
 @RestController
 @Api(value="Favoriten", description="Verwaltung der Favoriten des Users.")

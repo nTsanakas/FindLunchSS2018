@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 
 /**
- * The Class DayOfWeek.
+ * Class for weekdays.
  */
 @Entity
 @Table(name="day_of_week")

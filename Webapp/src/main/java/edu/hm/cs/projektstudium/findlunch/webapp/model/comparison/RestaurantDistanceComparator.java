@@ -8,7 +8,7 @@ import java.util.Comparator;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
 
 /**
- * The Class RestaurantDistanceComparator.
+ * Class to compare the distance between restaurants.
  */
 public class RestaurantDistanceComparator implements Comparator<Restaurant> {
 

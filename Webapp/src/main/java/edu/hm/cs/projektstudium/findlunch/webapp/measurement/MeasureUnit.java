@@ -52,7 +52,7 @@ public class MeasureUnit {
     }
     /**
      * Set title.
-     * @param title
+     * @param title the title
      */
     public void setTitle(String title) {
         this.title = title;
@@ -76,7 +76,7 @@ public class MeasureUnit {
 
 	/**
 	 * Set timestamp
-	 * @param timeStamp
+	 * @param timeStamp the time stamp
 	 */
 	public void setTimeStamp(String timeStamp) {
 		this.timeStamp = timeStamp;
@@ -100,7 +100,7 @@ public class MeasureUnit {
 
 	/**
 	 * Set receive time.
-	 * @param receiveTime
+	 * @param receiveTime the receiving time
 	 */
 	public void setReceiveTime(String receiveTime) {
 		this.receiveTime = receiveTime;
@@ -116,7 +116,7 @@ public class MeasureUnit {
 
 	/**
 	 * Set push number
-	 * @param pushNumber
+	 * @param pushNumber number of push
 	 */
 	public void setPushNumber(long pushNumber) {
 		this.pushNumber = pushNumber;
@@ -132,7 +132,7 @@ public class MeasureUnit {
 
 	/**
 	 * Set user id
-	 * @param userId
+	 * @param userId Id of the user
 	 */
 	public void setUserId(long userId) {
 		this.userId = userId;

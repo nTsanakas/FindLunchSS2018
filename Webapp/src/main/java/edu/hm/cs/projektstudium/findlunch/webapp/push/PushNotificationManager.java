@@ -21,8 +21,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.Reservation;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushNotificationRepository;
 /**
  * 
- * Class PushNotificationManager.
- * 
  * Called from scheduled class "PushNotificationScheduledTask" for the daily notifications.
  * 
  * Handles live-operation Amazon SNS and Google FCM push-notification messaging.
@@ -121,9 +119,7 @@ public class PushNotificationManager implements PushMessagingInterface {
 	}
 	
 	/**
-	 * Execute FCM pushNotification.
-	 * @author Niklas Klotz.
-	 * @throws InterruptedException 
+	 * Execute FCM pushNotification. 
 	 */
 	@Override
 	public void sendFcmNotification(JSONObject p)  {	

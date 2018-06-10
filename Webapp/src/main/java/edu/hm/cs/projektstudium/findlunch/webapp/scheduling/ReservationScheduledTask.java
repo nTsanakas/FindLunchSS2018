@@ -23,7 +23,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationStatusR
 
 /**
  * Class that regularly checks for unprocessed reservations.
- * @author oberm
  *
  */
 @Component

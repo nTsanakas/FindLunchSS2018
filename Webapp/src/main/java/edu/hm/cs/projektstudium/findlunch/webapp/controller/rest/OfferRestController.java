@@ -20,8 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
- * The Class OfferRestController. The class is responsible for handling rest
- * calls related to offers
+ * The class is responsible for handling rest calls related to offers.
  */
 @RestController
 @Api(

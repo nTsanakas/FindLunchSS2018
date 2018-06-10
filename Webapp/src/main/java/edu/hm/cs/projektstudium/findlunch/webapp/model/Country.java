@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * The Class Country. The country of a business.
+ * The country of a business.
  */
 @Entity
 @JsonIgnoreProperties(ignoreUnknown=true)

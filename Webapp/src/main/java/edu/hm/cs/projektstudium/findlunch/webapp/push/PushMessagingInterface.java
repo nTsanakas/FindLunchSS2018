@@ -35,7 +35,6 @@ public interface PushMessagingInterface {
 	 * Sends FCM pushNotification to a customer.
 	 * @author Niklas Klotz.
 	 * @param p The push-notification to be sent.
-	 * @throws InterruptedException 
 	 */
 	public void sendFcmNotification(JSONObject p);
 }

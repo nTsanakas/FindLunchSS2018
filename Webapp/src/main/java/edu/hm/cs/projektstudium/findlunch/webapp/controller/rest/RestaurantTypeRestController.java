@@ -19,8 +19,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 /**
- * The Class RestaurantTypeRestController. The class is responsible for handling
- * rest calls related to RestaurantTypes
+ * The class is responsible for handling rest calls related to RestaurantTypes.
  */
 @RestController
 @Api(

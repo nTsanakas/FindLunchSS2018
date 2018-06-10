@@ -26,10 +26,12 @@ public class GenericCaptchaRestController {
     private final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(GenericCaptchaRestController.class);
 
     /**
-     * Gets the Captcha or a Captcha-response of the requested Captcha provider.
+     * Gets the Captcha or a Captcha-response of the requested captcha provider.
      *
      * @param request the HttpServletRequest
+     * @param provider the captcha provider
      * @return the log file.
+     * @throws IOException if the underlying service fails.
      */
     @CrossOrigin
     @ApiOperation(

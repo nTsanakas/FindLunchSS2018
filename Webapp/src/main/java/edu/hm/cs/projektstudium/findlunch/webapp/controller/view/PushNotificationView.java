@@ -1,7 +1,7 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller.view;
 
 /**
- * The Class RestaurantView.
+ * The Class PushNotificationView.
  */
 public class PushNotificationView {
 

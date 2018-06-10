@@ -35,8 +35,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushNotificationRe
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 
 /**
-*
-* The Class PushNotificationRestController.
 * 
 * Registers pushes at api call: /api/register_push
 * Shows pushes of current user at api call: /api/get_push
@@ -82,7 +80,6 @@ public class PushNotificationRestController {
 	 *
 	 * @param request the HttpServletRequest
 	 * @param pushNotification the pushNotification
-	 * @param principal the principal
 	 * @return the response entity
 	 */
 	@CrossOrigin

@@ -26,7 +26,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.DayOfWeekRepositor
 
 
 /**
- * The Class CustomOfferValidator.
+ * Validates a custom offer.
  */
 @Component
 public class CustomOfferValidator implements Validator {
@@ -75,8 +75,8 @@ public class CustomOfferValidator implements Validator {
 	/**
 	 * Check coursetype.
 	 * 
-	 * @param courseType
-	 * @param bindingResult
+	 * @param courseType the course type
+	 * @param bindingResult the binding result
 	 */
 	public void checkCourseType(int courseType, Errors bindingResult) {
 		if(courseTypeRepository.findById(courseType)==null){

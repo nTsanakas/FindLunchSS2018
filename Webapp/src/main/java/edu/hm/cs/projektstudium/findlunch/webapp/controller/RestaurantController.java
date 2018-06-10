@@ -154,6 +154,7 @@ public class RestaurantController {
 	 * Gets the page for adding a new restaurant to the user.
 	 *
 	 * @param request the HttpServletRequest
+	 * @param session the http session
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal
@@ -243,6 +244,7 @@ public class RestaurantController {
 	 * Gets the page for editing a restaurant from the user.
 	 *
 	 * @param request the HttpServletRequest
+	 * @param session the http session
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal
@@ -335,6 +337,7 @@ public class RestaurantController {
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * @param session the http session
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param request
@@ -383,6 +386,7 @@ public class RestaurantController {
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * @param session the http session
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param request
@@ -427,6 +431,7 @@ public class RestaurantController {
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * @param session the http session
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param request
@@ -466,6 +471,7 @@ public class RestaurantController {
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * @param session the http session
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param request

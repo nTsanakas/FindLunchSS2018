@@ -7,7 +7,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 
 /**
  * The Interface ResetPasswordRepository. Abstraction for the data access layer.
- * @author oberm
  *
  */
 public interface ResetPasswordRepository extends JpaRepository<ResetPassword, Integer>{
@@ -16,6 +15,7 @@ public interface ResetPasswordRepository extends JpaRepository<ResetPassword, In
 	 * Finds the password by token.
 	 * 
 	 * @param token the token
+	 * @return The password
 	 */
 	ResetPassword findByToken(String token);
 	
@@ -23,6 +23,7 @@ public interface ResetPasswordRepository extends JpaRepository<ResetPassword, In
 	 * Finds the password by user.
 	 * 
 	 * @param user the user
+	 * @return The password
 	 */
 	ResetPassword findByUser(User user);
 }

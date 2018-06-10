@@ -19,8 +19,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * The Class RestaurantLogo.
- * @author Niklas Klotz
+ * Sets the logo of a restaurant.
  *
  */
 @Entity

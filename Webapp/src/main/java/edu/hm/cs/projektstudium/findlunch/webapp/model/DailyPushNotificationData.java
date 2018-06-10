@@ -25,7 +25,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificatio
 
 
 /**
- * The Class DailyPushNotificationData.
+ * This class represents a push notification.
  * 
  * Database entries extended to sns_token and fcm_token for better overview and extension possibilities.
  * Extended by Maximilian Haag on 06.12.2016.
@@ -180,14 +180,14 @@ public class DailyPushNotificationData implements Serializable {
 	
 	
 	/**
-	 * @return
+	 * @return the sns token
 	 */
 	public String getSnsToken() {
 		return snsToken;
 	}
 
 	/**
-	 * @param snsToken
+	 * @param snsToken the sns token
 	 */
 	public void setSnsToken(String snsToken) {
 		this.snsToken = snsToken;

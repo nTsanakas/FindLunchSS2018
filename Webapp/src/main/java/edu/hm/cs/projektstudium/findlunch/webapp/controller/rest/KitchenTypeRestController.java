@@ -20,8 +20,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * The Class KitchenTypeRestController. The class is responsible for handling rest
- * calls related to KitchenTypes
+ * The class is responsible for handling rest calls related to KitchenTypes.
  */
 @RestController
 @Api(

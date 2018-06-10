@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * The Class LoginUserRestController. The class is responsible for handling rest
- * calls related to login users
+ * The class is responsible for handling rest calls related to login users.
  */
 @RestController
 @Api(

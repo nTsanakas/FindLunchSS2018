@@ -26,7 +26,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantReposito
 
 
 /**
- * The Class PushNotificationScheduledTask.
  * 
  * Scheduled check if there are push-notifications in database to be sent.
  * Differencing between Amazon and Google push-notifications.

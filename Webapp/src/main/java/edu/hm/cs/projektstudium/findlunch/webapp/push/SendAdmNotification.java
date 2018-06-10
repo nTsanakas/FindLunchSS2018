@@ -26,7 +26,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.DailyPushNotificationData
 
 /**
  *  
- * Class SendAdmNotification.
  * Prepares and sends Amazon SNS push messages.
  * 
  * Reading additionally Amazon properties credentials from file (requires setup):
