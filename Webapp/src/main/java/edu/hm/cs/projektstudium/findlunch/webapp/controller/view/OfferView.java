@@ -9,7 +9,7 @@ public class OfferView {
 	/**
 	 * The Interface OfferRest. If used, only the fields marked with the
 	 * annotation "JsonView(OfferView.OfferRest.class)" will be returned when
-	 * accessing a rest controller (GET)
+	 * accessing a rest controller (GET).
 	 */
 	public interface OfferRest {
 	}
@@ -17,7 +17,7 @@ public class OfferView {
 	/**
 	 * The Interface OfferPhotoFull. If used, only the fields marked with the
 	 * annotation "JsonView(OfferView.OfferPhotoFull.class)" will be returned
-	 * when accessing a rest controller (GET)
+	 * when accessing a rest controller (GET).
 	 */
 	public interface OfferPhotoFull extends OfferRest {
 	}

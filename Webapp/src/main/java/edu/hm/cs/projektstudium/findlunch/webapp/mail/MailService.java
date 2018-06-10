@@ -16,7 +16,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ResetPasswordRepository;
 
 /**
- * The class is responsible for sending emails to the customers and restaurants
+ * The class is responsible for sending emails to the customers and restaurants.
  * 
  * @author Deniz Mardin, Niklas Klotz
  *

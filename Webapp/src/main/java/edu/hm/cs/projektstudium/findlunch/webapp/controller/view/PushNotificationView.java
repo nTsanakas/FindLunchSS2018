@@ -8,7 +8,7 @@ public class PushNotificationView {
 	/**
 	 * The Interface PushNotificationRest. If used, only the fields marked with the
 	 * annotation "JsonView(PushNotificationView.PushNotificationRest.class)" will be
-	 * returned when accessing a rest controller (GET)
+	 * returned when accessing a rest controller (GET).
 	 */
 	public interface PushNotificationRest {
 	}

@@ -32,7 +32,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepositor
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationRepository;;
 
 /**
- * The class is responsible for handling http calls related to the main page (home) of the website..
+ * The class is responsible for handling http calls related to the main page (home) of the website.
  * Root / relinks to /home.
  */
 @Controller

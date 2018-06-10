@@ -1,6 +1,3 @@
-/**
- * 
- */
 package edu.hm.cs.projektstudium.findlunch.webapp.model.comparison;
 
 import java.util.Comparator;
