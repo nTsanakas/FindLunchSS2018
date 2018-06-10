@@ -1,17 +1,14 @@
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
-import {Push, PushObject, PushOptions, EventResponse} from "@ionic-native/push";
+import {Push, PushObject, PushOptions} from "@ionic-native/push";
 import {FCM} from "@ionic-native/fcm";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {SERVER_URL, APP_LANG, FCM_SENDER_ID} from "../app/app.module";
 import {Alert, AlertController, Platform} from "ionic-angular";
 import {Error} from "tslint/lib/error";
-import {AuthService} from "./auth.service"
 import {TranslateService} from "@ngx-translate/core";
 import {User} from "../model/User";
 import {DailyPushNotificationData} from "../model/DailyPushNotificationData";
-import {Observable} from "rxjs/Observable";
-import {Subscription} from "rxjs/Subscription";
 
 
 /**
@@ -27,7 +24,6 @@ export class PushService {
 
   constructor(public push: Push,
               private alertCtrl: AlertController,
-              private auth: AuthService,
               private http: HttpClient,
               private translate: TranslateService,
               private platform: Platform,

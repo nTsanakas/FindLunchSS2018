@@ -1,7 +1,7 @@
 
 
 import {Component, OnInit} from "@angular/core";
-import {Alert, AlertController, Loading, NavController, NavParams, Toast, ToastController, IonicPage} from "ionic-angular";
+import {Alert, AlertController, Loading, NavController, Toast, ToastController, IonicPage} from "ionic-angular";
 import {AuthService} from "../../shared/auth.service";
 import {SERVER_URL} from "../../app/app.module";
 import {LoadingService} from "../../shared/loading.service";

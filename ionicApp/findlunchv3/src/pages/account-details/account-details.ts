@@ -1,5 +1,5 @@
  import {Component, ViewChild} from '@angular/core';
-import {IonicPage, Nav, NavController, NavParams, Toast, ToastController} from 'ionic-angular';
+import {IonicPage, Nav, NavController, Toast, ToastController} from 'ionic-angular';
 import {AuthService} from '../../shared/auth.service';
 import {QRService} from "../../pages/bonus/qr.service";
 import {TranslateService} from "@ngx-translate/core";

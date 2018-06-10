@@ -1,15 +1,11 @@
 import {Component, OnInit} from "@angular/core";
-import { Response} from "@angular/http";
-import {SERVER_URL} from "../../app/app.module";
 import {QRService} from "./qr.service";
 import {TranslateService} from '@ngx-translate/core';
 import {LoadingService} from "../../shared/loading.service";
-import {AuthService} from "../../shared/auth.service";
 import {InformationService} from "../../shared/information.service";
 import {Loading, Alert, AlertController, NavController} from "ionic-angular";
 import {Error} from "tslint/lib/error";
 import {HomePage} from "../home/home";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 
 /**
@@ -27,9 +23,7 @@ export class BonusPage implements OnInit {
     private strGeneralError: string;
     private strCancel: string;
     private strRetry: string;
-    constructor(private http: HttpClient,
-                private qr: QRService,
-                private auth: AuthService,
+    constructor(private qr: QRService,
                 private alertCtrl: AlertController,
                 private loading: LoadingService,
                 private translate: TranslateService,
@@ -67,6 +61,7 @@ export class BonusPage implements OnInit {
             });
         this.getPoints();
     }
+
     /**
      * Opens the barcode scanner(camera) of the device via service
      */

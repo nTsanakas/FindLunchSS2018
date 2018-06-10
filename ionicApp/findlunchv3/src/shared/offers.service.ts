@@ -1,10 +1,9 @@
 import {Injectable} from "@angular/core";
 import {SERVER_URL} from "../app/app.module";
-import { Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {Offer} from "../model/Offer";
 import 'rxjs/add/operator/do';
-import {HttpClient, HttpResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 
 
 /**

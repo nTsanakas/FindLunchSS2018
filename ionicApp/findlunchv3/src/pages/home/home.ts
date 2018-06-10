@@ -14,7 +14,6 @@ import 'rxjs/add/operator/timeout';
 import {Network} from "@ionic-native/network";
 import {Subscription} from "rxjs/Subscription";
 import { Observable } from 'rxjs/Observable';
-import {DailyPushNotificationData} from "../../model/DailyPushNotificationData";
 import {PushService} from "../../shared/push.service";
 import {ChooseLoginPage} from "../choose-login/choose-login";
 import {AuthService} from "../../shared/auth.service";
