@@ -3,6 +3,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller;
 import edu.hm.cs.projektstudium.findlunch.webapp.components.RestaurantAddCategory;
 import edu.hm.cs.projektstudium.findlunch.webapp.components.RestaurantDeleteCategory;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.SalesPerson;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.restaurant.RestaurantValidator;
 import edu.hm.cs.projektstudium.findlunch.webapp.service.CountryService;
 import edu.hm.cs.projektstudium.findlunch.webapp.service.RestaurantService;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -119,7 +121,7 @@ public class RestaurantControllerSWA {
 
     @RequestMapping(value = "/swa/saveRestaurant", method = RequestMethod.POST)
     // TODO: Wieder validieren.
-    public String processRestaurant(Model model, Restaurant restaurant, BindingResult restaurantBinder) {
+    public String processRestaurant(Model model, Principal principal, Restaurant restaurant, BindingResult restaurantBinder) {
 
         if(restaurantBinder.hasErrors()) {
             restaurant.setBase64Encoded(Base64.getEncoder().encodeToString(restaurant.getQrUuid()));
@@ -136,6 +138,11 @@ public class RestaurantControllerSWA {
                     StringUtils.arrayToCommaDelimitedString(suppressedFields));
         }
         int restaurantId = restaurant.getId();
+
+        if (restaurant.getIdOfSalesPerson() == 0) {
+            SalesPerson sp = salesPersonService.getSalesPersonByEmail(principal.getName());
+            restaurant.setIdOfSalesPerson(sp.getId());
+        }
 
         //Checks if it is a new Restaurant or a change to an existing one
         if (restaurantId == 0) {

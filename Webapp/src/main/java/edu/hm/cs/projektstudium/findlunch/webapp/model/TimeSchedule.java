@@ -1,5 +1,6 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -109,7 +110,8 @@ public class TimeSchedule {
 	 * @return the opening time
 	 */
 	public OpeningTime addOpeningTime(OpeningTime openingTime) {
-		getOpeningTimes().add(openingTime);
+		if (openingTimes == null) openingTimes = new ArrayList<>();
+		openingTimes.add(openingTime);
 		openingTime.setTimeSchedule(this);
 
 		return openingTime;
@@ -122,7 +124,7 @@ public class TimeSchedule {
 	 * @return the opening time
 	 */
 	public OpeningTime removeOpeningTime(OpeningTime openingTime) {
-		getOpeningTimes().remove(openingTime);
+		openingTimes.remove(openingTime);
 		openingTime.setTimeSchedule(null);
 
 		return openingTime;
