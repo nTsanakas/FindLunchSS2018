@@ -118,15 +118,15 @@ public class OfferRestController {
 	 */
 	@CrossOrigin
 	@JsonView(OfferView.OfferRest.class)
-	@PreAuthorize("isAuthenticated()")
+	//@PreAuthorize("isAuthenticated()")
 	@ApiOperation(value = "Angebote rund um eine bestimmte Position abrufen", response = Map.class)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Angebote erfolgreich abgerufen")})
 	@RequestMapping(path = "/api/offers", method = RequestMethod.GET, produces = "application/json")
-	public Map<Integer, List<Offer>> getLocationBasedOffers(
+	public List<Offer> getLocationBasedOffers(
 			@RequestParam @ApiParam(value = "Längengrad", required = true) float longitude,
 			@RequestParam @ApiParam(value = "Breitengrad", required = true) float latitude,
-			HttpServletRequest request,
-			Principal principal) {
+			HttpServletRequest request/*,
+			Principal principal*/) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
 		Calendar calendar = Calendar.getInstance();

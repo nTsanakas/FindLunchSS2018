@@ -396,7 +396,7 @@ public class Offer {
 	/**
 	 * Sets the allergenic.
 	 *
-	 * @param additives the new allergenic
+	 * @param allergenic the new allergenic
 	 */
 	public void setAllergenic(List<Allergenic> allergenic) {
 		this.allergenic = allergenic;
