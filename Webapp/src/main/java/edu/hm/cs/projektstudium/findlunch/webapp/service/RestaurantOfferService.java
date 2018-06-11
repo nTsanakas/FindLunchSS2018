@@ -41,30 +41,27 @@ public class RestaurantOfferService {
      * @param calendar Zeitpunkt, für den gesucht werden soll.
      * @return LinkedHashMap mit Restaurant, Angebotsliste.
      */
-    public Map<Integer,List<Offer>> getOffersToLocation(float longitude, float latitude, int restaurantNumber, int offerNumber, boolean currentlyOpen, Calendar calendar/*, String username*/) {
+    public List<Offer> getOffersToLocation(float longitude, float latitude, int restaurantNumber, int offerNumber, boolean currentlyOpen, Calendar calendar/*, String username*/) {
 
         int radius = 2000;
 
-        List<Offer> offers;
+        List<Offer> offers = new ArrayList();
         List<Restaurant> restaurants;
-        Map<Integer, List<Offer>> offersToRestaurant = new LinkedHashMap<>();
 
         restaurants = getAllRestaurants(longitude, latitude, radius, restaurantNumber, currentlyOpen);
         for (Restaurant restaurant : restaurants) {
             // check if restaurant has a TimeSchedule for today
             TimeSchedule ts = restaurant.getTimeSchedules().stream().filter(item -> item.getDayOfWeek().getDayNumber() == calendar.get(Calendar.DAY_OF_WEEK)).findFirst().orElse(null);
-
+            System.out.println(restaurant.getId() + ": " + ts.toString());
             // only get , that are valid at the moment
             if (ts != null) {
-                offers = getValidOffers(calendar, ts, restaurant.getId(), 2);
-                if(offers!=null) {
-                    offersToRestaurant.put(restaurant.getId(), offers);
-                }
+                offers.addAll(getValidOffers(calendar, ts, restaurant.getId(), 2));
             }
             //Nur so viele Angebote wie gewünscht auslesen.
-            if(offerNumber <= offersToRestaurant.size()){break;}
+            if(offerNumber <= offers.size()){break;}
         }
-        return offersToRestaurant;
+        System.out.println("Offersize: " + offers.size());
+        return offers;
     }
 
     /**

@@ -23,6 +23,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
@@ -56,7 +57,7 @@ public class Restaurant implements Serializable {
 	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonView({RestaurantView.RestaurantRest.class, ReservationView.ReservationRest.class})
+	@JsonView({RestaurantView.RestaurantRest.class, ReservationView.ReservationRest.class, OfferView.OfferRest.class})
 	private int id;
 
 	/** The city. */
