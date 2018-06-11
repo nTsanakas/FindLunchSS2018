@@ -9,7 +9,7 @@
 	<!-- <packaging>war</packaging> -->
 	<packaging>jar</packaging>
 
-	<name>webapp</name>
+	<name>FindLunch WebApp</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
