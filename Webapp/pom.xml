@@ -20,6 +20,7 @@
 		<database.user>root</database.user>
 		<database.password>root</database.password>
 		<database.schema>findlunch</database.schema>
+		<dependency.locations.enabled>false</dependency.locations.enabled>
 		<!-- STANDALONE TOMCAT CONFIG: For standalone tomcat deployment set correct version of the tomcat to use -->
 		<!-- <tomcat.version>8.0.20</tomcat.version> -->
 		<!--<tomcat.version>8.0.36</tomcat.version>-->
