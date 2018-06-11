@@ -7,6 +7,7 @@ import {APP_LANG} from "../../app/app.module";
 import {BonusPage} from "../bonus/bonus";
 import {ReservationsPage} from "../reservations/reservations";
 import {HomePage} from "../home/home";
+ import {CurrentOffersPage} from "../current-offers/current-offers";
 
 /**
  * Generated class for the AccountDetailsPage page.
@@ -66,6 +67,10 @@ export class AccountDetailsPage {
 
   openReservationsPage(){
     this.navCtrl.push(ReservationsPage);
+  }
+
+  openCurrentOffersPage(){
+    this.navCtrl.push(CurrentOffersPage);
   }
 
   logout(){

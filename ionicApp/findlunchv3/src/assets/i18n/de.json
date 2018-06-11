@@ -77,6 +77,9 @@
     "AboutPage": {
         "title": "Über uns"
     },
+    "CurrentOffersPage":{
+      "title": "Aktuelle Angebote"
+    },
     "home": "Home",
     "containsAllergenics": "Enthaltene Allergene:",
     "containsAdditives": "Enthaltene Zusatzstoffe:",

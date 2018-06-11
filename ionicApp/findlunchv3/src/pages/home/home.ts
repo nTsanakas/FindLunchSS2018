@@ -96,19 +96,7 @@ export class HomePage implements OnInit {
               private info: InformationService) {
 
 
-    // load the map as soon as the platform is ready
-    this.platform.ready().then(
 
-      () => {
-        // translate needed strings for info-window
-                this.loadMap();
-                this.initAutocomplete();
-      },
-      (err: Error) => {
-        console.error("Platform did not become ready!", err);
-        alert("A fatal Error occured, the app will be closed!");
-        platform.exitApp();
-      });
   }
 
   /**
@@ -116,6 +104,19 @@ export class HomePage implements OnInit {
    */
 
   public ngOnInit(): void {
+    // load the map as soon as the platform is ready
+    this.platform.ready().then(
+
+      () => {
+        // translate needed strings for info-window
+        this.loadMap();
+        this.initAutocomplete();
+      },
+      (err: Error) => {
+        console.error("Platform did not become ready!", err);
+        alert("A fatal Error occured, the app will be closed!");
+        this.platform.exitApp();
+      });
       // translate needed strings for info-window
       Object.keys(this.translatedStrs).forEach((key: string) => {
         this.translate.get(key)

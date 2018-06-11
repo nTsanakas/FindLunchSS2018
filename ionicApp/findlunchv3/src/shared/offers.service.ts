@@ -3,7 +3,7 @@ import {SERVER_URL} from "../app/app.module";
 import {Observable} from "rxjs/Observable";
 import {Offer} from "../model/Offer";
 import 'rxjs/add/operator/do';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient,HttpHeaders} from "@angular/common/http";
 
 
 /**
@@ -52,6 +52,35 @@ export class OffersService {
 
     // get offers from server otherwise
     return this.http.get<Offer[]>(`${SERVER_URL}/api/restaurants/${restaurantId}/offers`)
+  }
+
+  public loadCurrentOffers(){
+    const user: string = window.localStorage.getItem("username");
+    const token: string = window.localStorage.getItem(user);
+    let headers = new HttpHeaders({
+      Authorization: `Basic ${token}`
+    });
+    return this.http.get<Offer[]>(`${SERVER_URL}/api/offers?longitude=11.5569&latitude=48.1543`,
+      {headers});
+    /*navigator.geolocation.getCurrentPosition(suc=> {
+      console.log('Latitude: ' + suc.coords.latitude + 'Longtitude: ' + suc.coords.longitude);
+      const user: string = window.localStorage.getItem("username");
+        const token: string = window.localStorage.getItem(user);
+        let headers = new HttpHeaders({
+          Authorization: `Basic ${token}`
+        });
+      this.http.get<Map<number, Offer>>(`${SERVER_URL}/api/offers?longitude=${suc.coords.longitude}&latitude=${suc.coords.latitude}`, {headers})
+        .subscribe(res => {
+          console.log("/api/offers successfull");
+          currentOffers = res;
+          console.log(JSON.stringify(currentOffers));
+        }, err => {
+          console.error("/api/offers Error: " + JSON.stringify(err));
+        });
+    },
+    err=> {
+      console.error("GPS Position not available");
+    });*/
   }
 
 }

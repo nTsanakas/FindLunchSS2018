@@ -9,23 +9,26 @@ import {TranslateService} from "@ngx-translate/core";
   selector: 'page-choose-login',
   templateUrl: 'choose-login.html',
 })
-export class ChooseLoginPage implements OnInit{
+export class ChooseLoginPage implements OnInit {
 
   ngOnInit(): void {
-
   }
 
   constructor(public navCtrl: NavController,
               private translate: TranslateService) {
   }
 
+
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChooseLoginPage');
   }
-  goToLogin(){
+
+  goToLogin() {
     this.navCtrl.push(AccountPage);
   }
-  goToRegister(){
+
+  goToRegister() {
     this.navCtrl.push(RegisterPage)
   }
 

@@ -132,7 +132,7 @@ export class OffersPage implements OnInit {
      * @author Skanny Morandi
      */
     public onOfferClicked(event: Event, offer: Offer): void {
-        this.navCtrl.push(OfferProductDetailsPage, {offer, restaurant: this.restaurant});
+      this.navCtrl.push(OfferProductDetailsPage, {offer, restaurant: this.restaurant});
     }
 
     /**
