@@ -94,7 +94,7 @@ public class FCMPushService {
      */
     private void sendReservationPush(Reservation reservation, String pushToken, String message) {
         try {
-            // Nachricht als Data-Message senden.
+            // Nachricht als Notification-Message senden.
             String result = fcmClient.sendNotificationMessage(pushToken,
                     "Deine Bestellung",
                     "Deine Bestellung " + reservation.getReservationNumber()+
@@ -106,4 +106,23 @@ public class FCMPushService {
                     e.getMessage()));
         }
     }
+
+    public String sendMeasurePush(String pushToken, String timestamp, String pushCount) {
+
+        String result = "";
+        try {
+            Map<String, String> data = new HashMap<>();
+            data.put("timestamp", timestamp);
+            data.put("pushCount", pushCount);
+            // Nachricht als Data-Message senden.
+            result = fcmClient.sendDataMessage(pushToken,
+                    data);
+            LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(), result));
+        } catch (InterruptedException | ExecutionException e) {
+            LOGGER.error(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
+                    e.getMessage()));
+        }
+        return result;
+    }
+
 }
