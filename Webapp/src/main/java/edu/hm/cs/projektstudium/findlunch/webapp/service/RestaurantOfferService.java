@@ -1,7 +1,5 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.OpeningTime;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
@@ -52,15 +50,14 @@ public class RestaurantOfferService {
         for (Restaurant restaurant : restaurants) {
             // check if restaurant has a TimeSchedule for today
             TimeSchedule ts = restaurant.getTimeSchedules().stream().filter(item -> item.getDayOfWeek().getDayNumber() == calendar.get(Calendar.DAY_OF_WEEK)).findFirst().orElse(null);
-            System.out.println(restaurant.getId() + ": " + ts.toString());
             // only get , that are valid at the moment
-            if (ts != null && getValidOffers(calendar,ts,restaurant.getId(),2) != null) {
-                offers.addAll(getValidOffers(calendar, ts, restaurant.getId(), 2));
+            List<Offer> tempOffers = getValidOffers(calendar,ts,restaurant.getId(),2);
+            if (ts != null && tempOffers != null) {
+                offers.addAll(tempOffers);
             }
             //Nur so viele Angebote wie gewünscht auslesen.
             if(offerNumber <= offers.size()){break;}
         }
-        System.out.println("Offersize: " + offers.size());
         return offers;
     }
 

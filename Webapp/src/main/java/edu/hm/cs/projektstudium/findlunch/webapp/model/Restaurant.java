@@ -910,7 +910,7 @@ public class Restaurant implements Serializable {
 	/**
 	 * Adds the restaurant logo.
 	 *
-	 * @param RestaurantLogo the restuarant logo
+	 * @param restaurantLogo the restuarant logo
 	 * @return the restaurant logo
 	 */
 	public RestaurantLogo addRestaurantLogo(RestaurantLogo restaurantLogo) {
@@ -928,7 +928,7 @@ public class Restaurant implements Serializable {
 	/**
 	 * Removes the restaurant logo.
 	 *
-	 * @param RestaurantLogo the restaurant logo
+	 * @param restaurantLogo the restaurant logo
 	 * @return the restaurant logo
 	 */
 	public RestaurantLogo removeRestaurantLogo(RestaurantLogo restaurantLogo) {

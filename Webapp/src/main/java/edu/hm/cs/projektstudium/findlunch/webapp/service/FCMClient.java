@@ -50,7 +50,7 @@ public class FCMClient {
                         .build();
                 FirebaseApp.initializeApp(options);
 
-            LOGGER.info("FIREBASE INITIALISIERT!: " + FirebaseApp.getInstance().toString());
+            LOGGER.info("FIREBASE INITIALISIERT: " + FirebaseApp.getInstance().toString());
         } catch (Exception e) {
             LOGGER.error(LogUtils.getExceptionMessage("Constructor of FCMClient", e));
         }
