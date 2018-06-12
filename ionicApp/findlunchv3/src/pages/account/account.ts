@@ -1,7 +1,7 @@
 
 
 import {Component, OnInit} from "@angular/core";
-import {Alert, AlertController, Loading, NavController, NavParams, Toast, ToastController, IonicPage} from "ionic-angular";
+import {Alert, AlertController, Loading, NavController, Toast, ToastController, IonicPage} from "ionic-angular";
 import {AuthService} from "../../shared/auth.service";
 import {SERVER_URL} from "../../app/app.module";
 import {LoadingService} from "../../shared/loading.service";
@@ -105,7 +105,8 @@ export class AccountPage implements OnInit{
 
     const user: User = {
       username: userName,
-      password: password
+      password: password,
+      getNotification: false
     };
 
 
@@ -118,6 +119,8 @@ export class AccountPage implements OnInit{
             window.localStorage.setItem("username", userName);
             window.localStorage.setItem(userName, encodedCredentials);
             this.auth.userName = window.localStorage.getItem("username");
+            console.log("Resp: " + resp);
+            this.auth.user.getNotification = resp;
             this.auth.loggedIn = true;
 
               const toast: Toast = this.toastCtrl.create({

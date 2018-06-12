@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {KitchenType} from "../../model/KitchenType";
-import {Response} from "@angular/http";
 
 import {SERVER_URL} from "../../app/app.module";
 import {Alert, AlertController, Platform} from "ionic-angular";
@@ -116,6 +115,7 @@ export class FilterPopoverService {
                         ]
 
                     });
+                    alert.present();
                 }
             );
     }

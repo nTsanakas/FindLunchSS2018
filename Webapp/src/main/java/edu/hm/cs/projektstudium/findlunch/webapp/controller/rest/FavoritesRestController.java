@@ -75,9 +75,8 @@ public class FavoritesRestController {
 			method = RequestMethod.PUT,
 			produces = "application/json")
 	public ResponseEntity<Integer> registerFavorite(
-			@PathVariable("restaurantId")
+			@PathVariable
 			@ApiParam(
-					name = "Restaurant-ID",
 					value = "ID des Restaurants, das als Favorit zu registrieren ist.",
 					required = true)
             Integer restaurantId,

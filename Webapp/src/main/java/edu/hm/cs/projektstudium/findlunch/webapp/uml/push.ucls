@@ -1,28 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.10" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
-  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" 
-    name="edu.hm.cs.projektstudium.findlunch.webapp.controller.rest.PushNotificationRestController" project="webapp" 
-    file="/webapp/src/main/java/edu/hm/cs/projektstudium/findlunch/webapp/controller/rest/PushNotificationRestController.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="148" width="290" x="601" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <class id="2" language="java" 
-    name="edu.hm.cs.projektstudium.findlunch.webapp.scheduling.PushNotificationScheduledTask" project="webapp" 
-    file="/webapp/src/main/java/edu/hm/cs/projektstudium/findlunch/webapp/scheduling/PushNotificationScheduledTask.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="148" width="240" x="321" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">
   <class id="3" language="java" name="edu.hm.cs.projektstudium.findlunch.webapp.scheduling.SendPushNotification" 
     project="webapp" 
     file="/webapp/src/main/java/edu/hm/cs/projektstudium/findlunch/webapp/scheduling/PushNotificationScheduledTask.java" 
@@ -33,18 +11,7 @@
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
-  </class>  
-  <interface id="4" language="java" 
-    name="edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushNotificationRepository" project="webapp" 
-    file="/webapp/src/main/java/edu/hm/cs/projektstudium/findlunch/webapp/repositories/PushNotificationRepository.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="58" width="244" x="321" y="279"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </interface>  
+  </class>
   <association id="5">    
     <end type="SOURCE" refId="2" navigable="false" variant="ASSOCIATION">      
       <attribute id="6" name="pushRepo"/>      

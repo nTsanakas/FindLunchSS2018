@@ -4,20 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
-
+import javax.persistence.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
@@ -62,8 +49,6 @@ public class User implements UserDetails {
 	@ApiModelProperty(notes = "Benutzername")
 	@NotBlank(message="{user.usernameEmpty}")
 	private String username;
-	
-	//private String fcmId;
 
 	/**
 	 * A user object has a Captcha object.
@@ -86,12 +71,6 @@ public class User implements UserDetails {
 			}
 		)
 	private List<Restaurant> favorites;
-	
-	/** The push notifications. */
-	//bi-directional many-to-one association to PushNotification
-	@ApiModelProperty(notes = "Push-Notifikationen")
-	@OneToMany(mappedBy="user")
-	private List<DailyPushNotificationData> pushNotifications;
 
 	/** The restaurant. */
 	@ApiModelProperty(notes = "Restaurants")
@@ -128,7 +107,10 @@ public class User implements UserDetails {
 	@ApiModelProperty(notes = "Absender")
 	@Transient
 	private SseEmitter emitter;
-	
+
+	@ApiModelProperty(notes = "Push-Benachrichtigung eingeschaltet")
+	private boolean pushNotificationEnabled;
+
 	public SseEmitter getEmitter() {
 		return emitter;
 	}
@@ -227,50 +209,6 @@ public class User implements UserDetails {
 	 */
 	public void setFavorites(List<Restaurant> restaurants) {
 		this.favorites = restaurants;
-	}
-	
-	/**
-	 * Gets the push notifications.
-	 *
-	 * @return the push notifications
-	 */
-	public List<DailyPushNotificationData> getPushNotifications() {
-		return this.pushNotifications;
-	}
-
-	/**
-	 * Sets the push notifications.
-	 *
-	 * @param pushNotifications the new push notifications
-	 */
-	public void setPushNotifications(List<DailyPushNotificationData> pushNotifications) {
-		this.pushNotifications = pushNotifications;
-	}
-	
-	/**
-	 * Adds the push notification.
-	 *
-	 * @param pushNotification the push notification
-	 * @return the push notification
-	 */
-	public DailyPushNotificationData addPushNotification(DailyPushNotificationData pushNotification) {
-		getPushNotifications().add(pushNotification);
-		pushNotification.setUser(this);
-
-		return pushNotification;
-	}
-
-	/**
-	 * Removes the push notification.
-	 *
-	 * @param pushNotification the push notification
-	 * @return the push notification
-	 */
-	public DailyPushNotificationData removePushNotification(DailyPushNotificationData pushNotification) {
-		getPushNotifications().remove(pushNotification);
-		pushNotification.setUser(null);
-
-		return pushNotification;
 	}
 
 	/**
@@ -433,6 +371,14 @@ public class User implements UserDetails {
 
 	public void setResetPassword(ResetPassword resetPassword) {
 		this.resetPassword = resetPassword;
+	}
+
+	public boolean isPushNotificationEnabled() {
+		return pushNotificationEnabled;
+	}
+
+	public void setPushNotificationEnabled(boolean pushNotificationEnabled) {
+		this.pushNotificationEnabled = pushNotificationEnabled;
 	}
 
 }

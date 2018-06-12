@@ -4,11 +4,8 @@ import {OffersService} from "../../shared/offers.service";
 import {OfferProductDetailsPage} from "../offer-product-details/offer-product-details";
 import {OrderDetailsPage} from "../orderdetails/orderdetails";
 import {Restaurant} from "../../model/Restaurant";
-import {HttpClient} from "@angular/common/http";
 import {RestaurantPage} from "../restaurant/restaurant";
 import {Observable} from "rxjs/Observable";
-import {Response} from "@angular/http";
-import {SERVER_URL} from "../../app/app.module";
 
 import {CartService} from "../../shared/cart.service";
 import {AuthService} from "../../shared/auth.service";
@@ -49,7 +46,6 @@ export class OffersPage implements OnInit {
                 public offerService: OffersService,
                 private cartService: CartService,
                 private navCtrl: NavController,
-                private http: HttpClient,
                 public auth: AuthService,
                 private platform: Platform,
                 private loading: LoadingService,
@@ -136,7 +132,7 @@ export class OffersPage implements OnInit {
      * @author Skanny Morandi
      */
     public onOfferClicked(event: Event, offer: Offer): void {
-        this.navCtrl.push(OfferProductDetailsPage, {offer, restaurant: this.restaurant});
+      this.navCtrl.push(OfferProductDetailsPage, {offer, restaurant: this.restaurant});
     }
 
     /**

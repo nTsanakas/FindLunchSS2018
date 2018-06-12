@@ -142,7 +142,8 @@ export class RegisterPage {
 
     const user: User = {
       username: username,
-      password: password
+      password: password,
+      getNotification: false
     };
 
     if (!this.validEmail(username)) {

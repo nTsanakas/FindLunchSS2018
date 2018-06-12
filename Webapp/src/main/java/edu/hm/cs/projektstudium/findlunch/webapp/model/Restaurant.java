@@ -23,6 +23,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
@@ -55,12 +56,12 @@ public class Restaurant implements Serializable {
 	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonView({RestaurantView.RestaurantRest.class, ReservationView.ReservationRest.class})
+	@JsonView({RestaurantView.RestaurantRest.class, ReservationView.ReservationRest.class, OfferView.OfferRest.class})
 	private int id;
 
 	/** The city. */
 	@ApiModelProperty(notes = "Stadt")
-	@JsonView({RestaurantView.RestaurantRest.class, ReservationView.ReservationRest.class})
+	@JsonView({RestaurantView.RestaurantRest.class, ReservationView.ReservationRest.class, OfferView.OfferRest.class})
 	@NotBlank(message = "{restaurant.city.notBlank}")
 	@Size(min=2, max=60, message= "{restaurant.city.sizeError}")
 	@Pattern(regexp = "[\\p{L} ]*", message="{restaurant.city.patternMismatch}")
@@ -68,7 +69,7 @@ public class Restaurant implements Serializable {
 
 	/** The email. */
 	@ApiModelProperty(notes = "E-Mail-Adresse")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	@NotBlank(message = "{restaurant.email.notBlank}")
 	@Size(min=2, max=60, message= "{restaurant.email.sizeError}")
 	private String email;
@@ -76,18 +77,18 @@ public class Restaurant implements Serializable {
 	/** The location latitude. */
 	@ApiModelProperty(notes = "Breitengrad")
 	@Column(name = "location_latitude")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private float locationLatitude;
 
 	/** The location longitude. */
 	@ApiModelProperty(notes = "Längengrad")
 	@Column(name = "location_longitude")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private float locationLongitude;
 
 	/** The name. */
 	@ApiModelProperty(notes = "Name")
-	@JsonView({RestaurantView.RestaurantRest.class, ReservationView.ReservationRest.class})
+	@JsonView({RestaurantView.RestaurantRest.class, ReservationView.ReservationRest.class, OfferView.OfferRest.class})
 	@NotBlank(message = "{restaurant.name.notBlank}")
 	@Size(min=2, max=60, message= "{restaurant.name.sizeError}")
 	@Pattern(regexp = "[\\p{L}0-9-&´`'\"(). ]*", message="{restaurant.name.patternMismatch}")
@@ -95,7 +96,7 @@ public class Restaurant implements Serializable {
 
 	/** The phone. */
 	@ApiModelProperty(notes = "Telefonnummer")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	@NotBlank(message = "{restaurant.phone.notBlank}")
 	@Size(min=3, max=60, message= "{restaurant.phone.sizeError}")
 	@Pattern(regexp = "[0-9+/()\\- ]{1,}", message="{restaurant.phone.patternMismatch}")
@@ -103,7 +104,7 @@ public class Restaurant implements Serializable {
 
 	/** The street. */
 	@ApiModelProperty(notes = "Straße")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	@NotBlank(message = "{restaurant.street.notBlank}")
 	@Size(min=2, max=60, message= "{restaurant.street.sizeError}")
 	private String street;
@@ -111,7 +112,7 @@ public class Restaurant implements Serializable {
 	/** The street number. */
 	@ApiModelProperty(notes = "Hausnummer")
 	@Column(name = "street_number")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	@NotBlank(message = "{restaurant.streetNumber.notBlank}")
 	@Pattern(regexp = "[1-9]{1}[0-9]{0,3}[a-zA-Z]?(-[1-9]{1}[0-9]{0,3}[a-zA-Z]?)?", message="{restaurant.streetNumber.patternMismatch}")
 	@Size(min=1, max=11, message= "{restaurant.streetNumber.sizeError}")
@@ -119,14 +120,14 @@ public class Restaurant implements Serializable {
 
 	/** The url. */
 	@ApiModelProperty(notes = "Webseite")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	@URL(message = "{restaurant.urlInvalid}")
 	@Size(max=60, message= "{restaurant.url.sizeError}")
 	private String url;
 
 	/** The zip. */
 	@ApiModelProperty(notes = "Postleitzahl")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	@NotBlank(message = "{restaurant.zip.notBlank}")
 	@NumberFormat(style = Style.NUMBER, pattern = "#####")
 	@Size(min=5, max=5, message = "{restaurant.zip.size}")
@@ -144,7 +145,7 @@ public class Restaurant implements Serializable {
 	// bi-directional many-to-one association to Country
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "country_code")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	@NotNull(message = "{restaurant.country.notNull}")
 	private Country country;
 
@@ -154,7 +155,7 @@ public class Restaurant implements Serializable {
 	@ManyToMany
 	@JoinTable(name = "restaurant_has_kitchen_type", joinColumns = {
 	@JoinColumn(name = "restaurant_id") }, inverseJoinColumns = { @JoinColumn(name = "kitchen_type_id") })
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	@NotEmpty(message = "{restaurant.kitchenType.notEmpty}")
 	private List<KitchenType> kitchenTypes;
 
@@ -163,14 +164,14 @@ public class Restaurant implements Serializable {
 	// bi-directional many-to-one association to RestaurantType
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "restaurant_type_id")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private RestaurantType restaurantType;
 
 	/** The time schedules. */
 	@ApiModelProperty(notes = "Öffnungszeiten")
 	// bi-directional many-to-one association to TimeSchedule
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private List<TimeSchedule> timeSchedules;
 
 	/** The admins. */
@@ -191,19 +192,19 @@ public class Restaurant implements Serializable {
 	/** The default Logo. */
 	@ApiModelProperty(notes = "Logo")
 	@Transient
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private RestaurantLogo defaultLogo;
 	
-	/** The distance. */
+	/** The distance to a given position. */
 	@ApiModelProperty(notes = "Entfernung")
 	@Transient
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private int distance;
 	
 	/** Is favorite restaurant.*/
 	@ApiModelProperty(notes = "Favorit?")
 	@Transient
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private boolean isFavorite;
 
 	/** The points of restaurant.*/
@@ -214,7 +215,7 @@ public class Restaurant implements Serializable {
 	/** The actual point.*/
 	@ApiModelProperty(notes = "Aktuelle Punkte")
 	@Transient
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private int actualPoints;
 	
 	/** The reservations.*/
@@ -908,7 +909,7 @@ public class Restaurant implements Serializable {
 	/**
 	 * Adds the restaurant logo.
 	 *
-	 * @param restaurantLogo the restuarant logo
+	 * @param restaurantLogo the restaurant logo
 	 * @return the restaurant logo
 	 */
 	public RestaurantLogo addRestaurantLogo(RestaurantLogo restaurantLogo) {
@@ -950,7 +951,7 @@ public class Restaurant implements Serializable {
 		for (TimeSchedule timeSchedule : this.timeSchedules) {
 			Date actuallyDate = new Date();
 			if(actuallyDate.getDay()+1==timeSchedule.getDayOfWeek().getDayNumber()){
-				
+
 				// check if there is a openingtime for the day
 				List<OpeningTime> openingTimes = timeSchedule.getOpeningTimes();
 				if(!openingTimes.isEmpty()){
@@ -975,18 +976,15 @@ public class Restaurant implements Serializable {
 					closeHour = timeSchedule.getOfferEndTime().getHours();
 					closeMin = timeSchedule.getOfferEndTime().getMinutes();
 				}
-				
+
 				int nowHour = actuallyDate.getHours();
 				int nowMin = actuallyDate.getMinutes();
-				
+
 				if(openHour > nowHour || (openHour == nowHour && openMin > nowMin )){
 					return false;
 				}
-				
-				if(closeHour < nowHour || (closeHour == nowHour && closeMin < nowMin )){
-					return false;
-				}
-				return true;
+
+				return closeHour >= nowHour && (closeHour != nowHour || closeMin >= nowMin);
 			}
 		}
 		return false;

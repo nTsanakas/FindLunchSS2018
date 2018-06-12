@@ -1,22 +1,12 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonView;
-
-import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.PushNotificationView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -33,18 +23,18 @@ public class DayOfWeek {
 	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@JsonView({RestaurantView.RestaurantRest.class, PushNotificationView.PushNotificationRest.class})
+	@JsonView(RestaurantView.RestaurantRest.class)
 	private int id;
 
 	/** The day number. */
 	@ApiModelProperty(notes = "Wochentag-Nummer")
 	@Column(name="day_number")
-	@JsonView({RestaurantView.RestaurantRest.class, PushNotificationView.PushNotificationRest.class})
+	@JsonView(RestaurantView.RestaurantRest.class)
 	private int dayNumber;
 
 	/** The name. */
 	@ApiModelProperty(notes = "Name des Wochentags")
-	@JsonView({RestaurantView.RestaurantRest.class, PushNotificationView.PushNotificationRest.class})
+	@JsonView(RestaurantView.RestaurantRest.class)
 	private String name;
 
 	/** The offers. */
@@ -52,12 +42,6 @@ public class DayOfWeek {
 	//bi-directional many-to-many association to Offer
 	@ManyToMany(mappedBy="dayOfWeeks")
 	private List<Offer> offers;
-	
-	/** The push notifications. */
-	@ApiModelProperty(notes = "Push-Benachrichtigungen")
-	//bi-directional many-to-many association to PushNotification
-	@ManyToMany(mappedBy="dayOfWeeks")
-	private List<DailyPushNotificationData> pushNotifications;
 
 	/** The time schedules. */
 	@ApiModelProperty(notes = "Zeitpläne")
@@ -186,23 +170,4 @@ public class DayOfWeek {
 
 		return timeSchedule;
 	}
-	
-	/**
-	 * Gets the push notifications.
-	 *
-	 * @return the push notifications
-	 */
-	public List<DailyPushNotificationData> getPushNotifications() {
-		return this.pushNotifications;
-	}
-
-	/**
-	 * Sets the push notifications.
-	 *
-	 * @param pushNotifications the new push notifications
-	 */
-	public void setPushNotifications(List<DailyPushNotificationData> pushNotifications) {
-		this.pushNotifications = pushNotifications;
-	}
-
 }

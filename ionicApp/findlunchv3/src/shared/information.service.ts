@@ -1,5 +1,5 @@
 
-import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Restaurant} from "../model/Restaurant";
 import {Observable} from "rxjs/Observable";
 import {SERVER_URL} from "../app/app.module";

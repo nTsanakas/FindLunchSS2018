@@ -26,7 +26,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
  */
 @RestController
 @Api(value="Firebase-Token", description="Verwaltung des Firebase-Tokens.")
-public class TokenRestContoller {
+public class TokenRestController {
 
 	final UserRepository userRepository;
 
@@ -38,7 +38,7 @@ public class TokenRestContoller {
 	private final Logger LOGGER = LoggerFactory.getLogger(LogRestController.class);
 
 	@Autowired
-	public TokenRestContoller(UserRepository userRepository, PushTokenRepository pushTokenRepository) {
+	public TokenRestController(UserRepository userRepository, PushTokenRepository pushTokenRepository) {
 		this.userRepository = userRepository;
 		this.pushTokenRepository = pushTokenRepository;
 	}
@@ -54,15 +54,22 @@ public class TokenRestContoller {
 	@CrossOrigin
 	@PreAuthorize("isAuthenticated()")
 	@ApiOperation(value = "Firebase-Token in Datenbank schreiben.", response = Integer.class)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Token erfolgreich aktualisiert."), @ApiResponse(code = 202, message = "Neuer Token erfolgreich gesendet."), @ApiResponse(code = 208, message = "Token ist bereits vorhanden."), @ApiResponse(code = 401, message = "Nicht autorisiert.")})
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Token erfolgreich aktualisiert."),
+			@ApiResponse(code = 202, message = "Neuer Token erfolgreich gesendet."),
+			@ApiResponse(code = 208, message = "Token ist bereits vorhanden."),
+			@ApiResponse(code = 401, message = "Nicht autorisiert.")})
 	@RequestMapping(path = "api/submitToken/{pushToken}", method = RequestMethod.PUT, produces = "application/json")
-	ResponseEntity<Integer> submitToken(@PathVariable("pushToken") @ApiParam(name = "Push-Token", value = "Firebase-Token, der für den Push genutzt werden soll.", required = true) String pushToken, @RequestBody(required = true) User user, HttpServletRequest request) {
+	ResponseEntity<Integer> submitToken(
+			@PathVariable
+			@ApiParam(value = "Firebase-Token, der für den Push genutzt werden soll.", required = true)
+					String pushToken,
+			@RequestBody User user,
+			HttpServletRequest request) {
 
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
-        User authenticatedUser = user;
-
-        authenticatedUser = userRepository.findByUsername(user.getUsername());
+        User authenticatedUser = userRepository.findByUsername(user.getUsername());
 
         PushToken oldToken = pushTokenRepository.findByUserId(authenticatedUser.getId());
 

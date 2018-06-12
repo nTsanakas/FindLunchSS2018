@@ -103,8 +103,7 @@ public class ResetPasswordRestController {
 	public ResponseEntity<Integer> getResetPassword(HttpServletRequest request,
 			@RequestBody
 			@ApiParam(
-					name = "user",
-					value = "Benutzer",
+					value = "Benutzername",
 					required = true)
 			String userName){
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));

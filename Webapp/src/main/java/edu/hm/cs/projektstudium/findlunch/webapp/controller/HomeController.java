@@ -1,35 +1,19 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.concurrent.TimeUnit;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-import javax.servlet.http.HttpServletRequest;
-
-import org.json.simple.JSONObject;
+import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
+import edu.hm.cs.projektstudium.findlunch.webapp.mail.MailService;
+import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepository;
+import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
 
-import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.mail.MailService;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.PushToken;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Reservation;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
-import edu.hm.cs.projektstudium.findlunch.webapp.push.PushNotificationManager;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationRepository;;
+import javax.servlet.http.HttpServletRequest;
+
+;
 
 /**
  * The class is responsible for handling http calls related to the main page (home) of the website.

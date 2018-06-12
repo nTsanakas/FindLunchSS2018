@@ -1,58 +1,5 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller;
 
-import java.applet.AppletContext;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-import java.util.regex.Pattern;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.swing.plaf.synth.SynthSeparatorUI;
-import javax.validation.Valid;
-
-import org.apache.catalina.core.ApplicationContext;
-import org.imgscalr.Scalr;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.ResourceUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartException;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.GeocodingApiRequest;
@@ -64,29 +11,44 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Account;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.DayOfWeek;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.OfferPhoto;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.OpeningTime;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.RestaurantLogo;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.RestaurantType;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.TimeSchedule;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.*;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.CustomRestaurantValidator;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.AccountRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.AccountTypeRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.CountryRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.DayOfWeekRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.KitchenTypeRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantTypeRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
+import edu.hm.cs.projektstudium.findlunch.webapp.repositories.*;
 import edu.hm.cs.projektstudium.findlunch.webapp.security.FileUploadRestrictorHelper;
 import edu.hm.cs.projektstudium.findlunch.webapp.security.RestaurantUserDetailsService;
+import org.imgscalr.Scalr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.security.Principal;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * The class is responsible for handling http calls related to the process of adding a restaurant.
@@ -144,8 +106,9 @@ public class RestaurantController {
 	 */
 	@Autowired
 	private AccountRepository accountRepository;
-	
-	private ResourceLoader loader;
+
+	@Autowired
+	private ResourceLoader resourceLoader;
 
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(RestaurantController.class);
@@ -535,6 +498,7 @@ public class RestaurantController {
 			model.addAttribute("geocodingException", result);
 			
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The Location of the restaurant could not be retrieved."));
+			LOGGER.error(">> The Location of the restaurant could not be retrieved.");
 			return "restaurant";
 		}
 		
@@ -543,6 +507,7 @@ public class RestaurantController {
 
 		if (bindingResult.hasErrors()) {
 			LOGGER.error(LogUtils.getValidationErrorString(request, bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName()));
+			LOGGER.error(">> bindingResult.hasErrors()");
 			return "restaurant";
 		}
 
@@ -579,13 +544,13 @@ public class RestaurantController {
 			model.addAttribute("countries", countryRepository.findAll());
 			model.addAttribute("invalidPicture", true);
 			restaurant.setRestaurantLogos((List<RestaurantLogo>)session.getAttribute("photoList"));
-			
+			LOGGER.error(">> Fehler beim Thumbnail-generieren: " + e.getMessage());
 			return "restaurant";
 		}
 
 		session.removeAttribute("logoList");
 		restaurantRepository.save(restaurant);
-		
+		LOGGER.debug(">> Gespeichert: " + restaurant.getName());
 		//
 		Account account = accountRepository.findByUsers(restaurant.getAdmins());
 		if(account == null){
@@ -1022,13 +987,14 @@ public class RestaurantController {
 	 * @author Niklas Klotz
 	 */
 	private void addDefaultLogo(Restaurant restaurant) {
-		try{	
-			File file = ResourceUtils.getFile("classpath:static/images/restaurantDefault.png");
+		try{
+
+			Resource resource = resourceLoader.getResource("classpath:static/images/restaurantDefault.png");
+
 			String imageFormat = "png";
 			RestaurantLogo defaultLogo = new RestaurantLogo();
-			byte[] bytes = new byte[(int) file.length()];
-			FileInputStream fis =new FileInputStream(file);
-			fis.read(bytes);
+			byte[] bytes = new byte[(int) resource.contentLength()];
+			resource.getInputStream().read(bytes);
 			defaultLogo.setLogo(bytes);
 			defaultLogo.setBase64Encoded(Base64.getEncoder().encodeToString(bytes));
 			defaultLogo.setImageFormat(imageFormat);
@@ -1037,7 +1003,7 @@ public class RestaurantController {
 			List<RestaurantLogo> defaultLogos = new ArrayList<>();
 			defaultLogos.add(defaultLogo);
 			restaurant.setRestaurantLogos(defaultLogos);
-			fis.close();
+			resource.getInputStream().close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

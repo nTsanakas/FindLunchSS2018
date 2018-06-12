@@ -77,37 +77,41 @@ INSERT IGNORE INTO `findlunch`.`course_types` (`id`, `restaurant_id`, `name`, `s
 (5, 101, 'Beilage', 5);
 
 -- User Data
-INSERT IGNORE INTO `findlunch`.`user` (`id`, `username`, `password`, `restaurant_id`, `user_type_id`, `account_id`) VALUES
-(1, 'admin@admin.com', '$2a$10$Wo0WJitsLCrhuY4LJoOFRO.xfAWvTVuB8ktPZCqx1lFi67XnIimd6', NULL, 1, NULL),
-(2, 'user@user.de', '$2a$10$mkHTGZbKAMRsC54cH6kOYenXTnk4vFOTBQBFYgrQsJ7hkL3oClFSC', NULL, 2, NULL),
-(3, 'owner@owner.com', '$2a$10$TlzzmKRGrRe/KzPUp111Ue0i.jMm.6uk5b62NCoL6N5DNZEmLkqFa', NULL, 3, 1),
-(4, 'fh@fh.com', '$2a$10$TlzzmKRGrRe/KzPUp111Ue0i.jMm.6uk5b62NCoL6N5DNZEmLkqFa', 11, 1, 2),
-(5, 'mellow@mellow.com', '$2a$10$1ALnrR/Wd/2dRLE7Kq8Gy.o.EyfPriBI6LB/ICae2DrHpHzgCNkVe', 12, 1, 3),
-(6, 'soon@soon.com', '$2a$10$0T975lF3u9yG/rdBdsZL/uA5HBcx49W4OF8jaVMUKNbQdtnw2i7Zu', 13, 1, 4),
-(8, 'a@aname.com', '$2a$10$4AjQi77uMdNczVoma.zdWubOlOgot.LHvraZOV0ILo/srOH639DTq', NULL, 2, NULL),
-(9, 'deniz@deniz.com', '$2a$10$JqPp8yWlIq4YYAHQ38NnKunWlGd1G7oQG1oe3njjyeVTdKvD4ULUe', NULL, 2, NULL),
-(10, 'tom@tom.com', '$2a$10$wz4cYgRAo91l/rP7pT6i2uOjOrVG1YQ1YVZwLU7mQF8.EBBHJ9Kfi', NULL, 2, NULL),
-(101, 'restaurant@ionic.com', '$2a$10$AM5MLDZLCINLkGqWSQdIkeI/RR2DzlIWXP8UMLmJTNfjnrBFO7meu', 101, 1, 101),
-(100, 'ionic@ionic.com', '$2a$10$AM5MLDZLCINLkGqWSQdIkeI/RR2DzlIWXP8UMLmJTNfjnrBFO7meu', NULL, 2, NULL);
+INSERT IGNORE INTO `findlunch`.`user` (`id`, `username`, `password`, `restaurant_id`, `user_type_id`, `account_id`, `push_notification_enabled`) VALUES
+(1, 'admin@admin.com', '$2a$10$Wo0WJitsLCrhuY4LJoOFRO.xfAWvTVuB8ktPZCqx1lFi67XnIimd6', NULL, 1, NULL, 0),
+(2, 'user@user.de', '$2a$10$mkHTGZbKAMRsC54cH6kOYenXTnk4vFOTBQBFYgrQsJ7hkL3oClFSC', NULL, 2, NULL, 0),
+(3, 'owner@owner.com', '$2a$10$TlzzmKRGrRe/KzPUp111Ue0i.jMm.6uk5b62NCoL6N5DNZEmLkqFa', NULL, 3, 1, 0),
+(4, 'fh@fh.com', '$2a$10$TlzzmKRGrRe/KzPUp111Ue0i.jMm.6uk5b62NCoL6N5DNZEmLkqFa', 11, 1, 2, 0),
+(5, 'mellow@mellow.com', '$2a$10$1ALnrR/Wd/2dRLE7Kq8Gy.o.EyfPriBI6LB/ICae2DrHpHzgCNkVe', 12, 1, 3, 0),
+(6, 'soon@soon.com', '$2a$10$0T975lF3u9yG/rdBdsZL/uA5HBcx49W4OF8jaVMUKNbQdtnw2i7Zu', 13, 1, 4, 0),
+(8, 'a@aname.com', '$2a$10$4AjQi77uMdNczVoma.zdWubOlOgot.LHvraZOV0ILo/srOH639DTq', NULL, 2, NULL, 0),
+(9, 'deniz@deniz.com', '$2a$10$JqPp8yWlIq4YYAHQ38NnKunWlGd1G7oQG1oe3njjyeVTdKvD4ULUe', NULL, 2, NULL, 0),
+(10, 'tom@tom.com', '$2a$10$wz4cYgRAo91l/rP7pT6i2uOjOrVG1YQ1YVZwLU7mQF8.EBBHJ9Kfi', NULL, 2, NULL, 0),
+(101, 'restaurant@ionic.com', '$2a$10$AM5MLDZLCINLkGqWSQdIkeI/RR2DzlIWXP8UMLmJTNfjnrBFO7meu', 101, 1, 101, 0),
+(100, 'ionic@ionic.com', '$2a$10$AM5MLDZLCINLkGqWSQdIkeI/RR2DzlIWXP8UMLmJTNfjnrBFO7meu', NULL, 2, NULL, 0),
+(102, 'test@push.de', '$2a$10$mkHTGZbKAMRsC54cH6kOYenXTnk4vFOTBQBFYgrQsJ7hkL3oClFSC', NULL, 2, NULL, 1),
+(103, 'test@push.com', '$2a$10$mkHTGZbKAMRsC54cH6kOYenXTnk4vFOTBQBFYgrQsJ7hkL3oClFSC', NULL, 2, NULL, 1),
+(104, 'test@push.it', '$2a$10$mkHTGZbKAMRsC54cH6kOYenXTnk4vFOTBQBFYgrQsJ7hkL3oClFSC', NULL, 2, NULL, 1),
+(105, 'test@push.at', '$2a$10$mkHTGZbKAMRsC54cH6kOYenXTnk4vFOTBQBFYgrQsJ7hkL3oClFSC', NULL, 2, NULL, 1);
 
 -- offer
 INSERT IGNORE INTO `findlunch`.`offer` (`id`, `restaurant_id`, `course_type`, `title`, `description`, `price`, `preparation_time`, `start_date`, `end_date`, `needed_points`) VALUES
 (1, 11, 1,'Champignonreispfanne (Tg1) ', 'vegan', '1.00', 2, '2017-01-08', '2017-08-31', 30),
-(2, 11, 1, 'Hackbällchen mit Paprikasauce (Tg3)', 'Rindfleisch und Schweinefleisch', '1.90', 4, '2017-01-08', '2017-08-31', 35),
-(3, 11, 1, 'Pfannkuchen mit Schokosauce (Tg2)', 'fleischlos', '1.59', 3, '2017-01-08', '2017-08-31', 25),
+(2, 11, 1, 'Hackbällchen mit Paprikasauce (Tg3)', 'Rindfleisch und Schweinefleisch', '1.90', 4, '2017-01-08', '2019-08-31', 35),
+(3, 11, 1, 'Pfannkuchen mit Schokosauce (Tg2)', 'fleischlos', '1.59', 3, '2017-01-08', '2019-08-31', 25),
 (4, 11, 1, 'Putengulasch (Tg4) ', 'Putenfleisch', '2.40', 5, '2017-01-08', '2017-08-31', 37),
-(5, 12, 1, 'Country Potatoes', 'Knusprige Countrypotatoes mit Sourcreamdip', '4.90', 5, '2017-01-08', '2017-08-31', 40),
-(6, 12, 1, 'Feurige Bohnen', 'Chili con Carne, der leckere texanische Eintopf)', '4.50', 6, '2017-01-08', '2017-08-31', 38),
+(5, 12, 1, 'Country Potatoes', 'Knusprige Countrypotatoes mit Sourcreamdip', '4.90', 5, '2017-01-08', '2019-08-31', 40),
+(6, 12, 1, 'Feurige Bohnen', 'Chili con Carne, der leckere texanische Eintopf)', '4.50', 6, '2017-01-08', '2019-08-31', 38),
 (7, 12, 1, 'Fleischpflanzerlsemmel', 'Frisch', '2.50', 3, '2017-01-08', '2017-08-31', 23),
-(8, 12, 1, 'Wiener mit Semmel oder Kartoffelsalat', 'klein', '2.90', 2, '2017-01-08', '2017-08-31', 15),
-(9, 12, 1, 'Wiener mit Semmel oder Kartoffelsalat ', 'groß', '4.00', 5, '2017-01-08', '2017-08-31', 30),
+(8, 12, 1, 'Wiener mit Semmel oder Kartoffelsalat', 'klein', '2.90', 2, '2017-01-08', '2019-08-31', 15),
+(9, 12, 1, 'Wiener mit Semmel oder Kartoffelsalat ', 'groß', '4.00', 5, '2017-01-08', '2019-08-31', 30),
 (10, 13, 1, 'Butterbreze', 'mit Salz', '1.10', 1, '2017-01-08', '2017-08-31', 10),
-(11, 13, 1, 'Früchtetee', 'mit Himbeeren und Erdbeeren', '1.30', 2, '2017-01-08', '2017-08-31', 15),
-(12, 13, 1, 'Nussschnecke', 'jeden Tag frisch', '1.80', 1, '2017-01-08', '2017-08-31', 20),
-(13, 13, 1, 'Schwarzer Kaffe', 'aus Brasilien', '1.00', 1, '2017-01-08', '2017-08-31', 8),
-(101, 101, 4, 'Schwarzer Kaffe', 'aus Brasilien', '1.00', 1, '2017-01-08', '2017-08-31', 8),
-(102, 101, 2, 'Wiener mit Semmel oder Kartoffelsalat', 'klein', '2.90', 2, '2017-01-08', '2017-08-31', 15),
-(103, 101, 1, 'Fleischpflanzerlsemmel', 'Frisch', '2.50', 3, '2017-01-08', '2017-08-31', 23);
+(11, 13, 1, 'Früchtetee', 'mit Himbeeren und Erdbeeren', '1.30', 2, '2017-01-08', '2018-08-31', 15),
+(12, 13, 1, 'Nussschnecke', 'jeden Tag frisch', '1.80', 1, '2017-01-08', '2018-08-31', 20),
+(13, 13, 1, 'Schwarzer Kaffe', 'aus Brasilien', '1.00', 1, '2017-01-08', '2018-08-31', 8),
+(101, 101, 4, 'Schwarzer Kaffe', 'aus Brasilien', '1.00', 1, '2017-01-08', '2018-08-31', 8),
+(102, 101, 2, 'Wiener mit Semmel oder Kartoffelsalat', 'klein', '2.90', 2, '2018-01-08', '2017-08-31', 15),
+(103, 101, 1, 'Fleischpflanzerlsemmel', 'Frisch', '2.50', 3, '2017-01-08', '2018-08-31', 23);
 
 -- offer has day
 INSERT IGNORE INTO `findlunch`.`offer_has_day_of_week` (`offer_id`, `day_of_week_id`) VALUES
@@ -212,34 +216,34 @@ INSERT IGNORE INTO `findlunch`.`offer_has_day_of_week` (`offer_id`, `day_of_week
 
 -- time schedule
 INSERT IGNORE INTO `findlunch`.`time_schedule` (`id`, `restaurant_id`, `offer_start_time`, `offer_end_time`, `day_of_week_id`) VALUES
-(1, 11, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 1),
-(2, 11, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 2),
-(3, 11, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 3),
-(4, 11, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 4),
-(5, 11, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 5),
-(6, 11, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 6),
-(7, 11, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 7),
-(8, 12, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 1),
-(9, 12, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 2),
-(10, 12, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 3),
-(11, 12, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 4),
-(12, 12, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 5),
-(13, 12, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 6),
-(14, 12, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 7),
-(15, 13, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 1),
-(16, 13, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 2),
-(17, 13, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 3),
-(18, 13, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 4),
-(19, 13, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 5),
-(20, 13, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 6),
-(21, 13, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 7),
-(101, 101, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 1),
-(102, 101, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 2),
-(103, 101, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 3),
-(104, 101, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 4),
-(105, 101, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 5),
-(106, 101, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 6),
-(107, 101, '1970-01-01 00:00:00', '1970-01-01 23:59:00', 7);
+(1, 11, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 1),
+(2, 11, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 2),
+(3, 11, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 3),
+(4, 11, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 4),
+(5, 11, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 5),
+(6, 11, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 6),
+(7, 11, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 7),
+(8, 12, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 1),
+(9, 12, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 2),
+(10, 12, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 3),
+(11, 12, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 4),
+(12, 12, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 5),
+(13, 12, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 6),
+(14, 12, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 7),
+(15, 13, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 1),
+(16, 13, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 2),
+(17, 13, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 3),
+(18, 13, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 4),
+(19, 13, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 5),
+(20, 13, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 6),
+(21, 13, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 7),
+(101, 101, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 1),
+(102, 101, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 2),
+(103, 101, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 3),
+(104, 101, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 4),
+(105, 101, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 5),
+(106, 101, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 6),
+(107, 101, '1970-01-01 00:00:00', '1970-01-01 23:50:00', 7);
 
 INSERT IGNORE INTO `additives` (`id`, `name`, `description`, `short`) VALUES 
 (1, 'Farbstoffe E 100 - E 180', 'mit Farbstoff', 'a'), 
@@ -516,3 +520,4 @@ INSERT IGNORE INTO `findlunch`.`reservation_offers` (`id`,`reservation_id`,`offe
 (48, 15, 101, 1),
 (49, 15, 102, 2),
 (50, 15, 103, 1);
+
