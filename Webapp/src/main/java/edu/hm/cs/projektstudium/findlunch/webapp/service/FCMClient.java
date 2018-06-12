@@ -19,8 +19,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Klasse FCMClient
- *
  * Initialisiert die Verbindung zum Firebase-Server, indem die JSON-Datei unter resources eingebunden wird.
  * Sendet Data- und Notification-Messages für einzelne Clients an Firebase.
  */

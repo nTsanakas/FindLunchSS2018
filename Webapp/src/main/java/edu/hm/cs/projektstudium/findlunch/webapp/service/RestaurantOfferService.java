@@ -35,7 +35,9 @@ public class RestaurantOfferService {
      *
      * @param longitude Längengrad
      * @param latitude Breitengrad
+     * @param restaurantNumber Anzahl der zu suchenden Restaurants
      * @param offerNumber Anzahl der Angebote
+     * @param currentlyOpen Muss das Restaurant geöffnet sein?
      * @param calendar Zeitpunkt, für den gesucht werden soll.
      * @return LinkedHashMap mit Restaurant, Angebotsliste.
      */
