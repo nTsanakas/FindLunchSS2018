@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.10" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
-  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="edu.hm.cs.projektstudium.findlunch.webapp.controller.rest.LoginUserRestController" 
-    project="webapp" 
-    file="/webapp/src/main/java/edu/hm/cs/projektstudium/findlunch/webapp/controller/rest/LoginUserRestController.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="76" width="253" x="41" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">
   <class id="2" language="java" 
     name="edu.hm.cs.projektstudium.findlunch.webapp.controller.rest.KitchenTypeRestController" project="webapp" 
     file="/webapp/src/main/java/edu/hm/cs/projektstudium/findlunch/webapp/controller/rest/KitchenTypeRestController.java" 
@@ -33,18 +22,7 @@
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
-  </class>  
-  <class id="4" language="java" 
-    name="edu.hm.cs.projektstudium.findlunch.webapp.controller.rest.PushNotificationRestController" project="webapp" 
-    file="/webapp/src/main/java/edu/hm/cs/projektstudium/findlunch/webapp/controller/rest/PushNotificationRestController.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="148" width="290" x="1213" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </class>  
+  </class>
   <class id="5" language="java" name="edu.hm.cs.projektstudium.findlunch.webapp.controller.rest.DayOfWeekRestController" 
     project="webapp" 
     file="/webapp/src/main/java/edu/hm/cs/projektstudium/findlunch/webapp/controller/rest/DayOfWeekRestController.java" 
@@ -198,18 +176,7 @@
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
-  </interface>  
-  <interface id="19" language="java" 
-    name="edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushNotificationRepository" project="webapp" 
-    file="/webapp/src/main/java/edu/hm/cs/projektstudium/findlunch/webapp/repositories/PushNotificationRepository.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="58" width="244" x="1213" y="225"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="false" protected="false" private="false" static="true"/>    
-    </display>  
-  </interface>  
+  </interface>
   <association id="20">    
     <end type="SOURCE" refId="9" navigable="false" variant="ASSOCIATION">      
       <attribute id="21" name="offerRepo">        

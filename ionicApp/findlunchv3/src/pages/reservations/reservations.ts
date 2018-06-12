@@ -1,14 +1,10 @@
 import {Component, OnInit} from "@angular/core";
 import {Alert, AlertController, Loading, NavController} from "ionic-angular";
-import { Response} from "@angular/http";
-import {SERVER_URL} from "../../app/app.module";
 import {ReservationPage} from "../reservation/reservation";
 import {Reservation} from "../../model/Reservation";
 import {TranslateService} from "@ngx-translate/core";
-import {AuthService} from "../../shared/auth.service";
 import {LoadingService} from "../../shared/loading.service";
 import {HomePage} from "../home/home";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {InformationService} from "../../shared/information.service";
 
 /**
@@ -27,8 +23,6 @@ export class ReservationsPage implements OnInit {
     private strCancel: string;
 
     constructor(public navCtrl: NavController,
-                private http: HttpClient,
-                private auth: AuthService,
                 private loading: LoadingService,
                 private alertCtrl: AlertController,
                 private translate: TranslateService,

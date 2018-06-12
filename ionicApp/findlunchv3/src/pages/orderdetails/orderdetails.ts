@@ -1,11 +1,9 @@
 import {Component, OnInit} from "@angular/core";
-import { Http, Response} from "@angular/http";
 import {SERVER_URL} from "../../app/app.module";
 import {Alert, AlertController, Loading, NavController, NavParams, Toast, ToastController} from "ionic-angular";
 import {CartService} from "../../shared/cart.service";
 import {Offer} from "../../model/Offer";
 import {AuthService} from "../../shared/auth.service";
-import {InformationService} from "../../shared/information.service";
 import {Restaurant} from "../../model/Restaurant";
 import {AccountPage} from "../account/account";
 import {RegisterPage} from "../register/register";
@@ -66,8 +64,7 @@ export class OrderDetailsPage implements OnInit {
               private auth: AuthService,
               private alertCtrl: AlertController,
               private loading: LoadingService,
-              private translate: TranslateService,
-              private info: InformationService) {
+              private translate: TranslateService) {
     this.ionViewDidEnter();
   }
 

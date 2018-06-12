@@ -1,17 +1,9 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller;
 
-import java.security.Principal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.json.simple.JSONObject;
+import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.*;
+import edu.hm.cs.projektstudium.findlunch.webapp.repositories.*;
+import edu.hm.cs.projektstudium.findlunch.webapp.service.FCMPushService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,25 +16,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.EuroPerPoint;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.PointId;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Points;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.PushToken;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Reservation;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.ReservationList;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.ReservationOffers;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.ReservationStatus;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
-import edu.hm.cs.projektstudium.findlunch.webapp.push.PushNotificationManager;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.EuroPerPointRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PointsRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationStatusRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * The class is responsible for handling http calls related to the process of managing the reservations.
@@ -51,36 +33,43 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 class ReservationController {
 
 	/** The reservation repository. */
-	@Autowired
-	private ReservationRepository reservationRepository;
+	private final ReservationRepository reservationRepository;
 	
 	/** The reservationStatus repository. */
-	@Autowired
-	private ReservationStatusRepository reservationStatusRepository;
+	private final ReservationStatusRepository reservationStatusRepository;
 	
 	/** The restaurant repository. */
-	@Autowired
-	private RestaurantRepository restaurantRepository;
+	private final RestaurantRepository restaurantRepository;
 	
 	/** The euroPerPoint repository. */
-	@Autowired
-	private EuroPerPointRepository euroPerPointRepository;
+	private final EuroPerPointRepository euroPerPointRepository;
 	
 	/** The user repository. */
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 	
 	/** The points repository. */
-	@Autowired
-	private PointsRepository pointsRepository;
+	private final PointsRepository pointsRepository;
 	
 	/** The token repository. */
-	@Autowired
-	private PushTokenRepository tokenRepository;
+	private final PushTokenRepository tokenRepository;
+
+	private final FCMPushService fcmPushService;
 	
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(ReservationController.class);
-	
+
+	@Autowired
+	public ReservationController(ReservationRepository reservationRepository, ReservationStatusRepository reservationStatusRepository, RestaurantRepository restaurantRepository, EuroPerPointRepository euroPerPointRepository, UserRepository userRepository, PointsRepository pointsRepository, PushTokenRepository tokenRepository, FCMPushService fcmPushService) {
+		this.reservationRepository = reservationRepository;
+		this.reservationStatusRepository = reservationStatusRepository;
+		this.restaurantRepository = restaurantRepository;
+		this.euroPerPointRepository = euroPerPointRepository;
+		this.userRepository = userRepository;
+		this.pointsRepository = pointsRepository;
+		this.tokenRepository = tokenRepository;
+		this.fcmPushService = fcmPushService;
+	}
+
 	/**
 	 * Get the page for showing the reservation.
 	 * @param model Model in which necessary objects are placed to be displayed on the website.
@@ -351,20 +340,16 @@ class ReservationController {
 	 */
 	private Boolean sendPush(Reservation reservation) {
 		
-		PushNotificationManager pushManager = new PushNotificationManager();
-		
 		User user = reservation.getUser();
 		PushToken userToken = tokenRepository.findByUserId(user.getId());
 		
 		if(reservation.isConfirmed() && userToken != null){
-			JSONObject notification = pushManager.generateReservationConfirm(reservation, userToken.getFcm_token());
-			pushManager.sendFcmNotification(notification);
+			fcmPushService.sendReservationConfirmPush(reservation, userToken.getFcm_token());
 			return true;
 		}
 
 		if(reservation.isRejected() && userToken != null){
-			JSONObject notification = pushManager.generateReservationReject(reservation, userToken.getFcm_token());
-			pushManager.sendFcmNotification(notification);
+			fcmPushService.sendReservationRejectPush(reservation, userToken.getFcm_token());
 			return true;
 		} 
 		

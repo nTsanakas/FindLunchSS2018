@@ -44,7 +44,7 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.App;
-import edu.hm.cs.projektstudium.findlunch.webapp.distance.DistanceCalculator;
+import edu.hm.cs.projektstudium.findlunch.webapp.service.DistanceCalculator;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Account;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.AccountType;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Bill;
@@ -358,7 +358,7 @@ public class RestaurantRestControllerIT {
 		RestAssured.given()
 			.param("longitude", consumerLocationLongitude)
 			.param("latitude", consumerLocationLatitude)
-			 // Make sure the radius is smaller than the distance between the restaurant and the user
+			 // Make sure the radius is smaller than the service between the restaurant and the user
 			.param("radius", savedRestaurant.getDistance()-100)
 		.when()
 			.get(RESTAURANT_API)
@@ -369,7 +369,7 @@ public class RestaurantRestControllerIT {
 	}
 	
 	/**
-	 * Test one restaurant distance equals radius.
+	 * Test one restaurant service equals radius.
 	 */
 	@Test
 	public void testOneRestaurantDistanceEqualsRadius() {
@@ -404,8 +404,8 @@ public class RestaurantRestControllerIT {
 			.body("[0].streetNumber", Matchers.is(RESTAURANT_STREETNUMBER+savedRestaurant.getId()))
 			.body("[0].locationLatitude", Matchers.is(savedRestaurant.getLocationLatitude()))
 			.body("[0].locationLongitude", Matchers.is(savedRestaurant.getLocationLongitude()))
-			.body("[0].distance", Matchers.is(savedRestaurant.getDistance()))
-			.body("[0].distance", Matchers.is(radius));
+			.body("[0].service", Matchers.is(savedRestaurant.getDistance()))
+			.body("[0].service", Matchers.is(radius));
 
 			}
 	
@@ -420,10 +420,10 @@ public class RestaurantRestControllerIT {
 		
 		List<Restaurant> restaurantsWithinDatabase = getFiveOfFiftyRestaurantsWithinRadius(consumerLocationLongitude, consumerLocationLatitude);
 		
-		// Sort savedRestaurants by distance (ascending)
+		// Sort savedRestaurants by service (ascending)
 		restaurantsWithinDatabase.sort(new RestaurantDistanceComparator());
 		
-		// set Radius to be the 5th smallest distance to obtain 5 restaurants
+		// set Radius to be the 5th smallest service to obtain 5 restaurants
 		int radius = restaurantsWithinDatabase.get(4).getDistance();
 
 		 Response response = RestAssured.given()
@@ -456,7 +456,7 @@ public class RestaurantRestControllerIT {
 			 // Due to rounding of long/lat, we chose an acceptance delta of 0.0001 to pass the test
 			 Assert.assertEquals(expectedResult[i].getLocationLatitude(), actualResult[i].getLocationLatitude(), 0.0001);
 			 Assert.assertEquals(expectedResult[i].getLocationLongitude(), actualResult[i].getLocationLongitude(), 0.0001);
-			 // Due to rounding from long / lat, an acceptance range of 1 m is chosen to check the distance
+			 // Due to rounding from long / lat, an acceptance range of 1 m is chosen to check the service
 			 Assert.assertTrue(actualResult[i].getDistance()-1 <= expectedResult[i].getDistance() && actualResult[i].getDistance()+1 >= expectedResult[i].getDistance());
 
 			 // Check kitchentypes
@@ -479,7 +479,7 @@ public class RestaurantRestControllerIT {
 			 Assert.assertEquals(expectedCountry.getName(), actualCountry.getName());
 		 }
 		 
-		 // Check is sort order is correct (distance ascending)
+		 // Check is sort order is correct (service ascending)
 		 for(int i=1; i < actualResult.length-1;i++) {
 			 
 			 Assert.assertTrue(actualResult[i].getDistance() < actualResult[i+1].getDistance());
@@ -500,7 +500,7 @@ public class RestaurantRestControllerIT {
 		float restaurantLocationLatitude = Float.parseFloat("5.1");
 		float restaurantLocationLongitude = Float.parseFloat("10.5");
 		
-		// Save 50 restaurants to database, all of them are within the given radius (radius == distance from first restaurant, only latitude is incremented that all restaurants lay within the diameter of the search. The first 25 restaurants have a decreasing distance to the consumer location, the last 25 an incresing distance to the consumer.)
+		// Save 50 restaurants to database, all of them are within the given radius (radius == service from first restaurant, only latitude is incremented that all restaurants lay within the diameter of the search. The first 25 restaurants have a decreasing service to the consumer location, the last 25 an incresing service to the consumer.)
 		for(int i=1; i<=50;i++) {
 			
 			Restaurant restaurant = getRestaurant(restaurantLocationLatitude, restaurantLocationLongitude, i);
@@ -515,7 +515,7 @@ public class RestaurantRestControllerIT {
 			restaurantLocationLatitude += 0.2;
 		}
 		
-		// Sort savedRestaurants by distance (ascending)
+		// Sort savedRestaurants by service (ascending)
 		restaurantsWithinDatabase.sort(new RestaurantDistanceComparator());
 
 		 Response response = RestAssured.given()
@@ -548,7 +548,7 @@ public class RestaurantRestControllerIT {
 			 // Due to rounding of long/lat, we chose an acceptance delta of 0.0001 to pass the test
 			 Assert.assertEquals(expectedResult[i].getLocationLatitude(), actualResult[i].getLocationLatitude(), 0.0001);
 			 Assert.assertEquals(expectedResult[i].getLocationLongitude(), actualResult[i].getLocationLongitude(), 0.0001);			
-			 // Due to rounding from long / lat, an acceptance range of 1 m is chosen to check the distance
+			 // Due to rounding from long / lat, an acceptance range of 1 m is chosen to check the service
 			 Assert.assertTrue(actualResult[i].getDistance()-1 <= expectedResult[i].getDistance() && actualResult[i].getDistance()+1 >= expectedResult[i].getDistance());
 
 			 // Check kitchentypes
@@ -571,7 +571,7 @@ public class RestaurantRestControllerIT {
 			 Assert.assertEquals(expectedCountry.getName(), actualCountry.getName());
 		 }
 		 
-		 // Check is sort order is correct (distance ascending)
+		 // Check is sort order is correct (service ascending)
 		 for(int i=1; i < actualResult.length-1;i++) {
 			 
 			 Assert.assertTrue(actualResult[i].getDistance() < actualResult[i+1].getDistance());
@@ -922,10 +922,10 @@ public class RestaurantRestControllerIT {
 		
 		List<Restaurant> restaurantsWithinDatabase = getFiveOfFiftyRestaurantsWithinRadius(consumerLocationLongitude, consumerLocationLatitude);
 		
-		// Sort savedRestaurants by distance (ascending)
+		// Sort savedRestaurants by service (ascending)
 		restaurantsWithinDatabase.sort(new RestaurantDistanceComparator());
 		
-		// set Radius to be the 5th smallest distance to obtain 5 restaurants
+		// set Radius to be the 5th smallest service to obtain 5 restaurants
 		int radius = restaurantsWithinDatabase.get(4).getDistance();
 
 		 Response response = RestAssured.given()
@@ -959,7 +959,7 @@ public class RestaurantRestControllerIT {
 			 // Due to rounding of long/lat, we chose an acceptance delta of 0.0001 to pass the test
 			 Assert.assertEquals(expectedResult[i].getLocationLatitude(), actualResult[i].getLocationLatitude(), 0.0001);
 			 Assert.assertEquals(expectedResult[i].getLocationLongitude(), actualResult[i].getLocationLongitude(), 0.0001);
-			 // Due to rounding from long / lat, an acceptance range of 1 m is chosen to check the distance
+			 // Due to rounding from long / lat, an acceptance range of 1 m is chosen to check the service
 			 Assert.assertTrue(actualResult[i].getDistance()-1 <= expectedResult[i].getDistance() && actualResult[i].getDistance()+1 >= expectedResult[i].getDistance());
 
 			 // Check kitchentypes
@@ -984,7 +984,7 @@ public class RestaurantRestControllerIT {
 			 Assert.assertEquals(false, actualResult[i].isFavorite());
 		 }
 		 
-		 // Check is sort order is correct (distance ascending)
+		 // Check is sort order is correct (service ascending)
 		 for(int i=1; i < actualResult.length-1;i++) {
 			 
 			 Assert.assertTrue(actualResult[i].getDistance() < actualResult[i+1].getDistance());
@@ -999,7 +999,7 @@ public class RestaurantRestControllerIT {
 	{
 		float consumerLocationLongitude = Float.parseFloat("10.1");
 		float consumerLocationLatitude = Float.parseFloat("10.5");
-		// The second, the fourth and the fifth restaurant based on the distance should be a favorite of the user
+		// The second, the fourth and the fifth restaurant based on the service should be a favorite of the user
 		HashSet<Integer> restaurantIndexToFavorite = new HashSet<Integer>();
 		restaurantIndexToFavorite.add(1);
 		restaurantIndexToFavorite.add(3);
@@ -1007,7 +1007,7 @@ public class RestaurantRestControllerIT {
 
 		
 		List<Restaurant> restaurantsWithinDatabase = getFiveOfFiftyRestaurantsWithinRadius(consumerLocationLongitude, consumerLocationLatitude);
-		// Sort savedRestaurants by distance (ascending)
+		// Sort savedRestaurants by service (ascending)
 		restaurantsWithinDatabase.sort(new RestaurantDistanceComparator());
 		
 		User user = getUserWithUserTypeKunde();
@@ -1019,7 +1019,7 @@ public class RestaurantRestControllerIT {
 		byte[] base64Encoded = Base64.getEncoder().encode(authString.getBytes());
 		String encodedString = new String(base64Encoded);
 
-		// set Radius to be the 5th smallest distance to obtain 5 restaurants
+		// set Radius to be the 5th smallest service to obtain 5 restaurants
 		int radius = restaurantsWithinDatabase.get(4).getDistance();
 
 		 Response response = RestAssured.given()
@@ -1053,7 +1053,7 @@ public class RestaurantRestControllerIT {
 			 // Due to rounding of long/lat, we chose an acceptance delta of 0.0001 to pass the test
 			 Assert.assertEquals(expectedResult[i].getLocationLatitude(), actualResult[i].getLocationLatitude(), 0.0001);
 			 Assert.assertEquals(expectedResult[i].getLocationLongitude(), actualResult[i].getLocationLongitude(), 0.0001);
-			 // Due to rounding from long / lat, an acceptance range of 1 m is chosen to check the distance
+			 // Due to rounding from long / lat, an acceptance range of 1 m is chosen to check the service
 			 Assert.assertTrue(actualResult[i].getDistance()-1 <= expectedResult[i].getDistance() && actualResult[i].getDistance()+1 >= expectedResult[i].getDistance());
 
 			 // Check kitchentypes
@@ -1083,7 +1083,7 @@ public class RestaurantRestControllerIT {
 			 }
 		 }
 		 
-		 // Check is sort order is correct (distance ascending)
+		 // Check is sort order is correct (service ascending)
 		 for(int i=1; i < actualResult.length-1;i++) {
 			 
 			 Assert.assertTrue(actualResult[i].getDistance() < actualResult[i+1].getDistance());

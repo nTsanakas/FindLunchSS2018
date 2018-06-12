@@ -2,14 +2,14 @@
 <ion-content padding class="myView">
   <ion-card>
     <ion-card-header>
-      {{'ChooseLoginPage.title' | translate}}
+      Wilkommen bei Findlunch!
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <p>{{'ChooseLoginPage.login' | translate}}</p>
-        <button color="light" ion-button block outline (click)="goToLogin()">{{'ChooseLoginPage.loginButton' | translate}}</button>
-        <p>{{'ChooseLoginPage.register' | translate}}</p>
-        <button color="light" ion-button block outline (click)="goToRegister()">{{'ChooseLoginPage.registerButton' | translate}}</button>
+        <p>Du bist bereits Kunde?</p>
+        <button color="light" ion-button block outline (click)="goToLogin()">Anmelden</button>
+        <p>Ansonsten registriere dich hier!</p>
+        <button color="light" ion-button block outline (click)="goToRegister()">Registrieren</button>
       </ion-list>
     </ion-card-content>
   </ion-card>

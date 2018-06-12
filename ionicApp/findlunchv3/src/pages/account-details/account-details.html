@@ -6,23 +6,26 @@
 -->
 
 <ion-content padding class="myView">
-<ion-card>
-  <ion-card-header>
-    {{this.auth.getUserName()}}
-  </ion-card-header >
-  <ion-card-content>
-    <ion-list>
+  <ion-card>
+    <ion-card-header>
+      {{this.auth.getUserName()}}
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
         <button ion-item (click)="openReservationsPage()">
           Meine Bestellungen
         </button>
         <button ion-item (click)="openBonusPage()">
           Meine Bonuspunkte
         </button>
+        <button ion-item (click)="openCurrentOffersPage()">
+          Aktuelle Angebote
+        </button>
         <button ion-item (click)="this.qr.onQRClicked($event)">
           Abholcode Scannen
         </button>
-    </ion-list>
-  </ion-card-content>
-</ion-card>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
   <button ion-button full color="red" (click)="logout()" #button id="button">Log out</button>
 </ion-content>

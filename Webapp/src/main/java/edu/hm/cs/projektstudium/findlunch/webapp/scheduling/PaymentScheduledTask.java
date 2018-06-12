@@ -18,7 +18,7 @@ public class PaymentScheduledTask {
     /**
      * The logger.
      */
-    private final Logger LOGGER = LoggerFactory.getLogger(PushNotificationScheduledTask.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(PaymentScheduledTask.class);
 
     /** The reservation repository. */
     @Autowired

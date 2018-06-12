@@ -376,7 +376,6 @@ CREATE TABLE IF NOT EXISTS `findlunch`.`push_notification` (
   `longitude` FLOAT NOT NULL,
   `radius` INT(11) NOT NULL,
   `fcm_token` TEXT(4096) NOT NULL,
-  `sns_token` TEXT(4096) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_push_notification_user1_idx` (`user_id` ASC),
   CONSTRAINT `fk_push_notification_user1`
@@ -783,9 +782,22 @@ CREATE TABLE IF NOT EXISTS `findlunch`.`offer_has_additives` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
---------------------------------------------------------
+-- ------------------------------------------------------
+-- V1.1_PushNotificationFeature.sql
+-- ------------------------------------------------------
+-- Spalte `push_notification_enabled` in Tabelle "User" ergänzen.
+ALTER TABLE `findlunch`.`user`
+  ADD `push_notification_enabled` TINYINT(1) DEFAULT 0
+AFTER `password`;
+
+-- Tabellen rund um push_notification löschen.
+DROP TABLE `findlunch`.`push_notification_has_kitchen_type`;
+DROP TABLE `findlunch`.`push_notification_has_day_of_week`;
+DROP TABLE `findlunch`.`push_notification`;
+
+-- ------------------------------------------------------
 -- PayPal Änderungen
---------------------------------------------------------
+-- ------------------------------------------------------
 ALTER TABLE reservation
 ADD used_paypal tinyint(1) not NULL,
 ADD fee decimal(5,2) not NULL,

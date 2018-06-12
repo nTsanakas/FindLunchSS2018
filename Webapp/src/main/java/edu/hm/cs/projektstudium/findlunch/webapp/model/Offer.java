@@ -185,6 +185,7 @@ public class Offer {
 	/** The restaurant. */
 	//bi-directional many-to-one association to Restaurant
 	@ManyToOne(fetch=FetchType.EAGER)
+	@JsonView(OfferView.OfferRest.class)
 	private Restaurant restaurant;
 	
 	/**
@@ -395,7 +396,7 @@ public class Offer {
 	/**
 	 * Sets the allergenic.
 	 *
-	 * @param additives the new allergenic
+	 * @param allergenic the new allergenic
 	 */
 	public void setAllergenic(List<Allergenic> allergenic) {
 		this.allergenic = allergenic;

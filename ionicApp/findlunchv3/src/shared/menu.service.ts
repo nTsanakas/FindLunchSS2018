@@ -1,9 +1,6 @@
 import {Injectable} from "@angular/core";
 import "rxjs/add/operator/map";
 import {APP_LANG} from "../app/app.module";
-import {HomePage} from "../pages/home/home";
-import {AccountPage} from "../pages/account/account";
-import {RegisterPage} from "../pages/register/register";
 import {BonusPage} from "../pages/bonus/bonus";
 import {ReservationsPage} from "../pages/reservations/reservations";
 import {TranslateService} from "@ngx-translate/core";

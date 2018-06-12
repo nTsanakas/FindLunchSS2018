@@ -97,6 +97,7 @@ public class SecurityConfig {
 					// Add a Content-Security-Policy-violation-report-endpoint
 					// The CSRF-protection should be disabled as it is a POST-request.
 					// Otherwise a CSRF-token exception will be sent.
+					.antMatchers(HttpMethod.PATCH, "/api/users/**")
 					.antMatchers(HttpMethod.POST, "/api/csp-report-uri")
 					.antMatchers(HttpMethod.POST, "/api/register_user")
 					.antMatchers(HttpMethod.PUT, "/api/submitToken/**")
@@ -115,6 +116,9 @@ public class SecurityConfig {
 					.antMatchers(HttpMethod.PUT, "/api/reset_password/**")
 					.antMatchers(HttpMethod.GET, "/api/getCustomerReservations")
 					.antMatchers(HttpMethod.GET, "/api/paypal/get_token")
+					.antMatchers(HttpMethod.PUT, "/api/pushNotifications")
+					.antMatchers(HttpMethod.DELETE, "/api/pushNotifications")
+					.antMatchers(HttpMethod.GET, "/api/offers")
 				.and().httpBasic().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		}
