@@ -5,6 +5,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {LoadingService} from "../../shared/loading.service";
 import {Error} from "tslint/lib/error";
 import {FavorizeService} from "../../shared/favorize.service";
+import {AuthService} from "../../shared/auth.service";
 
 /**
  * This pages displays the information of a restaurant.
@@ -24,6 +25,7 @@ export class RestaurantPage implements OnInit {
 
     constructor(private navParams: NavParams,
                 private fav: FavorizeService,
+                private auth: AuthService,
                 private loading: LoadingService,
                 private alertCtrl: AlertController,
                 private translate: TranslateService) {

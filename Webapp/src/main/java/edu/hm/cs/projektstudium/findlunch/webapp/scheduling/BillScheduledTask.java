@@ -66,7 +66,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationReposit
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
 
 /**
- * The Class BillScheduledTask.
+ * A scheduled task to create bills.
  * */
 @Component
 public class BillScheduledTask {

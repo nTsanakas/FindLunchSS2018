@@ -1,17 +1,9 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller;
 
-import java.security.Principal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.json.simple.JSONObject;
+import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.*;
+import edu.hm.cs.projektstudium.findlunch.webapp.repositories.*;
+import edu.hm.cs.projektstudium.findlunch.webapp.service.FCMPushService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,66 +16,63 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.EuroPerPoint;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.PointId;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Points;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.PushToken;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Reservation;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.ReservationList;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.ReservationOffers;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.ReservationStatus;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
-import edu.hm.cs.projektstudium.findlunch.webapp.push.PushNotificationManager;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.EuroPerPointRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PointsRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationStatusRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
- * The class is responsible for handling http calls related to the process of manage the reservations.
+ * The class is responsible for handling http calls related to the process of managing the reservations.
  */
 @Controller 
 class ReservationController {
 
 	/** The reservation repository. */
-	@Autowired
-	private ReservationRepository reservationRepository;
+	private final ReservationRepository reservationRepository;
 	
 	/** The reservationStatus repository. */
-	@Autowired
-	private ReservationStatusRepository reservationStatusRepository;
+	private final ReservationStatusRepository reservationStatusRepository;
 	
 	/** The restaurant repository. */
-	@Autowired
-	private RestaurantRepository restaurantRepository;
+	private final RestaurantRepository restaurantRepository;
 	
 	/** The euroPerPoint repository. */
-	@Autowired
-	private EuroPerPointRepository euroPerPointRepository;
+	private final EuroPerPointRepository euroPerPointRepository;
 	
 	/** The user repository. */
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 	
 	/** The points repository. */
-	@Autowired
-	private PointsRepository pointsRepository;
+	private final PointsRepository pointsRepository;
 	
 	/** The token repository. */
-	@Autowired
-	private PushTokenRepository tokenRepository;
+	private final PushTokenRepository tokenRepository;
+
+	private final FCMPushService fcmPushService;
 	
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(ReservationController.class);
-	
+
+	@Autowired
+	public ReservationController(ReservationRepository reservationRepository, ReservationStatusRepository reservationStatusRepository, RestaurantRepository restaurantRepository, EuroPerPointRepository euroPerPointRepository, UserRepository userRepository, PointsRepository pointsRepository, PushTokenRepository tokenRepository, FCMPushService fcmPushService) {
+		this.reservationRepository = reservationRepository;
+		this.reservationStatusRepository = reservationStatusRepository;
+		this.restaurantRepository = restaurantRepository;
+		this.euroPerPointRepository = euroPerPointRepository;
+		this.userRepository = userRepository;
+		this.pointsRepository = pointsRepository;
+		this.tokenRepository = tokenRepository;
+		this.fcmPushService = fcmPushService;
+	}
+
 	/**
 	 * Get the page for showing the reservation.
-	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param model Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal principal Currently logged in user
 	 * @param request request the HttpServletRequest
 	 * @return the string for the corresponding HTML page
@@ -110,7 +99,7 @@ class ReservationController {
 	
 	/**
 	 * Confirm selected reservations.
-	 * @param reservationList List of reservation
+	 * @param reservationList List of reservations
 	 * @param principal principal Currently logged in user
 	 * @param request request the HttpServletRequest
 	 * @return the string for the corresponding HTML page
@@ -145,6 +134,13 @@ class ReservationController {
 		for(Reservation r: confirmedReservations){
 			Reservation reservation = reservationRepository.findOne(r.getId());
 			reservation.setReservationStatus(reservationStatusRepository.findById(1));
+
+			// Confirms the payment on the selected reservation, if it was paid via PayPal.
+			int i = 0;
+			while (!BraintreeController.confirmTransaction(reservation) && i < 4){
+				i++;
+			}
+
 			reservationRepository.save(reservation);
 			increaseConsumerPoints(reservation);
 			sendPush(reservation);
@@ -154,8 +150,8 @@ class ReservationController {
 	}
 	
 	/**
-	 * Reject the selected reservations
-	 * @param reservationList List of reservation
+	 * Reject the selected reservations.
+	 * @param reservationList List of reservations
 	 * @param principal the currently logged in user
 	 * @param request http request
 	 * @return redirect to the webpage
@@ -187,6 +183,13 @@ class ReservationController {
 			for(Reservation r: rejectedReservations){
 				Reservation reservation = reservationRepository.findOne(r.getId());
 				reservation.setReservationStatus(reservationStatusRepository.findById(2));
+
+				//Voids payment authorization if reservation was paid via PayPal. Tries 4 times if it fails.
+				int i = 0;
+				while (!BraintreeController.voidTransaction(reservation) && i < 4){
+					i++;
+				}
+
 				reservationRepository.save(reservation);
 				sendPush(reservation);
 			}
@@ -195,9 +198,9 @@ class ReservationController {
 	}
 	
 	/**
-	 * Reject the submitted reservation
-	 * @param reservationId
-	 * @param reasonId
+	 * Reject the submitted reservation.
+	 * @param reservationId the reservation id
+	 * @param reasonId the reason id
 	 * @param principal the currently logged in user
 	 * @param request http request
 	 * @return redirect to the webpage
@@ -212,6 +215,13 @@ class ReservationController {
 		Reservation reservation = reservationRepository.findOne(res_id);
 		reservation.setReservationStatus(reservationStatusRepository.findOne(reason_id));
 		reservation.setTimestampResponded(new Date());
+
+		//Voids payment authorization if reservation was paid via PayPal. Tries 4 times if it fails.
+		int i = 0;
+		while (!BraintreeController.voidTransaction(reservation) && i < 4){
+			i++;
+		}
+
 		reservationRepository.save(reservation);
 		sendPush(reservation);
 		
@@ -223,7 +233,7 @@ class ReservationController {
 	/**
 	 * Confirm the submitted reservation
 	 * @param reservationId
-	 * @param waittimeRestaurant
+	 * @param model Restaurant
 	 * @param principal the currently logged in user
 	 * @param request http request
 	 * @return redirect to the webpage
@@ -236,7 +246,13 @@ class ReservationController {
 		
 		Reservation reservation = reservationRepository.findOne(res_id);
 		reservation.setReservationStatus(reservationStatusRepository.findById(1));
-		
+
+		// Confirms the payment on the selected reservation, if it was paid via PayPal.
+		int i = 0;
+		while (!BraintreeController.confirmTransaction(reservation) && i < 4){
+			i++;
+		}
+
 		reservationRepository.save(reservation);
 		sendPush(reservation);
 		
@@ -247,7 +263,7 @@ class ReservationController {
 	 * Confirm selected reservations that are costless.
 	 * @param reservationList List of reservation
 	 * @param principal principal Currently logged in user
-	 * @param requestrequest the HttpServletRequest
+	 * @param request the HttpServletRequest
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path = "/reservations", method = RequestMethod.POST, params={"confirmFreeReservation"})
@@ -282,7 +298,7 @@ class ReservationController {
 	}
 	
 	/**
-	 * Calculate the earned points for this reservations and add them to the points of the user.
+	 * Calculate the earned points for the reservations and add them to the points of the user.
 	 * @param reservation reservation
 	 */
 	private void increaseConsumerPoints(Reservation reservation) {
@@ -318,26 +334,22 @@ class ReservationController {
 	}
 
 	/**
-	 * Sends a confirmation or rejection of the reservation via firebase push to the customer
+	 * Sends a confirmation or rejection of the reservation via firebase push to the customer.
 	 * @param reservation the reservation
 	 * @return ture if a message was send
 	 */
 	private Boolean sendPush(Reservation reservation) {
 		
-		PushNotificationManager pushManager = new PushNotificationManager();
-		
 		User user = reservation.getUser();
 		PushToken userToken = tokenRepository.findByUserId(user.getId());
 		
 		if(reservation.isConfirmed() && userToken != null){
-			JSONObject notification = pushManager.generateReservationConfirm(reservation, userToken.getFcmToken());
-			pushManager.sendFcmNotification(notification);
+			fcmPushService.sendReservationConfirmPush(reservation, userToken.getFcmToken());
 			return true;
 		}
 
 		if(reservation.isRejected() && userToken != null){
-			JSONObject notification = pushManager.generateReservationReject(reservation, userToken.getFcmToken());
-			pushManager.sendFcmNotification(notification);
+			fcmPushService.sendReservationRejectPush(reservation, userToken.getFcmToken());
 			return true;
 		} 
 		
@@ -345,7 +357,7 @@ class ReservationController {
 	}
 	
 	/**
-	 * Gets the pints for the reservation
+	 * Gets the points for the reservation.
 	 * @param reservation_Offers the list of offers within the reservation
 	 * @return the points for the reservation
 	 */
@@ -362,12 +374,12 @@ class ReservationController {
 	}
 	
 	/**
-	 * Gets the details of a given reservation
+	 * Gets the details of a given reservation.
 	 * @param reservationId the reservation
-	 * @param model Model in which necessary object are placed to be displayed on the website.
+	 * @param model Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal the currently logged in user
 	 * @param request http request
-	 * @return the reservation detials into the corresponding html fragment
+	 * @return the reservation details into the corresponding html fragment
 	 */
 	@RequestMapping(path="/reservations/details/{reservationId}", method=RequestMethod.GET)
 	public String getReservationDetails(@PathVariable("reservationId") String reservationId, ModelMap model, Principal principal, HttpServletRequest request){
@@ -394,12 +406,12 @@ class ReservationController {
 	}
 	
 	/**
-	 * Gets data for the reservation Reject Modal
+	 * Gets data for the reservation Reject Modal.
 	 * @param reservationId the reservation
-	 * @param model Model in which necessary object are placed to be displayed on the website.
+	 * @param model Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal the currently logged in user
 	 * @param request http request
-	 * @return the reservation detials into the corresponding html fragment
+	 * @return the reservation details into the corresponding html fragment
 	 */
 	@RequestMapping(path="/reservations/rejectModal/{reservationId}", method=RequestMethod.GET)
 	public String getReservationDeclineModal(@PathVariable("reservationId") String reservationId, ModelMap model, Principal principal, HttpServletRequest request){
@@ -409,12 +421,12 @@ class ReservationController {
 	}
 	
 	/**
-	 * Gets data for the reservation Confirm Modal
+	 * Gets data for the reservation Confirm Modal.
 	 * @param reservationId the reservation
-	 * @param model Model in which necessary object are placed to be displayed on the website.
+	 * @param model Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal the currently logged in user
 	 * @param request http request
-	 * @return the reservation detials into the corresponding html fragment
+	 * @return the reservation details into the corresponding html fragment
 	 */
 	@RequestMapping(path="/reservations/confirmModal/{reservationId}", method=RequestMethod.GET)
 	public String getReservationConfirmModal(@PathVariable("reservationId") String reservationId, ModelMap model, Principal principal, HttpServletRequest request){

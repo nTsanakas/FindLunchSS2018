@@ -42,14 +42,8 @@ VOLUME /tmp
 # All ARGs are defined in the pom.xml.
 # Copy the database initialization scripts in the container to be run by the MariaDB
 # container start-up script.
-ARG SCHEMA
-ADD ${SCHEMA} /docker-entrypoint-initdb.d/00-schema.sql
-ARG DATA
-ADD ${DATA} /docker-entrypoint-initdb.d/01-data.sql
-ARG SWA_SCHEMA
-ADD ${SWA_SCHEMA} /docker-entrypoint-initdb.d/02-swa_schema.sql
-ARG SWA_DATA
-ADD ${SWA_DATA} /docker-entrypoint-initdb.d/03-swa_data.sql
+ARG DB_INIT
+ADD ${DB_INIT} /docker-entrypoint-initdb.d/
 
 # Copy the application JAR in the container
 ARG JAR_FILE

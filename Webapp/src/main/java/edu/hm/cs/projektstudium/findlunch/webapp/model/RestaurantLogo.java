@@ -13,7 +13,6 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,7 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * The Class RestaurantLogo.
+ * Sets the logo of a restaurant.
  */
 @Entity
 @Table(name="restaurant_logo")

@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 /**
- * The class is responsible for handling http calls related to the main page (home) of the website..
+ * The class is responsible for handling http calls related to the main page (home) of the website.
  * Root / relinks to /home.
  */
 @Controller

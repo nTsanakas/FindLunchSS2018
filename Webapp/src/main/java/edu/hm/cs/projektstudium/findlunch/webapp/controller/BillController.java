@@ -57,7 +57,7 @@ public class BillController {
 	
 	/**
 	 * Get the page for showing the bills.
-	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param model Model in which necessary object are placed to be displayed on the website.
 	 * @param principal Currently logged in user
 	 * @param request the HttpServletRequest
 	 * @return the string for the corresponding HTML page
@@ -86,7 +86,7 @@ public class BillController {
 	/**
 	 * Get the bill as pdf.
 	 * @param billId Id of the bill
-	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param model Model in which necessary object are placed to be displayed on the website.
 	 * @param principal principal Currently logged in user
 	 * @param request request the HttpServletRequest
 	 * @param response response to display the pdf
@@ -124,7 +124,7 @@ public class BillController {
 	}
 	
 	/**
-	 * 
+	 * Allows to change the donation amount.
 	 * @param donation the new donation
 	 * @param bindingResult Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
 	 * @param model Model in which necessary object are placed to be displayed on the website.
@@ -180,10 +180,10 @@ public class BillController {
 	}
 	
 	/**
-	 * Checks if the modified donation is a new donation for this month and update it or otherwise create a new donationPerMonth for it.
-	 * @param modifiedDonation 
+	 * Checks if the modified donation is a new donation for this month and updates it. Otherwise create a new donationPerMonth for it.
+	 * @param modifiedDonation the donation amount
 	 * @param restaurant restaurant
-	 * @return
+	 * @return returns the current donation.
 	 */
 	private DonationPerMonth getCurrentDonation(DonationPerMonth modifiedDonation, Restaurant restaurant){
 		//vgl. ob es altes oder neues datum ist. alte wird einem neuen zugewiesen mit dem neuen wert. Das neue wird upgedatet 

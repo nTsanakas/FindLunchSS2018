@@ -40,7 +40,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 /**
- * The Class Offer. Describes a food offer.
+ * Describes a food offer.
  */
 @Entity
 @ApiModel(
@@ -172,6 +172,7 @@ public class Offer {
 	@ApiModelProperty(notes = "Das Restaurant, das das Angebot bereitstellt.")
     @JoinColumn(name="restaurant_id")
 	@ManyToOne(fetch=FetchType.EAGER)
+	@JsonView(OfferView.OfferRest.class)
 	private Restaurant restaurant;
 	
 	/** The coursetype */

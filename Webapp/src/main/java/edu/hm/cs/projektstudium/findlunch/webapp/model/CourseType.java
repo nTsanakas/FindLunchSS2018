@@ -22,12 +22,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.CourseTypeView;
 /**
- * The Class CourseType. Describes different dishes served.
+ * Describes different types of courses.
  */
 @Entity
 @Table(name="course_types")
 @ApiModel(
-		description = "Beschreibt Kurstypen."
+		description = "Beschreibt die Art des Gangs."
 )
 @Getter
 @Setter
@@ -41,7 +41,7 @@ public class CourseType {
 	private int id;
 	
 	/** The name. */
-	@ApiModelProperty(notes = "Name des Kurstypen")
+	@ApiModelProperty(notes = "Name des Gangs")
 	@Column(name="name")
 	@JsonView({CourseTypeView.CourseTypeRest.class})
 	@NotBlank(message="{courstype.name.notBlank}")

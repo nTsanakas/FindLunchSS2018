@@ -14,8 +14,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+
 /**
- * The Class PointId. Defines points to a restaurant and user.
+ * Defines points of a restaurant and user.
  */
 @Embeddable
 @ApiModel(

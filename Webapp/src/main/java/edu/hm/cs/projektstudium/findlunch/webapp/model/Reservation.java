@@ -3,16 +3,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -22,8 +13,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+
 /**
- * Class to define the reservation at a restaurant.
+ * Class to define the reservation of a product.
  */
 @Entity
 @ApiModel(
@@ -49,11 +41,34 @@ public class Reservation {
 	@ApiModelProperty(notes = "Gesamtpreis")
 	@JsonView({ReservationView.ReservationRest.class})
 	private float totalPrice;
-	
+
+	/** The fee to be payed to PayPal **/
+	@JsonView({ReservationView.ReservationRest.class})
+	private float fee;
+
 	/** Is used points. */
 	@ApiModelProperty(notes = "Benutzte Punkte")
 	@JsonView({ReservationView.ReservationRest.class})
 	private boolean usedPoints;
+
+	/** Used PayPal for payment */
+	@Column(name="used_paypal")
+	@JsonView({ReservationView.ReservationRest.class})
+	private boolean usedPaypal;
+
+	/** Braintree Transaction ID. Uniquely identifies the transaction, is needed to settle or void it
+	 * 	More information: https://developers.braintreepayments.com/reference/general/statuses
+	 */
+	@Column(name="pp_transaction_id")
+	@JsonView({ReservationView.ReservationRest.class})
+	private String ppTransactionId;
+
+	/**
+	 * Makes sure the PayPal-Transaction has succesfully been fninished (either voided or settled)
+	 */
+	@Column(name="pp_transaction_finished")
+	@JsonView({ReservationView.ReservationRest.class})
+	private boolean ppTransactionFinished;
 	
 	/** Points are Collected by the cusomer */
 	@Column(name="points_collected")
@@ -128,6 +143,14 @@ public class Reservation {
 	@Column(name="timestamp_responded")
 	private Date timestampResponded;
 
+	/**
+	 * 	Payment nonce, used when payment is done via Paypal. This is only in here to be mapped in an incoming REST call.
+	 * 	As this is one-time use sensitive information it will not be stored in the database and is therefore @Transient.
+	 */
+	@Transient
+	@JsonView({ReservationView.ReservationRest.class})
+	private String nonce;
+
 	public Reservation() { super(); }
 
 	/**
@@ -148,7 +171,6 @@ public class Reservation {
 	 * @return boolean true when Reservation is Unprocessed
 	 */
 	public boolean isUnprocessed(){
-		return reservationStatus.getKey() == ReservationStatus.RESERVATION_KEY_UNPROCESSED;
+	    return reservationStatus.getKey() == ReservationStatus.RESERVATION_KEY_UNPROCESSED;
 	}
-
 }

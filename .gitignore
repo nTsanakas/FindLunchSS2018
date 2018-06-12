@@ -1,11 +1,15 @@
 .DS_Store
-.classpath
-.project
-.idea
+*.classpath
+*.project
+*.idea
 org.eclipse.*
 .settings
 .editorconfig
 target
 findlunch.sh
+<<<<<<< HEAD
 **.iml
 **.log
+=======
+*.iml
+>>>>>>> master

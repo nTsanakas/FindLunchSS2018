@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.DonationPerMonth;
 
 /**
- * The Interface DonationPerMonthRepository. Abstraction for the data access layer
+ * The Interface DonationPerMonthRepository. Abstraction for the data access layer.
  */
 public interface DonationPerMonthRepository extends JpaRepository<DonationPerMonth, Integer> {
 	

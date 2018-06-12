@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 /**
- * The Interface OfferPhotoRepository. Abstraction for the data access layer
+ * The Interface OfferPhotoRepository. Abstraction for the data access layer.
  */
 public interface OfferPhotoRepository extends JpaRepository<OfferPhoto, Integer>{
 	

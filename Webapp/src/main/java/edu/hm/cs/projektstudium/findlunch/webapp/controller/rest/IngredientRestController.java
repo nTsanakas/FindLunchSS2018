@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+
 /**
- * The Class IngredientRestController. The class is responsible for handling rest calls related to Ingredients.
+ * The class is responsible for handling rest calls related to Ingredients.
  * Rest controllers mapping api.
  */
 @RestController
@@ -29,17 +31,19 @@ public class IngredientRestController {
 	/** The Allergenic repository. */
 	private final AllergenicRepository allergenicRepository;
 
-	/** The Additive repository. */
+	/** The Additives repository. */
 	private final AdditiveRepository additiveRepository;
 
-	/** The Additive repository. */
+	/** The Additives repository. */
 	private final OfferRepository offerRepository;
 
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(IngredientRestController.class);
 
 	@Autowired
-	public IngredientRestController(AllergenicRepository allergenicRepository, AdditiveRepository additiveRepository, OfferRepository offerRepository) {
+	public IngredientRestController(AllergenicRepository allergenicRepository,
+									AdditiveRepository additiveRepository,
+									OfferRepository offerRepository) {
 		this.allergenicRepository = allergenicRepository;
 		this.additiveRepository = additiveRepository;
 		this.offerRepository = offerRepository;
@@ -72,6 +76,7 @@ public class IngredientRestController {
 	 * Gets all allergenic for offer.
 	 *
 	 * @param request the HttpServletRequest
+	 * @param offerId Id of the offer.
 	 * @return all allergenic
 	 */
 	@CrossOrigin
@@ -128,6 +133,7 @@ public class IngredientRestController {
 	 * Gets all additives for offer.
 	 *
 	 * @param request the HttpServletRequest
+	 * @param offerId Id of the offer.
 	 * @return all additives
 	 */
 	@CrossOrigin

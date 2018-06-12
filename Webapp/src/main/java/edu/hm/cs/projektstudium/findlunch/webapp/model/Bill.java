@@ -10,8 +10,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+
 /**
- * The Class Bill. Describes the bill of a purchase.
+ * Describes the bill of a purchase.
  */
 @Entity
 @ApiModel(

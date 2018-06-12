@@ -6,7 +6,7 @@
 **/
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {IonicApp, IonicModule, IonicErrorHandler, NavController} from 'ionic-angular';
+import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
@@ -39,6 +39,7 @@ import {FilterPopoverService} from "../pages/home/FilterPopoverService";
 import {OffersService} from "../shared/offers.service";
 import {ReservationsPage} from "../pages/reservations/reservations";
 import {OrderDetailsPage} from "../pages/orderdetails/orderdetails";
+import {CurrentOffersPage} from "../pages/current-offers/current-offers";
 /*
 *
 * Importieren der Services für den Zugriff auf die Rest-Schnittstellen
@@ -67,7 +68,8 @@ import {Network} from "@ionic-native/network";
 import {ChooseLoginPage} from "../pages/choose-login/choose-login";
 import {FCM} from "@ionic-native/fcm";
 
-export const SERVER_URL: string = "http://192.168.2.76:8080";
+
+export const SERVER_URL: string = "http://192.168.2.118:8080";
 export const APP_LANG: string = "de";
 export const FCM_SENDER_ID: string = '101435960151';
 
@@ -89,7 +91,8 @@ export const FCM_SENDER_ID: string = '101435960151';
     OfferProductDetailsPage,
     RestaurantPage,
     ReservationsPage,
-    ReservationPage
+    ReservationPage,
+    CurrentOffersPage
   ],
   imports: [
     CommonModule,
@@ -120,7 +123,8 @@ export const FCM_SENDER_ID: string = '101435960151';
     OfferProductDetailsPage,
     ReservationPage,
     RestaurantPage,
-    ReservationsPage
+    ReservationsPage,
+    CurrentOffersPage
   ],
   providers: [
     FCM,

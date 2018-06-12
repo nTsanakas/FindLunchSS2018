@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * The Class LogUtils - Utilities for the Logger
+ * The Class LogUtils - Utilities for the Logger.
  */
 public class LogUtils {
 	
@@ -17,7 +17,7 @@ public class LogUtils {
 	
 	/**
 	 * Gets the default info string.
-	 *
+	 * 
 	 * @param request the request
 	 * @param methodName the method name
 	 * @return the default info string

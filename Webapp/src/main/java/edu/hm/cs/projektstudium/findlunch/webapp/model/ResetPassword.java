@@ -16,7 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 /**
- * Class to reset the password.
+ * Class to reset the password, includes data for the reset.
  */
 @Entity
 @ApiModel(
@@ -28,14 +28,26 @@ public class ResetPassword {
 	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	/**
+	 * The ID.
+	 */
 	private int id;
 
+	/**
+	 * The token.
+	 */
 	@ApiModelProperty(notes = "Token")
 	private String token;
 
+	/**
+	 * The date.
+	 */
 	@ApiModelProperty(notes = "Datum")
 	private Date date;
 
+	/**
+	 * The user.
+	 */
 	@ApiModelProperty(notes = "Benutzer")
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id")

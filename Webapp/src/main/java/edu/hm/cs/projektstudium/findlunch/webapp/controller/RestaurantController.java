@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -74,6 +75,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.security.FileUploadRestrictorHelper;
 import edu.hm.cs.projektstudium.findlunch.webapp.security.RestaurantUserDetailsService;
 
+
 /**
  * The class is responsible for handling http calls related to the process of adding a restaurant.
  */
@@ -120,13 +122,20 @@ public class RestaurantController {
 	@Autowired
 	private MessageSource messageSource;
 	
+	/**
+	 * The account type repository.
+	 */
 	@Autowired
 	private AccountTypeRepository accountTypeRepository;
 	
+	/**
+	 * The account repository.
+	 */
 	@Autowired
 	private AccountRepository accountRepository;
-	
-	private ResourceLoader loader;
+
+	@Autowired
+	private ResourceLoader resourceLoader;
 
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(RestaurantController.class);
@@ -135,6 +144,7 @@ public class RestaurantController {
 	 * Gets the page for adding a new restaurant to the user.
 	 *
 	 * @param request the HttpServletRequest
+	 * @param session the http session
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal
@@ -227,6 +237,7 @@ public class RestaurantController {
 	 * Gets the page for editing a restaurant from the user.
 	 *
 	 * @param request the HttpServletRequest
+	 * @param session the http session
 	 * @param model
 	 * 			Model in which necessary objects are placed to be displayed on the website.
 	 * @param principal
@@ -323,10 +334,17 @@ public class RestaurantController {
 	 * @param restaurant
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
+<<<<<<< HEAD
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation
 	 * 			and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
+=======
+	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * @param session the http session
+	 * @param model
+	 * 			Model in which necessary objects are placed to be displayed on the website.
+>>>>>>> master
 	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
@@ -374,10 +392,17 @@ public class RestaurantController {
 	 * @param restaurant
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
+<<<<<<< HEAD
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation
 	 * 			and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
+=======
+	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * @param session the http session
+	 * @param model
+	 * 			Model in which necessary objects are placed to be displayed on the website.
+>>>>>>> master
 	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
@@ -421,10 +446,17 @@ public class RestaurantController {
 	 * @param restaurant
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
+<<<<<<< HEAD
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation
 	 * 			and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
+=======
+	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * @param session the http session
+	 * @param model
+	 * 			Model in which necessary objects are placed to be displayed on the website.
+>>>>>>> master
 	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
@@ -463,10 +495,17 @@ public class RestaurantController {
 	 * @param restaurant
 	 * 			Restaurant object to be saved. Populated by the content of the html form field.
 	 * @param bindingResult
+<<<<<<< HEAD
 	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation
 	 * 			and custom validator classes.
 	 * @param model
 	 * 			Model in which necessary object are placed to be displayed on the website.
+=======
+	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation annotation and custom validator classes.
+	 * @param session the http session
+	 * @param model
+	 * 			Model in which necessary objects are placed to be displayed on the website.
+>>>>>>> master
 	 * @param request
 	 * 			The request sent by the user
 	 * @return the string for the corresponding HTML page
@@ -531,9 +570,10 @@ public class RestaurantController {
 		String result = getLocationOfRestaurant(restaurant, request);
 		if (result != null) {
 			model.addAttribute("geocodingException", result);
-			
+
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(),
                     "The Location of the restaurant could not be retrieved."));
+
 			return "restaurant";
 		}
 		
@@ -543,6 +583,7 @@ public class RestaurantController {
 		if (bindingResult.hasErrors()) {
 			LOGGER.error(LogUtils.getValidationErrorString(request, bindingResult,
                     Thread.currentThread().getStackTrace()[1].getMethodName()));
+
 			return "restaurant";
 		}
 
@@ -579,13 +620,13 @@ public class RestaurantController {
 			model.addAttribute("countries", countryRepository.findAll());
 			model.addAttribute("invalidPicture", true);
 			restaurant.setRestaurantLogos((List<RestaurantLogo>)session.getAttribute("photoList"));
-			
+			LOGGER.error(">> Fehler beim Thumbnail-generieren: " + e.getMessage());
 			return "restaurant";
 		}
 
 		session.removeAttribute("logoList");
 		restaurantRepository.save(restaurant);
-		
+		LOGGER.debug(">> Gespeichert: " + restaurant.getName());
 		//
 		Account account = accountRepository.findByUsers(restaurant.getAdmins());
 		if(account == null){
@@ -1060,11 +1101,12 @@ public class RestaurantController {
                     out.write(buffer, 0, bytesRead);
                 }
             }
+
 			String imageFormat = "png";
 			RestaurantLogo defaultLogo = new RestaurantLogo();
-			byte[] bytes = new byte[(int) file.length()];
-			FileInputStream fis =new FileInputStream(file);
-			fis.read(bytes);
+            byte[] bytes = new byte[(int) file.length()];
+            FileInputStream fis =new FileInputStream(file);
+            fis.read(bytes);
 			defaultLogo.setLogo(bytes);
 			defaultLogo.setBase64Encoded(Base64.getEncoder().encodeToString(bytes));
 			defaultLogo.setImageFormat(imageFormat);
@@ -1073,6 +1115,7 @@ public class RestaurantController {
 			List<RestaurantLogo> defaultLogos = new ArrayList<>();
 			defaultLogos.add(defaultLogo);
 			restaurant.setRestaurantLogos(defaultLogos);
+
 			fis.close();
 		} catch (Exception e) {
 			e.printStackTrace();

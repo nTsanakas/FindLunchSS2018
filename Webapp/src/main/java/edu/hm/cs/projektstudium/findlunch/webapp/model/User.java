@@ -3,25 +3,11 @@ package edu.hm.cs.projektstudium.findlunch.webapp.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import javax.persistence.*;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,7 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * The Class User. A user of the FindLunch system. Sets information about a user.
+ * A user of the FindLunch system. Sets information about a user.
  */
 @Entity
 // Inherited property needs to be ignored or else the RegisterUserRestController integration test is not working when passing a user object to the request.
@@ -66,8 +52,6 @@ public class User implements UserDetails {
 	@ApiModelProperty(notes = "Benutzername")
 	@NotBlank(message="{user.usernameEmpty}")
 	private String username;
-	
-	//private String fcmId;
 
 	/**
 	 * A user object has a Captcha object.
@@ -90,12 +74,6 @@ public class User implements UserDetails {
 			}
 		)
 	private List<Restaurant> favorites;
-	
-	/** The push notifications. */
-	//bi-directional many-to-one association to PushNotification
-	@ApiModelProperty(notes = "Push-Notifikationen")
-	@OneToMany(mappedBy="user")
-	private List<DailyPushNotificationData> pushNotifications;
 
 	/** The restaurant. */
 	@ApiModelProperty(notes = "Restaurants")
@@ -133,43 +111,28 @@ public class User implements UserDetails {
 	@Transient
 	private SseEmitter emitter;
 
+	@ApiModelProperty(notes = "Push-Benachrichtigung eingeschaltet")
+	private boolean pushNotificationEnabled;
+
+	public SseEmitter getEmitter() {
+		return emitter;
+	}
+
+	public void setEmitter(SseEmitter emitter) {
+		this.emitter = emitter;
+	}
+
 	/**
 	 * Instantiates a new user.
 	 */
 	public User() { super(); }
-	
-	/**
-	 * Adds the push notification.
-	 *
-	 * @param pushNotification the push notification
-	 * @return the push notification
-	 */
-	public DailyPushNotificationData addPushNotification(DailyPushNotificationData pushNotification) {
-		getPushNotifications().add(pushNotification);
-		pushNotification.setUser(this);
-
-		return pushNotification;
-	}
-
-	/**
-	 * Removes the push notification.
-	 *
-	 * @param pushNotification the push notification
-	 * @return the push notification
-	 */
-	public DailyPushNotificationData removePushNotification(DailyPushNotificationData pushNotification) {
-		getPushNotifications().remove(pushNotification);
-		pushNotification.setUser(null);
-
-		return pushNotification;
-	}
 
 	/* (non-Javadoc)
 	 * @see org.springframework.security.core.userdetails.UserDetails#getAuthorities()
 	 */
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		ArrayList<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority(getUserType().getName()));
 		return authorities;
 	}

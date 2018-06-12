@@ -17,7 +17,7 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 /**
- * The Class EuroPerPoint Defines the value of a point in euro.
+ * Defines the value of a point in euro.
  */
 @Entity
 @Table(name="euro_per_point")
@@ -45,5 +45,4 @@ public class EuroPerPoint {
 	private List<Reservation> reservations;
 
 	public EuroPerPoint() { super(); }
-	
 }

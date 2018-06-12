@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * The Class Points.
+ * Defines the bonus point system.
  */
 @Entity
 @AssociationOverrides({

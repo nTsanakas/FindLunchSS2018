@@ -40,6 +40,16 @@
         <ion-icon name="ios-add-circle-outline" (click)="incrementDonation()"></ion-icon>
       </ion-col>
     </ion-row>
+    <ion-row id="gebuehr" *ngIf="payWithPaypal">
+      <ion-col col-7 color="primary">
+        {{'OrderDetailsPage.fee' | translate}}
+      </ion-col>
+      <ion-col col-2>
+      </ion-col>
+      <ion-col col-3 color="primary">
+        {{reservation.fee.toFixed(2) | currency:'EUR':true}}
+      </ion-col>
+    </ion-row>
     <ion-row id="gesamt">
       <ion-col col-7 color="primary">
           {{ 'OrderDetailsPage.total' | translate }}
@@ -84,7 +94,13 @@
         {{ 'OrderDetailsPage.isNotLoggedIn' | translate }}
     </ion-item>
 
-
+    <ion-item *ngIf="auth.getLoggedIn()">
+      <ion-label>{{ 'OrderDetailsPage.payWithPaypal' | translate }}</ion-label>
+      <ion-toggle  [(ngModel)]="payWithPaypal" (ionChange)="preparePayPal()" disabled="{{reservation.totalPrice<=0}}"></ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="auth.getLoggedIn() && payWithPaypal">
+      <div id="paypal-button" style="width: 100%"></div>
+    </ion-item>
     <button id="bestellen" *ngIf="auth.getLoggedIn()" ion-button (click)="sendOrder()">{{ 'OrderDetailsPage.order' | translate }}</button>
     <div id="notLoggedIn" *ngIf="!auth.getLoggedIn()">
         <button  ion-button full (click)="goToLogin()">{{ 'OrderDetailsPage.login' | translate }}</button>

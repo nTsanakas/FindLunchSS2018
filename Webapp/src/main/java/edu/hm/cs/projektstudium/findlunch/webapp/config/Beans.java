@@ -14,8 +14,8 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.restaurant.Ope
 import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.restaurant.RestaurantValidator;
 import org.apache.catalina.connector.Connector;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.MultipartConfigFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
@@ -24,21 +24,11 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import org.springframework.web.util.UrlPathHelper;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
-import org.thymeleaf.templateresolver.ITemplateResolver;
+
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -48,7 +38,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import javax.servlet.MultipartConfigElement;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -65,7 +54,11 @@ In our case we have defined @Bean for view resolver for JSP view.
 
 
 /**
- * This class is responsible for defining necessary beans that are handled by Spring application context. These beans can then be injected to classes which need their functionality.
+ * This class is responsible for defining necessary beans that are handled by Spring application context.
+ * These beans can then be injected to classes which need their functionality.
+ *
+ * The @Configuration annotation indicates that the class declares one or more @Bean methods.
+ * These methods are invoked at runtime by Spring to manage lifecycle of the beans.
  */
 @Configuration
 @EnableSwagger2
@@ -101,6 +94,7 @@ public class Beans extends WebMvcConfigurerAdapter{
 	@Bean
 	public ResourceBundleMessageSource messageSource() {
 		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+		messageSource.setDefaultEncoding("UTF-8");
 		messageSource.setBasenames("messages/content", "messages/errors", "messages/info", "messages/success",
 				"messages/bill","messages/email","messages/termsAndConditions","messages/privacy","messages/faq",
 				"messages/messages");
@@ -114,9 +108,7 @@ public class Beans extends WebMvcConfigurerAdapter{
 	 * @throws Exception the exception
 	 */
 	@Bean
-	public EmbeddedServletContainerCustomizer containerCustomizer(
-	) throws Exception {
-
+	public EmbeddedServletContainerCustomizer containerCustomizer() throws Exception {
 
 		return new EmbeddedServletContainerCustomizer() {
 			@Override
@@ -137,10 +129,10 @@ public class Beans extends WebMvcConfigurerAdapter{
 			}
 		};
 	}
-	
+
 	/**
-	 * Sets the Docket api.
-	 * @return
+	 * Definiert ein Docket für Swaggger
+	 * @return  Docket für Swagger
 	 */
 	@Bean
 	public Docket api() {                
@@ -184,36 +176,12 @@ public class Beans extends WebMvcConfigurerAdapter{
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
-
-
 	@Bean
 	public LocaleResolver localeResolver() {
 		SessionLocaleResolver resolver = new SessionLocaleResolver();
 		resolver.setDefaultLocale(new Locale("de"));
 		return  resolver;
 	}
-
-	/*@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		LocaleChangeInterceptor localChangeInterceptor = new LocaleChangeInterceptor();
-		localChangeInterceptor.setParamName("language");
-		registry.addInterceptor(localChangeInterceptor);
-	}
-
-	@Bean(name = "multipartResolver")
-	public CommonsMultipartResolver createMultipartResolver() {
-		CommonsMultipartResolver resolver=new CommonsMultipartResolver();
-		resolver.setDefaultEncoding("utf-8");
-		return resolver;
-	}
-
-	@Bean
-	public MultipartConfigElement multipartConfigElement() {
-		MultipartConfigFactory factory = new MultipartConfigFactory();
-		factory.setMaxFileSize("9999KB");
-		factory.setMaxRequestSize("9999KB");
-		return factory.createMultipartConfig();
-	}*/
 
 	@Override
 	public Validator getValidator() {

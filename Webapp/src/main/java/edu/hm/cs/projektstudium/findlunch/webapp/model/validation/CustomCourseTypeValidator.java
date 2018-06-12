@@ -9,7 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 /**
- * The class CustomCourseTypeValidator
+ * Validates a custom course.
  */
 @Component
 public class CustomCourseTypeValidator implements Validator{

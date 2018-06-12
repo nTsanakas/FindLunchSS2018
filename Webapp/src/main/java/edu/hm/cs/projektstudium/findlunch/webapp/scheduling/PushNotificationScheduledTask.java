@@ -1,160 +1,88 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.scheduling;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-import org.json.simple.JSONObject;
+import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.PushToken;
+import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
+import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepository;
+import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
+import edu.hm.cs.projektstudium.findlunch.webapp.service.FCMPushService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import edu.hm.cs.projektstudium.findlunch.webapp.controller.rest.RestaurantRestController;
-import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.DayOfWeek;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.KitchenType;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
-import edu.hm.cs.projektstudium.findlunch.webapp.push.PushMessagingInterface;
-import edu.hm.cs.projektstudium.findlunch.webapp.push.PushNotificationManager;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushNotificationRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepository;
-import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
-
+import java.util.List;
 
 /**
- * The Class PushNotificationScheduledTask.
- * 
- * Scheduled check if there are push-notifications in database to be sent.
- * Differencing between Amazon and Google push-notifications.
- * Push-notifications with valid tokens are processed.
- * 
- * Extended by Maxmilian Haag on 18.12.2016.
- * Extended by Niklas Klotz on 21.04.2017.
+ * Klasse PushNotificationScheduledTask
+ *
+ * Zuständig für das Versenden der Push-Nachrichten an User, die zweimal täglich nahegelegene Angebote per
+ * Push erhalten möchten. Die Push-Nachricht stößt dabei aber nur einen REST-Aufruf der Clients an und
+ * übermittelt noch nicht die Angebote.
  */
 @Component
 public class PushNotificationScheduledTask {
-	
 
-	/**
-	 * Identification string in database for not valid token.
-	 * Other service will be used and processed.
-	 */
-	private final static String NOT_AVAILABLE = "notAvailable";
+    /** Logger zum Protokollieren von Serverereignissen. */
+    private final Logger LOGGER = LoggerFactory.getLogger(FCMPushService.class);
 
-	/**
-	 * The logger.
-	 */
-	private final Logger LOGGER = LoggerFactory.getLogger(PushNotificationScheduledTask.class);
+    /** User-Repository */
+    private final UserRepository userRepository;
 
-	/**
-	 * The push repo.
-	 */
-	@Autowired
-	private PushNotificationRepository pushRepo;
+    /** Push-Token-Repository mit Token zur User-Id. */
+    private final PushTokenRepository pushTokenRepository;
 
-	/**
-	 * The restaurant rest.
-	 */
-	@Autowired
-	private RestaurantRestController restaurantRest;
+    /** Push-Service zum Versenden der Nachrichten */
+    private final FCMPushService fcmPushService;
 
-	/**
-	 * The restaurant repo.
-	 */
-	@Autowired
-	private RestaurantRepository restaurauntRepo;
+    /** Identifikationsstring für fehlenden/abgelaufenen Token in der Datenbank. */
+    private final static String NOT_AVAILABLE = "notAvailable";
 
-	@Autowired
-	private PushTokenRepository tokenRepo;
-	
-	/**
-	 * ########################################
-	 * # COMMENT "@Scheduled" FOR MEASUREMENT!#
-	 * ########################################
-	 * 
-	 * Checking available push-notifications in database each 200 seconds (~3.5 min).
-	 *  
-	 */
-	@Scheduled(fixedRate = 200000)
-	public void checkPushNotifications()  {
 
-		//Log info
-		LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
-				"Starting check for push notifications."));
+    /**
+     * Konstruktor, der die Repositories/Services per @Autowired einbindet.
+     * @param userRepository User-Repository
+     * @param pushTokenRepository Push-Token-Repository
+     * @param fcmPushService FCM-Push-Service
+     */
+    @Autowired
+    public PushNotificationScheduledTask(UserRepository userRepository, PushTokenRepository pushTokenRepository, FCMPushService fcmPushService) {
+        this.userRepository = userRepository;
+        this.pushTokenRepository = pushTokenRepository;
+        this.fcmPushService = fcmPushService;
+    }
 
-		//Extracting all push-notifications from database.
-		List<DailyPushNotificationData> activePushNotifications = pushRepo.findAll();
-		int dayNumberToday = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-		
-		//Check all push notifications
-		for (DailyPushNotificationData p : activePushNotifications) {
+    /**
+     *  Methode, die um 11 und 17 Uhr die User, bei denen pushNotificationEnabled = true ist, auswählt und veranlasst,
+     *  dass ihnen eine Push-Nachricht per Firebase gesendet wird.
+     */
+    @Scheduled(cron = "0 0 11,17 * * ?", zone = "CET")
+    public void sendDailyPushNotifications() {
 
-			// Determine if the push notification shall be sent today.
-			List<DayOfWeek> daysOfWeekPushList = p.getDayOfWeeks();
-			Boolean sendPushToday = true;
-			/*
-			 * TODO: Fürs erste ist die Abfrage der Tage zur Vereinfachung ausgeklammert, da über ein anderes Konzept der Push-Benachrichtigung nachgedacht wird. 
-			 * 
-			 *
-			 for (int i = 0; i < daysOfWeekPushList.size() && sendPushToday == false; i++) {
-				int dayOfWeekPush = daysOfWeekPushList.get(i).getDayNumber();
-				sendPushToday = (dayOfWeekPush == dayNumberToday);
-			}*/
-			
-			if (sendPushToday) {
-				// Get list of Restaurants matching push notification location.
-				List<Restaurant> restaurantsNearbyList = new ArrayList<Restaurant>();
-//				restaurantsNearbyList = restaurantRest.getAllRestaurants(p.getLongitude(), p.getLatitude(), p.getRadius());
-				restaurantsNearbyList = restaurauntRepo.findAll();
-				LOGGER.info("Gefundene Restaurants:" + restaurantsNearbyList.size());
-				Integer restaurantsForPushCount = 0;
-				List<Integer> pushKitchenTypeIds = new ArrayList<Integer>();
-				for (KitchenType k : p.getKitchenTypes()) {
-					pushKitchenTypeIds.add(k.getId());
-				}
-				if (p.getKitchenTypes().size() > 0) {
-					/*
-					 * If Kitchen Types are specified for push notification:
-					 * Only Restaurants with the resp. kitchen types count for
-					 * push notification.
-					 */
-					List<Restaurant> restaurantsForPush = restaurauntRepo.findByKitchenTypes_idIn(pushKitchenTypeIds);
-					restaurantsForPushCount = restaurantsForPush.size();
-				} else {
-					/*
-					 * If no Kitchen Types are specified for push notification:
-					 * All Restaurants count for push notification.
-					 */
-					restaurantsForPushCount = restaurantsNearbyList.size();
-				}
+        LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
+                "Beginne mit Versand der täglichen Push-Nachrichten."));
 
-				// Check if there are restaurants for the push notification.
-				if (restaurantsForPushCount > 0) {
-					
-					//Create push notification sender base for further push-message processing.
-					PushMessagingInterface senderBase = new PushNotificationManager();
-					PushNotificationManager manager = new PushNotificationManager();
-					
-					User receiver = p.getUser();
-					p.setFcmToken(p.getFcmToken());
-					
-					JSONObject notification = manager.generateFromDaily(p, restaurantsForPushCount, pushKitchenTypeIds, p.getFcmToken());
-					
-					//Check which push notification token is valid, process data at sender manager.
-					if(!p.getFcmToken().equals(NOT_AVAILABLE)) {
-						
-						senderBase.sendFcmNotification(notification);
-						//senderBase.sendFcmDailyNotification(p, restaurantsForPushCount, pushKitchenTypeIds);
-					}
-				}
-
-			}
-		}
-		//Console log info
-		LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(), "Check for push notifications finished."));
-	}
+        // User mit gewünschter Push-Notifikation ermitteln.
+        List<User> users = userRepository.findAllByPushNotificationEnabledIsTrue();
+        for(User user : users){
+            // Push-Token-Objekt zu jedem Nutzer suchen.
+            PushToken pushToken = pushTokenRepository.findByUserId(user.getId());
+            // Wenn ein dazugehöriger Push-Token, der gültig ist, gefunden wurde, wird die Push-Nachricht erstellt und
+            // versendet.
+            if(pushToken!=null){
+                if(!pushToken.getFcmToken().equals(NOT_AVAILABLE)) {
+                    fcmPushService.sendDailyPushNotification(pushToken.getFcmToken());
+                } else {
+                    LOGGER.error(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
+                            "Push-Token für User mit ID " + user.getId() + " nicht verfügbar, obwohl er Push-Nachrichten erhalten will."));
+                }
+            } else {
+                LOGGER.error(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
+                        "Push-Token für User mit ID " + user.getId() + " nicht existent, obwohl er Push-Nachrichten erhalten will."));
+            }
+        }
+        LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(),
+                "Nachrichtenversand für " + users.size() + " User abgeschlossen."));
+    }
 }
-

@@ -18,10 +18,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+
 /**
- * The class ReservationStatus. Information about the state of a reservation.
- * @author oberm
- *
+ * Information about the state of a reservation.
  */
 @Entity
 @Table(name="reservation_status")
@@ -62,5 +61,4 @@ public class ReservationStatus {
 	private List<Reservation> reservation;
 
 	public ReservationStatus() { super(); }
-
 }

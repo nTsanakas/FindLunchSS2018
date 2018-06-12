@@ -3,15 +3,12 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import edu.hm.cs.projektstudium.findlunch.webapp.controller.NotificationController;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -19,11 +16,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * This class is used in combination with the Content-Security-Policy-Header and
- * receives any violations of the set policy. This class is used as the
- * csp-report-uri.
+ * This class is used in combination with the Content-Security-Policy-Header and receives any violations of the set
+ * policy. This class is used as the csp-report-uri.
  */
 @RestController
+@Api(
+        value="Policy-Verletzung",
+        description="Einblick in Policy-Verletzungen.")
 class CpiRestController {
 
 	/**
@@ -31,18 +30,20 @@ class CpiRestController {
 	 */
 	private final Logger LOGGER = LoggerFactory.getLogger(CpiRestController.class);
 
-	/**
-	 * This method handles the received Content-Security-Policy-violations and
-	 * forwards them to a mobile device through the messenger Telegram.
-	 *
-	 * @param request
-	 *            the HttpServletRequest
-	 */
-	@CrossOrigin
-	@RequestMapping(path = "/api/csp-report-uri", method = RequestMethod.POST)
-	public void getCspViolations(@RequestParam(name = "JSON csp-report", required = true)final HttpServletRequest request) throws IOException {
-
-		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+    /**
+     * This method handles the received Content-Security-Policy-violations and forwards them to a mobile device
+     * through the messenger Telegram.
+     *
+     * @param request the HttpServletRequest
+     */
+    @CrossOrigin
+    @ApiOperation(value = "Behandeln von Verstößen gegen die Content-Policy auf dem Server.")
+    @RequestMapping(
+            path = "/api/csp-report-uri",
+            method = RequestMethod.POST)
+    public void getCspViolations(@RequestParam(name = "JSON csp-report", required = true) final HttpServletRequest request) throws IOException {
+    	
+        LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
 		final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
 		final StringBuilder stringBuilder = new StringBuilder();

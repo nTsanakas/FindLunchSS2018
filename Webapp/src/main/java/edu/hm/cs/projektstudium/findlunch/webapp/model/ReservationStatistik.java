@@ -6,8 +6,9 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+
 /**
- * The Class ReservationStatistik. Wrapper class to have access to the reservation object.
+ * Wrapper class to have access to the reservation object.
  */
 /*
  * Wrapper Klasse, da man sonst keinen zugriff auf die reservation Objekt hat
@@ -39,7 +40,7 @@ public class ReservationStatistik {
 	private double totalValue = 0;
 	private double averageRespondeTime = 0;
 	private double percent = 0;
-	private ArrayList<Reservation> reservations = new ArrayList<Reservation>();
+	private ArrayList<Reservation> reservations = new ArrayList<>();
 
     /**
      * Calculates the total value of all prices.

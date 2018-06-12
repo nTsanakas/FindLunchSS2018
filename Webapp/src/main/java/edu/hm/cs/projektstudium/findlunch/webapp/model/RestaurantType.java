@@ -12,9 +12,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-
 /**
- * The Class RestaurantType. Defines the type of restaurant.
+ * Defines the type of restaurant.
  */
 @Entity
 @Table(name="restaurant_type")

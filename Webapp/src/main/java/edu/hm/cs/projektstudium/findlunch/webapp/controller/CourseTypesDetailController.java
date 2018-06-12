@@ -31,10 +31,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.OfferRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
 
 /**
- * The class CourseTypesDetailsController
- * The class is responsible for handling http calls to the page coursetype and coursetypedetails
- *
- * @author Niklas Klotz
+ * The class is responsible for handling http calls to the page coursetype and coursetypedetails.
  *
  */
 @Controller
@@ -60,12 +57,10 @@ public class CourseTypesDetailController {
 	
 	/**
 	 * Gets the page for adding a new courseType.
-	 * @param model 
-	 * 			Model in which necessary object are placed to be displayed on the website.
-	 * @param principal
-	 * 			Currently logged in user.
-	 * @param session
-	 * @param request
+	 * @param model Model in which necessary objects are placed to be displayed on the website.
+	 * @param principal Currently logged in user.
+	 * @param session Current session.
+	 * @param request http request.
 	 * @return the string for the corresponding HTML page
 	 */
 	@RequestMapping(path="/coursetype/add", method=RequestMethod.GET)
@@ -85,12 +80,12 @@ public class CourseTypesDetailController {
 	
 	/**
 	 * Gets the page for editing an already existing coursetype.
-	 * @param coursetypeId The coursetype
+	 * @param coursetypeId The coursetype.
 	 * @param model Model in which necessary object are placed to be displayed on the website.
 	 * @param principal Currently logged in user.
 	 * @param session the session
 	 * @param request http request
-	 * @return the string for the corresponding HTML page
+	 * @return the string for the corresponding HTML page.
 	 */
 	@RequestMapping(path="/coursetype/edit/{coursetypeId}", method=RequestMethod.GET)
 	public String getCourseTypesDetailUpdate(@PathVariable("coursetypeId") Integer coursetypeId, Model model, Principal principal, HttpSession session, HttpServletRequest request){
@@ -114,6 +109,7 @@ public class CourseTypesDetailController {
 	
 	/**
 	 *  Save the coursetypes to the database. New coursetypes are stored, edited offers are updated.
+	 * @param courseType the coursetype
 	 * @param bindingResult the binding resultes
 	 * @param principal the currently logged in user
 	 * @param model Model in which necessary object are placed to be displayed on the website.
@@ -242,7 +238,7 @@ public class CourseTypesDetailController {
 	 * @param principal the currently logged in user
 	 * @param session the session
 	 * @param request http request
-	 * @return
+	 * @return the string to the corresponding webpage
 	 */
 	@RequestMapping(path="coursetype/overview/down/{courseId}", method=RequestMethod.GET)
 	public String offerDown(@PathVariable("courseId") Integer courseId, Model model, Principal principal, HttpSession session, HttpServletRequest request){

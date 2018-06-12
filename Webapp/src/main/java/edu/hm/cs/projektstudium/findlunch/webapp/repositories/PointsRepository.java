@@ -9,12 +9,12 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.PointId;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Points;
 
 /**
- * The Interface AccountRepository. Abstraction for the data access layer
+ * The Interface AccountRepository. Abstraction for the data access layer.
  */
 public interface PointsRepository extends JpaRepository<Points, Serializable>{
 	
 	/**
-	 * Find Points by PointId.
+	 * Find Points by composite key.
 	 * @param compositeKey Needed composite key
 	 * @return The points
 	 */
@@ -29,8 +29,8 @@ public interface PointsRepository extends JpaRepository<Points, Serializable>{
 
 	/**
 	 * Find List of Points from a user for a Restaurant.
-	 * @param userId userId of the user
-	 * @param restaurantId restaurantId of the restaurant
+	 * @param userId Id of the user
+	 * @param restaurantId Id of the restaurant
 	 * @return List of points
 	 */
 	List<Points> findByCompositeKey_User_IdAndCompositeKey_Restaurant_Id(int userId, int restaurantId);

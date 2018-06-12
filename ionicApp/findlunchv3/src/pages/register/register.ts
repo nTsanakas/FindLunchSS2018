@@ -142,7 +142,8 @@ export class RegisterPage {
 
     const user: User = {
       username: username,
-      password: password
+      password: password,
+      getNotification: false
     };
 
     if (!this.validEmail(username)) {
@@ -176,7 +177,7 @@ export class RegisterPage {
         this.auth.register(username, password)
           .subscribe(
             resp => {
-              const encodedCredentials: string = btoa(`${username}{password}`);
+              const encodedCredentials: string = btoa(`${username}:${password}`);
               window.localStorage.setItem("username", username);
               window.localStorage.setItem(username, encodedCredentials);
               this.auth.userName = window.localStorage.getItem("username");

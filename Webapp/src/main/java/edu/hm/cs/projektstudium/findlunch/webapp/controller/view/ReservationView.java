@@ -8,7 +8,7 @@ public class ReservationView {
 	/**
 	 * The Interface ReservationRest. If used, only the fields marked with the
 	 * annotation "JsonView(ReservationView.ReservationRest.class)" will be
-	 * returned when accessing a rest controller (GET)
+	 * returned when accessing a rest controller (GET).
 	 */
 	public interface ReservationRest {
 	}

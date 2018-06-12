@@ -35,7 +35,7 @@
         <div *ngFor="let offer of offers[category]; let i=index">
           <ion-list-header align="center">
             <div (click)="onOfferClicked($event, offer)">
-              <img id="product-image" [src]="'data:image/jpg;base64,' + offer.defaultPhoto.thumbnail">
+              <!--<img id="product-image" [src]="'data:image/jpg;base64,' + offer.defaultPhoto.thumbnail">-->
               <p align="center" id="offerText">{{offer.title}}</p>
               <p align="center" id="offerText1">{{offer.price | currency:'EUR':true}}</p>
             </div>

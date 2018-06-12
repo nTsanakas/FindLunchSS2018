@@ -29,7 +29,8 @@ public final class AuthenticationHelper {
     private static final int MAX_ATTEMPT = 6;
 
     /**
-     * Two caches which keep the failed attempts. A time limit when the caches should be cleared can be assigned.
+     * Two caches which keep the failed attempts. <p>
+     * A time limit when the caches should be cleared can be assigned. <p>
      * See: https://google.github.io/guava/releases/18.0/api/docs/com/google/common/cache/CacheBuilder.html
      */
     private static LoadingCache<String, Integer> attemptsCacheIpAddress;
@@ -58,6 +59,8 @@ public final class AuthenticationHelper {
 
     /**
      * Handle a failed login attempt where the IP-address and the session-ID is known.
+     * @param ipAddress The IP address.
+     * @param sessionId The session id.
      */
     public void loginFailedIpAddressAndSessionId(final String ipAddress, final String sessionId) {
         int attemptsIpAddress;
@@ -83,6 +86,7 @@ public final class AuthenticationHelper {
 
     /**
      * Handle a failed login attempt where the IP-address is known.
+     * @param ipAddress The IP address.
      */
     public void loginFailedIpAddress(final String ipAddress) {
         int attemptsIpAddress = 0;
@@ -134,6 +138,7 @@ public final class AuthenticationHelper {
      * Handle a failed login attempt where an IP-address is blocked.
      *
      * @param ipAddress the IP-address
+     * @return Amount of attempted logins from a blocked IP-address.
      */
     public boolean isBlocked(final String ipAddress) {
         try {

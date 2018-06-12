@@ -17,7 +17,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * The class ReservationOffers
  * The class represnets a list of offers within a reservation
  */
 @Entity

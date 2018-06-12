@@ -27,17 +27,17 @@ public interface CourseTypeRepository extends JpaRepository<CourseType, Integer>
 	CourseType findById(int id);
 	
 	/**
-	 * Geths all coursetypes of a restaurant ordered by the sort value
+	 * Gets all coursetypes of a restaurant ordered by the sort value.
 	 * @param restaurant_id the restaurant
-	 * @return
+	 * @return the course typed of a restaurant, ordered ascending
 	 */
 	List<CourseType> findByRestaurantIdOrderBySortByAsc(int restaurant_id);
 	
 	/**
-	 * Gets a specific coursetype of a given restaurant
+	 * Gets a specific coursetype of a given restaurant.
 	 * @param id the coursetype
 	 * @param restaurant_id the restaurant
-	 * @return
+	 * @return specific course type for a restaurant
 	 */
 	CourseType findByIdAndRestaurantId(int id, int restaurant_id);
 
