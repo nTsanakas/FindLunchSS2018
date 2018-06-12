@@ -1,9 +1,10 @@
-import {Injectable} from "@angular/core";
+import {Injectable, OnInit} from "@angular/core";
 import {SERVER_URL} from "../app/app.module";
 import {Observable} from "rxjs/Observable";
 import {Offer} from "../model/Offer";
 import 'rxjs/add/operator/do';
 import {HttpClient,HttpHeaders} from "@angular/common/http";
+import {observable} from "rxjs/symbol/observable";
 
 
 /**
@@ -11,15 +12,21 @@ import {HttpClient,HttpHeaders} from "@angular/common/http";
  * @author David Sautter
  */
 @Injectable()
-export class OffersService {
+export class OffersService implements OnInit{
 
     private cache: Map<number, Offer[]>;
-
+  private lat:number = 0;
+  private lon:number = 0;
     constructor(private http: HttpClient) {
         this.cache = new Map();
     }
 
-
+    ngOnInit(){
+      return navigator.geolocation.getCurrentPosition(pos =>{
+        this.lat = pos.coords.latitude;
+        this.lon = pos.coords.longitude;
+      });
+    }
     /**
      * Builds a string with the allergenic-ids and the additive-ids of a specific offer used to display
      * at the offer's product name.
@@ -54,33 +61,13 @@ export class OffersService {
     return this.http.get<Offer[]>(`${SERVER_URL}/api/restaurants/${restaurantId}/offers`)
   }
 
-  public loadCurrentOffers(){
-    const user: string = window.localStorage.getItem("username");
-    const token: string = window.localStorage.getItem(user);
-    let headers = new HttpHeaders({
-      Authorization: `Basic ${token}`
-    });
-    return this.http.get<Offer[]>(`${SERVER_URL}/api/offers?longitude=11.5569&latitude=48.1543`,
-      {headers});
-    /*navigator.geolocation.getCurrentPosition(suc=> {
-      console.log('Latitude: ' + suc.coords.latitude + 'Longtitude: ' + suc.coords.longitude);
+  public loadCurrentOffers():Observable<any>{
       const user: string = window.localStorage.getItem("username");
-        const token: string = window.localStorage.getItem(user);
-        let headers = new HttpHeaders({
-          Authorization: `Basic ${token}`
-        });
-      this.http.get<Map<number, Offer>>(`${SERVER_URL}/api/offers?longitude=${suc.coords.longitude}&latitude=${suc.coords.latitude}`, {headers})
-        .subscribe(res => {
-          console.log("/api/offers successfull");
-          currentOffers = res;
-          console.log(JSON.stringify(currentOffers));
-        }, err => {
-          console.error("/api/offers Error: " + JSON.stringify(err));
-        });
-    },
-    err=> {
-      console.error("GPS Position not available");
-    });*/
+      const token: string = window.localStorage.getItem(user);
+      let headers = new HttpHeaders({
+        Authorization: `Basic ${token}`
+      });
+      return this.http.get(`${SERVER_URL}/api/offers?longitude=${this.lon}&latitude=${this.lat}`, {headers});
   }
 
 }

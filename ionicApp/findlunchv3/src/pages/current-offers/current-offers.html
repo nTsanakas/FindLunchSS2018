@@ -11,11 +11,10 @@
   <ion-list id="offers">
     <ng-container *ngFor="let offer of currentOffersList" >
       <ion-item (click)="onOfferClicked($event, offer)">
-        <span>{{offer.title}} für {{offer.price | currency : '€'}}</span>
-        <span>{{offer.description}}</span>
+        <span>{{offer.title}} für {{offer.price | currency : '€'}}</span><br>
+        <span>{{offer.description}}</span><br>
+        <span>{{offer.restaurant.name}}</span>
       </ion-item>
-
     </ng-container>
-
   </ion-list>
 </ion-content>

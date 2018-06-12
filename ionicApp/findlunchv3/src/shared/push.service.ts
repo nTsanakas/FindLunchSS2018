@@ -4,11 +4,13 @@ import {Push, PushObject, PushOptions} from "@ionic-native/push";
 import {FCM} from "@ionic-native/fcm";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {SERVER_URL, APP_LANG, FCM_SENDER_ID} from "../app/app.module";
-import {Alert, AlertController, Platform} from "ionic-angular";
+import {Alert, AlertController, NavController, Platform} from "ionic-angular";
 import {Error} from "tslint/lib/error";
 import {TranslateService} from "@ngx-translate/core";
 import {User} from "../model/User";
 import {DailyPushNotificationData} from "../model/DailyPushNotificationData";
+import {OffersService} from "./offers.service";
+import {CurrentOffersPage} from "../pages/current-offers/current-offers";
 
 
 /**
@@ -22,7 +24,9 @@ export class PushService {
   private strPushError: string;
   private strError: string;
 
+
   constructor(public push: Push,
+              private offers: OffersService,
               private alertCtrl: AlertController,
               private http: HttpClient,
               private translate: TranslateService,
@@ -159,26 +163,45 @@ export class PushService {
     //noinspection TsLint
     this.fcm.onNotification().subscribe(
       (data => {
-        const alert: Alert = this.alertCtrl.create({
-          title: "Bestellstatus geändert",
-          message: "Der Status deiner Bestellung hat sich geändert. Du kannst ihn unter 'Meine Bestellungen' einsehen.",
-          buttons: [{
-            text: 'Ok',
-            role: 'cancel'
-          }, {
-            text: 'Meine Bestellungen',
-            handler: (): void => {
-              this.openReservations();
-            }
-          }]
-        });
-        alert.present();
-        if (data.wasTapped) {
+        if(data.command === "SEND_LOCATION"){
+          this.offers.loadCurrentOffers().subscribe(resp => {
+            if(resp.size() > 0) {
+              let text = "";
+              for (let offer of resp) {
+                text = text + offer.title + " für nur " + offer.price.toFixed(2) + "€ | ";
+              }
+              text = text.substr(0, (text.length - 3));
 
-        } else {
-          console.warn("Not logged in or push permission NOT granted, reservation confirmation can not received!");
+              const alert: Alert = this.alertCtrl.create({
+                title: "Es gibt Angebote in der Nähe",
+                message: text,
+                buttons: [{
+                  text: 'Ok',
+                  role: 'cancel'
+                }]
+              });
+              alert.present();
+            }
+          },err=>{
+            console.log(err);
+          });
         }
-        ;
+        else {
+          const alert: Alert = this.alertCtrl.create({
+            title: "Bestellstatus geändert",
+            message: "Der Status deiner Bestellung hat sich geändert. Du kannst ihn unter 'Meine Bestellungen' einsehen.",
+            buttons: [{
+              text: 'Ok',
+              role: 'cancel'
+            }, {
+              text: 'Meine Bestellungen',
+              handler: (): void => {
+                this.openReservations();
+              }
+            }]
+          });
+          alert.present();
+        }
       })
     );
   }
