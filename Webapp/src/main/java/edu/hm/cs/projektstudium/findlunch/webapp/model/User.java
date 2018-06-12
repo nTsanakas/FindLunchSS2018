@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * The Class User. A user of the FindLunch system. Sets information about a user.
+ * A user of the FindLunch system. Sets information about a user.
  */
 @Entity
 // Inherited property needs to be ignored or else the RegisterUserRestController integration test is not working when passing a user object to the request.
@@ -363,6 +363,7 @@ public class User implements UserDetails {
 
 	/**
 	 * Initiates the password reset.
+	 * @return the reset password
 	 */
 	public ResetPassword getResetPassword() {
 		return resetPassword;

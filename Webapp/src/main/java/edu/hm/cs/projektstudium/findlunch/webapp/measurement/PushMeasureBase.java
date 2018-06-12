@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
 
 /**
  * 
- * PushMeasureBase class (Main class for measurement!)
+ * PushMeasureBase class (Main class for measurement!).
  * 
  * Separate base class for sending push notification measures (completely separated from live-operation).
  * **Live operation has to be disabled at package "scheduling", class "PushNotificationScheduledTask".

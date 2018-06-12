@@ -51,8 +51,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantReposito
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 
 /**
- * The Class ReservationRestController. The class is responsible for handling
- * rest calls related to registering users
+ * The class is responsible for handling rest calls related to registering users.
  *
  */
 @RestController

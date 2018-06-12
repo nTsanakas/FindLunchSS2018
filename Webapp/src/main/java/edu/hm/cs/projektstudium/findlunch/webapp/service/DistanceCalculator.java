@@ -2,7 +2,7 @@ package edu.hm.cs.projektstudium.findlunch.webapp.service;
 
 
 /**
- * The Class DistanceCalculator.
+ * Calculates the distance between a user and a restaurant.
  */
 public class DistanceCalculator {
 	

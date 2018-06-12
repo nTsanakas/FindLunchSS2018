@@ -10,7 +10,7 @@ import java.util.List;
 
 
 /**
- * The Class DayOfWeek.
+ * Class for weekdays.
  */
 @Entity
 @Table(name="day_of_week")

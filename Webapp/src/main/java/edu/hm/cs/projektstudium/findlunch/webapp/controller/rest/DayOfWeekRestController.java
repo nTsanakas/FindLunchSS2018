@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
- * The Class DayOfWeekRestController. The class is responsible for handling rest calls related to DayOfWeeks.
+ * The class is responsible for handling rest calls related to DayOfWeeks.
  * Rest controllers mapping api.
  */
 @RestController

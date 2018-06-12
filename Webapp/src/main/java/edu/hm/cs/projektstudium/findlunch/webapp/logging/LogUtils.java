@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * The Class LogUtils - Utilities for the Logger
+ * The Class LogUtils - Utilities for the Logger.
  */
 public class LogUtils {
 	

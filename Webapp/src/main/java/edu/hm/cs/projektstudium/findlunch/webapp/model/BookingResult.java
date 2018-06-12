@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * The Class BookingResult. Descripbes requirements for bookings.
+ * Descripbes requirements for bookings.
  */
 @ApiModel(
 		description = "Beschreibt Forderungen zu Buchungen."

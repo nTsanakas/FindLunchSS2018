@@ -18,7 +18,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.TimeSchedule;
 
 
 /**
- * The Class CustomRestaurantValidator.
+ * Validates a custom restaurant.
  */
 @Component
 public class CustomRestaurantValidator implements Validator {

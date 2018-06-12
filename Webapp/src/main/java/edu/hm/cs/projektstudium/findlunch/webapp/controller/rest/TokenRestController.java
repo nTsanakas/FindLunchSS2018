@@ -17,11 +17,11 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepositor
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 
 /**
- * The Class TokenRestController.
  * The class is responsible for handling API calls to store the customers Firebase Token into the database.
  * 
- * @author Niklas Klotz
- * @edited Paul Mandl
+ * 
+ * @author Niklas Klotz, edited by Paul Mandl
+ * 
  *
  */
 @RestController

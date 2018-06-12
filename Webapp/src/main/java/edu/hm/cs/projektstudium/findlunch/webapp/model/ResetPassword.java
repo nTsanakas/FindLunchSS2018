@@ -14,8 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 /**
- * Class to reset the password.
- * @author oberm
+ * Class to reset the password, includes data for the reset.
  *
  */
 @Entity

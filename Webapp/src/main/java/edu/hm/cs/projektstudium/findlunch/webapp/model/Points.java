@@ -14,7 +14,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * The Class Points.
+ * Defines the bonus point system.
  */
 @Entity
 @AssociationOverrides({

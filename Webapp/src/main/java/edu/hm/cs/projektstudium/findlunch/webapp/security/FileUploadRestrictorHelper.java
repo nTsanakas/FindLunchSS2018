@@ -56,6 +56,8 @@ public class FileUploadRestrictorHelper {
 
     /**
      * Handle the file upload limit.
+     * @param ipAddress The IP address.
+     * @param sessionId Id of the session.
      */
     public void uploadAttempt(final String ipAddress, final String sessionId) {
         int attemptsIpAddress;
@@ -82,7 +84,10 @@ public class FileUploadRestrictorHelper {
     /**
      * This method checks if an IP-address or session-ID is blocked and therefore no more able to upload new images.
      *
+     * @param ipAddress The IP-Address
+     * @param sessionId Id of session
      * @return whether the given data is blocked or not
+     * 
      */
     public boolean isBlocked(final String ipAddress, final String sessionId) {
         try {

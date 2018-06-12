@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 
 /**
- * The Class Additives. Describes the additives of a product.
+ * Describes the additives of a product.
  */
 @Entity
 @Table(name="additives")

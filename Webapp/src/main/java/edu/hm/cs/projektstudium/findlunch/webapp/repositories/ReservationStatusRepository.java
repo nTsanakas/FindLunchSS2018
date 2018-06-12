@@ -15,14 +15,14 @@ public interface ReservationStatusRepository extends JpaRepository<ReservationSt
 
 	/**
 	 * Finds the reservation status by key.
-	 * @param statusKey
+	 * @param statusKey the status key
 	 * @return List ReservationStatus
 	 */
 	List<ReservationStatus> findByKey(int statusKey);
 	
 	/**
 	 * Finds the reservation status by id.
-	 * @param id
+	 * @param id Id of the reservation status
 	 * @return ReservationStatus
 	 */
 	ReservationStatus findById(int id);

@@ -25,7 +25,7 @@ public class ConsumerUserDetailsService implements UserDetailsService {
 	 */
 
 	/**
-	 * Throws an exception if the User name was not found
+	 * Throws an exception if the User name was not found.
 	 */
 	@Override
 	public User loadUserByUsername(String username) throws UsernameNotFoundException {

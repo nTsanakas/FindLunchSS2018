@@ -121,6 +121,7 @@ public class UserRestController {
      * Login user.
      *
      * @param request the HttpServletRequest
+     * @param principal the user principal for authentication
      * @return the response entity representing a status code
      */
     @CrossOrigin

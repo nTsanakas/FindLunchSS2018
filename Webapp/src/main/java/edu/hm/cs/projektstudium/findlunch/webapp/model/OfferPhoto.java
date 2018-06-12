@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 
 /**
- * The Class OfferPhoto. Includes a photo from a offer.
+ * Includes a photo from a offer.
  */
 @Entity
 @Table(name="offer_photo")

@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * The Class PointId. Defines points to a restaurant and user.
+ * Defines points of a restaurant and user.
  */
 @Embeddable
 @ApiModel(

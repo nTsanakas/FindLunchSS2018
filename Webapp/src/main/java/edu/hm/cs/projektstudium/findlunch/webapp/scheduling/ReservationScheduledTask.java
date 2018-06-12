@@ -21,7 +21,6 @@ import java.util.List;
 
 /**
  * Class that regularly checks for unprocessed reservations.
- * @author oberm
  *
  */
 @Component

@@ -29,8 +29,9 @@ public class LogRestController {
      * Gets the requested logfile.
      *
      * @param request the HttpServletRequest
-     *
+     * @param file Name of the log file
      * @return the log file
+     * @throws IOException if the underlying service fails.
      */
     @CrossOrigin
     @ApiOperation(

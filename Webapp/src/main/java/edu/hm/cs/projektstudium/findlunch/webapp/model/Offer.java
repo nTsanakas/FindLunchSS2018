@@ -39,7 +39,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView
 
 
 /**
- * The Class Offer. Describes a food offer.
+ * Describes a food offer.
  */
 @Entity
 @ApiModel(

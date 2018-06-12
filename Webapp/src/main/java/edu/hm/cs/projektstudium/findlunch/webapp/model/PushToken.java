@@ -12,8 +12,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 /**
- * The class PushToken
- * The class represents a firebase push token
+ * The class represents a firebase push token.
  * @author Niklas Klotz
  *
  */

@@ -13,8 +13,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Class to define the reservation of a product.
- * @author oberm
- *
  */
 @Entity
 @ApiModel(
@@ -238,7 +236,7 @@ public class Reservation {
 
 	/**
 	 * Sets the fee for PayPal.
-	 * @param fee
+	 * @param fee the fee
 	 */
 	public void setFee(float fee) {	this.fee = fee;	}
 

@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * A scheduled task to create payments.
+ */
 @Component
 public class PaymentScheduledTask {
 
@@ -24,6 +27,9 @@ public class PaymentScheduledTask {
     @Autowired
     private ReservationRepository reservationRepository;
 
+    /**
+     * Checks for unprocessed payments.
+     */
     //@Scheduled(cron = "0 0 3 * * ?")
     @Scheduled(fixedRate = 200000)
     public void checkProcessedPayments() {

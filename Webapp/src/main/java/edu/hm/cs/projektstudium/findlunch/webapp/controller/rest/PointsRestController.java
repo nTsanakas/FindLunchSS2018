@@ -23,7 +23,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PointsRepository;
 
 /**
- * The Class PointsRestController.
+ * The Class is responsible for handling rest calls related to points.
  */
 @RestController
 @Api(
@@ -80,6 +80,7 @@ public class PointsRestController {
 	 * Gets the points of an User for a given Restaurant Id.
 	 * @param principal the principal to get the authenticated user
 	 * @param request the HttpServletRequest
+	 * @param restaurantId Id of the restaurant
 	 * @return a List from the current points of the user
 	 */
 	@CrossOrigin

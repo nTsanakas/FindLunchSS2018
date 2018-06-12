@@ -40,7 +40,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 
 /**
- * The Class Restaurant.
  * Sets important information about a restaurant.
  */
 @Entity
@@ -698,18 +697,18 @@ public class Restaurant implements Serializable {
 	}
 
 	/**
-	 * Gets the service.
+	 * Gets the distance.
 	 *
-	 * @return the service
+	 * @return the distance
 	 */
 	public int getDistance() {
 		return distance;
 	}
 
 	/**
-	 * Sets the service.
+	 * Sets the distance.
 	 *
-	 * @param distance the new service
+	 * @param distance the new distance
 	 */
 	public void setDistance(int distance) {
 		this.distance = distance;
@@ -910,7 +909,7 @@ public class Restaurant implements Serializable {
 	/**
 	 * Adds the restaurant logo.
 	 *
-	 * @param restaurantLogo the restuarant logo
+	 * @param restaurantLogo the restaurant logo
 	 * @return the restaurant logo
 	 */
 	public RestaurantLogo addRestaurantLogo(RestaurantLogo restaurantLogo) {
@@ -993,7 +992,7 @@ public class Restaurant implements Serializable {
 
 	/**
 	 * 
-	 * @param currentlyOpen the isOpen to set
+	 * @param currentlyOpen Whether restaurant is currently open or not.
 	 */
 	public void setcurrentlyOpen(boolean currentlyOpen) {
 		this.currentlyOpen = currentlyOpen;

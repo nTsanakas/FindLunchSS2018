@@ -11,6 +11,9 @@ import org.springframework.validation.Validator;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 
+/**
+ * Validator for resetting user passwords.
+ */
 @Component
 public class CustomUserResetPasswordValidator implements Validator{
 
@@ -77,6 +80,9 @@ public class CustomUserResetPasswordValidator implements Validator{
 	private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
 			Pattern.CASE_INSENSITIVE);
 	
+	/**
+	 *  The Constant VALID_PASSWORD_REGEX.
+	*/
 	private static final Pattern VALID_PASSWORD_REGEX = Pattern.compile("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\\W_]).{5,})");
 
 	/**

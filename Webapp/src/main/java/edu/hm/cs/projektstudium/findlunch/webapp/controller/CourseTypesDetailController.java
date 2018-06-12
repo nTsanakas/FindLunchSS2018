@@ -31,10 +31,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.OfferRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
 
 /**
- * The class CourseTypesDetailsController
  * The class is responsible for handling http calls to the page coursetype and coursetypedetails.
- *
- * @author Niklas Klotz
  *
  */
 @Controller

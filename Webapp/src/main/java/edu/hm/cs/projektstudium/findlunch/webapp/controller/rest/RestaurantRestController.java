@@ -21,8 +21,7 @@ import java.security.Principal;
 import java.util.List;
 
 /**
- * The Class RestaurantRestController. The class is responsible for handling
- * rest calls related to registering users.
+ * The class is responsible for handling rest calls related to registering users.
  */
 @RestController
 @Api(

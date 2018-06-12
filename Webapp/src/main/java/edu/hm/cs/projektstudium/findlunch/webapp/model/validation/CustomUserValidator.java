@@ -13,7 +13,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 
 /**
- * The Class CustomUserValidator.
+ * Defines objects to validate.
  */
 @Component
 public class CustomUserValidator implements Validator {

@@ -17,8 +17,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * The class ReservationStatus. Information about the state of a reservation.
- * @author oberm
+ * Information about the state of a reservation.
  *
  */
 @Entity
@@ -93,7 +92,7 @@ public class ReservationStatus {
 	}
 
 	/**
-	 * @param statuskey the statuskey to set
+	 * @param key the key to set
 	 */
 	public void setKey(int key) {
 		this.key = key;

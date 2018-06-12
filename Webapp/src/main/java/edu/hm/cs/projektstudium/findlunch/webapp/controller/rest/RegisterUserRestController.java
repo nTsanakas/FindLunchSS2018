@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * The Class RegisterUserRestController. The class is responsible for handling
- * rest calls related to registering users
+ * The class is responsible for handling rest calls related to registering users.
  */
 @RestController
 @Api(

@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Klasse "FCMPushService"
- *
  * In der Klasse werden alle Operationen, die über Firebase Cloud Messaging abgewickelt werden sollen,
  * gesammelt. Die Methoden der Klasse formatieren den Inhalt der Nachrichten und leiten sie an den FCMClient
  * zum Versenden weiter.
@@ -107,6 +105,13 @@ public class FCMPushService {
         }
     }
 
+    /**
+     * Für Messungen mit dem Package "Measurement"
+     * @param pushToken Der Push-Token
+     * @param timestamp Zeitstempel des Versands
+     * @param pushCount Push-Nummer
+     * @return Ergebnis des Versands
+     */
     public String sendMeasurePush(String pushToken, String timestamp, String pushCount) {
 
         String result = "";

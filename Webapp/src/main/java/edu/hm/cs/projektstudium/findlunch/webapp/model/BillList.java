@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 
 /**
- * The Class BillList. Combines multiple bills to a list.
+ * Combines multiple bills to a list of bills.
  */
 @ApiModel(
 		description = "Fasst mehrere Rechnungen zu einer Liste zusammen."

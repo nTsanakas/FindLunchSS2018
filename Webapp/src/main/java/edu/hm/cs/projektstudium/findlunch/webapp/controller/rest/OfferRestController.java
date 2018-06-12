@@ -23,8 +23,7 @@ import java.security.Principal;
 import java.util.*;
 
 /**
- * The Class OfferRestController. The class is responsible for handling rest
- * calls related to offers
+ * The class is responsible for handling rest calls related to offers.
  */
 @RestController
 @Api(

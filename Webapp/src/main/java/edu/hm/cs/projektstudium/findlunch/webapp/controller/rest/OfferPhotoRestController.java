@@ -20,8 +20,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.OfferPhoto;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.OfferPhotoRepository;
 
 /**
- * The Class OfferPhotoRestController. The class is responsible for handling rest
- * calls related to offer photos.
+ * The class is responsible for handling rest calls related to offer photos.
  * Request param offer_id.
  */
 @RestController

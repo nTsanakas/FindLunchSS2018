@@ -134,7 +134,7 @@ public class SecurityConfig {
 	@Order(2)
 	public static class StatefulLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
-		/** Userdetailsserice to get restaurant users for authentication */
+		/** Userdetailsserice to get restaurant users for authentication. */
 		@Autowired
 		@Qualifier("restaurantUserDetailsService")
 		private RestaurantUserDetailsService restaurantUserDetailsService;

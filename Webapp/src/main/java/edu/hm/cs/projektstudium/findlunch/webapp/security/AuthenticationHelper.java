@@ -59,6 +59,8 @@ public final class AuthenticationHelper {
 
     /**
      * Handle a failed login attempt where the IP-address and the session-ID is known.
+     * @param ipAddress The IP address.
+     * @param sessionId The session id.
      */
     public void loginFailedIpAddressAndSessionId(final String ipAddress, final String sessionId) {
         int attemptsIpAddress;
@@ -84,6 +86,7 @@ public final class AuthenticationHelper {
 
     /**
      * Handle a failed login attempt where the IP-address is known.
+     * @param ipAddress The IP address.
      */
     public void loginFailedIpAddress(final String ipAddress) {
         int attemptsIpAddress = 0;
@@ -135,6 +138,7 @@ public final class AuthenticationHelper {
      * Handle a failed login attempt where an IP-address is blocked.
      *
      * @param ipAddress the IP-address
+     * @return Amount of attempted logins from a blocked IP-address.
      */
     public boolean isBlocked(final String ipAddress) {
         try {

@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 
+/**
+ * The class is responsible for handling http calls related to Braintree.
+ */
 public final class BraintreeController {
 
     /** Gateway used to send payment nonces to Braintree. IDs and keys are currently for
@@ -39,6 +42,11 @@ public final class BraintreeController {
 
     private BraintreeController() {}
 
+    /**
+     * Voids a reservation transaction.
+     * @param reservation the reservation
+     * @return True if reservation has been successfully voided, false if it failed.
+     */
     public static boolean voidTransaction(Reservation reservation){
         if(reservation.getPpTransactionId() != null){
             // Void transaction using its transaction ID
@@ -66,6 +74,11 @@ public final class BraintreeController {
         }
     }
 
+    /**
+     * Confirms a payment transaction.
+     * @param reservation the reservation
+     * @return True if the payment has been settled, false if it failed.
+     */
     public static boolean confirmTransaction(Reservation reservation){
         if (reservation.getPpTransactionId() != null){
             Result<Transaction> settlementResult = BraintreeController.gateway.transaction()
