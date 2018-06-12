@@ -9,7 +9,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.KitchenType;;
 
 
 /**
- * The Interface KitchenTypeRepository. Abstraction for the data access layer.
+ * The Interface KitchenTypeRepository. Abstraction for the data access layer
  */
 @Repository
 public interface KitchenTypeRepository extends JpaRepository<KitchenType, Integer>{

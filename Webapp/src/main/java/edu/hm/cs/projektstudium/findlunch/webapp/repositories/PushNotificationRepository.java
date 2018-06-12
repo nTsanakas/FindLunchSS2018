@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import edu.hm.cs.projektstudium.findlunch.webapp.model.DailyPushNotificationData;
-
 /**
- * The Interface PushNotificationRepository. Abstraction for the data access layer.
+ * The Interface PushNotificationRepository. Abstraction for the data access layer
  */
 @Repository
 public interface PushNotificationRepository extends JpaRepository<DailyPushNotificationData, Integer>{

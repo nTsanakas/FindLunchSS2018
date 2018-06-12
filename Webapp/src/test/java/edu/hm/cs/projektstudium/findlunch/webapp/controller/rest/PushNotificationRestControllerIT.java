@@ -30,7 +30,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.App;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.DayOfWeek;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.KitchenType;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.DailyPushNotificationData;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.TimeSchedule;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.DayOfWeekRepository;

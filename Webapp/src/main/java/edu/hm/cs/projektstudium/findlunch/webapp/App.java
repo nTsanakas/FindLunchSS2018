@@ -7,16 +7,14 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
- * This is the start up class for the WebApp.
+ * Startup class for the WebApp
  */
 @SpringBootApplication
 @EnableScheduling
 public class App extends SpringBootServletInitializer
 {
-	/**
-	 * This method is needed when deployed to a standalone tomcat.
-	 * It sets up the application and necessary components.
-	 */
+	
+	// Method needed when deployed to a standalone tomcat. Sets up the applicaiton and necessary components.
 	 @Override
 	 protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 	    return application.sources(App.class);

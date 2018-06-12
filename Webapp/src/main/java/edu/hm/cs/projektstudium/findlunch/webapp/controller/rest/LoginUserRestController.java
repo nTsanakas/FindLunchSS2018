@@ -3,10 +3,9 @@ package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.NotificationController;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.security.AuthenticationHelper;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiParam;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -25,9 +25,6 @@ import javax.servlet.http.HttpServletRequest;
  * calls related to login users
  */
 @RestController
-@Api(
-        value="Login",
-        description="Wickelt den Login-Prozess ab.")
 public class LoginUserRestController {
 
     /**
@@ -38,18 +35,14 @@ public class LoginUserRestController {
     /**
      * The helper class used for handling login attempts.
      */
-    private final AuthenticationHelper authenticationHelper;
+    @Autowired
+    private AuthenticationHelper authenticationHelper;
 
     /**
      * The HTTP servlet request.
      */
-    private final HttpServletRequest request;
-
     @Autowired
-    public LoginUserRestController(AuthenticationHelper authenticationHelper, HttpServletRequest request) {
-        this.authenticationHelper = authenticationHelper;
-        this.request = request;
-    }
+    private HttpServletRequest request;
 
     /**
      * Login user.
@@ -59,17 +52,7 @@ public class LoginUserRestController {
      */
     @CrossOrigin
     @PreAuthorize("isAuthenticated()")
-    @ApiOperation(
-            value = "Einloggen des Benutzers.",
-            response = Integer.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Erfolgreich angemeldet."),
-            @ApiResponse(code = 401, message = "Nicht autorisiert.")
-    })
-    @RequestMapping(
-            path = "/api/login_user",
-            method = RequestMethod.GET,
-            produces = "application/json")
+    @RequestMapping(path = "/api/login_user", method = RequestMethod.GET)
     public ResponseEntity<Integer> loginUser(HttpServletRequest request) {
         final String ipAddress = getClientIP();
 

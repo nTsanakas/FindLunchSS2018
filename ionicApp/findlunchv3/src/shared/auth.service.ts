@@ -13,6 +13,7 @@ import {Observable} from "rxjs/Observable";
 export class AuthService {
     public loggedIn: boolean;
     public userName: string;
+    public user: User;
 
     constructor(private http: HttpClient) {
     }
@@ -30,6 +31,9 @@ export class AuthService {
      * result returned to the method that called the login-functionality
      */
     public login(username: string, password: string): Observable<boolean> {
+
+      this.user = {username: username,
+                   password: password};
 
       const encodedCredentials: string = btoa(`${username}:${password}`);
       const headers: HttpHeaders = new HttpHeaders({
@@ -50,16 +54,15 @@ export class AuthService {
      *  result whether registration was successful returned to the calling method
      */
     public register  (username: string, password: string) : Observable<boolean> {
-      const user: User = {
-        username: username,
-        password: password
-      };
+
+      this.user = {username: username,
+                   password: password};
 
       const headers: HttpHeaders = new HttpHeaders({
         'Content-Type': 'application/json'
       });
 
-     return this.http.post<boolean>(`${SERVER_URL}/api/register_user`, user, {headers});
+     return this.http.post<boolean>(`${SERVER_URL}/api/register_user`, this.user, {headers});
 
     }
 
@@ -101,6 +104,14 @@ export class AuthService {
      */
     public getUserName(): string {
         return this.userName;
+    }
+    /**
+    * Gets userobject of the current User
+    * @returns {User}
+    *  Userobject of current user
+    */
+    public getUser(): User {
+      return this.user;
     }
 
     /**

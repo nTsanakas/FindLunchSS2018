@@ -12,7 +12,7 @@ import {Observable} from "rxjs";
 
 /**
  *  Preparing the menu pages
- * @Skanny Morandi & Sergej Bardin & David Sautter
+ * @author Skanny Morandi & Sergej Bardin & David Sautter
  */
 @Injectable()
 export class MenuService {

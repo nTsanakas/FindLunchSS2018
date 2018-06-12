@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Bill;
 
 /**
- * The Interface BillRepository. Abstraction for the data access layer.
+ * The Interface BillRepository. Abstraction for the data access layer
  */
 public interface BillRepository extends JpaRepository<Bill, Integer>{
 

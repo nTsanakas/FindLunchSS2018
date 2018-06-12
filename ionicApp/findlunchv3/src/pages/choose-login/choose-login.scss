@@ -10,12 +10,13 @@ page-choose-login {
   ion-card.card {
     margin-top: 50%;
     box-shadow: none;
-    background: rgba(0, 0, 0, 0.9);
+    background-color: #60d1ff;
     border-radius: 5px;
   }
   p,
   ion-card-header.card-header {
     color: #ffffff !important;
+    font-size: large;
   }
   .list > .item-block .item-inner {
     border: medium none;

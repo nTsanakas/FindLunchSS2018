@@ -8,11 +8,15 @@ import {KitchenType} from "../model/KitchenType";
 import {AuthService} from "./auth.service";
 import {Injectable} from "@angular/core";
 
+/**
+ * Service to get certain Information about Reservations, Offers ... via Rest
+ *
+ */
+
 @Injectable()
 export class InformationService {
 
   public restaurant: Restaurant;
-//  private cache: Map<number, Offer[]>;
 
   constructor(private http: HttpClient, private auth: AuthService) {
 

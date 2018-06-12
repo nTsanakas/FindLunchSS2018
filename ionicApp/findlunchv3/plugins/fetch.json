@@ -70,26 +70,6 @@
     "is_top_level": true,
     "variables": {}
   },
-  "phonegap-plugin-push": {
-    "source": {
-      "type": "registry",
-      "id": "phonegap-plugin-push@^2.2.2"
-    },
-    "is_top_level": true,
-    "variables": {
-      "FCM_VERSION": "11.8.0"
-    }
-  },
-  "phonegap-plugin-barcodescanner": {
-    "source": {
-      "type": "registry",
-      "id": "phonegap-plugin-barcodescanner@^7.1.0"
-    },
-    "is_top_level": true,
-    "variables": {
-      "ANDROID_SUPPORT_V4_VERSION": "27.+"
-    }
-  },
   "cordova-plugin-network-information": {
     "source": {
       "type": "registry",
@@ -102,6 +82,14 @@
     "source": {
       "type": "registry",
       "id": "cordova-plugin-fcm"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "phonegap-plugin-barcodescanner": {
+    "source": {
+      "type": "registry",
+      "id": "phonegap-plugin-barcodescanner@7.1.2"
     },
     "is_top_level": true,
     "variables": {}

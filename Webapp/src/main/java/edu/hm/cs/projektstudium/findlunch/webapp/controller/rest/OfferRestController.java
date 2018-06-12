@@ -1,6 +1,30 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
 import com.fasterxml.jackson.annotation.JsonView;
+
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.CourseType;
@@ -10,43 +34,30 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.TimeSchedule;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.CourseTypeRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.OfferRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
-import io.swagger.annotations.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 /**
  * The Class OfferRestController. The class is responsible for handling rest
  * calls related to offers
  */
 @RestController
-@Api(
-		value="Angebote",
-		description="Zum Zugriff auf Angebote.")
 public class OfferRestController {
 
 	/** The offer repository. */
-	private final OfferRepository offerRepo;
+	@Autowired
+	private OfferRepository offerRepo;
 
 	/** The restaurant repository. */
-	private final RestaurantRepository restaurantRepo;
+	@Autowired
+	private RestaurantRepository restaurantRepo;
 	
-	private final CourseTypeRepository courseTypeRepo;
+	@Autowired
+	private CourseTypeRepository courseTypeRepo;
 
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(OfferRestController.class);
-
-	@Autowired
-	public OfferRestController(CourseTypeRepository courseTypeRepo, RestaurantRepository restaurantRepo, OfferRepository offerRepo) {
-		this.courseTypeRepo = courseTypeRepo;
-		this.restaurantRepo = restaurantRepo;
-		this.offerRepo = offerRepo;
-	}
-
+	
 	/**
 	 * Gets the offers of a given restaurant.
 	 *
@@ -57,24 +68,19 @@ public class OfferRestController {
 	 */
 	@CrossOrigin
 	@JsonView(OfferView.OfferRest.class)
-	@ApiOperation(
-			value = "Angebote eines Restaurants abrufen.",
-			response = Map.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Angebote erfolgreich abgerufen")
-	})
-	@RequestMapping(
-			path = "/api/offers",
-			method = RequestMethod.GET,
-			produces = "application/json")
-	public Map<String, List<Offer>> getOffers(
-			@RequestParam(
-					name = "restaurant_id")
-            @ApiParam(
-            		value = "ID des Restaurants",
-					required = true)
-            int restaurantId,
-			HttpServletRequest request) {
+	@ApiResponses(value = { 
+			@ApiResponse (code = 200, message = "List with all Offer-Objects mit\n" + 
+					"- 𝑜𝑓𝑓𝑒𝑟. 𝑟𝑒𝑠𝑡𝑎𝑢𝑟𝑎𝑛𝑡_𝑖𝑑 == [𝑟𝑒𝑠𝑡𝑎𝑢𝑟𝑎𝑛𝑡_𝑖𝑑] &\n" + 
+					"- 𝑜𝑓𝑓𝑒𝑟. 𝑠𝑡𝑎𝑟𝑡_𝑑𝑎𝑡𝑒 ≤ 𝑡𝑜𝑑𝑎𝑦 ≤ 𝑜𝑓𝑓𝑒𝑟.𝑒𝑛𝑑_𝑑𝑎𝑡𝑒 &\n" + 
+					"- 𝑜𝑓𝑓𝑒𝑟_ℎ𝑎𝑠_𝑑𝑎𝑦_𝑜𝑓_𝑤𝑒𝑒𝑘. 𝑑𝑎𝑦_𝑜𝑓_𝑤𝑒𝑒𝑘_𝑖𝑑 == 𝑡𝑜𝑑𝑎𝑦\n" + 
+					"&\n" + 
+					"- 𝑡𝑖𝑚𝑒_𝑠𝑐ℎ𝑒𝑑𝑢𝑙𝑒. 𝑜𝑓𝑓𝑒𝑟_𝑠𝑡𝑎𝑟𝑡_𝑡𝑖𝑚𝑒 ≤ 𝑛𝑜𝑤 ≤\n" + 
+					"𝑡𝑖𝑚𝑒_𝑠𝑐ℎ𝑒𝑑𝑢𝑙𝑒. 𝑜𝑓𝑓𝑒𝑟_𝑒𝑛𝑑_𝑡𝑖𝑚𝑒\n" + 
+					"Each object contains the following information:\n" + 
+					"- Data from the offer table\n" + 
+					"- A BLOB-field defaultPhoto, which contains the first entry of offer_photo.thumbnail, It is referring to the respective offer.")})
+	@RequestMapping(path = "/api/offers", method = RequestMethod.GET)
+	public Map<String, List<Offer>> getOffers(@RequestParam(name = "restaurant_id", required = true) int restaurantId, HttpServletRequest request) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		List<Offer> result = new ArrayList<Offer>();
@@ -183,7 +189,7 @@ public class OfferRestController {
 	 *            the date, where the time should be set to zero
 	 * @return the time value of the date, where the time was set to zero
 	 */
-	private static Date getZeroTimeDate(Date date) {
+	public static Date getZeroTimeDate(Date date) {
 
 		Calendar calendar = Calendar.getInstance();
 

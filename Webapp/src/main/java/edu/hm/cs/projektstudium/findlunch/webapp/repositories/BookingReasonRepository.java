@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.BookingReason;
 
 /**
- * The Interface BookingReason. Abstraction for the data access layer.
+ * The Interface BookingReason. Abstraction for the data access layer
  */
 @Repository
 public interface BookingReasonRepository extends JpaRepository<BookingReason, Integer> {

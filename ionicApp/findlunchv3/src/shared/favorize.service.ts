@@ -9,6 +9,7 @@ import {AuthService} from "./auth.service";
 
 /**
  *Service that handles the roundtrips for favorizing and defavorizing a restaurant
+ *
  */
 @Injectable()
 

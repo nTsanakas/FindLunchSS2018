@@ -22,7 +22,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.DailyPushNotificationData;
 
 /**
  * The AdmPushMeasure, sends Amazon SNS based push-notifications for measurement (not at live-operation).

@@ -20,11 +20,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepositor
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationStatusRepository;
 
-/**
- * Class that regularly checks for unprocessed reservations.
- * @author oberm
- *
- */
 @Component
 public class ReservationScheduledTask {
 	
@@ -45,10 +40,6 @@ public class ReservationScheduledTask {
 	@Autowired
 	private PushTokenRepository tokenRepository;
 
-	/**
-	 * Checks for unprocessed reservations.
-	 * If unprocessed reservations are found, they are saved and a push notification is sent out.
-	 */
 	@Scheduled(fixedRate = 200000)
 	public void checkReservations() {
 		//Log info
@@ -72,10 +63,6 @@ public class ReservationScheduledTask {
 				LOGGER.info(LogUtils.getDefaultSchedulerMessage(Thread.currentThread().getStackTrace()[1].getMethodName(), "Check for unprocessed reservations finished."));
 	}
 	
-	/**
-	 * Sends a push notification for reservations.
-	 * @param reservation the reservation
-	 */
 	private void sendPush(Reservation reservation) {
 		
 		PushNotificationManager pushManager = new PushNotificationManager();

@@ -14,6 +14,10 @@ import 'rxjs/add/operator/timeout';
 import {Network} from "@ionic-native/network";
 import {Subscription} from "rxjs/Subscription";
 import { Observable } from 'rxjs/Observable';
+import {DailyPushNotificationData} from "../../model/DailyPushNotificationData";
+import {PushService} from "../../shared/push.service";
+import {ChooseLoginPage} from "../choose-login/choose-login";
+import {AuthService} from "../../shared/auth.service";
 
 
 
@@ -27,6 +31,8 @@ declare var google: any;
 
 // constant used in this class - sets default map zoom level
 const MAP_DEFAULT_ZOOM_LEVEL: number = 15;
+
+
 
 /**
  * This Page displays the map and all restaurants on it.
@@ -54,17 +60,14 @@ export class HomePage implements OnInit {
   addressElement: HTMLInputElement = null;
 
   // noinspection TsLint - no types for current plugin-googlemaps available
-  public map: any;
+  map: any;
   // boolean for the Adressinputfield
   search: boolean = false;
   // noinspection TsLint - no types for current plugin-googlemaps available
   private mapMarkers: any[] = [];
 
-  private strLoginError: string;
-  private strLoginSuccessful: string;
-  private strConnectionError: string;
-  private strPasswordResetSuccess: string;
-  private strError: string;
+  private location: {lat: number, lng: number};
+
   // initialize the strings to translate with the default values
   // noinspection TsLint
   private translatedStrs = {
@@ -81,6 +84,8 @@ export class HomePage implements OnInit {
   };
 
   constructor(private navCtrl: NavController,
+              private auth: AuthService,
+              private push: PushService,
               private popCtrl: PopoverController,
               private popService: FilterPopoverService,
               private platform: Platform,
@@ -109,44 +114,20 @@ export class HomePage implements OnInit {
 
   /**
    * When initialized, do the translation of the needed strings.
-   *
-   * Not needed at the moment, translation is excluded for now
    */
+
   public ngOnInit(): void {
-    this.translate.get('Error.login').subscribe(
-      (value: string) => {
-        this.strLoginError = value;
-      },
-      (err: Error) => {
-        console.error("Error: translate.get did fail for key Error.login.", err);
-      });
-    this.translate.get('Error.general').subscribe(
-      (value: string) => {
-        this.strError = value;
-      },
-      (err: Error) => {
-        console.error("Error: translate.get did fail for key Error.general.", err);
-      });
-    this.translate.get('Success.login').subscribe(
-      (value: string) => {
-        this.strLoginSuccessful = value;
-      },
-      (err: Error) => {
-        console.error("Error: translate.get did fail for key Success.login.", err);
-      });
-    this.translate.get('Error.connection').subscribe(
-      (value: string) => {
-        this.strConnectionError = value;
-      },
-      (err: Error) => {
-        console.error("Error: translate.get did fail for key Error.connection.", err);
-      });
-    this.translate.get('Success.passwordReset').subscribe(
-      (value: string) => {
-        this.strPasswordResetSuccess = value;
-      },
-      (err: Error) => {
-        console.error("Error: translate.get did fail for key Success.passwordReset.", err);
+      // translate needed strings for info-window
+      Object.keys(this.translatedStrs).forEach((key: string) => {
+        this.translate.get(key)
+          .subscribe(
+            (transStr: string) => this.translatedStrs[key] = transStr,
+            (err: Error) => {
+              // this should not be happening, because if translate does not
+              // find strings, it uses the key. However something could be wrong...
+              console.error(`Error: tranlate.get did fail for key ${key} with error: `, err);
+            }
+          );
       });
   }
 
@@ -212,7 +193,7 @@ export class HomePage implements OnInit {
    * Checks the internet connection and if it is ok,
    * initializes the Map and positions the current device on it.
    */
-  public loadMap(): void {
+  loadMap(): void {
     // no connection or not good enough
     // check internet connection
     if (!(this.network.type.match(/^(3g|4g|wifi)$/))) {
@@ -247,12 +228,14 @@ export class HomePage implements OnInit {
 
     } else {
 
-      const element: HTMLElement = this.theMap.nativeElement;
+      var element = this.theMap.nativeElement;
       this.map = plugin.google.maps.Map.getMap(element, {
         controls: {
           compass: true,
           myLocation: true,
+          myLocationButton: true,
           indoorPicker: true,
+          disableDoubleClickZoom: false,
           zoom: true,
           mapToolbar: true   // currently Android only
         },
@@ -275,6 +258,8 @@ export class HomePage implements OnInit {
               // currently, all restaurants are fetched, but I leave this code here (though it's slower this way),
               // because once you start really filtering restaurants based on the location, you'll need it here.
               console.log('Fetch Restaurants');
+              this.location = pos.latLng;
+
               this.fetchRestaurants(pos.latLng);
               // move map to current location
               // noinspection TsLint - no types for current plugin-googlemaps available
@@ -286,7 +271,7 @@ export class HomePage implements OnInit {
             },
             (err: Error) => {
               console.error("Error getting location: ", err);
-               this.search = true;
+              this.search = true;
             });
         }
       );
@@ -295,7 +280,7 @@ export class HomePage implements OnInit {
 
   createAutocomplete(addressEl: HTMLInputElement): Observable<any> {
     const autocomplete = new google.maps.places.Autocomplete(addressEl);
-    autocomplete.bindTo('bounds', this.map);
+    autocomplete.bindTo(this.map);
     return new Observable((sub: any) => {
       google.maps.event.addListener(autocomplete, 'place_changed', () => {
         const place = autocomplete.getPlace();
@@ -307,14 +292,13 @@ export class HomePage implements OnInit {
           console.log('Search Lat', place.geometry.location.lat());
           console.log('Search Lng', place.geometry.location.lng());
           sub.next(place.geometry.location);
-          sub.complete();
+         // sub.complete();
         }
       });
     });
   }
 
   initAutocomplete(): void {
-    // reference : https://github.com/driftyco/ionic/issues/7223
     this.addressElement = this.searchbar.nativeElement.querySelector('.searchbar-input');
     this.createAutocomplete(this.addressElement).subscribe((location) => {
       console.log('Searchdata', location);
@@ -346,14 +330,14 @@ export class HomePage implements OnInit {
       // in the future it could filter by using the visible map-area.
       this.info.loadRestaurants(latLng, 99999).timeout(15000)
         .subscribe(
-        resp => {
+        res => {
           this.zone.run(() => {
             loader.dismiss();
-            this.allRestaurants = resp;
+            this.allRestaurants = res;
             console.log(this.allRestaurants.toString());
             this.setRestaurantMarkers(this.allRestaurants);
-
           });
+
         },
         err => {
           loader.dismiss();
@@ -456,9 +440,10 @@ ${this.translatedStrs.distance}: ${restaurant.distance}m<br/>
     });
   }
 
+
   /**
    * Show the dialog for putting in an address, that will set the custom location
-*/
+  */
   toggleSearch() {
     if (this.search) {
       this.search = false;
@@ -466,5 +451,95 @@ ${this.translatedStrs.distance}: ${restaurant.distance}m<br/>
       this.search = true;
     }
   }
+
+  registerPush() {
+
+    if (this.auth.getLoggedIn()) {
+
+
+      var pushData: DailyPushNotificationData = {
+        latitude: this.location.lat,
+        longitude: this.location.lng,
+        radius: 99999,
+        title: "",
+        fcmToken: "",
+        user: this.auth.getUser()
+      };
+      console.log('im ersten push');
+      this.push.registerPush(pushData);
+    }
+     else {
+      const alert: Alert = this.alertCtrl.create({
+        title: "Fast geschafft!",
+        subTitle: "Du bist fast soweit. Um Push-Benachrichtigungen anlegen zu können, musst du dich nur noch anmelden.",
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          },
+          {
+            text: "Jetzt anmelden",
+            handler: (): void => {
+              this.navCtrl.push(ChooseLoginPage);
+            }
+          }
+        ]
+      });
+      alert.present();
+    }
+
+  }
+/*
+ * TODO: Aktivieren
+ * Fürs erste ungenutzt, da Push-Benachrichtigungen an allen Tagen gesendet werden
+ */
+  public showCheckbox<alert>() {
+    let alert = this.alertCtrl.create();
+    alert.setTitle('An welchen Tagen würdest du gerne eine Benachrichtigung über die aktuellen Angebote haben?');
+
+    alert.addInput({
+      type: 'checkbox',
+      label: 'Montag',
+      value: 'value1',
+    });
+
+    alert.addInput({
+      type: 'checkbox',
+      label: 'Dienstag',
+      value: 'value2'
+    });
+
+    alert.addInput({
+      type: 'checkbox',
+      label: 'Mittwoch',
+      value: 'value3'
+    });
+
+    alert.addInput({
+      type: 'checkbox',
+      label: 'Donnerstag',
+      value: 'value4'
+    });
+
+    alert.addInput({
+      type: 'checkbox',
+      label: 'Freitag',
+      value: 'value5'
+    });
+
+    alert.addInput({
+      type: 'checkbox',
+      label: 'Samstag',
+      value: 'value6'
+    });
+    alert.addInput({
+      type: 'checkbox',
+      label: 'Sonntag',
+      value: 'value7'
+    });
+
+    return alert;
+  }
+
 
 }

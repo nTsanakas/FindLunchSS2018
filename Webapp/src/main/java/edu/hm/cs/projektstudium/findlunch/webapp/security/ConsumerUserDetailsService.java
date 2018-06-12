@@ -14,18 +14,12 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.UserRepository;
 @Service("consumerUserDetailsService")
 public class ConsumerUserDetailsService implements UserDetailsService {
 
-	/** 
-	 * The user repository. 
-	*/
+	/** The user repository. */
 	@Autowired
 	private UserRepository userRepository;
 	
 	/* (non-Javadoc)
 	 * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
-	 */
-
-	/**
-	 * Throws an exception if the User name was not found
 	 */
 	@Override
 	public User loadUserByUsername(String username) throws UsernameNotFoundException {

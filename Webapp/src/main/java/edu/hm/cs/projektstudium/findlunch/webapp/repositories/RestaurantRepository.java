@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
 
 /**
- * The Interface RestaurantRepository. Abstraction for the data access layer.
+ * The Interface RestaurantRepository. Abstraction for the data access layer
  */
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Serializable>{

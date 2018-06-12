@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.AccountType;
 
 /**
- * The Interface AccountTypeRepository. Abstraction for the data access layer.
+ * The Interface AccountTypeRepository. Abstraction for the data access layer
  */
 @Repository
 public interface AccountTypeRepository extends JpaRepository<AccountType, Integer> {

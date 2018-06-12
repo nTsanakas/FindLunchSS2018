@@ -9,7 +9,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.PointId;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Points;
 
 /**
- * The Interface AccountRepository. Abstraction for the data access layer.
+ * The Interface AccountRepository. Abstraction for the data access layer
  */
 public interface PointsRepository extends JpaRepository<Points, Serializable>{
 	

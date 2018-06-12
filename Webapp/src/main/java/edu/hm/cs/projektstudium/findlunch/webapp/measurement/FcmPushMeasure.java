@@ -11,7 +11,6 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.DailyPushNotificationData;
 
 /**
  * The FcmPushMeasure, sends Google FCM based push-notifications for measurement (not at live-operation).

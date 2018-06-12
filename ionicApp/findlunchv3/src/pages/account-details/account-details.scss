@@ -10,12 +10,13 @@ page-account-details {
   ion-card.card{
     margin-top: 50px;
     box-shadow: none;
-    background: rgba(0, 0, 0, 0.9);
+    background-color: #60d1ff;
     border-radius: 5px;
   }
   a, p, b,
   ion-card-header.card-header{
     color: #ffffff!important;
+    font-size: large;
   }
   .list > .item-block .item-inner{
     border: medium none;
