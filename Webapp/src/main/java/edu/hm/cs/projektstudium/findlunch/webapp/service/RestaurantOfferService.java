@@ -54,7 +54,7 @@ public class RestaurantOfferService {
             TimeSchedule ts = restaurant.getTimeSchedules().stream().filter(item -> item.getDayOfWeek().getDayNumber() == calendar.get(Calendar.DAY_OF_WEEK)).findFirst().orElse(null);
             System.out.println(restaurant.getId() + ": " + ts.toString());
             // only get , that are valid at the moment
-            if (ts != null) {
+            if (ts != null && getValidOffers(calendar,ts,restaurant.getId(),2) != null) {
                 offers.addAll(getValidOffers(calendar, ts, restaurant.getId(), 2));
             }
             //Nur so viele Angebote wie gewünscht auslesen.
