@@ -93,7 +93,7 @@ public class OfferChangeRequestControllerSWA {
     }
 
     @RequestMapping(value = "/swa/saveOfferChangeRequest", method = RequestMethod.POST)
-    public String saveOfferChangeRequest(Model model, @Valid Offer changedOffer, BindingResult changedOfferBinder, HttpServletRequest request) {
+    public String saveOfferChangeRequest(Model model, Offer changedOffer, BindingResult changedOfferBinder, HttpServletRequest request) {
 
         int toDoId;
         if(request.getSession().getAttribute("toDoId") == null) {

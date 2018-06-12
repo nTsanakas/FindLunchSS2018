@@ -244,7 +244,7 @@ public class OfferControllerSWA {
         }
 
         if(courseTypes == null) {
-            courseTypes = new ArrayList<CourseType>();
+            courseTypes = new ArrayList<>();
         }
 
         model.addAttribute("courseTypes", courseTypes);

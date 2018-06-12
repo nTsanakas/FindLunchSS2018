@@ -368,11 +368,11 @@ public class DbWriterServiceImpl implements DbWriterService {
 
         if (offerId == 0) {
             offerToSave.setId(0);
-            offerToSave.setRestaurant(restaurantRepository.findById(offer.getRestaurant().getId()));
         } else {
             offerToSave.setId(offerId);
-            offerToSave.setRestaurant(restaurantRepository.findById(offer.getIdOfRestaurant()));
         }
+
+        offerToSave.setRestaurant(restaurantRepository.findById(offer.getIdOfRestaurant()));
 
         offerToSave.setTitle(offer.getTitle());
         offerToSave.setDescription(offer.getDescription());
