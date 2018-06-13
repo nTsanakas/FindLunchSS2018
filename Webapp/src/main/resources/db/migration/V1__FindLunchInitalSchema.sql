@@ -608,8 +608,8 @@ CREATE TABLE IF NOT EXISTS `findlunch`.`reservation_offers` (
   CONSTRAINT `fk_offer1`
     FOREIGN KEY (`offer_id`)
     REFERENCES `findlunch`.`offer` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
