@@ -1,4 +1,4 @@
- import {Component, ViewChild} from '@angular/core';
+ import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonicPage, Nav, NavController, Toast, ToastController} from 'ionic-angular';
 import {AuthService} from '../../shared/auth.service';
 import {QRService} from "../../pages/bonus/qr.service";
@@ -8,8 +8,9 @@ import {BonusPage} from "../bonus/bonus";
 import {ReservationsPage} from "../reservations/reservations";
 import {HomePage} from "../home/home";
  import {CurrentOffersPage} from "../current-offers/current-offers";
+ import {OffersService} from "../../shared/offers.service";
 
-/**
+ /**
  * Generated class for the AccountDetailsPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
@@ -22,7 +23,7 @@ import {HomePage} from "../home/home";
   selector: 'page-account-details',
   templateUrl: 'account-details.html',
 })
-export class AccountDetailsPage {
+export class AccountDetailsPage implements OnInit{
   @ViewChild(Nav) public nav: Nav;
 
   rootPage: any = HomePage;
@@ -32,7 +33,8 @@ export class AccountDetailsPage {
               public auth: AuthService,
               public toastCtrl: ToastController,
               public qr: QRService,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              public offers: OffersService) {
     translate.setDefaultLang(APP_LANG);
     this.auth.verifyUser();
 
@@ -54,6 +56,7 @@ export class AccountDetailsPage {
         console.error("Error: translate.get did fail for key Success.logoutSuccess.", err);
       }
     );
+    this.offers.loadGps();
   }
   /**
    * opens the clicked page. Reset the content nav to have just this page.

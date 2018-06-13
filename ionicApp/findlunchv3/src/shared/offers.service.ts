@@ -22,9 +22,10 @@ export class OffersService implements OnInit{
     }
 
     ngOnInit(){
-      return navigator.geolocation.getCurrentPosition(pos =>{
+      navigator.geolocation.getCurrentPosition(pos =>{
         this.lat = pos.coords.latitude;
         this.lon = pos.coords.longitude;
+        console.log("Position ist ermittelt");
       }, err => {
         console.log("Position konnte nicht ermittelt werden: " + JSON.stringify(err));
       });
@@ -63,11 +64,15 @@ export class OffersService implements OnInit{
     return this.http.get<Offer[]>(`${SERVER_URL}/api/restaurants/${restaurantId}/offers`)
   }
 
+  public loadGps(){
+    navigator.geolocation.getCurrentPosition(pos =>{
+      this.lat = pos.coords.latitude;
+      this.lon = pos.coords.longitude;
+    });
+  }
+
   public loadCurrentOffers():Observable<any>{
-      navigator.geolocation.getCurrentPosition(pos =>{
-        this.lat = pos.coords.latitude;
-        this.lon = pos.coords.longitude;
-      });
+      this.loadGps();
       const user: string = window.localStorage.getItem("username");
       const token: string = window.localStorage.getItem(user);
       let headers = new HttpHeaders({
