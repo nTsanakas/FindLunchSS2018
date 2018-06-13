@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by Alexander Carl on 23.06.2017.
+ * Validator for profiles.
  */
 public class ProfileValidator implements Validator {
 
@@ -32,6 +32,11 @@ public class ProfileValidator implements Validator {
         return ProfileForm.class.isAssignableFrom(clazz);
     }
 
+    /**
+     * Sets the validator.
+     * @param target the target
+     * @param errors the errors
+     */
     public void validate(Object target, Errors errors) {
         Set<ConstraintViolation<Object>> constraintViolations = beanValidator.validate(target);
 

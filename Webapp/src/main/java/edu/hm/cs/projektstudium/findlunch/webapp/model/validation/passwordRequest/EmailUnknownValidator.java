@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * Validates unknown emails.
+ */
 public class EmailUnknownValidator implements ConstraintValidator<EmailUnknown, String> {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -20,6 +23,12 @@ public class EmailUnknownValidator implements ConstraintValidator<EmailUnknown, 
         // intentionally left blank; this is the place to initialize the constraint annotation for any logical default values.
     }
 
+    /**
+     * Checks if email of sales person is valid.
+     * @param value Email of sales person
+     * @param context the context
+     * @return true, if email is valid
+     */
     public boolean isValid(String value, ConstraintValidatorContext context) {
         SalesPerson salesPerson;
 

@@ -31,6 +31,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the interface DbWriterService.
+ */
 @Service
 public class DbWriterServiceImpl implements DbWriterService {
 

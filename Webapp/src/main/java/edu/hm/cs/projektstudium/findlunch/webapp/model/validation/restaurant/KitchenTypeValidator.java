@@ -4,6 +4,9 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+/**
+ * Validates the kitchen type.
+ */
 public class KitchenTypeValidator implements Validator {
 
 
@@ -13,6 +16,11 @@ public class KitchenTypeValidator implements Validator {
         return true;
     }
 
+    /**
+     * Validates the kitchen type of a restaurant.
+     * @param target the target restaurant
+     * @param errors Error handling if kitchenType is null
+     */
     @Override
     public void validate(Object target, Errors errors) {
         Restaurant restaurant = (Restaurant) target;

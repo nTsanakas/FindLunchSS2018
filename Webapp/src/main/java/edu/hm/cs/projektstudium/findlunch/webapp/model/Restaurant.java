@@ -45,10 +45,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 
 /**
-<<<<<<< HEAD
- * The Class Restaurant.
-=======
->>>>>>> master
  * Sets important information about a restaurant.
  */
 @Entity

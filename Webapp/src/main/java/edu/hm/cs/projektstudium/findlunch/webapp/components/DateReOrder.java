@@ -1,5 +1,9 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.components;
 
+/**
+ * This class is used to re-order dates.
+ * It re-orders dates or date-time input given as string.
+ */
 public class DateReOrder {
 
     public String reOrderDateString(String dateAsString) {
@@ -14,6 +18,11 @@ public class DateReOrder {
         }
     }
 
+    /**
+     * Re-orders given input date
+     * @param dateAsString Input date in string form
+     * @return Unmodified input if string is not 16 characters long or date re-ordered by reOrderDateString method and time
+     */
     public String reOrderDateTimeString(String dateAsString) {
         if(dateAsString.length() != 16) { //16
             return dateAsString;

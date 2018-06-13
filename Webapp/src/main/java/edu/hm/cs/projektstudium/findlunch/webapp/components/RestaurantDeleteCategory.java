@@ -1,5 +1,8 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.components;
 
+/**
+ * Class to delete a restaurant category.
+ */
 public class RestaurantDeleteCategory {
 
     private String name;

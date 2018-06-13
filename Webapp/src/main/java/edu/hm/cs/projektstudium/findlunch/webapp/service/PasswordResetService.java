@@ -1,7 +1,7 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.service;
 
 /**
- * Created by Alexander Carl on 18.06.2017.
+ * Interface for services related to the password reset service.
  */
 public interface PasswordResetService {
 

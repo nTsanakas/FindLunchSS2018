@@ -6,6 +6,9 @@ import lombok.Setter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Container which contains information about opening and closing time for each day.
+ */
 @Getter
 @Setter
 public class RestaurantTimeContainer {
@@ -19,6 +22,12 @@ public class RestaurantTimeContainer {
         super();
     }
 
+    /**
+     * Contains opening and closing time for a day.
+     * @param startTime opening time
+     * @param endTime closing time
+     * @param dayNumber number of week day
+     */
     public RestaurantTimeContainer(Date startTime, Date endTime, int dayNumber) {
         if(!(startTime == null)) {
             this.startTime = new SimpleDateFormat("HH:mm").format(startTime);

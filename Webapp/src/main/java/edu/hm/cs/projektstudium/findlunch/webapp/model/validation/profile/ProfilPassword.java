@@ -1,7 +1,7 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.model.validation.profile;
 
 /**
- * Created by Alexander Carl on 23.06.2017.
+ * Inferface for the profile password.
  */
 
 import javax.validation.Constraint;

@@ -4,6 +4,9 @@ import edu.hm.cs.projektstudium.findlunch.webapp.components.PasswordMapContainer
 
 import java.util.HashMap;
 
+/**
+ * Interface for services related to the password request service.
+ */
 public interface PasswordRequestService {
 
     String createPasswordResetCode(String userEmail);

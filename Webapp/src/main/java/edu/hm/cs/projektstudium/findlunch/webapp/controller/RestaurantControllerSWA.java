@@ -29,6 +29,9 @@ import java.security.Principal;
 import java.util.Base64;
 import java.util.UUID;
 
+/**
+ * The class is responsible for handling http calls related to the restaurant controller in the swa.
+ */
 @Controller
 @Scope("session")
 public class RestaurantControllerSWA {
@@ -47,6 +50,11 @@ public class RestaurantControllerSWA {
     @Autowired
     private RestaurantValidator restaurantValidator;
 
+    /**
+     * Creates a new empty restaurant in the model.
+     * @param model The model
+     * @return The created restaurant
+     */
     @RequestMapping(value = "/swa/newRestaurant", method = RequestMethod.GET)
     public String emptyRestaurant(Model model) {
 
@@ -57,6 +65,14 @@ public class RestaurantControllerSWA {
         return "swa_restaurant";
     }
 
+    /**
+     * Loads the requested restaurant into the model, if the user has access.
+     *
+	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param restaurantId Id of the restaurant
+	 * @param request request the HttpServletRequest
+	 * @return The restaurant
+     */
     //Loads the requested restaurant into the model, if the user has access.
     @RequestMapping(value = "/swa/restaurant", method = RequestMethod.GET)
     public String getRestaurant(Model model, @RequestParam("id") int restaurantId, HttpServletRequest request) {
@@ -80,6 +96,14 @@ public class RestaurantControllerSWA {
         return "swa_restaurant";
     }
 
+    /**
+     * Adds a new category to a restaurant.
+     *
+	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param restaurantAddCategory The category to add
+	 * @param request request the HttpServletRequest
+	 * @return The restaurant page
+     */
     @RequestMapping(value = "/swa/restaurant/addCategory", method = RequestMethod.POST)
     public String processAddNewCategory(Model model, RestaurantAddCategory restaurantAddCategory, HttpServletRequest request) {
 
@@ -100,6 +124,14 @@ public class RestaurantControllerSWA {
         return "redirect:/swa/restaurant?id=" + restaurantId;
     }
 
+    /**
+     * Deletes a existing category of a restaurant.
+     *
+	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param restaurantDeleteCategory Category to delete
+	 * @param request request the HttpServletRequest
+	 * @return The restaurant page
+     */
     @RequestMapping(value = "/swa/restaurant/deleteCategory", method = RequestMethod.POST)
     public String processDeleteExistingCategory(Model model, RestaurantDeleteCategory restaurantDeleteCategory, HttpServletRequest request) {
 
@@ -119,6 +151,15 @@ public class RestaurantControllerSWA {
         return "redirect:/swa/restaurant?id=" + restaurantId;
     }
 
+    /**
+     * Saves changes made to the restaurant or creates a new restaurant.
+     *
+	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param restaurant The restaurant
+	 * @param restaurantBinder Binder of the restaurant
+	 * @param principal The principal
+	 * @return The restaurant
+     */
     @RequestMapping(value = "/swa/saveRestaurant", method = RequestMethod.POST)
     // TODO: Wieder validieren.
     public String processRestaurant(Model model, Principal principal, Restaurant restaurant, BindingResult restaurantBinder) {
@@ -188,6 +229,12 @@ public class RestaurantControllerSWA {
     }
 
 
+
+    /**
+     * Used to prepare an restaurant object of an existing restaurant for its injection into the model.
+     * @param restaurantId Id of the restaurant
+     * @return the restaurant object
+     */
     //Used to prepare an restaurant object of an existing restaurant for its injection into the model
     private Restaurant preparedRestaurantForExistingRestaurant(int restaurantId) {
         Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
@@ -202,6 +249,10 @@ public class RestaurantControllerSWA {
         return restaurant;
     }
 
+    /**
+     * Used to prepare an restaurant object of a new restaurant for its injection into the model.
+     * @return the restaurant object
+     */
     //Used to prepare an restaurant object of a new restaurant for its injection into the model
     private Restaurant preparedRestaurantForNewRestaurant() {
         String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -221,6 +272,12 @@ public class RestaurantControllerSWA {
         return restaurant;
     }
 
+    /**
+     * Gets the restaurant model for the currently logged in user.
+     * @param restaurant the restaurant
+     * @param model the model
+     * @return the restaurant model
+     */
     private Model getRestaurantModel(Restaurant restaurant, Model model) {
         String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
 

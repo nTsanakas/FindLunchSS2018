@@ -7,6 +7,9 @@ import org.springframework.ui.Model;
 
 import java.util.List;
 
+/**
+ * Interface for services related to the offer change request service.
+ */
 public interface OfferChangeRequestService {
 
     ToDo getToDoById(int id);

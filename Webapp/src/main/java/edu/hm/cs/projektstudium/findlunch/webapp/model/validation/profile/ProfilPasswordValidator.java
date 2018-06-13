@@ -9,7 +9,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * Created by Alexander Carl on 23.06.2017.
+ * Validates that the entered profile password is correct.
  */
 public class ProfilPasswordValidator implements ConstraintValidator<ProfilPassword, String> {
 
@@ -23,6 +23,11 @@ public class ProfilPasswordValidator implements ConstraintValidator<ProfilPasswo
         // intentionally left blank: this is the place to initialize the constraint annotation for any sensible default values.
     }
 
+    /**
+     * Validates the password of a profile.
+     * @param value the value
+     * @param context the context
+     */
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
 

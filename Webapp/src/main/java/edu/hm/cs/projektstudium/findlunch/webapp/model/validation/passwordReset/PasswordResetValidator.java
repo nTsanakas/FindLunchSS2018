@@ -9,6 +9,9 @@ import javax.validation.ConstraintViolation;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Validates the password reset.
+ */
 public class PasswordResetValidator  implements Validator {
 
     @Autowired
@@ -20,7 +23,10 @@ public class PasswordResetValidator  implements Validator {
         springValidators = new HashSet<Validator>();
     }
 
-    //Used in the WebAppContextConfig to add classic Spring Validators
+    /**
+     * Used in the WebAppContextConfig to add classic Spring Validators.
+     * @param springValidators the spring validator
+     */
     public void setSpringValidators(Set<Validator> springValidators) {
         this.springValidators = springValidators;
     }
@@ -29,6 +35,11 @@ public class PasswordResetValidator  implements Validator {
         return PasswordResetForm.class.isAssignableFrom(clazz);
     }
 
+    /**
+     * Sets the validator.
+     * @param target the target
+     * @param errors the errors
+     */
     public void validate(Object target, Errors errors) {
         Set<ConstraintViolation<Object>> constraintViolations = beanValidator.validate(target);
 

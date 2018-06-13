@@ -5,7 +5,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 /**
- * Created by Alexander Carl on 25.06.2017.
+ * Validates the setting of a password.
  */
 
 public class ProfilePasswordSetValidator implements Validator {
@@ -14,6 +14,11 @@ public class ProfilePasswordSetValidator implements Validator {
         return ProfileForm.class.isAssignableFrom(clazz);
     }
 
+    /**
+     * Validates the password set.
+     * @param target the target
+     * @param errors the errors
+     */
     @Override
     public void validate(Object target, Errors errors) {
         ProfileForm profileForm = (ProfileForm) target;

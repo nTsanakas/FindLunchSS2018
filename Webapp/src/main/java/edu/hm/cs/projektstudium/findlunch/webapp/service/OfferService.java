@@ -5,6 +5,9 @@ import org.springframework.ui.Model;
 
 import java.util.List;
 
+/**
+ * Interface for services related to the offer service.
+ */
 public interface OfferService {
 
     List<Offer> getAllOffersOfRestaurant(int restaurantId);

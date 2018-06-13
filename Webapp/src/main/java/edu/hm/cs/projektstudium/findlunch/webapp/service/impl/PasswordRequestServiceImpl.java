@@ -8,8 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
+
 /**
- * Created by Alexander Carl on 15.06.2017.
+ * Implementation of the interface PasswordRequestService.
  */
 @Service
 public class PasswordRequestServiceImpl implements PasswordRequestService {

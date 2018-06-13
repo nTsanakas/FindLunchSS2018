@@ -9,7 +9,8 @@ import org.springframework.validation.Validator;
 
 
 /**
- * Created by Alexander Carl on 11.08.2017.
+ * Validates the date of an offer.
+ *
  */
 public class DateValidator implements Validator {
 
@@ -18,6 +19,11 @@ public class DateValidator implements Validator {
         return Offer.class.isAssignableFrom(aClass);
     }
 
+    /**
+     * Validates the date.
+     * @param target the target
+     * @param errors the errors
+     */
     @Override
     public void validate(Object target, Errors errors) {
         Offer offer = (Offer) target;

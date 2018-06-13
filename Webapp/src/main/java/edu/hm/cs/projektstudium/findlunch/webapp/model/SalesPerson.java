@@ -6,6 +6,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Defines a sales person.
+ */
 @Entity
 @Table(name = "swa_sales_person")
 @Getter
@@ -45,9 +48,15 @@ public class SalesPerson {
 
     private String bic;
 
+    /**
+     * Salary percentage of the sales person.
+     */
     @Column(name = "salary_percentage")
     private Double salaryPercentage;
 
+    /**
+     * List of restaurants a sales person is responsible for.
+     */
     @OneToMany(mappedBy = "salesPerson", fetch = FetchType.LAZY)
     private List<Restaurant> restaurants;
 

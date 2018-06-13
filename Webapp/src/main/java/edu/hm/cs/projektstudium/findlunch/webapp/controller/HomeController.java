@@ -1,7 +1,7 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.mail.MailService;
+import edu.hm.cs.projektstudium.findlunch.webapp.service.MailService;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.PushTokenRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ReservationRepository;
 import org.slf4j.Logger;

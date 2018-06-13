@@ -14,9 +14,9 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.Country;
 public interface CountryRepository extends JpaRepository<Country, Serializable>{
 
     /**
-     *
-     * @param countryCode
-     * @return
+     * Gets countries by country code.
+     * @param countryCode Code of a country.
+     * @return The country matching with the code.
      */
     Country getCountryByCountryCode(String countryCode);
 }

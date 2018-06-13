@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.Locale;
 
+/**
+ * Class to display messages to a sales person.
+ */
 @Component
 public class Messages {
 

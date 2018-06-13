@@ -5,6 +5,9 @@ import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of the interface HibernateService.
+ */
 @Service
 public class HibernateServiceImpl implements HibernateService {
 

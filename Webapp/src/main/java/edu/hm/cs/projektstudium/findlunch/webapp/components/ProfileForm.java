@@ -9,6 +9,9 @@ import lombok.Setter;
 
 import javax.validation.constraints.Pattern;
 
+/**
+ * Profile form of the sales person.
+ */
 @Getter
 @Setter
 public class ProfileForm {
@@ -59,6 +62,10 @@ public class ProfileForm {
         super();
     }
 
+    /**
+     * Form of the sales person.
+     * @param salesPerson The sales person
+     */
     public ProfileForm(SalesPerson salesPerson) {
        this.id = salesPerson.getId();
        this.firstName = salesPerson.getFirstName();

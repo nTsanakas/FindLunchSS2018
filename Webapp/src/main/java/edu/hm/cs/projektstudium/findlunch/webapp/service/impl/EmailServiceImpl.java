@@ -17,6 +17,9 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Implementation of the interface EmailService.
+ */
 @Service
 public class EmailServiceImpl implements EmailService {
 

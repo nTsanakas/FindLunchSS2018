@@ -8,6 +8,8 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
+ * /**
+ * Validates that the email of a profile is unique.
  * Created by Alexander Carl on 25.06.2017.
  */
 public class ProfileEmailUniqueValidator implements ConstraintValidator<ProfileEmailUnique, String> {
@@ -20,6 +22,11 @@ public class ProfileEmailUniqueValidator implements ConstraintValidator<ProfileE
         // intentionally left blank: this is the place to initialize the constraint annotation for any sensible default values.
     }
 
+    /**
+     * Validates the email of a profile.
+     * @param value the value
+     * @param context the context
+     */
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
 

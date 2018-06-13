@@ -4,6 +4,9 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.passwordReset.
 
 import javax.validation.constraints.Pattern;
 
+/**
+ * Form to reset password.
+ */
 public class PasswordResetForm {
 
     @PasswordResetCode

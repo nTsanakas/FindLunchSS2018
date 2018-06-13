@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+/**
+ * Implementation of the interface OfferChangeRequestService.
+ */
 @Service
 public class OfferChangeRequestServiceImpl implements OfferChangeRequestService {
 

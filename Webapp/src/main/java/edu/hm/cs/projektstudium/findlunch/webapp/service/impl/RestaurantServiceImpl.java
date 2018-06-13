@@ -30,6 +30,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Implementation of the interface RestaurantService.
+ */
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
 
@@ -42,7 +45,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private DbWriterService dbWriterService;
 
     //The restaurant`s id is the key.
-    /*This Map is used to store the restaurant(data) which is send to the user.
+    /**This Map is used to store the restaurant(data) which is send to the user.
     * When the user presses save, the restaurant(data) is loaded again from the DB und compared to the
     * restaurant(data) at the start (stored in the HashMap). If the restaurant(data) has been altered
     * on the server while the user worked on it, the save request is rejected. This logic
@@ -91,7 +94,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         return false;
     }
 
-    /* 11.07.2017
+    /**
     The way the customerID is created here is deliberately done different than in the findLunchApp.
     The id in the findLunchApp is created in an deprecated way and not checked for uniqueness.
      */

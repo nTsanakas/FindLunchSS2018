@@ -31,11 +31,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 
 /**
-<<<<<<< HEAD
- * The Class TimeSchedule. Defines a period of time in which a offer is valid.
-=======
  * Defines a period of time in which a offer is valid.
->>>>>>> master
  */
 @Entity
 @Table(name = "time_schedule")

@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.io.Serializable;
 
+/**
+ * The Interface OfferHasAdditivesRepository. Abstraction for the data access layer.
+ */
 public interface OfferHasAdditivesRepository extends JpaRepository<OfferHasAdditive, Serializable> {
 
     @Modifying

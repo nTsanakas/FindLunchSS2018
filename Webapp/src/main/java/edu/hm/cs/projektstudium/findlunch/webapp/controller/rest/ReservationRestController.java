@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.mail.MailService;
+import edu.hm.cs.projektstudium.findlunch.webapp.service.MailService;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.EuroPerPoint;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.PointId;

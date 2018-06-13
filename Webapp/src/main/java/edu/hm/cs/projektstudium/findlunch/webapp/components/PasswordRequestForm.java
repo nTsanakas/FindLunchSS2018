@@ -4,6 +4,9 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.validation.passwordReques
 
 import javax.validation.constraints.Pattern;
 
+/**
+ * Form to request a forgotten password with e-mail.
+ */
 public class PasswordRequestForm {
 
     @Pattern(regexp = ".+@.+\\..+", message = "{universal.validation.pattern.email}")

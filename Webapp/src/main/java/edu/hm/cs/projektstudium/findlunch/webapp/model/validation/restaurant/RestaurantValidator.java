@@ -8,6 +8,9 @@ import javax.validation.ConstraintViolation;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class to validate restaurants.
+ */
 public class RestaurantValidator implements Validator {
 
     @Autowired
@@ -19,7 +22,10 @@ public class RestaurantValidator implements Validator {
         springValidators = new HashSet<Validator>();
     }
 
-    //Used in the WebAppContextConfig to add classic Spring Validators
+    /**
+     * Used in the WebAppContextConfig to add classic Spring Validators.
+     * @param springValidators the spring validator
+     */
     public void setSpringValidators(Set<Validator> springValidators) {
         this.springValidators = springValidators;
     }
@@ -29,6 +35,11 @@ public class RestaurantValidator implements Validator {
         //return Restaurant.class.isAssignableFrom(clazz);
     }
 
+    /**
+     * Validates the restaurant.
+     * @param target the target restaurant
+     * @param errors Error handling
+     */
     public void validate(Object target, Errors errors) {
         Set<ConstraintViolation<Object>> constraintViolations = beanValidator.validate(target);
 

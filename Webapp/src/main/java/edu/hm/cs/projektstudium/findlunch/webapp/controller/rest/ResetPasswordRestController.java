@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.mail.MailService;
+import edu.hm.cs.projektstudium.findlunch.webapp.service.MailService;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.ResetPassword;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.ResetPasswordRepository;

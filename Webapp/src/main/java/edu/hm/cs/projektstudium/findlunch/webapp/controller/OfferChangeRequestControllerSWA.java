@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * The class is responsible for handling http calls related to changing offers in the swa.
+ */
 @Controller
 @Scope
 public class OfferChangeRequestControllerSWA {
@@ -41,6 +44,13 @@ public class OfferChangeRequestControllerSWA {
     @Autowired
     private HibernateService hibernateService;
 
+    /**
+     * Get a change request for offers.
+     * @param model Model in which necessary object are placed to be displayed on the website.
+     * @param toDoId Id of the toDo object
+     * @param request the HttpServletRequest
+     * @return the offer change request
+     */
     @RequestMapping(value = "/swa/offerChangeRequest", method = RequestMethod.GET)
     public String getOfferChangeRequest(Model model, @RequestParam("id") int toDoId, HttpServletRequest request) {
 
@@ -92,6 +102,14 @@ public class OfferChangeRequestControllerSWA {
         return "swa_offerChangeRequest";
     }
 
+    /**
+     * Save a change request for offers.
+     * @param model Model in which necessary object are placed to be displayed on the website.
+     * @param changedOffer the changed offer
+     * @param changedOfferBinder Binder of the changed offer
+     * @param request the HttpServletRequest
+     * @return the offer change request
+     */
     @RequestMapping(value = "/swa/saveOfferChangeRequest", method = RequestMethod.POST)
     public String saveOfferChangeRequest(Model model, Offer changedOffer, BindingResult changedOfferBinder, HttpServletRequest request) {
 
@@ -152,6 +170,11 @@ public class OfferChangeRequestControllerSWA {
         }
     }
 
+    /**
+     * Deletes the offer change request.
+     * @param toDoId Id of the toDo object
+     * @return redirects the user to the page redirect:/swa/home?changeRequestDeleted
+     */
     @RequestMapping(value = "/swa/offerChangeRequest/remove")
     public String deleteOfferChangeRequest(@RequestParam("toDoId") int toDoId) {
 
@@ -175,6 +198,11 @@ public class OfferChangeRequestControllerSWA {
         return "redirect:/swa/home?changeRequestDeleted";
     }
 
+    /**
+     * Deletes a offer photo.
+     * @param offerPhotoId Id of the offer photo
+     * @return redirects the user
+     */
     @RequestMapping(value = "/swa/offerChangeRequest/removePhoto")
     public String deleteOfferChangeRequestPhoto(@RequestParam("Id") int offerPhotoId) {
 
