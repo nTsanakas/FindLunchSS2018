@@ -97,7 +97,7 @@ public class RestaurantOfferService {
      *         always false
      */
     private List<Restaurant> getAllRestaurants(float longitude, float latitude, int radius, int restaurantNumber, boolean currentlyOpen) {
-        List<Restaurant> restaurantList = restaurantRepo.findAll();
+        List<Restaurant> restaurantList = restaurantRepo.findAllByBlockedIsFalse();
 
         // Distanz zur übergebenen Position berechnen und im Restaurant-Modell speichern.
         for (int i = 0; i < restaurantList.size(); i++) {
