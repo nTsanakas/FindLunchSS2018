@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -26,12 +27,12 @@ public class KitchenType {
 	@ApiModelProperty(notes = "ID")
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private int id;
 
 	/** The name. */
 	@ApiModelProperty(notes = "Name")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private String name;
 
 	/** The restaurants. */

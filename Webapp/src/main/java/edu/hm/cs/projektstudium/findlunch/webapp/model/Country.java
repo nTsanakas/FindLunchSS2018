@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.RestaurantView;
+import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -43,7 +44,7 @@ public class Country {
 
 	/** The name. */
 	@ApiModelProperty(notes = "Name des Landes")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private String name;
 
 	@ApiModelProperty(notes = "Liste der zuständigen Vertriebsmitarbeiter")

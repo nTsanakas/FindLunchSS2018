@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -57,7 +58,7 @@ public class TimeSchedule {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm", locale = "de", timezone = "Europe/Berlin")
 	@DateTimeFormat(pattern = "HH:mm")
 	@Column(name = "offer_end_time")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private Date offerEndTime;
 
 	/** The offer start time. */
@@ -66,13 +67,13 @@ public class TimeSchedule {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm", locale = "de", timezone = "Europe/Berlin")
 	@DateTimeFormat(pattern = "HH:mm")
 	@Column(name = "offer_start_time")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private Date offerStartTime;
 
 	/** The opening times. */
 	@ApiModelProperty(notes = "Öffnungszeiten")
 	// bi-directional many-to-one association to OpeningTime
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "timeSchedule", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OpeningTime> openingTimes;
 
@@ -81,7 +82,7 @@ public class TimeSchedule {
 	// bi-directional many-to-one association to DayOfWeek
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "day_of_week_id")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	private DayOfWeek dayOfWeek;
 
 	/** The restaurant. */

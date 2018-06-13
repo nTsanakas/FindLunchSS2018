@@ -16,7 +16,7 @@ import {TranslateService} from "@ngx-translate/core";
 @Component({
   templateUrl: './offer-product-details.html'
 })
-export class OfferProductDetailsPage {
+export class  OfferProductDetailsPage {
 
   public cart: Offer[];
   public restaurant: Restaurant;
@@ -33,7 +33,9 @@ export class OfferProductDetailsPage {
               public translate: TranslateService
   ) {
     this.restaurant = navParams.get("restaurant");
+    console.log("Restaurant: "  + JSON.stringify(this.restaurant));
     this.offer = navParams.get("offer");
+    console.log("Offer: "  + JSON.stringify(this.offer));
     // get cart for this restaurant
     this.cart = cartService.getCart(this.restaurant.id);
   }

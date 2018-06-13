@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -47,7 +48,7 @@ public class OpeningTime {
 
 	/** The closing time. */
 	@ApiModelProperty(notes = "Schließungszeit")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	@Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd.MM.yyyy HH:mm", locale="de", timezone="Europe/Berlin")
 	@DateTimeFormat(pattern="HH:mm")
@@ -56,7 +57,7 @@ public class OpeningTime {
 
 	/** The opening time. */
 	@ApiModelProperty(notes = "Öffnungszeit")
-	@JsonView(RestaurantView.RestaurantRest.class)
+	@JsonView({RestaurantView.RestaurantRest.class, OfferView.OfferRest.class})
 	@Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd.MM.yyyy HH:mm", locale="de", timezone="Europe/Berlin")
 	@DateTimeFormat(pattern="HH:mm")

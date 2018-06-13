@@ -60,47 +60,12 @@ export class CurrentOffersPage implements OnInit {
     loader.dismiss();
   }
 
-  public onOfferClicked(event:Event, offer:any){
-    console.log("Click: "+JSON.stringify(offer));
-    let o:Offer={
-      id: offer.id,
-      description: offer.description,
-      preparationTime: offer.preparationTime,
-      price: offer.price,
-      title: offer.title,
-      defaultPhoto: offer.defaultPhoto,
-      neededPoints: offer.neededPoints,
-      amount: 0,
-      additives: offer.additives,
-      allergenic: offer.allergenic,
-      sold_out: offer.sold_out,
-      courseType: {id:0, name: ''}
-    };
-    console.log("o ok");
-    let restaurant:Restaurant = offer.restaurant;
-    console.log("res ok");
-    /*let restaurant:Restaurant={
-      actualPoints: offer.actualPoints,
-      city: offer.city,
-      country: offer.country,
-      currentlyOpen: offer.currentlyOpen,
-      distance: offer.distance,
-      email: offer.email,
-      id: offer.id,
-      isFavorite: offer.isFavorite,
-      kitchenTypes: offer.kitchenTypes,
-      locationLatitude: offer.locationLatitude,
-      locationLongitude: offer.locationLongitude,
-      name: offer.name,
-      phone: offer.phone,
-      restaurantType: offer.restaurantType,
-      street: offer.street,
-      streetNumber: offer.streetNumber,
-      timeSchedules: offer.timeSchedules,
-      url: offer.url,
-      zip: offer.zip
-    };*/
-    this.navCtrl.push(OfferProductDetailsPage, {offer: o, restaurant: restaurant});
+  public onOfferClicked(event:Event, offer1:any){
+
+    let offer:Offer = offer1;
+
+    let restaurant:Restaurant = offer1.restaurant;
+    this.navCtrl.push(OfferProductDetailsPage, {offer, restaurant: restaurant});
 
   }
 }

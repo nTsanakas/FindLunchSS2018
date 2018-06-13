@@ -15,8 +15,8 @@ import {observable} from "rxjs/symbol/observable";
 export class OffersService implements OnInit{
 
     private cache: Map<number, Offer[]>;
-  private lat:number = 0;
-  private lon:number = 0;
+    private lat:number = 0;
+    private lon:number = 0;
     constructor(private http: HttpClient) {
         this.cache = new Map();
     }
@@ -25,6 +25,8 @@ export class OffersService implements OnInit{
       return navigator.geolocation.getCurrentPosition(pos =>{
         this.lat = pos.coords.latitude;
         this.lon = pos.coords.longitude;
+      }, err => {
+        console.log("Position konnte nicht ermittelt werden: " + JSON.stringify(err));
       });
     }
     /**
@@ -62,6 +64,10 @@ export class OffersService implements OnInit{
   }
 
   public loadCurrentOffers():Observable<any>{
+      navigator.geolocation.getCurrentPosition(pos =>{
+        this.lat = pos.coords.latitude;
+        this.lon = pos.coords.longitude;
+      });
       const user: string = window.localStorage.getItem("username");
       const token: string = window.localStorage.getItem(user);
       let headers = new HttpHeaders({
