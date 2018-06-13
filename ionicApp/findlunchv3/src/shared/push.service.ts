@@ -11,6 +11,7 @@ import {User} from "../model/User";
 import {DailyPushNotificationData} from "../model/DailyPushNotificationData";
 import {OffersService} from "./offers.service";
 import {CurrentOffersPage} from "../pages/current-offers/current-offers";
+import {Offer} from "../model/Offer";
 
 
 /**
@@ -165,7 +166,8 @@ export class PushService {
       (data => {
         if(data.command === "SEND_LOCATION"){
           this.offers.loadCurrentOffers().subscribe(resp => {
-            if(resp.size() > 0) {
+            let o: Offer[] = resp;
+            if(o.length > 0) {
               let text = "";
               for (let offer of resp) {
                 text = text + offer.title + " für nur " + offer.price.toFixed(2) + "€ | ";
