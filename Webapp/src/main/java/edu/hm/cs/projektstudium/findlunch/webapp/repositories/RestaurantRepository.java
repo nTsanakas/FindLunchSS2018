@@ -58,4 +58,10 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Serializ
      * @return A list containing said restaurants
      */
     Restaurant findByCustomerId(int id);
+
+	/**
+	 * Find all non-blocked restaurants.
+	 * @return A list containing the non-blocked restaurants.
+	 */
+	List<Restaurant> findAllByBlockedIsFalse();
 }
