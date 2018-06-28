@@ -56,9 +56,9 @@ export class OffersService implements OnInit{
     */
   public loadOffers(restaurantId: number) : Observable<Offer[]> {
 
-     if (this.cache.has(restaurantId)) {
+     /*if (this.cache.has(restaurantId)) {
        return Observable.of(this.cache.get(restaurantId)).take(1);
-     }
+     }*/
 
     // get offers from server otherwise
     return this.http.get<Offer[]>(`${SERVER_URL}/api/restaurants/${restaurantId}/offers`)

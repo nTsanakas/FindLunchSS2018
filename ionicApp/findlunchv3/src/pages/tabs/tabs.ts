@@ -5,6 +5,8 @@ import { SettingsPage } from '../settings/settings';
 import {AuthService} from "../../shared/auth.service";
 import {AccountDetailsPage} from "../account-details/account-details";
 import {ChooseLoginPage} from "../choose-login/choose-login";
+import {BonusPage} from "../bonus/bonus";
+import {NavController} from "ionic-angular";
 
 @Component({
   selector: 'tabs-page',
@@ -17,6 +19,8 @@ export class TabsPage {
   tab3Root = SettingsPage;
   tab4Root = AccountDetailsPage;
 
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService,
+              private navCtrl: NavController) {
   }
+
 }
