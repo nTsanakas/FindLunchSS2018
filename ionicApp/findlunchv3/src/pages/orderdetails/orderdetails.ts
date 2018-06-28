@@ -594,6 +594,7 @@ export class OrderDetailsPage implements OnInit {
   public preparePayPal(): void {
     // Returns null if user has not selected to pay using PayPal
     this.calculatePayPalFee().then((price: any) => {
+      this.reservation.totalPrice = this.reservation.fee + this.reservation.totalPrice;
       if (this.auth.getLoggedIn() && price !== null && this.reservation.totalPrice !== 0) {
         const loader: Loading = this.loading.prepareLoader();
         loader.present().then(() => {
@@ -624,7 +625,8 @@ export class OrderDetailsPage implements OnInit {
               },
               onAuthorize: (payload) => {
                 self.generatePayPalSpecificOptions(payload.nonce).then(() => {
-                  console.log('Set usedpaypal to ', self.reservation.usedPaypal)
+                  console.log('Set usedpaypal to ', self.reservation.usedPaypal);
+                  this.calculatePayPalFee();
                   self.sendOrder();
                 })
               },
@@ -707,6 +709,7 @@ export class OrderDetailsPage implements OnInit {
         const itemprice: number = OrderDetailsPage.calcTotalPrice(this.reservation.items);
         this.reservation.fee = 0.35 + itemprice * 0.019;
         var total: number = this.reservation.fee + itemprice + this.reservation.donation;
+        this.reservation.totalPrice = total;
         resolve(total);
       })
     }

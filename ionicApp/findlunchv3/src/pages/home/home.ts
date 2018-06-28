@@ -334,6 +334,7 @@ export class HomePage implements OnInit {
           this.zone.run(() => {
             loader.dismiss();
             this.allRestaurants = res;
+            console.log(JSON.stringify(this.allRestaurants));
             console.log(this.allRestaurants.toString());
             this.setRestaurantMarkers(this.allRestaurants);
           });
@@ -433,6 +434,7 @@ ${this.translatedStrs.distance}: ${restaurant.distance}m<br/>
 
           // add marker to the map
           this.mapMarkers.push(marker);
+          console.log("Setted Marker for " + JSON.stringify(restaurant));
         });
       } catch (err) {
         console.error("Error adding marker for restaurant", restaurant, err);
