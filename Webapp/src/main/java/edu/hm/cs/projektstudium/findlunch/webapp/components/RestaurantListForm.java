@@ -14,6 +14,10 @@ public class RestaurantListForm {
         super();
     }
 
+    /**
+     * Gets Id and name of given restaurant.
+     * @param restaurant The restaurant
+     */
     public RestaurantListForm(Restaurant restaurant) {
         this.id = restaurant.getId();
         this.name = restaurant.getName();

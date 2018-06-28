@@ -19,6 +19,9 @@ import java.util.List;
 
 import static jdk.nashorn.internal.objects.NativeMath.round;
 
+/**
+ * Implementation of the interface HomeService.
+ */
 @Service
 public class HomeServiceImpl implements HomeService {
 

@@ -10,6 +10,9 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class to validate the password reset code.
+ */
 public class PasswordResetCodeValidator implements ConstraintValidator<PasswordResetCode, String> {
 
     @Autowired
@@ -19,6 +22,11 @@ public class PasswordResetCodeValidator implements ConstraintValidator<PasswordR
         // intentionally left blank: this is the place to initialize the constraint annotation for any sensible default values.
     }
 
+    /**
+     * Validates the password code.
+     * @param value the value
+     * @param context the context
+     */
     public boolean isValid(String value, ConstraintValidatorContext context) {
 
         HashMap<String, PasswordMapContainer> resetCodes = passwordRequestService.getResetCodes();

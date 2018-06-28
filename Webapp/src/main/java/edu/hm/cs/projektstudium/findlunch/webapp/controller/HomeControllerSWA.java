@@ -10,6 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * The class is responsible for handling http calls related to the /home page of the swa.
+ */
 @Controller
 public class HomeControllerSWA {
 
@@ -18,6 +21,11 @@ public class HomeControllerSWA {
     @Autowired
     private HomeService homeService;
 
+    /**
+     * The /swa/home page.
+     * @param model Model in which necessary object are placed to be displayed on the website.
+     * @return The home page
+     */
     @RequestMapping(value = "/swa/home")
     public String home(Model model) {
         String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -28,6 +36,10 @@ public class HomeControllerSWA {
         return "swa_home";
     }
 
+    /**
+     * The /swa/home/logout page.
+     * @return The logout page.
+     */
     @RequestMapping(value = "/swa/home/logout")
     public String logout() {
         String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -37,6 +49,11 @@ public class HomeControllerSWA {
         return "redirect:/swa/login?logout";
     }
 
+    /**
+     * Removes a toDo object.
+     * @param toDoId Id of the toDo object.
+     * @return Redirects to "redirect:/swa/home"
+     */
     @RequestMapping(value = "/swa/home/remove")
     public String removeToDo(@RequestParam("toDo") int toDoId) {
 

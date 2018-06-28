@@ -11,6 +11,9 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.RestaurantType;
 
 import java.util.List;
 
+/**
+ * Interface for services related to restaurants.
+ */
 public interface RestaurantService {
 
     List<RestaurantListForm> getAllRestaurantNamesForSalesPerson(String email);

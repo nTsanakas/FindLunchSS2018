@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 
 /**
- * Created by Alexander Carl on 11.09.2017.
  * This class is used to handle the business logic for changes of salesPerson data/profile.
  */
 
@@ -28,7 +27,7 @@ public class ProfileServiceImpl implements ProfileService {
     private ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(256);
 
     //The sales person`s id is the key.
-    /*This Map is used to store the profile(data) of the sales person which is send to the user.
+    /**This Map is used to store the profile(data) of the sales person which is send to the user.
     * When the user presses save the profile is loaded  again from the DB and then compared to the
     * profile at the start of the transaction (stored in the HashMap). If the profile has been altered
     * on the server while the user worked on it, the save request is rejected. This logic is used
@@ -77,7 +76,7 @@ public class ProfileServiceImpl implements ProfileService {
         return false;
     }
 
-    /*
+    /**
     * Saves the new password if the conditions are correct.
     * This function is always called when the user profile is saved.
     * Therefore the function needs to check for itself if a password

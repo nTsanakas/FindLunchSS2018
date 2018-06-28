@@ -45,9 +45,7 @@ public class LogRestController {
             method = RequestMethod.GET,
             produces = "text/html")
     public final String getLogfile(
-            @RequestParam(
-                    name = "file")
-            @ApiParam(
+            @RequestParam @ApiParam(
                     value = "Log-Datei",
                     required = true)
             File file,

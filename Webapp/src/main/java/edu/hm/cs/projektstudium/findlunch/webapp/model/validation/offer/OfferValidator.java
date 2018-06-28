@@ -8,6 +8,9 @@ import org.springframework.validation.Validator;
 import javax.validation.ConstraintViolation;
 import java.util.Set;
 
+/**
+ * Class to validate offers.
+ */
 public class OfferValidator implements Validator {
 
     @Autowired
@@ -15,7 +18,10 @@ public class OfferValidator implements Validator {
 
     private Set<Validator> springValidators;
 
-    //Used in the WebAppContextConfig to add classic Spring Validators
+    /**
+     * Used in the WebAppContextConfig to add classic Spring Validators.
+     * @param springValidators the spring validator
+     */
     public void setSpringValidators(Set<Validator> springValidators) {
         this.springValidators = springValidators;
     }
@@ -25,6 +31,11 @@ public class OfferValidator implements Validator {
         return Offer.class.isAssignableFrom(aClass);
     }
 
+    /**
+     * Validates an offer.
+     * @param target the target
+     * @param errors the errors
+     */
     @Override
     public void validate(Object target, Errors errors) {
         Set<ConstraintViolation<Object>> constraintViolations = beanValidator.validate(target);

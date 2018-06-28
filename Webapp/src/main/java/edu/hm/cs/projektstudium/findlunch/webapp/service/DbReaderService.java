@@ -4,6 +4,9 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.*;
 
 import java.util.List;
 
+/**
+ * Interface for services related to the database reader service.
+ */
 public interface DbReaderService {
 
     SalesPerson getSalesPersonByEmail(String email);

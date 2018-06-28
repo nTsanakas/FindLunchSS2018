@@ -7,6 +7,9 @@ import org.springframework.validation.Validator;
 
 import java.util.List;
 
+/**
+ * Validates opening times of a restaurant.
+ */
 public class OpeningTimesValidator implements Validator {
 
     @Override
@@ -15,6 +18,11 @@ public class OpeningTimesValidator implements Validator {
         return true;
     }
 
+    /**
+     * Validates the opening times.
+     * @param target the target restaurant
+     * @param errors Error handling if opening time is null
+     */
     @Override
     public void validate(Object target, Errors errors) {
         Restaurant restaurant = (Restaurant) target;

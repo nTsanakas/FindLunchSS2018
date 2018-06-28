@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 
 /**
- * Created by Alexander Carl on 19.06.2017.
- * Controller for the dialog to User-Profil-Settings
+ * Controller for the dialog to User-Profile-Settings
  */
 @Controller
 public class ProfileControllerSWA {
@@ -35,8 +34,16 @@ public class ProfileControllerSWA {
     @Autowired
     private ProfileValidator profileValidator;
 
+    /**
+     * The logger.
+     */
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * The user profile.
+     * @param model Model in which necessary object are placed to be displayed on the website
+     * @return The user profile
+     */
     @RequestMapping(value = "/swa/profile", method = RequestMethod.GET)
     public String profile(Model model) {
         String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -50,6 +57,13 @@ public class ProfileControllerSWA {
         return "swa_profile";
     }
 
+    /**
+     * Saves the profile if no errors occure.
+     * @param model Model in which necessary object are placed to be displayed on the website
+     * @param profileForm The profile form
+     * @param bindingResult The binding result
+     * @return The profile
+     */
     @RequestMapping(value = "/swa/saveProfile", method = RequestMethod.POST)
     public String saveProfile(Model model, @Valid ProfileForm profileForm, BindingResult bindingResult) {
 

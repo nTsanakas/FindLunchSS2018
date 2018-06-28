@@ -7,6 +7,9 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
 
 import java.util.List;
 
+/**
+ * Interface for services related to the database writer service.
+ */
 public interface DbWriterService {
 
     void setNewPassword(String userEmail, String encodedPassword);

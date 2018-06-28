@@ -133,7 +133,6 @@ public class FavoritesRestController {
 	public ResponseEntity<Integer> unregisterFavorite(
 	        @PathVariable("restaurantId")
             @ApiParam(
-                    name = "Restaurant-ID",
                     value = "ID des Restaurants, das als Favorit zu entfernen ist.",
                     required = true)
             Integer restaurantId,

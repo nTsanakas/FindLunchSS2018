@@ -1,5 +1,8 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.components;
 
+/**
+ * Add a new category to a restaurant.
+ */
 public class RestaurantAddCategory {
 
     private String name; //Name of the category

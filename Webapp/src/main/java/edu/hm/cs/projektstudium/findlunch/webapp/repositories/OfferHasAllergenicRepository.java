@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.io.Serializable;
 
+/**
+ * The Interface OfferHasAllergenixRepository. Abstraction for the data access layer.
+ */
 public interface OfferHasAllergenicRepository extends JpaRepository<OfferHasAllergenic, Serializable> {
 
     @Modifying

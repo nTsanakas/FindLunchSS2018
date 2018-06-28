@@ -94,7 +94,6 @@ public class IngredientRestController {
 	public List<Allergenic> getAllergenicForOffer(
 	        @PathVariable("offerId")
             @ApiParam(
-                    name = "Angebot-ID",
                     value = "ID des Angebots, für das die Allergene bestimmt werden sollen.",
                     required = true)
             Integer offerId,
@@ -151,7 +150,6 @@ public class IngredientRestController {
 	public List<Additive> getAdditivesForOffer(
 	        @PathVariable("offerId")
             @ApiParam(
-                    name = "Angebot-ID",
                     value = "ID des Angebots, für das die Zusätze zu bestimmen sind.",
                     required = true)
             Integer offerId,
@@ -159,7 +157,7 @@ public class IngredientRestController {
 
 		LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		Offer offer = offerRepository.getOne(offerId);
-		
+
 		return offer.getAdditives();
 	}
 }

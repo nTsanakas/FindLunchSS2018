@@ -1,3 +1,5 @@
+USE findlunch;
+
 -- Spalte `push_notification_enabled` in Tabelle "User" ergänzen.
 ALTER TABLE `findlunch`.`user`
 ADD `push_notification_enabled` TINYINT(1) DEFAULT 0

@@ -5,6 +5,10 @@ import edu.hm.cs.projektstudium.findlunch.webapp.components.HomeToDoForm;
 
 import java.util.List;
 
+/**
+ * Interface for services related to home services (TODO's of sales person).
+ */
+
 public interface HomeService {
 
     List<HomeRestaurantForm> createHomeRestaurantFormListForSalesPerson(String email);

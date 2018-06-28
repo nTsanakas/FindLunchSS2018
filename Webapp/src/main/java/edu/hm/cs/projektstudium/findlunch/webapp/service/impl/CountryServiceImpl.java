@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Created by Alexander Carl on 07.07.2017.
+* Implements the interface CountryService.
  */
 @Service
 public class CountryServiceImpl implements CountryService {
@@ -17,6 +17,9 @@ public class CountryServiceImpl implements CountryService {
     @Autowired
     private DbReaderService dbReaderService;
 
+	/**
+	 * Gets a list of all countries.
+	 */
     @Override
     public List<Country> getAllCountries() {
         return dbReaderService.getAllCountries();

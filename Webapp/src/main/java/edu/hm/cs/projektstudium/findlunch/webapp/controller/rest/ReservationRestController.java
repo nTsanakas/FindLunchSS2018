@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.ReservationView;
 import edu.hm.cs.projektstudium.findlunch.webapp.logging.LogUtils;
-import edu.hm.cs.projektstudium.findlunch.webapp.mail.MailService;
+import edu.hm.cs.projektstudium.findlunch.webapp.service.MailService;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.EuroPerPoint;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Offer;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.PointId;
@@ -151,80 +151,71 @@ public class ReservationRestController {
 		List<ReservationOffers> reservation_Offers = reservation.getReservation_offers();
 		
 		Restaurant restaurant = null;
-		
+
 		// Bestellung entält keine Angebote
 		if(reservation_Offers.isEmpty()){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Reservation does not contain any offer"));
 			return new ResponseEntity<>(1, HttpStatus.CONFLICT);
 		}
-		
+		LOGGER.info("Angebote vorhanden.");
 		// Kein Abholzeitpunkt angegeben
 		if(null == reservation.getCollectTime()){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The Reservation has no CollectTime set"));
 			return new ResponseEntity<>(9, HttpStatus.CONFLICT);
 		}
-		
+		LOGGER.info("Abholzeitpunkt angegeben.");
 		// Abholzeitpunkt liegt in der Vergangenheit
 		if(reservation.getCollectTime().before(new Date())){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The Reservation CollectTime is set in past"));
 			return new ResponseEntity<>(10, HttpStatus.CONFLICT);
 		}
-		
-		// Kein Abholzeitpunkt angegeben
-		if(null == reservation.getCollectTime()){
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The Reservation has no CollectTime set"));
-			return new ResponseEntity<>(9, HttpStatus.CONFLICT);
-		}
-		
-		// Abholzeitpunkt liegt in der Vergangenheit
-		if(reservation.getCollectTime().before(new Date())){
-			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "The Reservation CollectTime is set in past"));
-			return new ResponseEntity<>(10, HttpStatus.CONFLICT);
-		}
-		
+		LOGGER.info("Abholzeitpunkt liegt in der Zukunft.");
 		for(ReservationOffers reservation_offer : reservation_Offers) {
-			
+			LOGGER.info("Angebot:");
 			// Bestellte Menge des Angebots ist 0 oder kleiner
 			if(reservation_offer.getAmount() <= 0){
 				LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Reservation has no amount for offer "+reservation_offer.getOffer().getId()));
 				return new ResponseEntity<>(2, HttpStatus.CONFLICT);
 			}
-
+			LOGGER.info("-Bestellte Menge > 0");
 			Offer offer = offerRepository.findOne(reservation_offer.getOffer().getId());
-			
+
 			// Angebots ID ist nicht in der DB
 			if(offer==null){
 				LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "No Offer for ID "+reservation_offer.toString()));
 				return new ResponseEntity<>(4, HttpStatus.CONFLICT);
 			}
-			
+			LOGGER.info("-Angebots-ID existiert");
 			// Angebot ist ausverkauft
 			if(offer.isSoldOut()){
 				LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Das Offer "+reservation_offer.getOffer().getId()+" is sold out"));
 				return new ResponseEntity<>(5, HttpStatus.CONFLICT);
 			}
-			
+			LOGGER.info("-Angebot ist nicht ausverkauft");
+			//Vergleicht Restaurant des Angebots mit dem des vorherigen Angebots in der Bestellung
 			if(restaurant!=null){
 				if(restaurant.getId() != offer.getRestaurant().getId()){
 					LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "An offer of the reservation is from another restaurant"));
 					return new ResponseEntity<>(7, HttpStatus.CONFLICT);
 				}
 			}
+			LOGGER.info("-Restaurant ist noch dasselbe.");
+			//Restaurant wird auf das des aktuellen Angebots gesetzt, um es mit dem Restaurant des nächsten Angebots zu vergleichen.
 			restaurant = offer.getRestaurant();
-			
+
 			reservation_offer.setReservation(reservation);
 			
 			calculatedPrice += reservation_offer.getAmount() * offer.getPrice();
 			
 		}
-		
+		LOGGER.info("--Ende der Angebotsprüfung--");
 		
 		// Der Gesamtpreis, welcher in der Customer App berechnet wurde stimmt nicht
 		if(calculatedPrice+reservation.getDonation()+reservation.getFee()!=reservation.getTotalPrice()){
 			LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Reservation price is incorrect"));
 			return new ResponseEntity<>(6, HttpStatus.CONFLICT);
 		}
-
+		LOGGER.info("Gesamtpreis stimmt");
 		// Authorization process for PayPal Transaction
 		if(reservation.isUsedPaypal()){
 			// Braintree Gateway (used for PayPal Transaction) only accepts BigDecimal data type
@@ -253,7 +244,7 @@ public class ReservationRestController {
 				LOGGER.error(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()), "Failure: " + saleResult.getMessage());
 				return new ResponseEntity<Integer>(11, HttpStatus.CONFLICT);
 			}
-
+			LOGGER.info("PayPal-Zahlung korrekt");
 		}
 		EuroPerPoint euroPerPoint = euroPerPointRepository.findOne(1); //holt den euro pro punkt mit der id
 		
@@ -296,7 +287,7 @@ public class ReservationRestController {
 			}
 			else {
 				//punkte reichen nicht
-				LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Points not enough"));
+				LOGGER.error(LogUtils.getErrorMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), "Points not enough. Needed: " + neededPoints + ", Usable: " + usablePoints));
 				return new ResponseEntity<>(8, HttpStatus.CONFLICT);
 			}
 			
@@ -330,7 +321,6 @@ public class ReservationRestController {
 	public ResponseEntity<Integer> confirmReservation(
 			@PathVariable("restaurantUuid")
             @ApiParam(
-					name = "Restaurant-ID",
 					value = "ID des Restaurants, welches die Reservierung bestätigen soll.",
 					required = true)
             String restaurantUuid, Principal principal, HttpServletRequest request){

@@ -27,6 +27,9 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The class is responsible for handling http calls related to the offer controller in the swa.
+ */
 @Controller
 @Scope("session")
 public class OfferControllerSWA {
@@ -43,6 +46,13 @@ public class OfferControllerSWA {
     @Autowired
     private HibernateService hibernateService;
 
+    /**
+     * Create a new offer.
+     *
+	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param request request the HttpServletRequest
+	 * @return The offer
+     */
     @RequestMapping(value = "/swa/emptyOffer")
     public String emptyOffer(Model model, HttpServletRequest request) {
         String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -61,6 +71,14 @@ public class OfferControllerSWA {
         return "swa_offer";
     }
 
+    /**
+     * Create new offer for a restaurant.
+     *
+	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param restaurantId Id of the restaurant
+	 * @param request request the HttpServletRequest
+	 * @return The offer
+     */
     @RequestMapping(value = "/swa/newOfferForRestaurant", method = RequestMethod.GET)
     public String newOfferForRestaurant(Model model, @RequestParam("id") int restaurantId, HttpServletRequest request) {
 
@@ -91,6 +109,14 @@ public class OfferControllerSWA {
         return "swa_offer";
     }
 
+     /**
+     * Gets a existing offer.
+     *
+	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param offerId Id of the offer
+	 * @param request request the HttpServletRequest
+	 * @return The offer
+     */
     @RequestMapping(value = "/swa/offer", method = RequestMethod.GET)
     public String getExistingOffer(Model model, @RequestParam("id") int offerId, HttpServletRequest request) {
 
@@ -125,6 +151,13 @@ public class OfferControllerSWA {
         return "swa_offer";
     }
 
+    /**
+     * Deletes the image of a offer.
+     *
+	 * @param offerPhotoId Id of the offer image
+	 * @param request request the HttpServletRequest
+	 * @return The offer
+     */
     @RequestMapping(value = "/swa/offer/remove")
     public String deleteOfferImage(@RequestParam("offerPhotoId") int offerPhotoId, HttpServletRequest request) {
 
@@ -152,6 +185,17 @@ public class OfferControllerSWA {
         return "redirect:/swa/offer?id=" + offerId;
     }
 
+    /**
+     * Saves an offer.
+     *
+	 * @param model Model in which necessary object are placed to be displayed on the website
+	 * @param offer The offer
+	 * @param offerBinder Binder of the offer
+	 * @param request request the HttpServletRequest
+	 * @param homeFlag The home flag
+	 * @param offerOverviewFlag The offer overview flag
+	 * @return The offer
+     */
     @RequestMapping(value = "/swa/saveOffer", method = RequestMethod.POST)
     public String saveOffer(Model model, Offer offer, BindingResult offerBinder, HttpServletRequest request,
                             @RequestParam(required = false, value = "home") String homeFlag,
@@ -226,6 +270,12 @@ public class OfferControllerSWA {
         }
     }
 
+    /**
+     * Prepares model for a given restaurant.
+     * @param model The model
+     * @param restaurantId Id of the restaurant.
+     * @return The prepared model for the restaurant
+     */
     private Model prepareModelForGivenRestaurant(Model model, int restaurantId) {
         String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName();
 

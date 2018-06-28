@@ -1,4 +1,4 @@
-package edu.hm.cs.projektstudium.findlunch.webapp.mail;
+package edu.hm.cs.projektstudium.findlunch.webapp.service;
 
 import java.text.MessageFormat;
 import java.util.Locale;

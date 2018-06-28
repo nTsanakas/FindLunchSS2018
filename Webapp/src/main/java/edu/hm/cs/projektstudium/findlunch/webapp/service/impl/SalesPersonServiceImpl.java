@@ -5,6 +5,9 @@ import edu.hm.cs.projektstudium.findlunch.webapp.service.SalesPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of the interface SalesPersonService.
+ */
 @Service
 public class SalesPersonServiceImpl implements SalesPersonService {
 

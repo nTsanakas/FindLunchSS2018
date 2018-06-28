@@ -61,7 +61,6 @@ public class PointsRestController {
 	@RequestMapping(
 			path = "/api/get_points",
 			method = RequestMethod.GET,
-			headers = {"Authorization"},
 			produces = "application/json")
 	public List<Points> getPointsOfAUser(/*@RequestParam(name ="user_id", required=true) int userId ,*/ Principal principal, HttpServletRequest request) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
@@ -96,12 +95,10 @@ public class PointsRestController {
 	@RequestMapping(
 			path = "/api/get_points_restaurant/{restaurantId}",
 			method = RequestMethod.GET,
-			headers = {"Authorization"},
 			produces = "application/json")
 	public List<Points> getPointsOfAUserForRestaurant(
 			@PathVariable("restaurantId")
             @ApiParam(
-            		name = "Restaurant-ID",
             		value = "ID des Restaurants, für das die Punkte eines Benutzers ausgegeben werden sollen.",
 					required = true)
             int restaurantId, Principal principal, HttpServletRequest request) {

@@ -4,6 +4,9 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.ToDo;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * ToDo form on the home screen in the swa.
+ */
 @Getter
 @Setter
 public class HomeToDoForm {
@@ -19,6 +22,10 @@ public class HomeToDoForm {
         super();
     }
 
+    /**
+     * Get todo's with information of the restaurant.
+     * @param toDo the todDO
+     */
     public HomeToDoForm(ToDo toDo) {
         this.id = toDo.getId();
         this.restaurantId = toDo.getRestaurant().getId();

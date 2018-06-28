@@ -6,7 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 /**
- * Created by Alexander Carl on 18.06.2017.
+ * Validates that the password reset passwords are equal.
  */
 
 @Component
@@ -16,6 +16,11 @@ public class PasswordResetPasswordEqualValidator implements Validator {
         return PasswordResetForm.class.isAssignableFrom(clazz);
     }
 
+    /**
+     * Validates that the new and repeated password in the reset form are equal.
+     * @param target the target
+     * @param errors the errors
+     */
     @Override
     public void validate(Object target, Errors errors) {
         PasswordResetForm passwordResetForm = (PasswordResetForm) target;

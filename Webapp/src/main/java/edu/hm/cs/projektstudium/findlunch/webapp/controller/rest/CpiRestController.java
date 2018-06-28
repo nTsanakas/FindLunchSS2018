@@ -41,7 +41,7 @@ class CpiRestController {
     @RequestMapping(
             path = "/api/csp-report-uri",
             method = RequestMethod.POST)
-    public void getCspViolations(@RequestParam(name = "JSON csp-report", required = true) final HttpServletRequest request) throws IOException {
+    public void getCspViolations(@RequestBody HttpServletRequest request) throws IOException {
     	
         LOGGER.info(LogUtils.getDefaultInfoString(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 

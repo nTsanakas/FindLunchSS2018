@@ -11,7 +11,7 @@ import org.springframework.validation.Validator;
 import java.util.List;
 
 /**
- * Created by Alexander Carl on 31.07.2017.
+ * Validates the times of offers.
  */
 public class OfferTimesValidator implements Validator {
 
@@ -22,6 +22,11 @@ public class OfferTimesValidator implements Validator {
         return true;
     }
 
+    /**
+     * Validates the offer times of a restaurant.
+     * @param target the target restaurant
+     * @param errors Error handling if offerTimes is null
+     */
     @Override
     public void validate(Object target, Errors errors) {
         Restaurant restaurant = (Restaurant) target;

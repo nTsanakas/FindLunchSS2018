@@ -5,7 +5,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 /**
- * Created by Alexander Carl on 23.06.2017.
+ * Validates that the profile password is equal.
  */
 
 public class ProfilePasswordEqualValidator implements Validator {
@@ -14,6 +14,11 @@ public class ProfilePasswordEqualValidator implements Validator {
         return ProfileForm.class.isAssignableFrom(clazz);
     }
 
+    /**
+     * Validates that the new and repeated password are equal.
+     * @param target the target
+     * @param errors the errors
+     */
     @Override
     public void validate(Object target, Errors errors) {
         ProfileForm profileForm = (ProfileForm) target;

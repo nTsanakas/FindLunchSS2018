@@ -20,6 +20,9 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Implementation of the interface OfferService.
+ */
 @Service
 public class OfferServiceImpl implements OfferService {
 
