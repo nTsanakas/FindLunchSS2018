@@ -14,11 +14,16 @@ import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
+import javax.validation.constraints.NotNull;
 import java.security.Principal;
 import java.util.*;
 
@@ -26,6 +31,7 @@ import java.util.*;
  * The class is responsible for handling rest calls related to offers.
  */
 @RestController
+@Validated
 @Api(
 		value="Angebote",
 		description="Zum Zugriff auf Angebote.")
@@ -64,9 +70,12 @@ public class OfferRestController {
 	@CrossOrigin
 	@JsonView(OfferView.OfferRest.class)
 	@ApiOperation(value = "Angebote eines Restaurants abrufen.", response = Map.class)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Angebote erfolgreich abgerufen")})
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Angebote erfolgreich abgerufen"),
+			@ApiResponse(code = 400, message = "Ungültige Restaurant-ID")
+	})
 	@RequestMapping(path = "/api/restaurants/{id}/offers", method = RequestMethod.GET, produces = "application/json")
-	public Map<String, List<Offer>> getOffersToRestaurant(@PathVariable("id") @ApiParam(value = "ID des Restaurants", required = true) int restaurantId, HttpServletRequest request) {
+	public ResponseEntity<Map<String, List<Offer>>> getOffersToRestaurant(@PathVariable("id") @ApiParam(value = "ID des Restaurants", required = true) int restaurantId, HttpServletRequest request) {
 
 		List<Offer> result;
 		Map<String, List<Offer>> offers = new LinkedHashMap<>();
@@ -100,14 +109,14 @@ public class OfferRestController {
 					}
 				}
 			}
+			return new ResponseEntity<>(offers, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return offers;
 	}
 
 	/**
 	 * 10 Angebote in der Nähe des Aufenthaltsorts abrufen.
-	 * <p>
-	 * Die Methode
 	 *
 	 * @param request   Der HttpServletRequest
 	 * @param latitude  Breitengrad
@@ -119,11 +128,14 @@ public class OfferRestController {
 	@JsonView(OfferView.OfferRest.class)
 	@PreAuthorize("isAuthenticated()")
 	@ApiOperation(value = "Angebote rund um eine bestimmte Position abrufen", response = Map.class)
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Angebote erfolgreich abgerufen")})
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Angebote erfolgreich abgerufen"),
+			@ApiResponse(code = 409, message = "Falsche Parameter angegeben")
+	})
 	@RequestMapping(path = "/api/offers", method = RequestMethod.GET, produces = "application/json")
 	public List<Offer> getLocationBasedOffers(
-			@RequestParam @ApiParam(value = "Längengrad", required = true) float longitude,
-			@RequestParam @ApiParam(value = "Breitengrad", required = true) float latitude,
+			@RequestParam @NotNull @ApiParam(value = "Längengrad", required = true) float longitude,
+			@RequestParam @NotNull @ApiParam(value = "Breitengrad", required = true) float latitude,
 			HttpServletRequest request,
 			Principal principal) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
@@ -143,9 +155,9 @@ public class OfferRestController {
 	 * @param e       the exception
 	 * @return the name of the exception class
 	 */
-	@ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
-	public String exceptionHandler(Exception e, HttpServletRequest request) {
+	@ExceptionHandler(value = { MethodArgumentTypeMismatchException.class, ValidationException.class})
+	public ResponseEntity<String> exceptionHandler(Exception e, HttpServletRequest request) {
 		LOGGER.error(LogUtils.getExceptionMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), e));
-		return e.getClass().toString();
+		return new ResponseEntity<>(e.getClass().toString(), HttpStatus.CONFLICT);
 	}
 }

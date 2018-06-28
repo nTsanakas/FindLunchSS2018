@@ -699,7 +699,7 @@ CREATE TABLE IF NOT EXISTS `findlunch`.`reset_password` (
   `token` VARCHAR(45) NOT NULL,
   `date` DATETIME NULL,
   `user_id` INT(11) NOT NULL,
-  PRIMARY KEY (`id`, `user_id`),
+  PRIMARY KEY (`id`),
   INDEX `fk_reset_password_user1_idx` (`user_id` ASC),
   CONSTRAINT `fk_reset_password_user1`
     FOREIGN KEY (`user_id`)

@@ -70,7 +70,6 @@ public class RegisterUserRestController {
             produces = "application/json")
 	public ResponseEntity<Integer> registerUser(@RequestBody
         @ApiParam (
-                name = "user",
                 value = "Benutzer",
                 required = true)
         User user, HttpServletRequest request) {

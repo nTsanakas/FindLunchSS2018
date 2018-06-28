@@ -1,10 +1,14 @@
 package edu.hm.cs.projektstudium.findlunch.webapp.controller.rest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,6 +126,7 @@ public class ResetPasswordRestController {
 			String resetLink = getPasswordResetUrl(request, u);
 			try{
 				mailService.sendResetPwMail(u,resetLink);
+				LOGGER.info("Mail zum wiederholten Mal versendet!");
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -132,7 +137,9 @@ public class ResetPasswordRestController {
 		
 		//first try to reset pw in 24h
 		ResetPassword resetPassword = new ResetPassword();
-		resetPassword.setDate(new Date());
+
+		Date date = java.sql.Date.valueOf(LocalDate.now(ZoneId.of("Europe/Berlin")));
+		resetPassword.setDate(date);
 		resetPassword.setToken(UUID.randomUUID().toString());
 		resetPassword.setUser(u);
 		u.setResetPassword(resetPassword);
@@ -141,6 +148,7 @@ public class ResetPasswordRestController {
 		String resetLink = getPasswordResetUrl(request, u);
 		try{
 			mailService.sendResetPwMail(u,resetLink);
+			LOGGER.info("Mail zum ersten Mal versendet!");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -215,14 +223,13 @@ public class ResetPasswordRestController {
 			produces = "text/html")
 	public ResponseEntity<Integer> resetPassword(
 			@PathVariable("token")
-            @ApiParam(
-            		name = "Token",
-                    value = "Token",
+            @NotNull
+			@ApiParam(
+            		value = "Token",
                     required = true)
             String token,
 			@RequestBody
 			@ApiParam (
-				name = "User",
 				value = "Benutzer",
 				required = true)
 			User u, HttpServletRequest request){
@@ -237,12 +244,13 @@ public class ResetPasswordRestController {
 					user.setPasswordconfirm(passwordEncoder.encode(u.getPasswordconfirm()));
 					userRepository.save(user);
 					resetPasswordRepository.delete(rp);
-					return new ResponseEntity<>(0, HttpStatus.OK);
+					LOGGER.info("Gelöscht");
+					return new ResponseEntity<>(HttpStatus.OK);
 				}
 			}
 		}
 		//should we send Http code 200 because of itsec
 //		return new ResponseEntity<Integer>(1, HttpStatus.CONFLICT);
-		return new ResponseEntity<>(0, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

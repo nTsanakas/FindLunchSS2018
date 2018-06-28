@@ -48,7 +48,6 @@ public class GenericCaptchaRestController {
     public final ResponseEntity<String> getRemoteContent(
             @RequestParam(name = "provider")
             @ApiParam(
-                    name = "Provider",
                     value = "URL des Captcha-Anbieters",
                     required = true)
             String provider,

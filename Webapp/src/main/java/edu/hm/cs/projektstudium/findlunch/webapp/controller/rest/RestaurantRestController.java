@@ -11,12 +11,18 @@ import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.security.Principal;
 import java.util.List;
 
@@ -24,6 +30,7 @@ import java.util.List;
  * The class is responsible for handling rest calls related to registering users.
  */
 @RestController
+@Validated
 @Api(
 		value="Restaurant",
 		description="Registrierung von Nutzern in Restaurants.")
@@ -78,25 +85,16 @@ public class RestaurantRestController {
 	})
 	@RequestMapping(
 			path = "/api/restaurants",
+			headers = "Authentication",
 			method = RequestMethod.GET,
-			headers = { "Authorization" },
 			produces = "application/json")
 	public List<Restaurant> getRestaurantsAsAuthenticated(
-			@RequestParam
-            @ApiParam(
-					value = "Längengrad",
-					required = true)
-            float longitude,
-			@RequestParam
-			@ApiParam(
-					value = "Breitengrad",
-					required = true)
-            float latitude,
-			@RequestParam
-			@ApiParam(
-					value = "Bereich, um den herum gesucht werden soll.",
-					required = true)
-            int radius, Principal principal, HttpServletRequest request) {
+			@RequestParam @NotNull @ApiParam( value = "Längengrad", required = true) float longitude,
+			@RequestParam @NotNull @ApiParam( value = "Breitengrad", required = true) float latitude,
+			@RequestParam @Min(0) @ApiParam(
+					value = "Bereich in Meter, um den herum gesucht werden soll.",
+					required = true) int radius,
+			Principal principal, HttpServletRequest request) {
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 		
 		User authenticatedUser = (User) ((Authentication) principal).getPrincipal();
@@ -156,21 +154,12 @@ public class RestaurantRestController {
 			method = RequestMethod.GET,
 			produces = "application/json")
 	public List<Restaurant> getRestaurants(
-			@RequestParam
-			@ApiParam(
-					value = "Längengrad",
-					required = true)
-					float longitude,
-			@RequestParam
-			@ApiParam(
-					value = "Breitengrad",
-					required = true)
-					float latitude,
-			@RequestParam
-			@ApiParam(
-					value = "Bereich, um den herum gesucht werden soll.",
-					required = true)
-					int radius, HttpServletRequest request) {
+			@RequestParam @NotNull @ApiParam(value = "Längengrad", required = true) float longitude,
+			@RequestParam @NotNull @ApiParam(value = "Breitengrad", required = true) float latitude,
+			@RequestParam @Min(0) @ApiParam(
+					value = "Bereich in Meter, um den herum gesucht werden soll.",
+					required = true) int radius,
+			HttpServletRequest request) {
 
 		LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
@@ -186,9 +175,9 @@ public class RestaurantRestController {
 	 * @return the name of the exception class
 	 */
 	@ExceptionHandler(value = { MethodArgumentTypeMismatchException.class,
-			MissingServletRequestParameterException.class })
-	public String exceptionHandler(Exception e, HttpServletRequest request) {
+			MissingServletRequestParameterException.class, ValidationException.class })
+	public ResponseEntity<String> exceptionHandler(Exception e, HttpServletRequest request) {
 		LOGGER.error(LogUtils.getExceptionMessage(request, Thread.currentThread().getStackTrace()[1].getMethodName(), e));
-		return e.getClass().toString();
+		return new ResponseEntity<>(e.getClass().toString(), HttpStatus.CONFLICT);
 	}
 }
