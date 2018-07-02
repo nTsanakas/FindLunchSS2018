@@ -4,14 +4,14 @@ import {Push, PushObject, PushOptions} from "@ionic-native/push";
 import {FCM} from "@ionic-native/fcm";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {SERVER_URL, APP_LANG, FCM_SENDER_ID} from "../app/app.module";
-import {Alert, AlertController, NavController, Platform} from "ionic-angular";
+import {Alert, AlertController, Platform} from "ionic-angular";
 import {Error} from "tslint/lib/error";
 import {TranslateService} from "@ngx-translate/core";
 import {User} from "../model/User";
 import {DailyPushNotificationData} from "../model/DailyPushNotificationData";
 import {OffersService} from "./offers.service";
-import {CurrentOffersPage} from "../pages/current-offers/current-offers";
 import {Offer} from "../model/Offer";
+import { AuthService } from './auth.service';
 
 
 /**
@@ -32,7 +32,8 @@ export class PushService {
               private http: HttpClient,
               private translate: TranslateService,
               private platform: Platform,
-              private fcm: FCM) {
+              private fcm: FCM,
+              private auth: AuthService) {
     this.translate.setDefaultLang(APP_LANG);
     this.translate.get('Error.pushReg').subscribe(
       (value: string) => {
@@ -60,7 +61,7 @@ export class PushService {
           ios: {
             alert: 'false',
             badge: true,
-            sound: 'true'
+            sound: 'true',
           }
         };
         this.pushObject = this.push.init(pushOptions);
@@ -213,10 +214,8 @@ export class PushService {
    */
   public pushSetup(user: User): void {
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+    const headers: HttpHeaders = this.auth.prepareHttpOptions();
 
-    });
     this.platform.ready().then(
       () => {
         this.fcm.getToken().then(token => {

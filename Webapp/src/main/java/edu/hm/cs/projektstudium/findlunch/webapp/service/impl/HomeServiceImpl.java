@@ -138,7 +138,7 @@ public class HomeServiceImpl implements HomeService {
 
         //Multiply with the sales persons percentage
         currentPaymentOfSalesPerson = (donationOfRestaurants + donationOfCustomers) * percentageOfDonation;
-        currentPaymentOfSalesPerson = (double) round(currentPaymentOfSalesPerson * 100, 0) / 100;
+        currentPaymentOfSalesPerson = round(0,currentPaymentOfSalesPerson * 100) / 100;
 
         return "€ " + currentPaymentOfSalesPerson;
     }

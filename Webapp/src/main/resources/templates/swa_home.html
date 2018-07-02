@@ -37,7 +37,7 @@
     </head>
 
     <body>
-        <div th:replace="fragments/swa_navbarHome :: swa_navbarHome"></div>
+        <div th:replace="fragments/swa_navbarHome :: swa_navbarHome(payment=${currentPayment})"></div>
 
         <div class="container">
             <!--    Shows the status of the last transaction.

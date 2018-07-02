@@ -361,10 +361,11 @@ public class ReservationRestController {
 					}
 					reservation.setPointsCollected(true);
 					reservation.setPoints(amountOfPoints.intValue());
+					reservation.getFee();
 					reservationRepository.save(reservation);
 					pointsRepository.save(points);
-			}	
-			return new ResponseEntity<>(0, HttpStatus.OK);
+			}
+			return new ResponseEntity<>(2, HttpStatus.OK);
 		}
 		else{
 			//keine Reservierung

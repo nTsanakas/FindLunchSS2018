@@ -76,18 +76,20 @@ export class QRService {
         return this.barcodeScanner.scan()
             .then(
                 (barcodeData: BarcodeScanResult) => {
+                    console.error(`${SERVER_URL}/api/confirm_reservation/${barcodeData.text}`);
                     if (!barcodeData.cancelled) {
 
                         //preparing HttpHeaders
                         const headers: HttpHeaders = this.auth.prepareHttpOptions();
 
-                        this.http.get<number>(`${SERVER_URL}/api/confirm_reservation/${barcodeData.text}`, {headers})
+                        this.http.put(`${SERVER_URL}/api/confirm_reservation/${barcodeData.text}`, {}, {headers, observe:"response"})
                             .retry(2)
                             .subscribe(
                                 res => {
+                                    console.error("Received QR Respone: " + JSON.stringify(res))
                                     let msg: string;
-                                    switch (res) {
-                                        case 0:
+                                    switch (res.body) {
+                                        case 2:
                                             msg = this.strConfirmOrderSuccess;
                                             break;
                                         case 3:
@@ -107,7 +109,7 @@ export class QRService {
                                     toast.present();
                                 },
                                 (err: Error) => {
-                                    console.error("QR Scan: Server response error!", err);
+                                    console.error("QR Scan: Server response error!", JSON.stringify(err));
                                     const toast: Toast = this.toastCtrl.create({
                                         message: this.strQRError,
                                         duration: 3000

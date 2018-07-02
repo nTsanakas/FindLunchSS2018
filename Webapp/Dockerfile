@@ -20,6 +20,10 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
+# Setzt die Zeitzone auf Berlin
+ENV TZ=Europe/Berlin
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Install the default JRE (1.7 for Jessie)
 RUN apt-get install -y default-jre --force-yes
 
