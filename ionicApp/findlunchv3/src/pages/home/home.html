@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar color="flColor">
     <ion-title>{{ 'HomePage.title' | translate }}</ion-title>
-    <ion-buttons end>
+    <ion-buttons start>
       <!-- button for putting in a custom location -->
       <button ion-button icon-only (click)="toggleSearch()">
         <ion-icon name="ios-search"></ion-icon>
@@ -10,6 +10,8 @@
       <button ion-button icon-only [disabled]="!allRestaurants" (click)="openFilterDialog($event)">
         <ion-icon name="ios-funnel"></ion-icon>
       </button>
+    </ion-buttons>
+    <ion-buttons end>
       <button ion-button icon-only (click)="registerPush()">
         <ion-label>Push</ion-label>
         <ion-toggle [(ngModel)]="auth.user.getNotification" name="notifications"></ion-toggle>

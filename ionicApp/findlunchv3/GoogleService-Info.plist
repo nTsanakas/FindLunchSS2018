@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>101435960151-m85ghr7gmal19lp2fjnb96f46mdhpfqq.apps.googleusercontent.com</string>
+	<string>159373825175-9gu54dg0qtn9c2jsmuf03l4u5ftmeufq.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.101435960151-m85ghr7gmal19lp2fjnb96f46mdhpfqq</string>
+	<string>com.googleusercontent.apps.159373825175-9gu54dg0qtn9c2jsmuf03l4u5ftmeufq</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC1PILUx1pfNNNOyTopXT0Fp717XiOpvpY</string>
+	<string>AIzaSyDFyit0Po_Fseul8in4t4i6bf5JCDNWHIU</string>
 	<key>GCM_SENDER_ID</key>
-	<string>101435960151</string>
+	<string>159373825175</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>de.findlunch.findlunchv2</string>
+	<string>findlunch</string>
 	<key>PROJECT_ID</key>
-	<string>findlunch-183912</string>
+	<string>findlunch-6bd2e</string>
 	<key>STORAGE_BUCKET</key>
-	<string>findlunch-183912.appspot.com</string>
+	<string>findlunch-6bd2e.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:101435960151:ios:95138facfeb8a482</string>
+	<string>1:159373825175:ios:dc7499230e091ec5</string>
 	<key>DATABASE_URL</key>
-	<string>https://findlunch-183912.firebaseio.com</string>
+	<string>https://findlunch-6bd2e.firebaseio.com</string>
 </dict>
 </plist>

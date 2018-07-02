@@ -37,7 +37,7 @@
     "braintree-web": "^3.34.0",
     "cordova": "^8.0.0",
     "cordova-android": "^7.0.0",
-    "cordova-ios": "^4.5.4",
+    "cordova-ios": "4.5.4",
     "cordova-plugin-device": "^2.0.1",
     "cordova-plugin-fcm": "^2.1.2",
     "cordova-plugin-googlemaps": "^2.2.9",
@@ -89,6 +89,8 @@
       },
       "cordova-plugin-statusbar": {}
     },
-    "platforms": []
+    "platforms": [
+      "ios"
+    ]
   }
 }

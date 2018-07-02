@@ -88,7 +88,11 @@ public class OfferRestController {
 			c.setTime(new Date());
 
 			// check if restaurant has a TimeSchedule for today
-			TimeSchedule ts = restaurant.getTimeSchedules().stream().filter(item -> item.getDayOfWeek().getDayNumber() == c.get(Calendar.DAY_OF_WEEK)).findFirst().orElse(null);
+			TimeSchedule ts = restaurant.getTimeSchedules()
+					.stream()
+					.filter(item -> item.getDayOfWeek().getDayNumber() == c.get(Calendar.DAY_OF_WEEK))
+					.findFirst()
+					.orElse(null);
 
 			// only get offers, that are valid at the moment
 			if (ts != null) {
