@@ -25,6 +25,7 @@
         "title": "Bestelldetails",
         "rejected": "abgelehnt",
         "donation": "Spende",
+        "fee": "Gebühr",
         "total": "Gesamt",
         "subtitle": "Ihre Bestellung bei {{name}} vom {{collectTime}}",
         "points": "Sie haben für diese Bestellung {{points}} Punkte erhalten."

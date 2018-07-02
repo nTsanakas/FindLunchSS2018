@@ -45,7 +45,7 @@ export class CurrentOffersPage implements OnInit {
       .subscribe(
         resp => {
             this.currentOffersList = resp;
-            console.log(this.currentOffersList);
+            console.log("Current Offers: " + this.currentOffersList);
             loader.dismiss();
         },
         err => {

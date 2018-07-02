@@ -17,14 +17,20 @@
         </ion-item>
     </div>
     <div *ngIf='reservation.donation !== 0;'>
-        <ion-item>
-            <span>{{ 'ReservationPage.donation' | translate }}</span>
-            <span item-right>{{reservation.donation | currency:'EUR':true}}</span>
-        </ion-item>
+      <ion-item>
+        <span>{{ 'ReservationPage.donation' | translate }}</span>
+        <span item-right>{{reservation.donation | currency:'EUR':true}}</span>
+      </ion-item>
+    </div>
+    <div *ngIf='reservation.fee !== 0;'>
+      <ion-item>
+        <span>{{ 'ReservationPage.fee' | translate }}</span>
+        <span item-right>{{reservation.fee | currency:'EUR':true}}</span>
+      </ion-item>
     </div>
     <ion-item>
         <span>{{ 'ReservationPage.total' | translate }}</span>
-        <span item-right>{{reservation.totalPrice | currency:'EUR':true}}</span>
+        <span item-right>{{reservation.totalPrice + reservation.fee | currency:'EUR':true}}</span>
     </ion-item>
 
     <span *ngIf='reservation.pointsCollected'>{{ 'ReservationPage.points' | translate:param }}</span>

@@ -55,16 +55,15 @@ export class OffersPage implements OnInit {
                 private info: InformationService) {
 
         this.restaurant = navParams.get("restaurant");
-
-        // disable back-animation, because it causes problems with displaying the map on iOS
-        platform.ready().then(() => {
-            platform.registerBackButtonAction(() => {
-                this.navCtrl.pop({animate: false});
-            });
-        });
     }
 
     public ngOnInit(): void {
+         // disable back-animation, because it causes problems with displaying the map on iOS
+         this.platform.ready().then(() => {
+            this.platform.registerBackButtonAction(() => {
+                this.navCtrl.pop({animate: false});
+            });
+        });
         this.translate.get('Error.favorize').subscribe(
             (res: string) => {
                 this.strErrorFavorize = res;

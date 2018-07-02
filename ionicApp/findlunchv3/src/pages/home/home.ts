@@ -102,7 +102,6 @@ export class HomePage implements OnInit {
   /**
    * When initialized, do the translation of the needed strings.
    */
-
   public ngOnInit(): void {
     // load the map as soon as the platform is ready
     this.platform.ready().then(
@@ -136,6 +135,7 @@ export class HomePage implements OnInit {
    * The Map must always be clickable when entering this page.
    */
   public ionViewDidEnter(): void {
+    this.updateRestaurants();
     if (this.map) {
       this.map.setClickable(true);
       cordova.fireDocumentEvent('plugin_touch', {});      // gives native map focus
@@ -334,6 +334,7 @@ export class HomePage implements OnInit {
           this.zone.run(() => {
             loader.dismiss();
             this.allRestaurants = res;
+            console.log(JSON.stringify(this.allRestaurants));
             console.log(this.allRestaurants.toString());
             this.setRestaurantMarkers(this.allRestaurants);
           });
@@ -433,6 +434,7 @@ ${this.translatedStrs.distance}: ${restaurant.distance}m<br/>
 
           // add marker to the map
           this.mapMarkers.push(marker);
+          console.log("Setted Marker for " + JSON.stringify(restaurant));
         });
       } catch (err) {
         console.error("Error adding marker for restaurant", restaurant, err);
@@ -441,6 +443,34 @@ ${this.translatedStrs.distance}: ${restaurant.distance}m<br/>
   }
 
 
+  updateRestaurants(){
+    this.info.loadRestaurants(this.location, 99999).subscribe(
+      res => {
+        this.zone.run(() => {
+          var newRestaurants: Restaurant[] = [];
+          for(let restaurantID in res){
+            let exists = false;
+            for(let rest in this.allRestaurants){
+              if(res[restaurantID].id === this.allRestaurants[rest].id){
+                exists = true;
+              }
+            }
+            if(exists === false){
+              newRestaurants.push(res[restaurantID]);
+            }
+          }
+          console.log("Neue Restaurants: " + JSON.stringify(newRestaurants));
+          this.allRestaurants = this.allRestaurants.concat(newRestaurants);
+          console.log(this.allRestaurants);
+          this.setRestaurantMarkers(this.allRestaurants)
+          /*this.allRestaurants = res;
+          console.log(JSON.stringify(this.allRestaurants));
+          console.log(this.allRestaurants.toString());
+          this.setRestaurantMarkers(this.allRestaurants);*/
+        });
+      }
+    )
+  }
   /**
    * Show the dialog for putting in an address, that will set the custom location
   */
