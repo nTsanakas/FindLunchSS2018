@@ -69,30 +69,22 @@ import {ChooseLoginPage} from "../pages/choose-login/choose-login";
 import {FCM} from "@ionic-native/fcm";
 
 
-export const SERVER_URL: string = "http://192.168.2.108:8080";
+export const SERVER_URL: string = "http://192.168.2.114:8080";
 export const APP_LANG: string = "de";
 export const FCM_SENDER_ID: string = '101435960151';
 
-
 @NgModule({
   declarations: [
-    ChooseLoginPage,
     MyApp,
-    AccountPage,
-    AccountDetailsPage,
-    RegisterPage,
-    HomePage,
     TabsPage,
-    SettingsPage,
     OffersPage,
     BonusPage,
     OrderDetailsPage,
     FilterPopoverComponent,
-    OfferProductDetailsPage,
+    OfferProductDetailsPage, 
     RestaurantPage,
     ReservationsPage,
     ReservationPage,
-    CurrentOffersPage
   ],
   imports: [
     CommonModule,
@@ -147,7 +139,6 @@ export const FCM_SENDER_ID: string = '101435960151';
     DatePipe,
     Network,
     FavorizeService,
-
   ]
 })
 export class AppModule {}

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { CurrentOffersPage} from "./current-offers";
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -8,6 +9,7 @@ import { CurrentOffersPage} from "./current-offers";
   ],
   imports: [
     IonicPageModule.forChild(CurrentOffersPage),
+    SharedModule,
   ],
 })
 export class CurrentOffersPageModule {}

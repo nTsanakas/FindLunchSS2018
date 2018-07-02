@@ -594,7 +594,7 @@ export class OrderDetailsPage implements OnInit {
   public preparePayPal(): void {
     // Returns null if user has not selected to pay using PayPal
     this.calculatePayPalFee().then((price: any) => {
-      this.reservation.totalPrice = this.reservation.fee + this.reservation.totalPrice;
+      this.reservation.totalPrice = this.reservation.fee + OrderDetailsPage.calcTotalPrice(this.reservation.items);
       if (this.auth.getLoggedIn() && price !== null && this.reservation.totalPrice !== 0) {
         const loader: Loading = this.loading.prepareLoader();
         loader.present().then(() => {
