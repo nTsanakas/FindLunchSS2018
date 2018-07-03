@@ -130,4 +130,13 @@ public class FCMPushService {
         return result;
     }
 
+    /**
+     * Methode, um das Abfragen der Angebote in der Nähe manuell anzustoßen.
+     *
+     * @param pushToken Der FCM-Push-Token
+     */
+    public void sendTestNotification(String pushToken) {
+        // Nachricht als Notification-Message senden.
+        sendDailyPushNotification(pushToken);
+    }
 }

@@ -235,7 +235,6 @@ public class RestaurantControllerSWA {
      * @param restaurantId Id of the restaurant
      * @return the restaurant object
      */
-    //Used to prepare an restaurant object of an existing restaurant for its injection into the model
     private Restaurant preparedRestaurantForExistingRestaurant(int restaurantId) {
         Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
 
