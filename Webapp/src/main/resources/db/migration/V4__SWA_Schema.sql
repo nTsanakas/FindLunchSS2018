@@ -96,7 +96,7 @@ MODIFY `course_type` INT(11);
 -- -----------------------------------------------------
 ALTER TABLE `findlunch`.`restaurant` ADD COLUMN IF NOT EXISTS (
   `swa_offer_modify_permission` TINYINT(1) NOT NULL DEFAULT 0,
-  `swa_blocked` TINYINT(1) NOT NULL DEFAULT 0,
+  `swa_blocked` TINYINT(1) NOT NULL DEFAULT 1,
   `swa_sales_person_id` INT(11));
 
 ALTER TABLE `findlunch`.`restaurant`

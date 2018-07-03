@@ -166,6 +166,7 @@ public class RestaurantController {
 		} else {
 			Restaurant r = getNewRestaurant();
 			r.setEmail(authenticatedUser.getUsername());
+			r.setBlocked(true);
 			session.setAttribute("logoList", r.getRestaurantLogos());
 			model.addAttribute("restaurant", r);
 			model.addAttribute("kitchenTypes", kitchenTypeRepository.findAllByOrderByNameAsc());
@@ -509,6 +510,30 @@ public class RestaurantController {
 	}
 
 	/**
+	 * Saves an added restaurant to the database.
+	 *
+	 * @param request the HttpServletRequest
+	 * @param restaurant
+	 * 			Restaurant object to be saved. Populated by the content of the html form field.
+	 * @param bindingResult
+	 * 			Binding result in which errors for the fields are stored. Populated by hibernate validation
+	 * 			annotation and custom validator classes.
+	 * @param model
+	 * 			Model in which necessary objects are placed to be displayed on the website.
+	 * @param principal
+	 * 			Currently logged in user.
+	 * @return  the string for the corresponding HTML page
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(method = RequestMethod.POST, path = { "/restaurant/add"},
+			params = { "saveRestaurant" })
+	public String saveAddedRestaurant(@Valid final Restaurant restaurant, BindingResult bindingResult,
+								 final Model model, Principal principal, HttpServletRequest request) {
+		restaurant.setBlocked(true);
+		return saveRestaurant(restaurant, bindingResult, model, principal, request);
+	}
+
+	/**
 	 * Saves the restaurant to the database.
 	 *
 	 * @param request the HttpServletRequest
@@ -524,7 +549,7 @@ public class RestaurantController {
 	 * @return  the string for the corresponding HTML page
 	 */
 	@SuppressWarnings("unchecked")
-	@RequestMapping(method = RequestMethod.POST, path = { "/restaurant/add", "/restaurant/edit" },
+	@RequestMapping(method = RequestMethod.POST, path = {"/restaurant/edit" },
 			params = { "saveRestaurant" })
 	public String saveRestaurant(@Valid final Restaurant restaurant, BindingResult bindingResult,
 								 final Model model, Principal principal, HttpServletRequest request) {
@@ -548,7 +573,8 @@ public class RestaurantController {
 
 			return "restaurant";
 		}
-		
+
+
 		// Checks not handled by Hibernate annotations
 		customRestaurantValidator.validate(restaurant, bindingResult);
 
@@ -578,7 +604,7 @@ public class RestaurantController {
 		}
 		
 		for(RestaurantLogo p : restaurant.getRestaurantLogos()) {
-			p.setRestaurant(restaurant);;
+			p.setRestaurant(restaurant);
 		}
 		
 		try {
@@ -597,6 +623,11 @@ public class RestaurantController {
 		}
 
 		session.removeAttribute("logoList");
+
+		// Wenn das Restaurant bereits vorhanden ist, wird die Blockierung nicht geändert. Wenn es neu ist, ist es blockiert.
+		if(restaurant.getId()>0) {
+			restaurant.setBlocked(restaurantRepository.findById(restaurant.getId()).isBlocked());
+		}
 		restaurantRepository.save(restaurant);
 		LOGGER.debug(">> Gespeichert: " + restaurant.getName());
 		//

@@ -28,6 +28,7 @@ import edu.hm.cs.projektstudium.findlunch.webapp.components.RestaurantTimeContai
 import edu.hm.cs.projektstudium.findlunch.webapp.controller.view.OfferView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -270,12 +271,15 @@ public class Restaurant implements Serializable {
 	@Transient
 	private boolean currentlyOpen;
 
+	@ApiModelProperty(notes = "Berechtigung zum Bearbeiten")
 	@Column(name = "swa_offer_modify_permission")
 	private boolean offerModifyPermission;
 
+	@ApiModelProperty(notes = "Für Endkunden nicht sichtbar")
 	@Column(name = "swa_blocked")
 	private boolean blocked;
 
+	@ApiModelProperty(notes = "Zugeordnete Sales-Person")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "swa_sales_person_id")
 	private SalesPerson salesPerson;

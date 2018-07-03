@@ -27,13 +27,13 @@ import java.security.Principal;
 import java.util.List;
 
 /**
- * The class is responsible for handling rest calls related to registering users.
+ * The class is responsible for handling rest calls related to get nearby restaurants.
  */
 @RestController
 @Validated
 @Api(
 		value="Restaurant",
-		description="Registrierung von Nutzern in Restaurants.")
+		description="Restaurants abrufen.")
 public class RestaurantRestController {
 
 	/** The restaurant repository. */
