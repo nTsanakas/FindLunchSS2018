@@ -365,7 +365,7 @@ public class ReservationRestController {
 					reservationRepository.save(reservation);
 					pointsRepository.save(points);
 			}
-			return new ResponseEntity<>(2, HttpStatus.OK);
+			return new ResponseEntity<>(0, HttpStatus.OK);
 		}
 		else{
 			//keine Reservierung

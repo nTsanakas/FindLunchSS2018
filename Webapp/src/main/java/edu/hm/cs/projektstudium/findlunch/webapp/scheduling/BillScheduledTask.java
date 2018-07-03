@@ -52,7 +52,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.model.BookingReason;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.DonationPerMonth;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.MinimumProfit;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Reservation;
-import edu.hm.cs.projektstudium.findlunch.webapp.model.ReservationOffers;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.ReservationStatus;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.Restaurant;
 import edu.hm.cs.projektstudium.findlunch.webapp.model.User;

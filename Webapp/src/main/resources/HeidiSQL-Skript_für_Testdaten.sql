@@ -3,7 +3,7 @@
 USE findlunch;
 
 DROP PROCEDURE IF EXISTS insert_test_values;
-DELIMITER !
+DELIMITER #
 CREATE PROCEDURE IF NOT EXISTS insert_test_values(restaurant_number INT, offer_number INT, user_number INT)
 BEGIN
 DECLARE v1 INT DEFAULT 1;
@@ -138,7 +138,8 @@ INSERT INTO findlunch.`reset_password` (`user_id`, `token`, `date`) VALUES
 	(29, 'abcdefg-e5f7-49b1-8d4e-4ecad9fce56a-29', NOW());
 INSERT INTO findlunch.`reset_password` (`user_id`, `token`, `date`) VALUES
 	(30, 'abcdefg-e5f7-49b1-8d4e-4ecad9fce56a-30', NOW());
-END!
+END
+#
 DELIMITER ;
 
 -- Prozedur ausführen. Es werden 20 Restaurants mit jew. 10 Offers angelegt. Zusätzlich 10 Kunden.

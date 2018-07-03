@@ -53,12 +53,12 @@ public class RestaurantOfferService {
             // check if restaurant has a TimeSchedule for today
             TimeSchedule ts = restaurant.getTimeSchedules().stream().filter(item -> item.getDayOfWeek().getDayNumber() == calendar.get(Calendar.DAY_OF_WEEK)).findFirst().orElse(null);
             // only get , that are valid at the moment
-            List<Offer> tempOffers = getValidOffers(calendar,ts,restaurant.getId(),2);
+            List<Offer> tempOffers = getValidOffers(calendar,ts,restaurant.getId(),offerNumber);
             if (ts != null && tempOffers != null) {
                 offers.addAll(tempOffers);
             }
             //Nur so viele Angebote wie gewünscht auslesen.
-            if(offerNumber <= offers.size()){break;}
+            if((offerNumber*restaurantNumber) <= offers.size()){break;}
         }
         return offers;
     }
