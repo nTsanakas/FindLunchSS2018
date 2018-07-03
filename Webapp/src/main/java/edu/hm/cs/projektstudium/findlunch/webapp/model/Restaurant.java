@@ -474,17 +474,19 @@ public class Restaurant implements Serializable {
 	 * Checks if the restaurant is currently open.
 	 * @return the isOpen
 	 */
-	public boolean getCurrentlyOpen() {
+	public boolean isCurrentlyOpen() {
 		
 		int openHour = 0;
 		int openMin = 0;
 		int closeHour = 0;
 		int closeMin = 0;
-		
-		for (TimeSchedule timeSchedule : this.timeSchedules) {
-			Date actuallyDate = new Date();
-			if(actuallyDate.getDay()+1==timeSchedule.getDayOfWeek().getDayNumber()){
 
+		Date actuallyDate = new Date();
+
+		// Öffnungszeiten zu heutigem Tag finden.
+		for (TimeSchedule timeSchedule : this.timeSchedules) {
+			// Ist der aktuelle Wochentag gleich dem Wochentag der Öffnungszeit?
+			if(actuallyDate.getDay()+1==timeSchedule.getDayOfWeek().getDayNumber()){
 				// check if there is a openingtime for the day
 				List<OpeningTime> openingTimes = timeSchedule.getOpeningTimes();
 				if(!openingTimes.isEmpty()){
@@ -493,7 +495,7 @@ public class Restaurant implements Serializable {
 							openHour = opening.getOpeningTime().getHours();
 							openMin = opening.getOpeningTime().getMinutes();
 							closeHour = opening.getClosingTime().getHours();
-							closeHour = opening.getClosingTime().getMinutes();
+							closeMin = opening.getClosingTime().getMinutes();
 						}
 						else {
 							openHour = timeSchedule.getOfferStartTime().getHours();

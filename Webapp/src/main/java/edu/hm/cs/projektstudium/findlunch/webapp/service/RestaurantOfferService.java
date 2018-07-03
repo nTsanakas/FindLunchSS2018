@@ -9,7 +9,6 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.OfferRepository;
 import edu.hm.cs.projektstudium.findlunch.webapp.repositories.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 /**
@@ -18,6 +17,7 @@ import java.util.*;
  */
 @Service
 public class RestaurantOfferService {
+
     /** The offer repository. */
     private final OfferRepository offerRepo;
 
@@ -58,7 +58,7 @@ public class RestaurantOfferService {
                 offers.addAll(tempOffers);
             }
             //Nur so viele Angebote wie gewünscht auslesen.
-            if((offerNumber*restaurantNumber) <= offers.size()){break;}
+            //if((offerNumber*restaurantNumber) <= offers.size()){break;}
         }
         return offers;
     }
@@ -134,7 +134,7 @@ public class RestaurantOfferService {
             }
             // Wenn nur offene Restaurants berücksichtigt werden sollen, nicht geöffnetes entfernen.
             if(currentlyOpen) {
-                if(restaurant.getCurrentlyOpen()) {
+                if(!restaurant.isCurrentlyOpen()) {
                     i.remove();
                 }
             }
