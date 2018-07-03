@@ -87,7 +87,7 @@ public class OfferDetailController implements HandlerExceptionResolver {
 	
 	/** The logger. */
 	private final Logger LOGGER = LoggerFactory.getLogger(OfferDetailController.class);
-	
+
 	/**
 	 * Gets the page for adding a new offer.
 	 *
@@ -219,10 +219,9 @@ public class OfferDetailController implements HandlerExceptionResolver {
 		Restaurant restaurant = restaurantRepository.findOne(authenticatedUser.getRestaurant().getId());
 		restaurant.addOffer(offer);
 		offer.setOfferPhotos((List<OfferPhoto>)session.getAttribute("photoList"));
-		
 		// Checks not handled by Hibernate annotations
 		customOfferValidator.validate(offer, bindingResult);
-		
+
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("dayOfWeeks", dayOfWeekRepository.findAll());
 			model.addAttribute("additives", additiveRepository.findAll());
@@ -236,7 +235,7 @@ public class OfferDetailController implements HandlerExceptionResolver {
 			
 			LOGGER.error(LogUtils.getValidationErrorString(request, bindingResult,
 					Thread.currentThread().getStackTrace()[1].getMethodName()));
-			return "offerDetail";			
+			return "offerDetail";
 		}
 						
 		for(OfferPhoto p : offer.getOfferPhotos()) {

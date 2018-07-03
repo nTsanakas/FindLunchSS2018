@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -28,12 +27,16 @@ import edu.hm.cs.projektstudium.findlunch.webapp.repositories.DayOfWeekRepositor
 public class CustomOfferValidator implements Validator {
 
 	/** The day of week repository. */
-	@Autowired
-	private DayOfWeekRepository dayOfWeekRepository;
+	private final DayOfWeekRepository dayOfWeekRepository;
+
+	private final CourseTypeRepository courseTypeRepository;
 
 	@Autowired
-	private CourseTypeRepository courseTypeRepository;
-	
+	public CustomOfferValidator(DayOfWeekRepository dayOfWeekRepository, CourseTypeRepository courseTypeRepository) {
+		this.dayOfWeekRepository = dayOfWeekRepository;
+		this.courseTypeRepository = courseTypeRepository;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.springframework.validation.Validator#supports(java.lang.Class)
 	 */
@@ -58,7 +61,7 @@ public class CustomOfferValidator implements Validator {
 		Offer offer = (Offer) objectToValidate;
 		checkDescription(offer.getDescription(), bindingResult);
 		checkTitle(offer.getTitle(), bindingResult);
-		checkCourseType(offer.getCourseTypeId(), bindingResult);
+		checkCourseType(offer, bindingResult);
 
 		if (offer.getStartDate() != null && offer.getEndDate() != null) {
 			boolean offerDatesAreValid = checkOfferDates(offer, bindingResult);
@@ -71,13 +74,17 @@ public class CustomOfferValidator implements Validator {
 	/**
 	 * Check coursetype.
 	 * 
-	 * @param courseType the course type
+	 * @param offer the offer
 	 * @param bindingResult the binding result
 	 */
-	public void checkCourseType(int courseType, Errors bindingResult) {
-		if(courseTypeRepository.findById(courseType)==null){
-			bindingResult.rejectValue("courseType", "offer.coursetype.notNull");
+	public void checkCourseType(Offer offer, Errors bindingResult) {
+		//Wenn zum Angebot keine Kategorie ausgewählt wurde, ist die Validierung negativ.
+		if (offer.getCourseType() != null){
+			if (courseTypeRepository.findById(offer.getCourseTypeId()) != null) {
+				return;
+			}
 		}
+		bindingResult.rejectValue("courseType", "offer.coursetype.notNull");
 	}
 	
 	/**

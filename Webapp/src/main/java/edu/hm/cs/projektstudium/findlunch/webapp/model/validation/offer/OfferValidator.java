@@ -13,6 +13,7 @@ import java.util.Set;
  */
 public class OfferValidator implements Validator {
 
+
     @Autowired
     private javax.validation.Validator beanValidator;
 
@@ -38,6 +39,7 @@ public class OfferValidator implements Validator {
      */
     @Override
     public void validate(Object target, Errors errors) {
+
         Set<ConstraintViolation<Object>> constraintViolations = beanValidator.validate(target);
 
         //Handles all violations of the Bean-Validation

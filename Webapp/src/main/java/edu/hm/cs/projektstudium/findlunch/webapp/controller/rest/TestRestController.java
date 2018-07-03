@@ -52,9 +52,27 @@ public class TestRestController {
             HttpServletRequest request) {
         LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
 
+
+
         fcmPushService.sendTestNotification(pushToken);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(
+            path = "/api/testContext",
+            method = RequestMethod.GET)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Push-Notifikation erfolgreich deaktiviert.")
+    })
+    public ResponseEntity<String> testContext(
+            HttpServletRequest request) {
+        LOGGER.info(LogUtils.getInfoStringWithParameterList(request, Thread.currentThread().getStackTrace()[1].getMethodName()));
+
+
+        return new ResponseEntity<>("ContextPath: " + request.getContextPath() +
+                " Path: " + request.getPathInfo(), HttpStatus.OK);
     }
 
 }
