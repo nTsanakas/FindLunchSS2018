@@ -30,7 +30,7 @@
     </div>
     <ion-item>
         <span>{{ 'ReservationPage.total' | translate }}</span>
-        <span item-right>{{reservation.totalPrice + reservation.fee | currency:'EUR':true}}</span>
+        <span item-right>{{reservation.totalPrice + reservation.fee + reservation.donation | currency:'EUR':true}}</span>
     </ion-item>
 
     <span *ngIf='reservation.pointsCollected'>{{ 'ReservationPage.points' | translate:param }}</span>
